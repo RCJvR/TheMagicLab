@@ -35,6 +35,11 @@ window.ML_LESSON_CATALOG = {
           "ref": "cc:8:coding/what-is-an-operating-system"
         },
         {
+          "value": "Inside the Computer: Input, Processing, Storage and Output",
+          "label": "Inside the Computer: Input, Processing, Storage and Output",
+          "ref": "cc:8:coding/inside-the-computer-input-processing-storage-and-output"
+        },
+        {
           "value": "Navigating Windows",
           "label": "Navigating Windows",
           "ref": "cc:8:coding/navigating-windows"
@@ -43,6 +48,11 @@ window.ML_LESSON_CATALOG = {
           "value": "Working with Files and Folders",
           "label": "Working with Files and Folders",
           "ref": "cc:8:coding/working-with-files-and-folders"
+        },
+        {
+          "value": "Smart File Habits: Zip Files, OneDrive and Backups",
+          "label": "Smart File Habits: Zip Files, OneDrive and Backups",
+          "ref": "cc:8:coding/smart-file-habits-zip-files-onedrive-and-backups"
         },
         {
           "value": "What is a File Extension?",
@@ -65,9 +75,29 @@ window.ML_LESSON_CATALOG = {
           "ref": "cc:8:coding/text-formatting-and-styles"
         },
         {
+          "value": "Page Setup, Headers and Footers",
+          "label": "Page Setup, Headers and Footers",
+          "ref": "cc:8:coding/page-setup-headers-and-footers"
+        },
+        {
+          "value": "Lists, Pictures and Tables",
+          "label": "Lists, Pictures and Tables",
+          "ref": "cc:8:coding/lists-pictures-and-tables"
+        },
+        {
+          "value": "Columns and an Automatic Table of Contents",
+          "label": "Columns and an Automatic Table of Contents",
+          "ref": "cc:8:coding/columns-and-an-automatic-table-of-contents"
+        },
+        {
           "value": "Introduction to Spreadsheets",
           "label": "Introduction to Spreadsheets",
           "ref": "cc:8:coding/introduction-to-spreadsheets"
+        },
+        {
+          "value": "Number Formats, Sorting and Filtering",
+          "label": "Number Formats, Sorting and Filtering",
+          "ref": "cc:8:coding/number-formats-sorting-and-filtering"
         },
         {
           "value": "Excel Formulas and Functions",
@@ -80,6 +110,11 @@ window.ML_LESSON_CATALOG = {
           "ref": "cc:8:coding/countif-and-sumif"
         },
         {
+          "value": "The IF Function",
+          "label": "The IF Function",
+          "ref": "cc:8:coding/the-if-function"
+        },
+        {
           "value": "Relative vs Absolute Cell References",
           "label": "Relative vs Absolute Cell References",
           "ref": "cc:8:coding/relative-vs-absolute-cell-references"
@@ -88,6 +123,26 @@ window.ML_LESSON_CATALOG = {
           "value": "Creating Charts in Excel",
           "label": "Creating Charts in Excel",
           "ref": "cc:8:coding/creating-charts-in-excel"
+        },
+        {
+          "value": "HTML Basics: Tags, Elements and Page Structure",
+          "label": "HTML Basics: Tags, Elements and Page Structure",
+          "ref": "cc:8:coding/html-basics-tags-elements-and-page-structure"
+        },
+        {
+          "value": "Lists, Links and Images",
+          "label": "Lists, Links and Images",
+          "ref": "cc:8:coding/lists-links-and-images"
+        },
+        {
+          "value": "CSS Basics: Selectors, Colours and Fonts",
+          "label": "CSS Basics: Selectors, Colours and Fonts",
+          "ref": "cc:8:coding/css-basics-selectors-colours-and-fonts"
+        },
+        {
+          "value": "CSS Classes and the Box Model",
+          "label": "CSS Classes and the Box Model",
+          "ref": "cc:8:coding/css-classes-and-the-box-model"
         },
         {
           "value": "What is Computational Thinking?",
@@ -138,6 +193,26 @@ window.ML_LESSON_CATALOG = {
           "value": "Flow Diagram Examples and Builder",
           "label": "Flow Diagram Examples and Builder",
           "ref": "cc:8:coding/flow-diagram-examples-and-builder"
+        },
+        {
+          "value": "What is CAD?",
+          "label": "What is CAD?",
+          "ref": "cc:8:coding/what-is-cad"
+        },
+        {
+          "value": "The Design Process and 3D Printing",
+          "label": "The Design Process and 3D Printing",
+          "ref": "cc:8:coding/the-design-process-and-3d-printing"
+        },
+        {
+          "value": "Sketches, Dimensions and Constraints",
+          "label": "Sketches, Dimensions and Constraints",
+          "ref": "cc:8:coding/sketches-dimensions-and-constraints"
+        },
+        {
+          "value": "Orthographic Views",
+          "label": "Orthographic Views",
+          "ref": "cc:8:coding/orthographic-views"
         },
         {
           "value": "What is Artificial Intelligence?",

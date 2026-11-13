@@ -168,6 +168,149 @@ let LESSONS = [
 
 {
   unit: "Unit 1 — The Windows Operating System",
+  title: "Inside the Computer: Input, Processing, Storage and Output",
+  subtitle: "The four jobs every computer does, and the parts that do them",
+  content: `
+<p>Every computer, from a phone to a school laptop, does the same four jobs. It takes in data (<strong>input</strong>), works on it (<strong>processing</strong>), keeps it (<strong>storage</strong>) and shows or sends the result (<strong>output</strong>). This is called the <strong>IPO model</strong>, with storage added.</p>
+
+<div class="visual-box">
+  <div class="visual-box-title">The information processing cycle</div>
+  <div style="display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:13px;">
+    <div style="border:1px solid var(--border2);border-radius:10px;padding:10px 14px;"><strong>Input</strong><br><span style="color:var(--muted)">keyboard, mouse, microphone</span></div>
+    <div>→</div>
+    <div style="border:1px solid var(--border2);border-radius:10px;padding:10px 14px;"><strong>Processing</strong><br><span style="color:var(--muted)">CPU follows instructions</span></div>
+    <div>→</div>
+    <div style="border:1px solid var(--border2);border-radius:10px;padding:10px 14px;"><strong>Output</strong><br><span style="color:var(--muted)">screen, printer, speakers</span></div>
+    <div style="flex-basis:100%;height:0"></div>
+    <div style="border:1px dashed var(--border2);border-radius:10px;padding:10px 14px;"><strong>Storage</strong> keeps data before and after processing: SSD, hard drive, flash drive, cloud</div>
+  </div>
+</div>
+
+<h3><i data-lucide="keyboard" style="width:14px;height:14px;"></i> Input and output devices</h3>
+<table class="ext-table">
+  <tr><th>Input devices</th><th>Output devices</th></tr>
+  <tr><td>Keyboard, mouse, touchpad</td><td>Monitor (screen)</td></tr>
+  <tr><td>Microphone, webcam, scanner</td><td>Speakers, headphones</td></tr>
+  <tr><td>Touchscreen <em>(input and output)</em></td><td>Printer, 3D printer, projector</td></tr>
+</table>
+
+<h3><i data-lucide="cpu" style="width:14px;height:14px;"></i> Processing: the CPU</h3>
+<p>The <strong>CPU</strong> (Central Processing Unit) is the "brain" of the computer. It carries out the instructions in programs, billions of times a second. Its speed is measured in <strong>gigahertz (GHz)</strong>.</p>
+
+<h3><i data-lucide="memory-stick" style="width:14px;height:14px;"></i> Memory vs storage</h3>
+<p>These two are easy to mix up:</p>
+<table class="ext-table">
+  <tr><th></th><th>RAM (memory)</th><th>Storage (SSD / hard drive)</th></tr>
+  <tr><td>Job</td><td>Holds what you are working on <em>right now</em></td><td>Keeps files and programs <em>long term</em></td></tr>
+  <tr><td>Switch off the computer</td><td>Everything in RAM is lost</td><td>Files stay saved</td></tr>
+  <tr><td>Speed</td><td>Very fast</td><td>Slower than RAM</td></tr>
+  <tr><td>Typical size</td><td>8 GB – 16 GB</td><td>256 GB – 1 TB</td></tr>
+</table>
+<div class="callout tip"><strong>Why save often?</strong> While you type, your essay lives in RAM. If the power goes before you press <span class="key-term">Ctrl + S</span>, it was never written to storage, so it is gone.</div>
+
+<h3><i data-lucide="ruler" style="width:14px;height:14px;"></i> Measuring storage</h3>
+<table class="ext-table">
+  <tr><th>Unit</th><th>Size</th><th>Roughly holds</th></tr>
+  <tr><td>Bit</td><td>A single 0 or 1</td><td>—</td></tr>
+  <tr><td>Byte (B)</td><td>8 bits</td><td>One letter</td></tr>
+  <tr><td>Kilobyte (KB)</td><td>1 024 bytes</td><td>A short text file</td></tr>
+  <tr><td>Megabyte (MB)</td><td>1 024 KB</td><td>A photo or a song</td></tr>
+  <tr><td>Gigabyte (GB)</td><td>1 024 MB</td><td>A film</td></tr>
+  <tr><td>Terabyte (TB)</td><td>1 024 GB</td><td>Hundreds of films</td></tr>
+</table>
+<div class="callout info"><strong>Remember the order:</strong> Bit → Byte → KB → MB → GB → TB. Each step (after the byte) is 1 024 times bigger.</div>
+
+<div class="quiz-section">
+  <button class="quiz-toggle" onclick="toggleQuiz(this)">
+    🧩 Practice Quiz — 8 questions <span style="opacity:0.55;font-weight:400;margin-left:4px;">(optional)</span>
+    <span class="toggle-icon">▾</span>
+  </button>
+  <div class="quiz-inner">
+<div class="quiz-box" data-why="A microphone sends sound into the computer, so it is input.">
+  <div class="quiz-q">🧩 Q1: Which of these is an input device?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Printer</button>
+    <button class="quiz-opt" data-correct="true">Microphone</button>
+    <button class="quiz-opt" data-correct="false">Speakers</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box" data-why="The CPU processes: it follows program instructions.">
+  <div class="quiz-q">🧩 Q2: What does the CPU do?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Stores files when the computer is off</button>
+    <button class="quiz-opt" data-correct="true">Carries out the instructions in programs</button>
+    <button class="quiz-opt" data-correct="false">Shows the picture on the screen</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box" data-why="RAM is temporary memory, so it is cleared when the power goes off.">
+  <div class="quiz-q">🧩 Q3: What happens to the data in RAM when the computer is switched off?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="true">It is lost</button>
+    <button class="quiz-opt" data-correct="false">It is copied to the cloud</button>
+    <button class="quiz-opt" data-correct="false">It stays there until next time</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box" data-why="KB → MB → GB: a gigabyte is the largest of these.">
+  <div class="quiz-q">🧩 Q4: Which unit is the largest?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Megabyte</button>
+    <button class="quiz-opt" data-correct="false">Kilobyte</button>
+    <button class="quiz-opt" data-correct="true">Gigabyte</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box" data-why="A byte is 8 bits.">
+  <div class="quiz-q">🧩 Q5: How many bits are in one byte?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="true">8</button>
+    <button class="quiz-opt" data-correct="false">10</button>
+    <button class="quiz-opt" data-correct="false">1 024</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box" data-why="You touch it (input) and it shows a picture (output).">
+  <div class="quiz-q">🧩 Q6: A touchscreen is...</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">only an output device</button>
+    <button class="quiz-opt" data-correct="true">both an input and an output device</button>
+    <button class="quiz-opt" data-correct="false">only an input device</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box" data-why="Storage devices such as SSDs keep files when the power is off.">
+  <div class="quiz-q">🧩 Q7: Which stores your files long term?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">RAM</button>
+    <button class="quiz-opt" data-correct="false">The CPU</button>
+    <button class="quiz-opt" data-correct="true">The SSD or hard drive</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box" data-why="A printer gives you the result, so it is output.">
+  <div class="quiz-q">🧩 Q8: In the IPO model, a printer is part of...</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="true">Output</button>
+    <button class="quiz-opt" data-correct="false">Processing</button>
+    <button class="quiz-opt" data-correct="false">Input</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+  </div>
+</div>`
+},
+
+{
+  unit: "Unit 1 — The Windows Operating System",
   title: "Navigating Windows",
   subtitle: "Start Menu, File Explorer, and window controls",
   content: `
@@ -490,6 +633,138 @@ let LESSONS = [
     <button class="quiz-opt" data-correct="false">Delete the compressed file to free up space</button>
     <button class="quiz-opt" data-correct="true">Decompress the contents so you can use the files inside</button>
     <button class="quiz-opt" data-correct="false">Attach the compressed file to an email and send it</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+  </div>
+</div>`
+},
+
+{
+  unit: "Unit 1 — The Windows Operating System",
+  title: "Smart File Habits: Zip Files, OneDrive and Backups",
+  subtitle: "Copy vs move, compressing files, and saving to the cloud",
+  content: `
+<p>Knowing how to save a file is a start. Keeping your work safe and easy to find takes a few good habits.</p>
+
+<h3><i data-lucide="copy" style="width:14px;height:14px;"></i> Copy vs move</h3>
+<table class="ext-table">
+  <tr><th>Action</th><th>Result</th><th>Shortcut</th></tr>
+  <tr><td>Copy</td><td>The file is in <strong>both</strong> places</td><td><span class="key-term">Ctrl + C</span> then <span class="key-term">Ctrl + V</span></td></tr>
+  <tr><td>Move (cut)</td><td>The file is <strong>only</strong> in the new place</td><td><span class="key-term">Ctrl + X</span> then <span class="key-term">Ctrl + V</span></td></tr>
+</table>
+<div class="callout warn"><strong>Dragging is tricky:</strong> dragging a file to another folder on the <em>same drive</em> moves it. Dragging it to a <em>different drive</em> (like a flash drive) copies it.</div>
+
+<h3><i data-lucide="file-archive" style="width:14px;height:14px;"></i> Zip files (compressing)</h3>
+<p>A <strong>zip file</strong> (<code>.zip</code>) packs one or more files into a single, smaller file. This makes it easier to email or upload a whole folder.</p>
+<ul>
+  <li><strong>To zip:</strong> select the files → right-click → <em>Compress to ZIP file</em>.</li>
+  <li><strong>To unzip:</strong> right-click the zip file → <em>Extract All</em>.</li>
+</ul>
+<div class="callout tip"><strong>Always extract first.</strong> If you open a document straight from inside a zip file and save it, your changes can be lost. Extract, then open.</div>
+
+<h3><i data-lucide="cloud" style="width:14px;height:14px;"></i> Local vs cloud storage</h3>
+<table class="ext-table">
+  <tr><th></th><th>Local (C: drive, flash drive)</th><th>Cloud (OneDrive)</th></tr>
+  <tr><td>Where it is kept</td><td>On this device</td><td>On Microsoft's servers, over the internet</td></tr>
+  <tr><td>Use on another device</td><td>No, unless you copy it</td><td>Yes, sign in anywhere</td></tr>
+  <tr><td>Needs internet</td><td>No</td><td>To sync, yes</td></tr>
+  <tr><td>If the laptop is lost</td><td>The file is lost too</td><td>The file is still safe</td></tr>
+</table>
+<p>OneDrive shows the sync state next to each file: a <strong>cloud</strong> icon means online only, a <strong>green tick</strong> means saved on this device too, and <strong>blue arrows</strong> mean it is still syncing.</p>
+
+<h3><i data-lucide="tag" style="width:14px;height:14px;"></i> Name files so you can find them</h3>
+<ul>
+  <li>Use clear names: <code>Gr8_Science_Project_v2.docx</code>, not <code>Document1.docx</code>.</li>
+  <li>Keep a folder per subject, with sub-folders per term.</li>
+  <li>Avoid these characters, which Windows does not allow: <code>\\ / : * ? " &lt; &gt; |</code></li>
+</ul>
+
+<h3><i data-lucide="shield-check" style="width:14px;height:14px;"></i> Backups</h3>
+<p>A <strong>backup</strong> is an extra copy kept somewhere else. If one copy is lost, deleted or damaged, you still have the other. Important work should be in at least two places, for example on your laptop and in OneDrive.</p>
+
+<div class="quiz-section">
+  <button class="quiz-toggle" onclick="toggleQuiz(this)">
+    🧩 Practice Quiz — 8 questions <span style="opacity:0.55;font-weight:400;margin-left:4px;">(optional)</span>
+    <span class="toggle-icon">▾</span>
+  </button>
+  <div class="quiz-inner">
+<div class="quiz-box" data-why="Copying leaves the original in place and adds a second copy.">
+  <div class="quiz-q">🧩 Q1: You copy a file to a new folder. Where is the file now?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Only in the new folder</button>
+    <button class="quiz-opt" data-correct="true">In both folders</button>
+    <button class="quiz-opt" data-correct="false">Only in the old folder</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box" data-why="Ctrl + X cuts; Ctrl + V then pastes it in the new place.">
+  <div class="quiz-q">🧩 Q2: Which shortcut cuts a file so you can move it?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="true">Ctrl + X</button>
+    <button class="quiz-opt" data-correct="false">Ctrl + C</button>
+    <button class="quiz-opt" data-correct="false">Ctrl + Z</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box" data-why="A zip file bundles and compresses files.">
+  <div class="quiz-q">🧩 Q3: Why would you zip a folder before emailing it?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">To delete it from your computer</button>
+    <button class="quiz-opt" data-correct="true">To put many files into one smaller file</button>
+    <button class="quiz-opt" data-correct="false">To change it into a PDF</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box" data-why="Extract All unpacks the files properly.">
+  <div class="quiz-q">🧩 Q4: How do you unzip a zip file in Windows?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Rename it to .docx</button>
+    <button class="quiz-opt" data-correct="false">Double-click and save</button>
+    <button class="quiz-opt" data-correct="true">Right-click → Extract All</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box" data-why="Cloud files can be opened anywhere you sign in.">
+  <div class="quiz-q">🧩 Q5: What is an advantage of OneDrive over the C: drive?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="true">You can open the file on another device</button>
+    <button class="quiz-opt" data-correct="false">It never needs the internet</button>
+    <button class="quiz-opt" data-correct="false">Files open faster offline</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box" data-why="A clear name tells you what the file is.">
+  <div class="quiz-q">🧩 Q6: Which file name is the most useful?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Document1.docx</button>
+    <button class="quiz-opt" data-correct="true">Gr9_History_Essay_Final.docx</button>
+    <button class="quiz-opt" data-correct="false">aaa.docx</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box" data-why="A backup is a second copy, so you don't lose work.">
+  <div class="quiz-q">🧩 Q7: What is a backup?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">A file you have deleted</button>
+    <button class="quiz-opt" data-correct="false">A zip file</button>
+    <button class="quiz-opt" data-correct="true">An extra copy of a file kept somewhere else</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box" data-why="Dragging to a different drive copies the file.">
+  <div class="quiz-q">🧩 Q8: You drag a file from your Documents folder onto a flash drive. What happens?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="true">It is copied</button>
+    <button class="quiz-opt" data-correct="false">It is moved</button>
+    <button class="quiz-opt" data-correct="false">It is deleted</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
@@ -1138,6 +1413,416 @@ let LESSONS = [
 </div>`
 },
 
+{
+  unit: "Unit 4 — Microsoft Word",
+  title: "Page Setup, Headers and Footers",
+  subtitle: "Margins, orientation, page breaks and page numbers",
+  content: `
+<p><strong>Page setup</strong> controls the shape of the page itself: how big it is, which way it faces and how much white space is around the text. You find it on the <strong>Layout</strong> tab.</p>
+
+<h3><i data-lucide="file" style="width:14px;height:14px;"></i> The page setup options</h3>
+<table class="ext-table">
+  <tr><th>Option</th><th>What it does</th><th>Common choice</th></tr>
+  <tr><td>Margins</td><td>The empty space between the text and the edge of the page</td><td>Normal (2.54 cm)</td></tr>
+  <tr><td>Orientation</td><td><strong>Portrait</strong> (tall) or <strong>Landscape</strong> (wide)</td><td>Portrait for letters, landscape for posters and wide tables</td></tr>
+  <tr><td>Size</td><td>The paper size</td><td>A4 in South Africa</td></tr>
+  <tr><td>Columns</td><td>Splits text into newspaper-style columns</td><td>One column</td></tr>
+</table>
+
+<div class="visual-box">
+  <div class="visual-box-title">Portrait vs landscape</div>
+  <div style="display:flex;gap:24px;align-items:flex-end;font-size:12px;color:var(--muted);">
+    <div style="text-align:center;"><div style="width:60px;height:84px;border:2px solid var(--border2);border-radius:3px;margin-bottom:6px;"></div>Portrait</div>
+    <div style="text-align:center;"><div style="width:84px;height:60px;border:2px solid var(--border2);border-radius:3px;margin-bottom:6px;"></div>Landscape</div>
+  </div>
+</div>
+
+<h3><i data-lucide="scissors" style="width:14px;height:14px;"></i> Page breaks</h3>
+<p>Do not press Enter over and over to push a heading onto a new page. If you add text above later, everything shifts. Insert a <strong>page break</strong> instead: <span class="key-term">Ctrl + Enter</span> (or Insert → Page Break). The next text always starts on a new page.</p>
+
+<h3><i data-lucide="panel-top" style="width:14px;height:14px;"></i> Headers and footers</h3>
+<p>The <strong>header</strong> is the area in the top margin; the <strong>footer</strong> is in the bottom margin. Whatever you type there appears on <em>every page</em>, which is perfect for:</p>
+<ul>
+  <li>your name and class in the header</li>
+  <li>the document title</li>
+  <li><strong>page numbers</strong> in the footer</li>
+</ul>
+<p>Double-click the top or bottom margin to edit the header or footer, or use <strong>Insert → Header / Footer</strong>. Double-click the main text to go back.</p>
+
+<h3><i data-lucide="hash" style="width:14px;height:14px;"></i> Page numbers</h3>
+<p>Choose <strong>Insert → Page Number</strong> and pick a position, such as <em>Bottom of Page → Plain Number 2</em> (centred). Word counts the pages for you and updates the numbers when pages are added or removed. Never type page numbers by hand.</p>
+<div class="callout tip"><strong>Different first page:</strong> a cover page usually has no number. In the Header &amp; Footer tab, tick <em>Different First Page</em>.</div>
+
+<h3><i data-lucide="mouse-pointer-click" style="width:14px;height:14px;"></i> Try it yourself in Word</h3>
+<ol>
+  <li>Set the page to A4, landscape, with narrow margins.</li>
+  <li>Put your name and class in the header.</li>
+  <li>Add a centred page number in the footer.</li>
+  <li>Insert a page break and check that the header and number appear on page 2.</li>
+</ol>
+
+<div class="quiz-section">
+  <button class="quiz-toggle" onclick="toggleQuiz(this)">
+    🧩 Practice Quiz — 8 questions <span style="opacity:0.55;font-weight:400;margin-left:4px;">(optional)</span>
+    <span class="toggle-icon">▾</span>
+  </button>
+  <div class="quiz-inner">
+<div class="quiz-box" data-why="Page setup options are on the Layout tab.">
+  <div class="quiz-q">🧩 Q1: Which tab holds Margins, Orientation and Size?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Home</button>
+    <button class="quiz-opt" data-correct="true">Layout</button>
+    <button class="quiz-opt" data-correct="false">Insert</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box" data-why="A4 is the standard size.">
+  <div class="quiz-q">🧩 Q2: What paper size is normally used in South Africa?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="true">A4</button>
+    <button class="quiz-opt" data-correct="false">Letter</button>
+    <button class="quiz-opt" data-correct="false">A3</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box" data-why="Landscape gives the page more width.">
+  <div class="quiz-q">🧩 Q3: Which orientation suits a wide table?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Portrait</button>
+    <button class="quiz-opt" data-correct="true">Landscape</button>
+    <button class="quiz-opt" data-correct="false">Either, it makes no difference</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box" data-why="Ctrl + Enter starts a new page.">
+  <div class="quiz-q">🧩 Q4: Which shortcut inserts a page break?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Shift + Enter</button>
+    <button class="quiz-opt" data-correct="true">Ctrl + Enter</button>
+    <button class="quiz-opt" data-correct="false">Ctrl + P</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box" data-why="Headers and footers repeat on every page.">
+  <div class="quiz-q">🧩 Q5: Text typed in the footer...</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">appears only on the last page</button>
+    <button class="quiz-opt" data-correct="true">appears on every page</button>
+    <button class="quiz-opt" data-correct="false">is not printed</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box" data-why="Inserted page numbers update automatically.">
+  <div class="quiz-q">🧩 Q6: Why should you not type page numbers yourself?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Word cannot print them</button>
+    <button class="quiz-opt" data-correct="true">They would not update when pages change</button>
+    <button class="quiz-opt" data-correct="false">It is against the rules</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box" data-why="Margins are the white border around the text.">
+  <div class="quiz-q">🧩 Q7: What are margins?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">The lines between table cells</button>
+    <button class="quiz-opt" data-correct="true">The space between the text and the edge of the page</button>
+    <button class="quiz-opt" data-correct="false">The space between paragraphs</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box" data-why="Different First Page gives page 1 its own header and footer.">
+  <div class="quiz-q">🧩 Q8: How do you stop the cover page showing a page number?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Delete page 1</button>
+    <button class="quiz-opt" data-correct="true">Tick Different First Page</button>
+    <button class="quiz-opt" data-correct="false">Use landscape for page 1</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+  </div>
+</div>`
+},
+
+{
+  unit: "Unit 4 — Microsoft Word",
+  title: "Lists, Pictures and Tables",
+  subtitle: "Bullets and numbering, text wrapping, and building a table",
+  content: `
+<h3><i data-lucide="list" style="width:14px;height:14px;"></i> Bullets and numbering</h3>
+<p>Lists make information easy to scan. Both buttons are on the <strong>Home</strong> tab in the Paragraph group.</p>
+<table class="ext-table">
+  <tr><th>Type</th><th>Use it when...</th><th>Example</th></tr>
+  <tr><td>Bulleted list</td><td>The order does not matter</td><td>Things to pack for camp</td></tr>
+  <tr><td>Numbered list</td><td>The order matters</td><td>Steps in a recipe</td></tr>
+  <tr><td>Multilevel list</td><td>Some points have sub-points</td><td>1. Hardware → a. Input devices</td></tr>
+</table>
+<div class="callout tip">Press <span class="key-term">Tab</span> to move a list item one level in, and <span class="key-term">Shift + Tab</span> to move it back out. Press Enter twice to end the list.</div>
+
+<h3><i data-lucide="image" style="width:14px;height:14px;"></i> Pictures and text wrapping</h3>
+<p>Insert a picture with <strong>Insert → Pictures</strong>. Drag a corner handle to resize it. Corner handles keep the shape right; side handles stretch it.</p>
+<p><strong>Text wrapping</strong> decides how the text flows around the picture. Select the picture and click the <em>Layout Options</em> button next to it:</p>
+<table class="ext-table">
+  <tr><th>Wrapping</th><th>What happens</th></tr>
+  <tr><td>In Line with Text</td><td>The picture sits on a line like a big letter (the default)</td></tr>
+  <tr><td>Square</td><td>Text flows around the picture's box</td></tr>
+  <tr><td>Tight</td><td>Text hugs the picture's outline</td></tr>
+  <tr><td>Top and Bottom</td><td>Text stays above and below, none beside it</td></tr>
+  <tr><td>Behind / In Front of Text</td><td>The picture floats under or over the text</td></tr>
+</table>
+<div class="callout warn">Always say where a picture came from if you did not make it. Use pictures you are allowed to use.</div>
+
+<h3><i data-lucide="table" style="width:14px;height:14px;"></i> Tables</h3>
+<p>A <strong>table</strong> is a grid of <strong>rows</strong> (across) and <strong>columns</strong> (down). Each box is a <strong>cell</strong>. Insert one with <strong>Insert → Table</strong> and drag over the number of rows and columns you need.</p>
+
+<div class="visual-box">
+  <div class="visual-box-title">A timetable as a table</div>
+  <table class="ext-table" style="margin:0">
+    <tr><th>Period</th><th>Monday</th><th>Tuesday</th></tr>
+    <tr><td>1</td><td>Maths</td><td>English</td></tr>
+    <tr><td>2</td><td>Coding</td><td>Science</td></tr>
+  </table>
+</div>
+
+<ul>
+  <li><strong>Add a row:</strong> click in the last cell and press <span class="key-term">Tab</span>, or right-click → Insert.</li>
+  <li><strong>Merge cells:</strong> select cells → right-click → Merge Cells (for a heading across the top).</li>
+  <li><strong>Style it:</strong> the <em>Table Design</em> tab adds shading and borders in one click.</li>
+  <li><strong>Header row:</strong> make the first row bold so it is clear what each column holds.</li>
+</ul>
+
+<h3><i data-lucide="mouse-pointer-click" style="width:14px;height:14px;"></i> Try it yourself in Word</h3>
+<p>Make a one-page notice for a school event with a heading, a picture wrapped Square, a bulleted list of what to bring, and a small table of times.</p>
+
+<div class="quiz-section">
+  <button class="quiz-toggle" onclick="toggleQuiz(this)">
+    🧩 Practice Quiz — 8 questions <span style="opacity:0.55;font-weight:400;margin-left:4px;">(optional)</span>
+    <span class="toggle-icon">▾</span>
+  </button>
+  <div class="quiz-inner">
+<div class="quiz-box" data-why="Order matters in steps, so number them.">
+  <div class="quiz-q">🧩 Q1: Which list type suits the steps of a recipe?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Bulleted list</button>
+    <button class="quiz-opt" data-correct="true">Numbered list</button>
+    <button class="quiz-opt" data-correct="false">No list</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box" data-why="Tab indents; Shift + Tab moves it back out.">
+  <div class="quiz-q">🧩 Q2: Which key moves a list item one level in?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="true">Tab</button>
+    <button class="quiz-opt" data-correct="false">Enter</button>
+    <button class="quiz-opt" data-correct="false">Ctrl</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box" data-why="Corner handles resize evenly.">
+  <div class="quiz-q">🧩 Q3: Which handle keeps a picture's shape when you resize it?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">A side handle</button>
+    <button class="quiz-opt" data-correct="true">A corner handle</button>
+    <button class="quiz-opt" data-correct="false">The rotate handle</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box" data-why="Square wraps text around the picture's rectangle.">
+  <div class="quiz-q">🧩 Q4: Which wrapping lets text flow around a picture's box?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">In Line with Text</button>
+    <button class="quiz-opt" data-correct="true">Square</button>
+    <button class="quiz-opt" data-correct="false">Behind Text</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box" data-why="Columns run down, rows run across.">
+  <div class="quiz-q">🧩 Q5: In a table, the boxes going down are called...</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">rows</button>
+    <button class="quiz-opt" data-correct="true">columns</button>
+    <button class="quiz-opt" data-correct="false">margins</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box" data-why="Tab in the last cell adds a row.">
+  <div class="quiz-q">🧩 Q6: How do you add a new row at the bottom of a table?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="true">Press Tab in the last cell</button>
+    <button class="quiz-opt" data-correct="false">Press Ctrl + B</button>
+    <button class="quiz-opt" data-correct="false">Press Esc</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box" data-why="Merging joins cells into one wide cell.">
+  <div class="quiz-q">🧩 Q7: Why merge the cells in the top row of a table?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="true">To make a heading that spans the table</button>
+    <button class="quiz-opt" data-correct="false">To delete the row</button>
+    <button class="quiz-opt" data-correct="false">To sort the table</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box" data-why="Pictures are on the Insert tab.">
+  <div class="quiz-q">🧩 Q8: Where do you insert a picture from?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Layout → Pictures</button>
+    <button class="quiz-opt" data-correct="true">Insert → Pictures</button>
+    <button class="quiz-opt" data-correct="false">Home → Pictures</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+  </div>
+</div>`
+},
+
+{
+  unit: "Unit 4 — Microsoft Word",
+  title: "Columns and an Automatic Table of Contents",
+  subtitle: "Newspaper columns, section breaks and a contents page that builds itself",
+  content: `
+<h3><i data-lucide="columns-2" style="width:14px;height:14px;"></i> Newspaper columns</h3>
+<p><strong>Layout → Columns</strong> splits text into two or three columns, like a newspaper or a pamphlet. Text runs down the first column and then continues at the top of the next.</p>
+<p>To put the heading across the full width and only the body in columns, add a <strong>section break</strong> first:</p>
+<ol>
+  <li>Click just after the heading.</li>
+  <li>Choose <strong>Layout → Breaks → Section Breaks → Continuous</strong>.</li>
+  <li>Click in the text below and choose <strong>Layout → Columns → Two</strong>.</li>
+</ol>
+<div class="callout info"><strong>Section breaks</strong> let parts of one document have different layouts, such as one landscape page in a portrait report, or columns on only part of a page.</div>
+<p>Use <strong>Layout → Breaks → Column</strong> to push text to the top of the next column.</p>
+
+<h3><i data-lucide="list-ordered" style="width:14px;height:14px;"></i> An automatic table of contents</h3>
+<p>A <strong>table of contents (TOC)</strong> lists the headings of a document with their page numbers. Word builds it for you, but only if you used <strong>heading styles</strong> (Heading 1, Heading 2) for your headings.</p>
+
+<div class="visual-box">
+  <div class="visual-box-title">How Word builds the TOC</div>
+  <div style="display:flex;flex-wrap:wrap;gap:16px;font-size:13px;align-items:center;">
+    <div style="border:1px solid var(--border2);border-radius:8px;padding:10px 12px;">
+      <div style="font-weight:800;">Heading 1: Introduction</div>
+      <div style="padding-left:12px;font-weight:700;">Heading 2: Background</div>
+      <div style="font-weight:800;">Heading 1: Method</div>
+    </div>
+    <div>→</div>
+    <div style="border:1px solid var(--border2);border-radius:8px;padding:10px 12px;font-family:'JetBrains Mono',monospace;font-size:12px;">
+      Introduction ........ 1<br>&nbsp;&nbsp;Background ........ 2<br>Method .............. 3
+    </div>
+  </div>
+</div>
+
+<ol>
+  <li>Apply Heading 1 to main headings and Heading 2 to sub-headings.</li>
+  <li>Put the cursor where the contents page should go (usually page 2).</li>
+  <li>Choose <strong>References → Table of Contents → Automatic Table 1</strong>.</li>
+</ol>
+
+<h3><i data-lucide="refresh-cw" style="width:14px;height:14px;"></i> Updating the TOC</h3>
+<p>The TOC does not change on its own when you edit the document. When headings or page numbers change, click the TOC and choose <strong>Update Table → Update entire table</strong>.</p>
+<div class="callout warn"><strong>A heading is missing from the TOC?</strong> It was probably made bold and big by hand instead of using a Heading style. Apply the style and update the table.</div>
+<div class="callout tip"><strong>Ctrl + click</strong> any line in the TOC to jump to that heading.</div>
+
+<div class="quiz-section">
+  <button class="quiz-toggle" onclick="toggleQuiz(this)">
+    🧩 Practice Quiz — 8 questions <span style="opacity:0.55;font-weight:400;margin-left:4px;">(optional)</span>
+    <span class="toggle-icon">▾</span>
+  </button>
+  <div class="quiz-inner">
+<div class="quiz-box" data-why="Columns are on the Layout tab.">
+  <div class="quiz-q">🧩 Q1: Where do you set newspaper columns?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="true">Layout → Columns</button>
+    <button class="quiz-opt" data-correct="false">Insert → Columns</button>
+    <button class="quiz-opt" data-correct="false">Home → Columns</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box" data-why="Section breaks allow different layouts in one document.">
+  <div class="quiz-q">🧩 Q2: What lets one part of a document have columns and another not?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">A page break</button>
+    <button class="quiz-opt" data-correct="true">A section break</button>
+    <button class="quiz-opt" data-correct="false">A line break</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box" data-why="The TOC is made from Heading styles.">
+  <div class="quiz-q">🧩 Q3: What must you use for Word to build a table of contents?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Bold text</button>
+    <button class="quiz-opt" data-correct="true">Heading styles</button>
+    <button class="quiz-opt" data-correct="false">A bigger font</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box" data-why="References → Table of Contents.">
+  <div class="quiz-q">🧩 Q4: Where is the Table of Contents command?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="true">References tab</button>
+    <button class="quiz-opt" data-correct="false">Review tab</button>
+    <button class="quiz-opt" data-correct="false">View tab</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box" data-why="Update Table refreshes the headings and page numbers.">
+  <div class="quiz-q">🧩 Q5: You added a new heading. How do you get it into the TOC?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Type it in by hand</button>
+    <button class="quiz-opt" data-correct="true">Update the table</button>
+    <button class="quiz-opt" data-correct="false">Delete and redo the document</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box" data-why="Heading 2 is one level below Heading 1.">
+  <div class="quiz-q">🧩 Q6: Which style would you use for a sub-heading?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Normal</button>
+    <button class="quiz-opt" data-correct="true">Heading 2</button>
+    <button class="quiz-opt" data-correct="false">Title</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box" data-why="A column break starts the next column.">
+  <div class="quiz-q">🧩 Q7: Which break pushes text to the top of the next column?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="true">Column break</button>
+    <button class="quiz-opt" data-correct="false">Page break</button>
+    <button class="quiz-opt" data-correct="false">Section break (Next Page)</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box" data-why="TOC entries are links to their headings.">
+  <div class="quiz-q">🧩 Q8: What does Ctrl + click on a TOC line do?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Deletes the heading</button>
+    <button class="quiz-opt" data-correct="true">Jumps to that heading</button>
+    <button class="quiz-opt" data-correct="false">Prints that page</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+  </div>
+</div>`
+},
+
 // ─── UNIT 5: EXCEL ────────────────────────────────────────────────────────
 
 {
@@ -1310,6 +1995,143 @@ let LESSONS = [
     <button class="quiz-opt" data-correct="false">Tab</button>
     <button class="quiz-opt" data-correct="true">Enter</button>
     <button class="quiz-opt" data-correct="false">Ctrl + D</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+  </div>
+</div>`
+},
+
+{
+  unit: "Unit 5 — Microsoft Excel",
+  title: "Number Formats, Sorting and Filtering",
+  subtitle: "Making numbers readable and finding the rows you need",
+  content: `
+<p>A number format changes how a value <em>looks</em>, not the value itself. The cell still holds the same number for calculations.</p>
+
+<h3><i data-lucide="percent" style="width:14px;height:14px;"></i> Number formats</h3>
+<p>Find them on the <strong>Home</strong> tab in the Number group.</p>
+<table class="ext-table">
+  <tr><th>Format</th><th>Value typed</th><th>Shows as</th></tr>
+  <tr><td>General</td><td>1250</td><td>1250</td></tr>
+  <tr><td>Currency (R)</td><td>1250</td><td>R 1 250,00</td></tr>
+  <tr><td>Percentage</td><td>0.85</td><td>85%</td></tr>
+  <tr><td>Number, 1 decimal</td><td>72.456</td><td>72.5</td></tr>
+  <tr><td>Date</td><td>2027/03/14</td><td>14 March 2027</td></tr>
+</table>
+<div class="callout warn"><strong>Seeing ####?</strong> The column is too narrow to show the number. Double-click the line between the column letters to widen it.</div>
+<div class="callout info">Use the <strong>Increase Decimal</strong> and <strong>Decrease Decimal</strong> buttons to show more or fewer decimal places. Excel still uses the full value in formulas.</div>
+
+<h3><i data-lucide="arrow-down-a-z" style="width:14px;height:14px;"></i> Sorting</h3>
+<p><strong>Sorting</strong> puts rows in order: A → Z, Z → A, smallest to largest or largest to smallest.</p>
+<div class="visual-box">
+  <div class="visual-box-title">Before sorting by Mark, largest to smallest</div>
+  <div class="excel-grid">
+    <div class="excel-row"><div class="excel-cell row-header"></div><div class="excel-cell header">A</div><div class="excel-cell header">B</div><div class="excel-cell header">C</div></div>
+    <div class="excel-row"><div class="excel-cell row-header">1</div><div class="excel-cell header">Name</div><div class="excel-cell header">Class</div><div class="excel-cell header">Mark</div></div>
+    <div class="excel-row"><div class="excel-cell row-header">2</div><div class="excel-cell">Thabo</div><div class="excel-cell">8B</div><div class="excel-cell">91</div></div>
+    <div class="excel-row"><div class="excel-cell row-header">3</div><div class="excel-cell">Anika</div><div class="excel-cell">8A</div><div class="excel-cell">78</div></div>
+    <div class="excel-row"><div class="excel-cell row-header">4</div><div class="excel-cell">Lerato</div><div class="excel-cell">8B</div><div class="excel-cell">85</div></div>
+    <div class="excel-row"><div class="excel-cell row-header">5</div><div class="excel-cell">Pieter</div><div class="excel-cell">8A</div><div class="excel-cell">64</div></div>
+  </div>
+</div>
+<ol>
+  <li>Click any cell in the table (Excel selects the whole table).</li>
+  <li><strong>Data → Sort</strong>, then choose <em>Sort by: Mark</em>, <em>Order: Largest to Smallest</em>.</li>
+</ol>
+<div class="callout warn"><strong>Never sort one column on its own.</strong> If you select only the Mark column and sort it, the marks move but the names do not, and every learner gets the wrong mark.</div>
+<p>Add a level in the Sort box to sort by more than one column, for example by <em>Class</em> and then by <em>Mark</em> within each class.</p>
+
+<h3><i data-lucide="filter" style="width:14px;height:14px;"></i> Filtering</h3>
+<p>A <strong>filter</strong> hides the rows you don't need without deleting them. Click in the table and choose <strong>Data → Filter</strong>. Arrows appear in the heading row. Click an arrow and tick only the values you want, such as Class <em>8B</em>.</p>
+<ul>
+  <li>Filtered row numbers turn blue, and some numbers are skipped.</li>
+  <li>Number Filters let you show, for example, marks <em>greater than 80</em>.</li>
+  <li>Choose <strong>Clear Filter</strong> to show every row again.</li>
+</ul>
+
+<div class="quiz-section">
+  <button class="quiz-toggle" onclick="toggleQuiz(this)">
+    🧩 Practice Quiz — 8 questions <span style="opacity:0.55;font-weight:400;margin-left:4px;">(optional)</span>
+    <span class="toggle-icon">▾</span>
+  </button>
+  <div class="quiz-inner">
+<div class="quiz-box" data-why="0.75 is 75%.">
+  <div class="quiz-q">🧩 Q1: You format 0.75 as a percentage. What does the cell show?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">0.75%</button>
+    <button class="quiz-opt" data-correct="true">75%</button>
+    <button class="quiz-opt" data-correct="false">7.5%</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box" data-why="#### means the column is too narrow.">
+  <div class="quiz-q">🧩 Q2: A cell shows ####. What is the usual fix?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Delete the number</button>
+    <button class="quiz-opt" data-correct="true">Widen the column</button>
+    <button class="quiz-opt" data-correct="false">Change the font colour</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box" data-why="Formats change the display, not the stored value.">
+  <div class="quiz-q">🧩 Q3: Does a number format change the value used in formulas?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Yes, always</button>
+    <button class="quiz-opt" data-correct="true">No, only how it looks</button>
+    <button class="quiz-opt" data-correct="false">Only for currency</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box" data-why="Each row must stay together.">
+  <div class="quiz-q">🧩 Q4: Why should you not sort a single column on its own?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Excel will crash</button>
+    <button class="quiz-opt" data-correct="true">The other columns won't move with it, so rows get mixed up</button>
+    <button class="quiz-opt" data-correct="false">Sorting only works on text</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box" data-why="Largest to Smallest is descending.">
+  <div class="quiz-q">🧩 Q5: Which order puts the highest mark first?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Smallest to Largest</button>
+    <button class="quiz-opt" data-correct="true">Largest to Smallest</button>
+    <button class="quiz-opt" data-correct="false">A to Z</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box" data-why="Filtered rows are only hidden.">
+  <div class="quiz-q">🧩 Q6: What does a filter do?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Deletes rows you don't need</button>
+    <button class="quiz-opt" data-correct="true">Hides rows that don't match, without deleting them</button>
+    <button class="quiz-opt" data-correct="false">Sorts the rows</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box" data-why="Both are on the Data tab.">
+  <div class="quiz-q">🧩 Q7: Where are Sort and Filter?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="true">Data tab</button>
+    <button class="quiz-opt" data-correct="false">Insert tab</button>
+    <button class="quiz-opt" data-correct="false">Formulas tab</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box" data-why="Number Filters → Greater Than 80.">
+  <div class="quiz-q">🧩 Q8: You want marks above 80 only. Which do you use?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="true">A number filter</button>
+    <button class="quiz-opt" data-correct="false">Currency format</button>
+    <button class="quiz-opt" data-correct="false">A page break</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
@@ -1672,6 +2494,148 @@ let LESSONS = [
 
 {
   unit: "Unit 5 — Microsoft Excel",
+  title: "The IF Function",
+  subtitle: "Letting Excel make a decision for every row",
+  content: `
+<p>The <strong>IF</strong> function checks whether something is true, then shows one result if it is and a different result if it is not. It is how a spreadsheet makes decisions.</p>
+
+<div class="formula-card">
+  <div class="formula-name">=IF( )</div>
+  <div class="formula-syntax">=IF(logical_test, value_if_true, value_if_false)</div>
+  <div class="formula-desc">If the test is TRUE, show the first value; otherwise show the second.</div>
+  <div class="formula-example">=IF(C2&gt;=50,"Pass","Fail")</div>
+</div>
+
+<div class="visual-box">
+  <div class="visual-box-title">IF copied down column C</div>
+  <div class="excel-grid">
+    <div class="excel-row"><div class="excel-cell row-header"></div><div class="excel-cell header">A</div><div class="excel-cell header">B</div><div class="excel-cell header">C</div></div>
+    <div class="excel-row"><div class="excel-cell row-header">1</div><div class="excel-cell header">Name</div><div class="excel-cell header">Mark</div><div class="excel-cell header">Result</div></div>
+    <div class="excel-row"><div class="excel-cell row-header">2</div><div class="excel-cell">Thabo</div><div class="excel-cell">91</div><div class="excel-cell result">Pass</div></div>
+    <div class="excel-row"><div class="excel-cell row-header">3</div><div class="excel-cell">Anika</div><div class="excel-cell">48</div><div class="excel-cell result">Fail</div></div>
+    <div class="excel-row"><div class="excel-cell row-header">4</div><div class="excel-cell">Lerato</div><div class="excel-cell">50</div><div class="excel-cell result">Pass</div></div>
+    <div class="excel-row"><div class="excel-cell row-header">5</div><div class="excel-cell"></div><div class="excel-cell"></div><div class="excel-cell formula">=IF(B4&gt;=50,"Pass","Fail")</div></div>
+  </div>
+</div>
+
+<h3><i data-lucide="scale" style="width:14px;height:14px;"></i> Comparison operators</h3>
+<table class="ext-table">
+  <tr><th>Operator</th><th>Means</th><th>Example test</th></tr>
+  <tr><td><code>=</code></td><td>equal to</td><td><code>B2="8A"</code></td></tr>
+  <tr><td><code>&gt;</code></td><td>greater than</td><td><code>B2&gt;80</code></td></tr>
+  <tr><td><code>&lt;</code></td><td>less than</td><td><code>B2&lt;50</code></td></tr>
+  <tr><td><code>&gt;=</code></td><td>greater than or equal to</td><td><code>B2&gt;=50</code></td></tr>
+  <tr><td><code>&lt;=</code></td><td>less than or equal to</td><td><code>B2&lt;=10</code></td></tr>
+  <tr><td><code>&lt;&gt;</code></td><td>not equal to</td><td><code>B2&lt;&gt;0</code></td></tr>
+</table>
+
+<h3><i data-lucide="quote" style="width:14px;height:14px;"></i> Rules that trip people up</h3>
+<ul>
+  <li><strong>Text goes in double quotes:</strong> <code>"Pass"</code>. Numbers do not: <code>50</code>.</li>
+  <li><strong>Commas separate the three parts.</strong> (On some South African computers Excel uses semicolons: <code>=IF(B2&gt;=50;"Pass";"Fail")</code>.)</li>
+  <li><strong>Watch the edge case.</strong> <code>B2&gt;50</code> makes a mark of exactly 50 fail. If 50 is a pass, use <code>&gt;=</code>.</li>
+</ul>
+
+<h3><i data-lucide="calculator" style="width:14px;height:14px;"></i> IF can calculate too</h3>
+<p>The true and false parts can be numbers or formulas, not only words:</p>
+<div class="formula-card">
+  <div class="formula-name">Shipping cost</div>
+  <div class="formula-syntax">Free delivery for orders of R500 or more, otherwise R60</div>
+  <div class="formula-example">=IF(B2&gt;=500,0,60)</div>
+</div>
+<div class="callout tip"><strong>Grade 9 challenge, nested IF:</strong> one IF inside another gives three outcomes. <code>=IF(B2&gt;=80,"Distinction",IF(B2&gt;=50,"Pass","Fail"))</code></div>
+
+<div class="quiz-section">
+  <button class="quiz-toggle" onclick="toggleQuiz(this)">
+    🧩 Practice Quiz — 8 questions <span style="opacity:0.55;font-weight:400;margin-left:4px;">(optional)</span>
+    <span class="toggle-icon">▾</span>
+  </button>
+  <div class="quiz-inner">
+<div class="quiz-box" data-why="50 &gt;= 50 is TRUE, so it shows Pass.">
+  <div class="quiz-q">🧩 Q1: What does =IF(B2&gt;=50,&quot;Pass&quot;,&quot;Fail&quot;) show when B2 is 50?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Fail</button>
+    <button class="quiz-opt" data-correct="true">Pass</button>
+    <button class="quiz-opt" data-correct="false">An error</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box" data-why="Test, value if true, value if false.">
+  <div class="quiz-q">🧩 Q2: How many parts (arguments) does a basic IF have?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Two</button>
+    <button class="quiz-opt" data-correct="true">Three</button>
+    <button class="quiz-opt" data-correct="false">Four</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box" data-why="Text values need quotes.">
+  <div class="quiz-q">🧩 Q3: Which must go inside double quotes in an IF?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Numbers</button>
+    <button class="quiz-opt" data-correct="true">Text such as Pass</button>
+    <button class="quiz-opt" data-correct="false">Cell references</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box" data-why="&lt;&gt; means not equal to.">
+  <div class="quiz-q">🧩 Q4: Which operator means 'not equal to'?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="true">&lt;&gt;</button>
+    <button class="quiz-opt" data-correct="false">=&lt;</button>
+    <button class="quiz-opt" data-correct="false">!</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box" data-why="50 is not greater than 50, so it is FALSE.">
+  <div class="quiz-q">🧩 Q5: =IF(B2&gt;50,&quot;Pass&quot;,&quot;Fail&quot;) and B2 is 50. Result?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Pass</button>
+    <button class="quiz-opt" data-correct="true">Fail</button>
+    <button class="quiz-opt" data-correct="false">50</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box" data-why="450 is less than 500, so the false part (60) shows.">
+  <div class="quiz-q">🧩 Q6: What will =IF(B2&gt;=500,0,60) show for an order of R450?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">0</button>
+    <button class="quiz-opt" data-correct="true">60</button>
+    <button class="quiz-opt" data-correct="false">450</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box" data-why="It is the condition Excel checks.">
+  <div class="quiz-q">🧩 Q7: What is the first part of an IF called?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="true">The logical test</button>
+    <button class="quiz-opt" data-correct="false">The range</button>
+    <button class="quiz-opt" data-correct="false">The criteria</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box" data-why="Two tests split the values into three outcomes.">
+  <div class="quiz-q">🧩 Q8: How many different results can a nested IF with two IFs give?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Two</button>
+    <button class="quiz-opt" data-correct="true">Three</button>
+    <button class="quiz-opt" data-correct="false">Four</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+  </div>
+</div>`
+},
+
+{
+  unit: "Unit 5 — Microsoft Excel",
   title: "Relative vs Absolute Cell References",
   subtitle: "The difference between A1 and $A$1",
   content: `
@@ -2002,10 +2966,610 @@ let LESSONS = [
 
 ,
 
+{
+  unit: "Unit 6 — HTML and CSS",
+  title: "HTML Basics: Tags, Elements and Page Structure",
+  subtitle: "What a web page is made of, and the skeleton every page needs",
+  content: `
+<p>Every web page is a plain text file written in <strong>HTML</strong> (HyperText Markup Language). HTML is not a programming language. It is a <strong>markup language</strong>: it labels each piece of content so the browser knows what it is, such as a heading, a paragraph or a picture.</p>
+
+<h3><i data-lucide="tag" style="width:14px;height:14px;"></i> Tags and elements</h3>
+<p>A <strong>tag</strong> is a word inside angle brackets. Most tags come in pairs: an <strong>opening tag</strong> and a <strong>closing tag</strong> with a slash. The opening tag, the content and the closing tag together make an <strong>element</strong>.</p>
+<div class="visual-box">
+  <div class="visual-box-title">Anatomy of an element</div>
+  <pre style="font-family:'JetBrains Mono',monospace;font-size:12.5px;color:var(--text2);line-height:1.8;margin:0;white-space:pre-wrap;">&lt;p&gt;Hello, Grade 8!&lt;/p&gt;
+ ↑ opening tag      ↑ closing tag (note the /)</pre>
+</div>
+<p>Some elements have no content and no closing tag, like a line break <code>&lt;br&gt;</code> or an image <code>&lt;img&gt;</code>. These are called <strong>empty</strong> (or self-closing) elements.</p>
+
+<h3><i data-lucide="layers" style="width:14px;height:14px;"></i> The page skeleton</h3>
+<div class="visual-box">
+  <div class="visual-box-title">Every HTML page starts like this</div>
+  <pre style="font-family:'JetBrains Mono',monospace;font-size:12.5px;color:var(--text2);line-height:1.8;margin:0;white-space:pre-wrap;">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;title&gt;My first page&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;h1&gt;Welcome&lt;/h1&gt;
+    &lt;p&gt;This is my first web page.&lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</pre>
+</div>
+<table class="ext-table">
+  <tr><th>Part</th><th>Job</th></tr>
+  <tr><td><code>&lt;!DOCTYPE html&gt;</code></td><td>Tells the browser this is a modern HTML page</td></tr>
+  <tr><td><code>&lt;html&gt;</code></td><td>Wraps the whole page</td></tr>
+  <tr><td><code>&lt;head&gt;</code></td><td>Information <em>about</em> the page; not shown on the page itself</td></tr>
+  <tr><td><code>&lt;title&gt;</code></td><td>The text on the browser tab</td></tr>
+  <tr><td><code>&lt;body&gt;</code></td><td>Everything you see on the page</td></tr>
+</table>
+<div class="visual-box">
+  <div class="visual-box-title">That code in a browser</div>
+  <div class="browser-mockup">
+    <div class="browser-tabs"><div class="browser-tab active">My first page</div></div>
+    <div class="browser-toolbar"><div class="browser-address"><span class="lock">&#128274;</span><span class="url-text">file:///My first page</span></div></div>
+    <div class="browser-body"><div style="font-size:20px;font-weight:800;margin-bottom:6px;">Welcome</div><div>This is my first web page.</div></div>
+  </div>
+</div>
+
+<h3><i data-lucide="heading" style="width:14px;height:14px;"></i> Headings and paragraphs</h3>
+<p>There are six heading levels, <code>&lt;h1&gt;</code> (biggest, most important) to <code>&lt;h6&gt;</code> (smallest). Use one <code>&lt;h1&gt;</code> for the page title, then <code>&lt;h2&gt;</code> for sections. Paragraphs go in <code>&lt;p&gt;</code>.</p>
+<div class="callout warn"><strong>Pressing Enter does nothing in HTML.</strong> The browser ignores extra spaces and new lines in your code. Use a new <code>&lt;p&gt;</code> for a new paragraph, or <code>&lt;br&gt;</code> for a line break.</div>
+
+<h3><i data-lucide="git-branch" style="width:14px;height:14px;"></i> Nesting</h3>
+<p>Elements go inside other elements. This is called <strong>nesting</strong>. Close the inner element before the outer one, like closing boxes inside boxes.</p>
+<div class="visual-box">
+  <div class="visual-box-title">Correct vs wrong nesting</div>
+  <pre style="font-family:'JetBrains Mono',monospace;font-size:12.5px;color:var(--text2);line-height:1.8;margin:0;white-space:pre-wrap;">&lt;p&gt;This is &lt;strong&gt;important&lt;/strong&gt;.&lt;/p&gt;   ✔
+&lt;p&gt;This is &lt;strong&gt;important.&lt;/p&gt;&lt;/strong&gt;   ✘</pre>
+</div>
+<div class="callout tip"><strong>Practise it:</strong> Web Wizard slides 1 and 2 let you type this skeleton and see the page update live.</div>
+
+<div class="quiz-section">
+  <button class="quiz-toggle" onclick="toggleQuiz(this)">
+    🧩 Practice Quiz — 8 questions <span style="opacity:0.55;font-weight:400;margin-left:4px;">(optional)</span>
+    <span class="toggle-icon">▾</span>
+  </button>
+  <div class="quiz-inner">
+<div class="quiz-box" data-why="HTML is HyperText Markup Language.">
+  <div class="quiz-q">🧩 Q1: What does HTML stand for?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="true">HyperText Markup Language</button>
+    <button class="quiz-opt" data-correct="false">High Tech Modern Language</button>
+    <button class="quiz-opt" data-correct="false">Home Tool Making Language</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box" data-why="Closing tags have a slash before the name.">
+  <div class="quiz-q">🧩 Q2: Which is a closing tag?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">&lt;p&gt;</button>
+    <button class="quiz-opt" data-correct="true">&lt;/p&gt;</button>
+    <button class="quiz-opt" data-correct="false">&lt;p/&gt;</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box" data-why="The &lt;title&gt; inside &lt;head&gt; sets the tab text.">
+  <div class="quiz-q">🧩 Q3: What goes on the browser tab?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">The &lt;h1&gt; text</button>
+    <button class="quiz-opt" data-correct="true">The &lt;title&gt; text</button>
+    <button class="quiz-opt" data-correct="false">The first &lt;p&gt;</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box" data-why="Visible content goes in &lt;body&gt;.">
+  <div class="quiz-q">🧩 Q4: Which part holds everything you see on the page?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">&lt;head&gt;</button>
+    <button class="quiz-opt" data-correct="true">&lt;body&gt;</button>
+    <button class="quiz-opt" data-correct="false">&lt;title&gt;</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box" data-why="&lt;h1&gt; is the top level.">
+  <div class="quiz-q">🧩 Q5: Which heading is the biggest and most important?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">&lt;h6&gt;</button>
+    <button class="quiz-opt" data-correct="true">&lt;h1&gt;</button>
+    <button class="quiz-opt" data-correct="false">&lt;h3&gt;</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box" data-why="Browsers ignore extra spaces and new lines.">
+  <div class="quiz-q">🧩 Q6: You press Enter three times between two sentences in your HTML. What does the browser show?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Three blank lines</button>
+    <button class="quiz-opt" data-correct="true">No extra space</button>
+    <button class="quiz-opt" data-correct="false">An error</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box" data-why="Close the inner element first.">
+  <div class="quiz-q">🧩 Q7: Which line is nested correctly?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">&lt;p&gt;&lt;em&gt;Hi&lt;/p&gt;&lt;/em&gt;</button>
+    <button class="quiz-opt" data-correct="true">&lt;p&gt;&lt;em&gt;Hi&lt;/em&gt;&lt;/p&gt;</button>
+    <button class="quiz-opt" data-correct="false">&lt;em&gt;&lt;p&gt;Hi&lt;/em&gt;&lt;/p&gt;</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box" data-why="Together they form an element.">
+  <div class="quiz-q">🧩 Q8: An opening tag, its content and its closing tag together are called...</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="true">an element</button>
+    <button class="quiz-opt" data-correct="false">an attribute</button>
+    <button class="quiz-opt" data-correct="false">a browser</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+  </div>
+</div>`
+},
+
+{
+  unit: "Unit 6 — HTML and CSS",
+  title: "Lists, Links and Images",
+  subtitle: "Attributes, file paths and the alt text every image needs",
+  content: `
+<h3><i data-lucide="list" style="width:14px;height:14px;"></i> Lists</h3>
+<p>HTML has two main lists. Each item goes in an <code>&lt;li&gt;</code> (list item).</p>
+<div class="visual-box">
+  <div class="visual-box-title">Unordered (bullets) and ordered (numbers)</div>
+  <pre style="font-family:'JetBrains Mono',monospace;font-size:12.5px;color:var(--text2);line-height:1.8;margin:0;white-space:pre-wrap;">&lt;ul&gt;
+  &lt;li&gt;Bread&lt;/li&gt;
+  &lt;li&gt;Milk&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Switch on the kettle&lt;/li&gt;
+  &lt;li&gt;Add a teabag&lt;/li&gt;
+&lt;/ol&gt;</pre>
+</div>
+<div class="visual-box">
+  <div class="visual-box-title">How the lists look</div>
+  <div class="browser-mockup">
+    <div class="browser-tabs"><div class="browser-tab active">lists.html</div></div>
+    <div class="browser-toolbar"><div class="browser-address"><span class="lock">&#128274;</span><span class="url-text">file:///lists.html</span></div></div>
+    <div class="browser-body"><ul style="margin:0 0 8px;padding-left:20px"><li>Bread</li><li>Milk</li></ul><ol style="margin:0;padding-left:20px"><li>Switch on the kettle</li><li>Add a teabag</li></ol></div>
+  </div>
+</div>
+
+<h3><i data-lucide="settings-2" style="width:14px;height:14px;"></i> Attributes</h3>
+<p>An <strong>attribute</strong> adds extra information to an opening tag. It is written as <code>name="value"</code>. Links and images need attributes to work.</p>
+
+<h3><i data-lucide="link" style="width:14px;height:14px;"></i> Links</h3>
+<p>The <code>&lt;a&gt;</code> (anchor) element makes a link. The <code>href</code> attribute says where it goes.</p>
+<div class="visual-box">
+  <div class="visual-box-title">Two kinds of links</div>
+  <pre style="font-family:'JetBrains Mono',monospace;font-size:12.5px;color:var(--text2);line-height:1.8;margin:0;white-space:pre-wrap;">&lt;a href="https://www.wikipedia.org"&gt;Visit Wikipedia&lt;/a&gt;
+
+&lt;a href="hobbies.html"&gt;My hobbies&lt;/a&gt;</pre>
+</div>
+<table class="ext-table">
+  <tr><th>Type</th><th>Example href</th><th>Goes to</th></tr>
+  <tr><td>Absolute link</td><td><code>https://www.wikipedia.org</code></td><td>Another website (the full address)</td></tr>
+  <tr><td>Relative link</td><td><code>hobbies.html</code></td><td>Another page in <em>your</em> site's folder</td></tr>
+</table>
+<div class="callout tip">Add <code>target="_blank"</code> to open a link in a new tab.</div>
+
+<h3><i data-lucide="image" style="width:14px;height:14px;"></i> Images</h3>
+<p>The <code>&lt;img&gt;</code> element is empty: it has no closing tag. It needs two attributes:</p>
+<div class="visual-box">
+  <div class="visual-box-title">An image</div>
+  <pre style="font-family:'JetBrains Mono',monospace;font-size:12.5px;color:var(--text2);line-height:1.8;margin:0;white-space:pre-wrap;">&lt;img src="images/dog.jpg" alt="A brown dog catching a ball"&gt;</pre>
+</div>
+<ul>
+  <li><code>src</code> (source): the file path or web address of the picture.</li>
+  <li><code>alt</code> (alternative text): a short description, read aloud by screen readers for blind users and shown if the picture fails to load.</li>
+</ul>
+<div class="callout warn"><strong>Broken image?</strong> Check the file path and the spelling, including capital letters and the extension: <code>Dog.JPG</code> is not the same as <code>dog.jpg</code> on most web servers.</div>
+
+<h3><i data-lucide="folder-tree" style="width:14px;height:14px;"></i> File paths</h3>
+<div class="visual-box">
+  <div class="visual-box-title">A small website folder</div>
+  <pre style="font-family:'JetBrains Mono',monospace;font-size:12.5px;color:var(--text2);line-height:1.8;margin:0;white-space:pre-wrap;">my-site/
+  index.html
+  hobbies.html
+  images/
+    dog.jpg</pre>
+</div>
+<p>From <code>index.html</code>, the picture's path is <code>images/dog.jpg</code>: go into the <em>images</em> folder, then find <em>dog.jpg</em>.</p>
+
+<div class="quiz-section">
+  <button class="quiz-toggle" onclick="toggleQuiz(this)">
+    🧩 Practice Quiz — 8 questions <span style="opacity:0.55;font-weight:400;margin-left:4px;">(optional)</span>
+    <span class="toggle-icon">▾</span>
+  </button>
+  <div class="quiz-inner">
+<div class="quiz-box" data-why="&lt;ul&gt; is an unordered (bulleted) list.">
+  <div class="quiz-q">🧩 Q1: Which tag makes a bulleted list?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">&lt;ol&gt;</button>
+    <button class="quiz-opt" data-correct="true">&lt;ul&gt;</button>
+    <button class="quiz-opt" data-correct="false">&lt;li&gt;</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box" data-why="Each list item is an &lt;li&gt;.">
+  <div class="quiz-q">🧩 Q2: What goes inside a list for each item?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="true">&lt;li&gt;</button>
+    <button class="quiz-opt" data-correct="false">&lt;item&gt;</button>
+    <button class="quiz-opt" data-correct="false">&lt;p&gt;</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box" data-why="href holds the link's address.">
+  <div class="quiz-q">🧩 Q3: Which attribute says where a link goes?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">src</button>
+    <button class="quiz-opt" data-correct="true">href</button>
+    <button class="quiz-opt" data-correct="false">alt</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box" data-why="about.html points to a page in your own site.">
+  <div class="quiz-q">🧩 Q4: Which is a relative link?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">https://www.google.com</button>
+    <button class="quiz-opt" data-correct="true">about.html</button>
+    <button class="quiz-opt" data-correct="false">www.about.com</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box" data-why="alt describes the picture for people who can't see it.">
+  <div class="quiz-q">🧩 Q5: Why does an image need alt text?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">To make it load faster</button>
+    <button class="quiz-opt" data-correct="true">So screen readers can describe it and it shows if the image fails</button>
+    <button class="quiz-opt" data-correct="false">To set its size</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box" data-why="src is the image source.">
+  <div class="quiz-q">🧩 Q6: Which attribute gives an image's file path?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="true">src</button>
+    <button class="quiz-opt" data-correct="false">href</button>
+    <button class="quiz-opt" data-correct="false">link</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box" data-why="Attributes go in the opening tag.">
+  <div class="quiz-q">🧩 Q7: How is an attribute written?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">name=value inside the closing tag</button>
+    <button class="quiz-opt" data-correct="true">name=&quot;value&quot; inside the opening tag</button>
+    <button class="quiz-opt" data-correct="false">Between the tags</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box" data-why="&lt;img&gt; has no content, so no closing tag.">
+  <div class="quiz-q">🧩 Q8: Does &lt;img&gt; need a closing tag?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Yes, &lt;/img&gt;</button>
+    <button class="quiz-opt" data-correct="true">No, it is an empty element</button>
+    <button class="quiz-opt" data-correct="false">Only for big images</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+  </div>
+</div>`
+},
+
+{
+  unit: "Unit 6 — HTML and CSS",
+  title: "CSS Basics: Selectors, Colours and Fonts",
+  subtitle: "Separating how a page looks from what it says",
+  content: `
+<p><strong>HTML</strong> says <em>what</em> the content is. <strong>CSS</strong> (Cascading Style Sheets) says <em>how it looks</em>: colours, fonts, sizes and spacing.</p>
+
+<h3><i data-lucide="brackets" style="width:14px;height:14px;"></i> A CSS rule</h3>
+<div class="visual-box">
+  <div class="visual-box-title">Anatomy of a rule</div>
+  <pre style="font-family:'JetBrains Mono',monospace;font-size:12.5px;color:var(--text2);line-height:1.8;margin:0;white-space:pre-wrap;">h1 {
+  color: navy;
+  font-size: 32px;
+}
+↑ selector   ↑ property: value;   (each line is a declaration)</pre>
+</div>
+<table class="ext-table">
+  <tr><th>Part</th><th>Meaning</th></tr>
+  <tr><td>Selector</td><td>Which elements the rule styles (here, every <code>h1</code>)</td></tr>
+  <tr><td>Property</td><td>What to change, such as <code>color</code></td></tr>
+  <tr><td>Value</td><td>What to change it to, such as <code>navy</code></td></tr>
+</table>
+<div class="callout warn"><strong>The small things matter:</strong> curly brackets around the declarations, a colon after the property, a semicolon after each value. CSS uses the American spelling <code>color</code>.</div>
+
+<h3><i data-lucide="file-code" style="width:14px;height:14px;"></i> Where CSS goes</h3>
+<p>For small pages, put CSS in a <code>&lt;style&gt;</code> element inside the <code>&lt;head&gt;</code>. Bigger sites keep it in a separate <code>.css</code> file and link to it, so every page shares one style.</p>
+<div class="visual-box">
+  <div class="visual-box-title">CSS inside the head</div>
+  <pre style="font-family:'JetBrains Mono',monospace;font-size:12.5px;color:var(--text2);line-height:1.8;margin:0;white-space:pre-wrap;">&lt;head&gt;
+  &lt;title&gt;My page&lt;/title&gt;
+  &lt;style&gt;
+    body { background-color: #f4f6f9; }
+    p    { font-family: Arial, sans-serif; }
+  &lt;/style&gt;
+&lt;/head&gt;</pre>
+</div>
+
+<h3><i data-lucide="palette" style="width:14px;height:14px;"></i> Colours</h3>
+<table class="ext-table">
+  <tr><th>Way to write it</th><th>Example</th></tr>
+  <tr><td>Colour name</td><td><code>red</code>, <code>teal</code>, <code>navy</code></td></tr>
+  <tr><td>Hex code</td><td><code>#ff0000</code> (red), <code>#000000</code> (black), <code>#ffffff</code> (white)</td></tr>
+  <tr><td>RGB</td><td><code>rgb(255, 0, 0)</code>: red, green and blue from 0 to 255</td></tr>
+</table>
+<p><code>color</code> changes the text colour; <code>background-color</code> changes the colour behind it.</p>
+
+<h3><i data-lucide="type" style="width:14px;height:14px;"></i> Fonts and text</h3>
+<table class="ext-table">
+  <tr><th>Property</th><th>Example</th></tr>
+  <tr><td><code>font-family</code></td><td><code>Arial, sans-serif</code> (a back-up font after the comma)</td></tr>
+  <tr><td><code>font-size</code></td><td><code>18px</code></td></tr>
+  <tr><td><code>font-weight</code></td><td><code>bold</code></td></tr>
+  <tr><td><code>text-align</code></td><td><code>center</code></td></tr>
+</table>
+<div class="callout tip"><strong>Practise it:</strong> Web Wizard slides 3 and 6 cover CSS and colours with a live preview.</div>
+
+<div class="quiz-section">
+  <button class="quiz-toggle" onclick="toggleQuiz(this)">
+    🧩 Practice Quiz — 8 questions <span style="opacity:0.55;font-weight:400;margin-left:4px;">(optional)</span>
+    <span class="toggle-icon">▾</span>
+  </button>
+  <div class="quiz-inner">
+<div class="quiz-box" data-why="CSS controls the appearance.">
+  <div class="quiz-q">🧩 Q1: What is CSS used for?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Adding content to a page</button>
+    <button class="quiz-opt" data-correct="true">Controlling how a page looks</button>
+    <button class="quiz-opt" data-correct="false">Storing data</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box" data-why="The selector picks the elements to style.">
+  <div class="quiz-q">🧩 Q2: In h1 { color: navy; }, what is h1?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="true">The selector</button>
+    <button class="quiz-opt" data-correct="false">The property</button>
+    <button class="quiz-opt" data-correct="false">The value</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box" data-why="color sets the text colour.">
+  <div class="quiz-q">🧩 Q3: Which property changes the text colour?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">background-color</button>
+    <button class="quiz-opt" data-correct="true">color</button>
+    <button class="quiz-opt" data-correct="false">font-color</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box" data-why="Each property: value; ends with a semicolon.">
+  <div class="quiz-q">🧩 Q4: What ends each declaration?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">A comma</button>
+    <button class="quiz-opt" data-correct="false">A full stop</button>
+    <button class="quiz-opt" data-correct="true">A semicolon</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box" data-why="&lt;style&gt; belongs in the head.">
+  <div class="quiz-q">🧩 Q5: Where does a &lt;style&gt; element go?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="true">Inside &lt;head&gt;</button>
+    <button class="quiz-opt" data-correct="false">After &lt;/html&gt;</button>
+    <button class="quiz-opt" data-correct="false">Inside &lt;title&gt;</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box" data-why="All zeros means no light: black.">
+  <div class="quiz-q">🧩 Q6: What colour is #000000?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">White</button>
+    <button class="quiz-opt" data-correct="true">Black</button>
+    <button class="quiz-opt" data-correct="false">Red</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box" data-why="text-align: center; centres text.">
+  <div class="quiz-q">🧩 Q7: Which property centres text?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="true">text-align: center;</button>
+    <button class="quiz-opt" data-correct="false">align: middle;</button>
+    <button class="quiz-opt" data-correct="false">font-align: center;</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box" data-why="The browser uses the next font if the first is missing.">
+  <div class="quiz-q">🧩 Q8: Why list a second font, as in font-family: Arial, sans-serif?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">To use both at once</button>
+    <button class="quiz-opt" data-correct="true">As a back-up if the first isn't available</button>
+    <button class="quiz-opt" data-correct="false">To make the text bold</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+  </div>
+</div>`
+},
+
+{
+  unit: "Unit 6 — HTML and CSS",
+  title: "CSS Classes and the Box Model",
+  subtitle: "Styling some elements but not others, and controlling space",
+  content: `
+<h3><i data-lucide="tags" style="width:14px;height:14px;"></i> Classes</h3>
+<p>A selector like <code>p</code> styles <em>every</em> paragraph. To style only some of them, give those elements a <strong>class</strong>, then select the class with a full stop.</p>
+<div class="visual-box">
+  <div class="visual-box-title">A class in HTML and CSS</div>
+  <pre style="font-family:'JetBrains Mono',monospace;font-size:12.5px;color:var(--text2);line-height:1.8;margin:0;white-space:pre-wrap;">&lt;p class="warning"&gt;The lab closes at 15:00.&lt;/p&gt;
+&lt;p&gt;Normal paragraph.&lt;/p&gt;
+
+.warning {
+  color: darkred;
+  font-weight: bold;
+}</pre>
+</div>
+<ul>
+  <li>In HTML: <code>class="warning"</code> (no full stop).</li>
+  <li>In CSS: <code>.warning</code> (with a full stop).</li>
+  <li>Many elements can share one class. One element can have several: <code>class="warning big"</code>.</li>
+</ul>
+<div class="callout info"><strong>IDs</strong> work the same way with <code>id="header"</code> and <code>#header</code>, but an id must be <em>unique</em>: only one element on the page may use it.</div>
+
+<h3><i data-lucide="box" style="width:14px;height:14px;"></i> The box model</h3>
+<p>The browser treats every element as a rectangular <strong>box</strong> made of four layers, from the inside out:</p>
+<div class="visual-box">
+  <div class="visual-box-title">The CSS box model</div>
+  <div style="border:2px dashed var(--muted);padding:14px;border-radius:4px;font-size:12px;text-align:center;color:var(--muted);max-width:360px;">
+    margin
+    <div style="border:4px solid var(--accent-1, #35a6f0);padding:14px;margin-top:6px;color:var(--text2);">
+      border
+      <div style="background:rgba(53,166,240,0.12);padding:14px;margin-top:6px;">
+        padding
+        <div style="background:rgba(53,166,240,0.30);padding:10px;margin-top:6px;color:var(--text);font-weight:700;">content</div>
+      </div>
+    </div>
+  </div>
+</div>
+<table class="ext-table">
+  <tr><th>Layer</th><th>What it is</th><th>Example</th></tr>
+  <tr><td>Content</td><td>The text or picture itself</td><td><code>width: 300px;</code></td></tr>
+  <tr><td>Padding</td><td>Space <em>inside</em> the border, around the content</td><td><code>padding: 10px;</code></td></tr>
+  <tr><td>Border</td><td>A line around the padding</td><td><code>border: 2px solid black;</code></td></tr>
+  <tr><td>Margin</td><td>Space <em>outside</em> the border, pushing other elements away</td><td><code>margin: 20px;</code></td></tr>
+</table>
+<div class="visual-box">
+  <div class="visual-box-title">A card using the box model</div>
+  <pre style="font-family:'JetBrains Mono',monospace;font-size:12.5px;color:var(--text2);line-height:1.8;margin:0;white-space:pre-wrap;">.card {
+  width: 250px;
+  padding: 16px;
+  border: 2px solid teal;
+  margin: 12px;
+  border-radius: 8px;
+}</pre>
+</div>
+<div class="callout tip"><strong>Padding or margin?</strong> If the background colour should fill the space, it is padding. If the space should be empty, between this box and the next, it is margin.</div>
+<p>Web Wizard slides 4 and 5 go further with classes and <strong>Flexbox</strong>, which places boxes side by side.</p>
+
+<div class="quiz-section">
+  <button class="quiz-toggle" onclick="toggleQuiz(this)">
+    🧩 Practice Quiz — 8 questions <span style="opacity:0.55;font-weight:400;margin-left:4px;">(optional)</span>
+    <span class="toggle-icon">▾</span>
+  </button>
+  <div class="quiz-inner">
+<div class="quiz-box" data-why="Class selectors start with a full stop.">
+  <div class="quiz-q">🧩 Q1: How do you select a class called intro in CSS?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">intro</button>
+    <button class="quiz-opt" data-correct="true">.intro</button>
+    <button class="quiz-opt" data-correct="false">#intro</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box" data-why="No full stop in the HTML attribute.">
+  <div class="quiz-q">🧩 Q2: How do you give an element the class intro in HTML?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="true">class=&quot;intro&quot;</button>
+    <button class="quiz-opt" data-correct="false">class=&quot;.intro&quot;</button>
+    <button class="quiz-opt" data-correct="false">id=&quot;.intro&quot;</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box" data-why="Only one element may use a given id.">
+  <div class="quiz-q">🧩 Q3: Which must be unique on a page?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">A class</button>
+    <button class="quiz-opt" data-correct="true">An id</button>
+    <button class="quiz-opt" data-correct="false">A tag</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box" data-why="Padding sits between the content and the border.">
+  <div class="quiz-q">🧩 Q4: Which layer is the space inside the border?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Margin</button>
+    <button class="quiz-opt" data-correct="true">Padding</button>
+    <button class="quiz-opt" data-correct="false">Content</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box" data-why="Margin is space outside the border.">
+  <div class="quiz-q">🧩 Q5: Which layer pushes other elements away?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="true">Margin</button>
+    <button class="quiz-opt" data-correct="false">Padding</button>
+    <button class="quiz-opt" data-correct="false">Border</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box" data-why="It draws a solid black line 2 pixels thick.">
+  <div class="quiz-q">🧩 Q6: What does border: 2px solid black; create?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="true">A 2px black line around the box</button>
+    <button class="quiz-opt" data-correct="false">2px of black padding</button>
+    <button class="quiz-opt" data-correct="false">A black background</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box" data-why="Classes are meant to be reused.">
+  <div class="quiz-q">🧩 Q7: Can two paragraphs share the same class?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="true">Yes</button>
+    <button class="quiz-opt" data-correct="false">No</button>
+    <button class="quiz-opt" data-correct="false">Only if they are next to each other</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box" data-why="Content → padding → border → margin.">
+  <div class="quiz-q">🧩 Q8: List the box layers from the inside out.</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Margin, border, padding, content</button>
+    <button class="quiz-opt" data-correct="true">Content, padding, border, margin</button>
+    <button class="quiz-opt" data-correct="false">Content, border, padding, margin</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+  </div>
+</div>`
+},
+
 // ─── UNIT 6: COMPUTATIONAL THINKING ──────────────────────────────────────────
 
 {
-  unit: "Unit 6 — Computational Thinking",
+  unit: "Unit 7 — Computational Thinking",
   title: "What is Computational Thinking?",
   subtitle: "The four pillars of thinking like a computer scientist",
   content: `
@@ -2101,7 +3665,7 @@ let LESSONS = [
 },
 
 {
-  unit: "Unit 6 — Computational Thinking",
+  unit: "Unit 7 — Computational Thinking",
   title: "Decomposition",
   subtitle: "Breaking big problems into smaller, solvable pieces",
   content: `
@@ -2218,7 +3782,7 @@ let LESSONS = [
 },
 
 {
-  unit: "Unit 6 — Computational Thinking",
+  unit: "Unit 7 — Computational Thinking",
   title: "Pattern Recognition",
   subtitle: "Finding similarities and repeated structures to solve problems faster",
   content: `
@@ -2322,7 +3886,7 @@ let LESSONS = [
 },
 
 {
-  unit: "Unit 6 — Computational Thinking",
+  unit: "Unit 7 — Computational Thinking",
   title: "Abstraction",
   subtitle: "Focusing on what matters and filtering out what doesn't",
   content: `
@@ -2449,7 +4013,7 @@ let LESSONS = [
 },
 
 {
-  unit: "Unit 6 — Computational Thinking",
+  unit: "Unit 7 — Computational Thinking",
   title: "Algorithm Design",
   subtitle: "Creating precise step-by-step instructions to solve any problem",
   content: `
@@ -2580,7 +4144,7 @@ let LESSONS = [
 },
 
 {
-  unit: "Unit 6 — Computational Thinking",
+  unit: "Unit 7 — Computational Thinking",
   title: "Practical Examples",
   subtitle: "Applying all four pillars together to solve real problems",
   content: `
@@ -2760,7 +4324,7 @@ let LESSONS = [
 // ─── UNIT 7: PSEUDO CODE ──────────────────────────────────────────────────────
 
 {
-  unit: "Unit 7 — Pseudo Code",
+  unit: "Unit 8 — Pseudo Code",
   title: "What is Pseudo Code?",
   subtitle: "Planning solutions in plain English before you code",
   content: `
@@ -2851,7 +4415,7 @@ let LESSONS = [
 },
 
 {
-  unit: "Unit 7 — Pseudo Code",
+  unit: "Unit 8 — Pseudo Code",
   title: "Pseudo Code — Practical Examples",
   subtitle: "Sequences, decisions, and loops with worked examples",
   content: `
@@ -2987,7 +4551,7 @@ END</pre>
 // ─── UNIT 8: FLOW DIAGRAMS ────────────────────────────────────────────────────
 
 {
-  unit: "Unit 8 — Flow Diagrams",
+  unit: "Unit 9 — Flow Diagrams",
   title: "What is a Flow Diagram?",
   subtitle: "Visualising algorithms with standard symbols",
   content: `
@@ -3109,7 +4673,7 @@ END</pre>
 },
 
 {
-  unit: "Unit 8 — Flow Diagrams",
+  unit: "Unit 9 — Flow Diagrams",
   title: "Flow Diagram Examples and Builder",
   subtitle: "Trace a real diagram, then build your own",
   content: `
@@ -3263,10 +4827,549 @@ END</pre>
 
 ,
 
+{
+  unit: "Unit 10 — Computer-Aided Design",
+  title: "What is CAD?",
+  subtitle: "Designing on a computer instead of on paper",
+  content: `
+<p><strong>CAD</strong> (Computer-Aided Design) is the use of software to create precise drawings and 3D models. Engineers, architects and product designers use it to plan everything from phone cases to bridges before anything is built.</p>
+
+<h3><i data-lucide="check-circle" style="width:14px;height:14px;"></i> Why use CAD instead of paper?</h3>
+<table class="ext-table">
+  <tr><th>Advantage</th><th>Why it matters</th></tr>
+  <tr><td>Accuracy</td><td>Sizes are exact, to a fraction of a millimetre</td></tr>
+  <tr><td>Easy changes</td><td>Change one dimension and the model updates; no redrawing</td></tr>
+  <tr><td>See it in 3D</td><td>Rotate the model and look at it from any side before making it</td></tr>
+  <tr><td>Share and copy</td><td>Email a file; copy parts instead of drawing them again</td></tr>
+  <tr><td>Make it directly</td><td>Send the file to a 3D printer or laser cutter</td></tr>
+</table>
+<p>The disadvantages: software and computers cost money, and it takes time to learn.</p>
+
+<h3><i data-lucide="square" style="width:14px;height:14px;"></i> 2D and 3D</h3>
+<table class="ext-table">
+  <tr><th></th><th>2D CAD</th><th>3D CAD</th></tr>
+  <tr><td>Dimensions</td><td>Length and width (x and y)</td><td>Length, width and height (x, y and z)</td></tr>
+  <tr><td>Result</td><td>A flat drawing or plan</td><td>A solid model you can rotate</td></tr>
+  <tr><td>Used for</td><td>Floor plans, laser-cut parts</td><td>Products, 3D printing, machines</td></tr>
+</table>
+
+<h3><i data-lucide="shapes" style="width:14px;height:14px;"></i> Two ways to model in 3D</h3>
+<table class="ext-table">
+  <tr><th></th><th>Shape-based (like Tinkercad)</th><th>Parametric (like FreeCAD, Fusion)</th></tr>
+  <tr><td>How you build</td><td>Drop in boxes, cylinders and spheres; combine and cut them</td><td>Draw a 2D sketch, then extrude it into 3D</td></tr>
+  <tr><td>Changing sizes</td><td>Resize shapes by hand</td><td>Change a number and the model rebuilds</td></tr>
+  <tr><td>Best for</td><td>Quick, simple models</td><td>Precise parts that must fit together</td></tr>
+  <tr><td>In Magic Lab</td><td>Model Mage · 3D Shapes</td><td>Model Mage · CAD</td></tr>
+</table>
+
+<h3><i data-lucide="move-3d" style="width:14px;height:14px;"></i> The workplane and the axes</h3>
+<p>A 3D model sits on a grid called the <strong>workplane</strong>. Positions are measured along three <strong>axes</strong>: <strong>X</strong> (left–right), <strong>Y</strong> (front–back) and <strong>Z</strong> (up–down). In most CAD programs, sizes are in <strong>millimetres (mm)</strong>.</p>
+<div class="callout info"><strong>Where CAD is used:</strong> architecture (buildings), engineering (machines and bridges), product design (toys, furniture), the motor industry, medicine (custom implants) and film and games (3D characters).</div>
+
+<div class="quiz-section">
+  <button class="quiz-toggle" onclick="toggleQuiz(this)">
+    🧩 Practice Quiz — 8 questions <span style="opacity:0.55;font-weight:400;margin-left:4px;">(optional)</span>
+    <span class="toggle-icon">▾</span>
+  </button>
+  <div class="quiz-inner">
+<div class="quiz-box" data-why="CAD is Computer-Aided Design.">
+  <div class="quiz-q">🧩 Q1: What does CAD stand for?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="true">Computer-Aided Design</button>
+    <button class="quiz-opt" data-correct="false">Computer Art and Drawing</button>
+    <button class="quiz-opt" data-correct="false">Create And Draw</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box" data-why="CAD is accurate and easy to change.">
+  <div class="quiz-q">🧩 Q2: Which is an advantage of CAD over paper drawings?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">It is always free</button>
+    <button class="quiz-opt" data-correct="true">Changes are quick and sizes are exact</button>
+    <button class="quiz-opt" data-correct="false">No training is needed</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box" data-why="Length, width and height.">
+  <div class="quiz-q">🧩 Q3: How many dimensions does a 3D model have?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Two</button>
+    <button class="quiz-opt" data-correct="true">Three</button>
+    <button class="quiz-opt" data-correct="false">Four</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box" data-why="Z is height.">
+  <div class="quiz-q">🧩 Q4: Which axis usually points up and down?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">X</button>
+    <button class="quiz-opt" data-correct="false">Y</button>
+    <button class="quiz-opt" data-correct="true">Z</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box" data-why="Sketch first, then extrude.">
+  <div class="quiz-q">🧩 Q5: In parametric CAD, you usually start with...</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="true">a 2D sketch</button>
+    <button class="quiz-opt" data-correct="false">a sphere</button>
+    <button class="quiz-opt" data-correct="false">a photograph</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box" data-why="Millimetres are the standard.">
+  <div class="quiz-q">🧩 Q6: Which unit do most CAD programs use for sizes?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Centimetres</button>
+    <button class="quiz-opt" data-correct="true">Millimetres</button>
+    <button class="quiz-opt" data-correct="false">Inches</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box" data-why="Product design uses 3D CAD.">
+  <div class="quiz-q">🧩 Q7: Which job would use 3D CAD?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="true">Designing a new phone case</button>
+    <button class="quiz-opt" data-correct="false">Writing an essay</button>
+    <button class="quiz-opt" data-correct="false">Calculating marks</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box" data-why="The workplane is the base grid.">
+  <div class="quiz-q">🧩 Q8: What is the workplane?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="true">The grid the model is built on</button>
+    <button class="quiz-opt" data-correct="false">The printer bed</button>
+    <button class="quiz-opt" data-correct="false">The CAD file name</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+  </div>
+</div>`
+},
+
+{
+  unit: "Unit 10 — Computer-Aided Design",
+  title: "The Design Process and 3D Printing",
+  subtitle: "From a problem to a printed object",
+  content: `
+<p>Designers don't start by opening CAD. They start with a problem. The <strong>design process</strong> is the set of steps that takes an idea from a problem to a finished product.</p>
+
+<div class="visual-box">
+  <div class="visual-box-title">The design process (it loops)</div>
+  <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-size:13px;">
+    <div style="border:1px solid var(--border2);border-radius:8px;padding:8px 12px;"><strong>1</strong> Investigate</div>→
+    <div style="border:1px solid var(--border2);border-radius:8px;padding:8px 12px;"><strong>2</strong> Design brief</div>→
+    <div style="border:1px solid var(--border2);border-radius:8px;padding:8px 12px;"><strong>3</strong> Sketch ideas</div>→
+    <div style="border:1px solid var(--border2);border-radius:8px;padding:8px 12px;"><strong>4</strong> Model in CAD</div>→
+    <div style="border:1px solid var(--border2);border-radius:8px;padding:8px 12px;"><strong>5</strong> Make</div>→
+    <div style="border:1px solid var(--border2);border-radius:8px;padding:8px 12px;"><strong>6</strong> Test and evaluate</div>
+    <span style="color:var(--muted)">↺ improve and repeat</span>
+  </div>
+</div>
+
+<h3><i data-lucide="clipboard-list" style="width:14px;height:14px;"></i> The design brief and specifications</h3>
+<p>A <strong>design brief</strong> is a short statement of the problem and what must be designed. <strong>Specifications</strong> are the measurable requirements the design must meet.</p>
+<div class="callout info"><strong>Example brief:</strong> Design a stand that holds a phone upright on a desk while it charges.<br><strong>Specifications:</strong> fits a phone up to 80 mm wide and 10 mm thick · leaves a gap for the cable · no bigger than 100 × 100 mm · prints in under 2 hours.</div>
+
+<h3><i data-lucide="ruler" style="width:14px;height:14px;"></i> Measure before you model</h3>
+<p>Use a ruler or vernier calliper to measure the real objects your design must fit. Add a little extra space, called <strong>clearance</strong> or <strong>tolerance</strong> (about 0.3–0.5 mm), so parts slide together instead of jamming.</p>
+
+<h3><i data-lucide="printer" style="width:14px;height:14px;"></i> How a 3D printer works</h3>
+<p>Most school printers are <strong>FDM</strong> printers (Fused Deposition Modelling). They melt a plastic thread called <strong>filament</strong> and lay it down in thin <strong>layers</strong>, one on top of the other, from the bottom up. This is called <strong>additive manufacturing</strong>: material is added rather than cut away.</p>
+<table class="ext-table">
+  <tr><th>Step</th><th>What happens</th></tr>
+  <tr><td>1. Export</td><td>Save the CAD model as an <strong>STL</strong> file (a 3D shape made of tiny triangles)</td></tr>
+  <tr><td>2. Slice</td><td>A <strong>slicer</strong> program cuts the model into layers and writes instructions (G-code) for the printer</td></tr>
+  <tr><td>3. Print</td><td>The printer melts filament and builds the object layer by layer</td></tr>
+</table>
+
+<h3><i data-lucide="sliders-horizontal" style="width:14px;height:14px;"></i> Slicer settings to know</h3>
+<table class="ext-table">
+  <tr><th>Setting</th><th>Meaning</th></tr>
+  <tr><td>Layer height</td><td>How thick each layer is (e.g. 0.2 mm). Thinner = smoother but slower</td></tr>
+  <tr><td>Infill</td><td>How solid the inside is (e.g. 15%). Less infill = faster and lighter, but weaker</td></tr>
+  <tr><td>Supports</td><td>Temporary scaffolding under parts that hang in the air (overhangs)</td></tr>
+</table>
+<div class="callout tip"><strong>Design for printing:</strong> put the flattest face on the print bed, avoid steep overhangs, and keep walls at least 1–2 mm thick.</div>
+<p>Common filament: <strong>PLA</strong>, a plastic made from plants such as maize, which is easy to print and safe for classrooms.</p>
+
+<div class="quiz-section">
+  <button class="quiz-toggle" onclick="toggleQuiz(this)">
+    🧩 Practice Quiz — 8 questions <span style="opacity:0.55;font-weight:400;margin-left:4px;">(optional)</span>
+    <span class="toggle-icon">▾</span>
+  </button>
+  <div class="quiz-inner">
+<div class="quiz-box" data-why="The brief states the problem and what must be designed.">
+  <div class="quiz-q">🧩 Q1: What is a design brief?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="true">A short statement of the problem to be solved</button>
+    <button class="quiz-opt" data-correct="false">The final product</button>
+    <button class="quiz-opt" data-correct="false">A 3D printer setting</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box" data-why="Specifications are measurable requirements.">
+  <div class="quiz-q">🧩 Q2: Which is a specification?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">It must look nice</button>
+    <button class="quiz-opt" data-correct="true">It must fit a phone up to 80 mm wide</button>
+    <button class="quiz-opt" data-correct="false">Design a phone stand</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box" data-why="A small gap allows for printing inaccuracy.">
+  <div class="quiz-q">🧩 Q3: Why add clearance between parts that fit together?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">To save filament</button>
+    <button class="quiz-opt" data-correct="true">So they slide together instead of jamming</button>
+    <button class="quiz-opt" data-correct="false">To make the print faster</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box" data-why="STL describes a 3D shape.">
+  <div class="quiz-q">🧩 Q4: Which file type is usually sent to a slicer?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="true">STL</button>
+    <button class="quiz-opt" data-correct="false">DOCX</button>
+    <button class="quiz-opt" data-correct="false">MP3</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box" data-why="It turns a 3D model into layer-by-layer instructions.">
+  <div class="quiz-q">🧩 Q5: What does a slicer do?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="true">Cuts the model into layers and creates printer instructions</button>
+    <button class="quiz-opt" data-correct="false">Cuts the printed object in half</button>
+    <button class="quiz-opt" data-correct="false">Draws the 2D sketch</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box" data-why="Less plastic inside means faster but weaker.">
+  <div class="quiz-q">🧩 Q6: Lower infill makes a print...</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">stronger and heavier</button>
+    <button class="quiz-opt" data-correct="true">faster and lighter, but weaker</button>
+    <button class="quiz-opt" data-correct="false">smoother on the outside</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box" data-why="Overhangs need something to print on.">
+  <div class="quiz-q">🧩 Q7: When are supports needed?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="true">For parts that hang in the air</button>
+    <button class="quiz-opt" data-correct="false">For every print</button>
+    <button class="quiz-opt" data-correct="false">Only for flat prints</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box" data-why="Material is built up rather than cut away.">
+  <div class="quiz-q">🧩 Q8: Why is 3D printing called additive manufacturing?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">It adds colour</button>
+    <button class="quiz-opt" data-correct="true">Material is added layer by layer</button>
+    <button class="quiz-opt" data-correct="false">It adds up the cost</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+  </div>
+</div>`
+},
+
+{
+  unit: "Unit 10 — Computer-Aided Design",
+  title: "Sketches, Dimensions and Constraints",
+  subtitle: "How parametric CAD keeps a design exact",
+  content: `
+<p>In parametric CAD (Model Mage · CAD, FreeCAD, Fusion), every 3D part starts as a flat <strong>sketch</strong>. Turning a sketch into a solid is called <strong>extruding</strong>.</p>
+
+<h3><i data-lucide="pencil-ruler" style="width:14px;height:14px;"></i> From sketch to solid</h3>
+<table class="ext-table">
+  <tr><th>Step</th><th>What you do</th></tr>
+  <tr><td>1. Choose a plane</td><td>Pick the flat surface to draw on (e.g. the XY plane, or the face of a part)</td></tr>
+  <tr><td>2. Sketch</td><td>Draw a closed shape with lines, rectangles, circles and arcs</td></tr>
+  <tr><td>3. Dimension and constrain</td><td>Make the sizes and shape exact</td></tr>
+  <tr><td>4. Extrude</td><td>Pull the shape up into 3D (<strong>add</strong>) or push it into a part to make a hole (<strong>cut</strong>)</td></tr>
+  <tr><td>5. Finish</td><td>Round edges (<strong>fillet</strong>) or bevel them (<strong>chamfer</strong>)</td></tr>
+</table>
+<div class="callout warn"><strong>The profile must be closed.</strong> If there is a gap between the last line and the first, CAD can't tell what is inside, so it can't extrude.</div>
+
+<h3><i data-lucide="ruler" style="width:14px;height:14px;"></i> Dimensions</h3>
+<p>A <strong>dimension</strong> fixes a size: a length, a distance, a radius or an angle. In Model Mage, click a measurement label and type the exact size; it locks and turns green.</p>
+
+<h3><i data-lucide="lock" style="width:14px;height:14px;"></i> Constraints</h3>
+<p>A <strong>constraint</strong> is a rule about the <em>shape</em> that the software keeps true, even when you drag points or change dimensions.</p>
+<table class="ext-table">
+  <tr><th>Constraint</th><th>Rule it keeps</th><th>Symbol in Model Mage</th></tr>
+  <tr><td>Horizontal / Vertical</td><td>A line stays flat / upright</td><td>H / V</td></tr>
+  <tr><td>Coincident</td><td>Two points stay joined</td><td>● ring</td></tr>
+  <tr><td>Parallel</td><td>Two lines always point the same way</td><td>∥</td></tr>
+  <tr><td>Perpendicular</td><td>Two lines meet at 90°</td><td>⊥</td></tr>
+  <tr><td>Equal</td><td>Two lines (or circles) stay the same size</td><td>=</td></tr>
+  <tr><td>Midpoint</td><td>A point stays in the middle of a line</td><td>M</td></tr>
+  <tr><td>Fix</td><td>A point cannot move</td><td>⚓</td></tr>
+</table>
+
+<h3><i data-lucide="shield-check" style="width:14px;height:14px;"></i> Why constrain at all?</h3>
+<p>Imagine a bracket with two holes that must line up with screws 40 mm apart. If the holes are only drawn roughly, a small drag could move one. With a <em>distance</em> of 40 mm and a <em>horizontal</em> constraint between them, they stay correct no matter what else changes.</p>
+<ul>
+  <li><strong>Under-constrained:</strong> parts of the sketch can still move when dragged.</li>
+  <li><strong>Fully constrained:</strong> nothing can move; every size and position is decided. Professionals aim for this.</li>
+  <li><strong>Over-constrained:</strong> two rules disagree (e.g. a right-angled triangle with three equal sides). Model Mage shows the symbols in red. Remove one rule.</li>
+</ul>
+<div class="callout tip"><strong>Practise it:</strong> in Model Mage · CAD, use the Select tool (E), click two edges with Shift and add Perpendicular. Drag a corner and watch the right angle hold.</div>
+
+<div class="quiz-section">
+  <button class="quiz-toggle" onclick="toggleQuiz(this)">
+    🧩 Practice Quiz — 8 questions <span style="opacity:0.55;font-weight:400;margin-left:4px;">(optional)</span>
+    <span class="toggle-icon">▾</span>
+  </button>
+  <div class="quiz-inner">
+<div class="quiz-box" data-why="Extrude turns a flat profile into a solid.">
+  <div class="quiz-q">🧩 Q1: What is extruding?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="true">Pulling a 2D sketch into a 3D solid</button>
+    <button class="quiz-opt" data-correct="false">Deleting a sketch</button>
+    <button class="quiz-opt" data-correct="false">Printing a model</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box" data-why="Only closed profiles have an inside.">
+  <div class="quiz-q">🧩 Q2: Why won't a sketch extrude if there is a gap in it?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="true">The profile isn't closed</button>
+    <button class="quiz-opt" data-correct="false">It is too big</button>
+    <button class="quiz-opt" data-correct="false">It has no colour</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box" data-why="Constraints are rules the software maintains.">
+  <div class="quiz-q">🧩 Q3: What does a constraint do?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="true">Keeps a rule about the shape true as you edit</button>
+    <button class="quiz-opt" data-correct="false">Changes the colour</button>
+    <button class="quiz-opt" data-correct="false">Exports the file</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box" data-why="Perpendicular means at right angles.">
+  <div class="quiz-q">🧩 Q4: Which constraint keeps two lines at 90°?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Parallel</button>
+    <button class="quiz-opt" data-correct="true">Perpendicular</button>
+    <button class="quiz-opt" data-correct="false">Equal</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box" data-why="Coincident points share one position.">
+  <div class="quiz-q">🧩 Q5: Which constraint keeps two points joined?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="true">Coincident</button>
+    <button class="quiz-opt" data-correct="false">Midpoint</button>
+    <button class="quiz-opt" data-correct="false">Vertical</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box" data-why="Every size and position is decided.">
+  <div class="quiz-q">🧩 Q6: A sketch where nothing can be dragged is...</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">under-constrained</button>
+    <button class="quiz-opt" data-correct="true">fully constrained</button>
+    <button class="quiz-opt" data-correct="false">over-constrained</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box" data-why="Conflicting rules over-constrain it.">
+  <div class="quiz-q">🧩 Q7: Two constraints disagree with each other. The sketch is...</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="true">over-constrained</button>
+    <button class="quiz-opt" data-correct="false">fully constrained</button>
+    <button class="quiz-opt" data-correct="false">closed</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box" data-why="A fillet rounds an edge; a chamfer bevels it.">
+  <div class="quiz-q">🧩 Q8: What is a fillet?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="true">A rounded edge</button>
+    <button class="quiz-opt" data-correct="false">A hole</button>
+    <button class="quiz-opt" data-correct="false">A straight line</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+  </div>
+</div>`
+},
+
+{
+  unit: "Unit 10 — Computer-Aided Design",
+  title: "Orthographic Views",
+  subtitle: "Front, top and side: reading and drawing working drawings",
+  content: `
+<p>A 3D model is hard to measure from a picture. Designers use <strong>orthographic views</strong>: flat 2D drawings of an object seen straight-on from different sides. Each view shows true sizes, with no perspective.</p>
+
+<h3><i data-lucide="eye" style="width:14px;height:14px;"></i> The three main views</h3>
+<table class="ext-table">
+  <tr><th>View</th><th>Looking from...</th><th>Shows</th></tr>
+  <tr><td>Front view</td><td>The front</td><td>Width and height</td></tr>
+  <tr><td>Top view (plan)</td><td>Directly above</td><td>Width and depth</td></tr>
+  <tr><td>Side view (end)</td><td>The side, usually the right</td><td>Depth and height</td></tr>
+</table>
+
+<div class="visual-box">
+  <div class="visual-box-title">An L-shaped block in three views (third-angle layout)</div>
+  <div style="display:grid;grid-template-columns:auto auto;gap:14px 26px;justify-content:start;font-size:11px;color:var(--muted);">
+    <div style="text-align:center;">
+      <svg width="110" height="70" viewBox="0 0 110 70" aria-hidden="true"><rect x="5" y="5" width="100" height="30" fill="none" stroke="currentColor" stroke-width="2"/><line x1="40" y1="5" x2="40" y2="35" stroke="currentColor" stroke-width="1.5"/></svg>
+      <div>Top view</div>
+    </div>
+    <div></div>
+    <div style="text-align:center;">
+      <svg width="110" height="70" viewBox="0 0 110 70" aria-hidden="true"><polygon points="5,5 40,5 40,35 105,35 105,65 5,65" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+      <div>Front view</div>
+    </div>
+    <div style="text-align:center;">
+      <svg width="50" height="70" viewBox="0 0 50 70" aria-hidden="true"><rect x="5" y="5" width="30" height="60" fill="none" stroke="currentColor" stroke-width="2"/><line x1="5" y1="35" x2="35" y2="35" stroke="currentColor" stroke-width="1.5"/></svg>
+      <div>Right side view</div>
+    </div>
+  </div>
+</div>
+<p>In <strong>third-angle projection</strong> (used in South African schools), the top view goes <em>above</em> the front view and the right side view goes to the <em>right</em> of it. Views line up so that heights and widths match across them.</p>
+
+<h3><i data-lucide="minus" style="width:14px;height:14px;"></i> Line types</h3>
+<table class="ext-table">
+  <tr><th>Line</th><th>Looks like</th><th>Means</th></tr>
+  <tr><td>Outline</td><td>Thick solid line</td><td>Visible edges</td></tr>
+  <tr><td>Hidden detail</td><td>Thin dashed line - - -</td><td>Edges you can't see from this side (like a hole inside)</td></tr>
+  <tr><td>Centre line</td><td>Thin chain line — · —</td><td>The centre of a hole or a round part</td></tr>
+  <tr><td>Dimension line</td><td>Thin line with arrowheads and a number</td><td>A size, in mm</td></tr>
+</table>
+
+<h3><i data-lucide="box" style="width:14px;height:14px;"></i> Isometric drawings</h3>
+<p>An <strong>isometric</strong> drawing shows the object in 3D in one picture. Vertical edges stay vertical and the other edges are drawn at <strong>30°</strong> to the horizontal. It shows what the object looks like; orthographic views show exact sizes.</p>
+
+<h3><i data-lucide="ruler" style="width:14px;height:14px;"></i> Dimensioning rules</h3>
+<ul>
+  <li>All sizes are in <strong>millimetres</strong>, so you don't write "mm" after each number.</li>
+  <li>Each size is shown <strong>once</strong>, on the view where it is clearest.</li>
+  <li>Circles show the diameter with the symbol <strong>Ø</strong> (e.g. Ø10); arcs show the radius with <strong>R</strong> (e.g. R5).</li>
+</ul>
+<div class="callout tip"><strong>In Model Mage:</strong> press <span class="key-term">1</span> for the front view, <span class="key-term">7</span> for the top and <span class="key-term">3</span> for the side.</div>
+
+<div class="quiz-section">
+  <button class="quiz-toggle" onclick="toggleQuiz(this)">
+    🧩 Practice Quiz — 8 questions <span style="opacity:0.55;font-weight:400;margin-left:4px;">(optional)</span>
+    <span class="toggle-icon">▾</span>
+  </button>
+  <div class="quiz-inner">
+<div class="quiz-box" data-why="The front view shows width and height.">
+  <div class="quiz-q">🧩 Q1: Which view shows width and height?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="true">Front view</button>
+    <button class="quiz-opt" data-correct="false">Top view</button>
+    <button class="quiz-opt" data-correct="false">Side view</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box" data-why="The top view is the plan.">
+  <div class="quiz-q">🧩 Q2: What is the top view also called?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="true">The plan</button>
+    <button class="quiz-opt" data-correct="false">The elevation</button>
+    <button class="quiz-opt" data-correct="false">The section</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box" data-why="Third angle: top view above the front view.">
+  <div class="quiz-q">🧩 Q3: In third-angle projection, where does the top view go?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Below the front view</button>
+    <button class="quiz-opt" data-correct="true">Above the front view</button>
+    <button class="quiz-opt" data-correct="false">To the left of the front view</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box" data-why="Dashed lines show hidden detail.">
+  <div class="quiz-q">🧩 Q4: What does a dashed line show?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">A centre line</button>
+    <button class="quiz-opt" data-correct="true">A hidden edge</button>
+    <button class="quiz-opt" data-correct="false">A dimension</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box" data-why="Isometric uses 30°.">
+  <div class="quiz-q">🧩 Q5: At what angle are the sloping edges in an isometric drawing?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">45°</button>
+    <button class="quiz-opt" data-correct="true">30°</button>
+    <button class="quiz-opt" data-correct="false">60°</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box" data-why="Ø is the diameter symbol.">
+  <div class="quiz-q">🧩 Q6: What does Ø10 on a drawing mean?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">A radius of 10 mm</button>
+    <button class="quiz-opt" data-correct="true">A diameter of 10 mm</button>
+    <button class="quiz-opt" data-correct="false">10 holes</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box" data-why="Centre lines are thin chain lines.">
+  <div class="quiz-q">🧩 Q7: Which line marks the centre of a hole?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="true">A chain line</button>
+    <button class="quiz-opt" data-correct="false">A thick solid line</button>
+    <button class="quiz-opt" data-correct="false">A wavy line</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box" data-why="Show each dimension once.">
+  <div class="quiz-q">🧩 Q8: How often should each size appear on a working drawing?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">On every view</button>
+    <button class="quiz-opt" data-correct="true">Once</button>
+    <button class="quiz-opt" data-correct="false">Twice</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+  </div>
+</div>`
+},
+
 // ─── UNIT 9: ARTIFICIAL INTELLIGENCE & MACHINE LEARNING ───────────────────
 
 {
-  unit: "Unit 9 — Artificial Intelligence &amp; Machine Learning",
+  unit: "Unit 11 — Artificial Intelligence &amp; Machine Learning",
   title: "What is Artificial Intelligence?",
   subtitle: "From rule-based programs to thinking machines",
   content: `
@@ -3362,7 +5465,7 @@ END</pre>
 },
 
 {
-  unit: "Unit 9 — Artificial Intelligence &amp; Machine Learning",
+  unit: "Unit 11 — Artificial Intelligence &amp; Machine Learning",
   title: "How Machine Learning Works",
   subtitle: "Teaching computers with data instead of rules",
   content: `
@@ -3484,7 +5587,7 @@ END</pre>
 },
 
 {
-  unit: "Unit 9 — Artificial Intelligence &amp; Machine Learning",
+  unit: "Unit 11 — Artificial Intelligence &amp; Machine Learning",
   title: "Large Language Models & GPT",
   subtitle: "How ChatGPT and similar AI systems actually work",
   content: `
@@ -3623,7 +5726,7 @@ END</pre>
 },
 
 {
-  unit: "Unit 9 — Artificial Intelligence &amp; Machine Learning",
+  unit: "Unit 11 — Artificial Intelligence &amp; Machine Learning",
   title: "Generative AI — Images, Audio &amp; Beyond",
   subtitle: "How AI creates new content from scratch",
   content: `
@@ -3728,7 +5831,7 @@ END</pre>
 },
 
 {
-  unit: "Unit 9 — Artificial Intelligence &amp; Machine Learning",
+  unit: "Unit 11 — Artificial Intelligence &amp; Machine Learning",
   title: "Using AI Ethically",
   subtitle: "Responsible, fair, and honest use of AI tools",
   content: `
@@ -3900,7 +6003,7 @@ function ethicsAnswer(btn, type) {
 // independent content buckets, never merged).
 // ═══════════════════════════════════════════════════════════════════════════
 
-const CODING_ROBOTICS_LESSONS = LESSONS;   // the 27 lessons defined above
+const CODING_ROBOTICS_LESSONS = LESSONS;   // the 42 lessons defined above
 
 // CAT and IT content is not written yet — each is pending the official CAPS
 // / IEB source documents so the theory matches the real examined syllabus.
