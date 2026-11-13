@@ -392,6 +392,11 @@
     <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="3" cy="11" r="2"/><circle cx="11" cy="3" r="2"/><line x1="4.4" y1="9.6" x2="9.6" y2="4.4"/><circle cx="7" cy="7" r="1.5" fill="currentColor" stroke="none"/></svg>
     Select
   </button>
+  <!-- Add Point tool -->
+  <button class="tb-btn" id="tool-addpt" title="Add Point — click an edge to add a point, drag to reshape (I)">
+    <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><polyline points="1,12 7,5 13,12"/><circle cx="7" cy="5" r="1.9" fill="currentColor" stroke="none"/><line x1="11" y1="1" x2="11" y2="5"/><line x1="9" y1="3" x2="13" y2="3"/></svg>
+    Add Point
+  </button>
   <!-- Construction mode toggle -->
   <button class="tb-btn" id="btn-construct" title="Construction mode — entities are reference-only (X)">
     <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="2.5,2"><line x1="1" y1="13" x2="13" y2="1"/></svg>
@@ -1278,8 +1283,23 @@ function drawSelection() {
   ctx.shadowColor = 'rgba(245,158,11,0.5)';
   ctx.shadowBlur = 6;
   const items = selItems.slice();
+  // Ghost "+" where a double-click would add a point
+  if ((tool === 'edit' || tool === 'addpt') && !dragState && hoverAddPt && hoverHit && hoverHit.kind === 'seg') {
+    const [gx, gy] = wtoc(hoverAddPt[0], hoverAddPt[1]);
+    ctx.save();
+    ctx.shadowBlur = 0;
+    ctx.fillStyle = 'rgba(12,16,28,0.9)';
+    ctx.strokeStyle = 'rgba(245,158,11,0.95)';
+    ctx.lineWidth = 1.5;
+    ctx.beginPath(); ctx.arc(gx, gy, 6, 0, Math.PI*2); ctx.fill(); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(gx-3, gy); ctx.lineTo(gx+3, gy); ctx.moveTo(gx, gy-3); ctx.lineTo(gx, gy+3); ctx.stroke();
+    ctx.font = '10px JetBrains Mono,monospace';
+    ctx.fillStyle = 'rgba(245,158,11,0.95)';
+    ctx.fillText(tool === 'addpt' ? 'click to add · drag to place' : 'double-click to add point', gx + 10, gy - 10);
+    ctx.restore();
+  }
   // hover preview in Select tool
-  if (tool === 'edit' && !dragState && hoverHit && !isSelected(hoverHit)) items.push({...hoverHit, hover:true});
+  if ((tool === 'edit' || (tool === 'addpt' && hoverHit && (hoverHit.kind === 'seg' || hoverHit.kind === 'pt'))) && !dragState && hoverHit && !isSelected(hoverHit)) items.push({...hoverHit, hover:true});
   for (const it of items) {
     const e = entByUid(it.u); if (!e) continue;
     ctx.globalAlpha = it.hover ? 0.45 : 1;
@@ -1599,6 +1619,7 @@ function drawSnapIndicator() {
 let selItems = [];        // [{kind:'pt'|'seg'|'circle'|'arc'|'spline'|'body', u, k?, s?}]
 let pendingDrag = null;   // mousedown in Select, waiting to see if it becomes a drag
 let hoverHit = null;      // what the Select tool would grab right now
+let hoverAddPt = null;    // where a double-click would add a point (world coords)
 let lastSolveResidual = 0;
 
 function ensureUid(e) {
@@ -2058,6 +2079,132 @@ function endDrag() {
   scheduleExtrude();       // commits history + rebuilds the solid
   updateConstraintPanel();
   scheduleRender();
+}
+
+// ════════════════════════════════════════════════════════════════════
+// ADDING AND REMOVING CORNERS (Select tool)
+// ════════════════════════════════════════════════════════════════════
+//
+// Double-click an edge to put a new point on it, then drag that point to
+// reshape the polygon. A rectangle becomes a 4-point closed shape first,
+// since a rectangle's edges must stay horizontal and vertical.
+
+// Where on segment `ref` is closest to screen point (sx, sy)? → world [x,y]
+function projectOntoSeg(e, s, sx, sy) {
+  const [ka, kb] = segEndKeys(e, s);
+  const a = getPt(e, ka), b = getPt(e, kb);
+  const [wx, wy] = ctow(sx, sy);
+  const dx = b[0]-a[0], dy = b[1]-a[1], L2 = dx*dx + dy*dy;
+  let t = L2 < 1e-12 ? 0.5 : ((wx-a[0])*dx + (wy-a[1])*dy) / L2;
+  t = Math.max(0.02, Math.min(0.98, t));       // keep clear of the corners
+  let p = [a[0]+t*dx, a[1]+t*dy];
+  // Snap to the grid only if that keeps the point on the line
+  if (!ctrlHeld && gridSnap > 0) {
+    const g = [Math.round(p[0]/gridSnap)*gridSnap, Math.round(p[1]/gridSnap)*gridSnap];
+    const [gx, gy] = wtoc(g[0], g[1]), [ax, ay] = wtoc(a[0], a[1]), [bx, by] = wtoc(b[0], b[1]);
+    const inside = ((g[0]-a[0])*dx + (g[1]-a[1])*dy) / (L2||1);
+    if (ptSegDist(gx, gy, ax, ay, bx, by) < 0.5 && inside > 0.01 && inside < 0.99) p = g;
+  }
+  return p;
+}
+
+function rectToPolyline(e) {
+  const pts = getEntityVertices(e);
+  delete e.x; delete e.y; delete e.w; delete e.h; delete e.cornerR;
+  e.type = 'polyline'; e.points = pts; e.closed = true;
+  // Keep the rectangle's shape rules as real constraints the user can remove
+  const list = sketchConstraints();
+  list.push({type:'horizontal', a:{u:e.uid, s:0}}, {type:'vertical', a:{u:e.uid, s:1}},
+            {type:'horizontal', a:{u:e.uid, s:2}}, {type:'vertical', a:{u:e.uid, s:3}});
+}
+
+// Insert a point on edge s of entity e at world position p. Returns new index.
+function insertPointOnEdge(e, s, p) {
+  if (e.type === 'rect') rectToPolyline(e);
+  if (e.type !== 'polyline') return -1;
+  const ni = s + 1;
+  e.points.splice(ni, 0, [p[0], p[1]]);
+  const n = e.points.length;
+  // Re-point constraints: indices after the new point shift up by one; rules
+  // on the edge that was split no longer describe one straight edge, so drop them.
+  const list = sketchConstraints();
+  let dropped = 0;
+  for (let i = list.length-1; i >= 0; i--) {
+    const c = list[i];
+    let kill = false;
+    for (const r of [c.a, c.b]) {
+      if (!r || r.u !== e.uid) continue;
+      if (r.s !== undefined) {
+        if (r.s === s) kill = true;
+        else if (r.s > s) r.s += 1;
+      }
+      if (typeof r.k === 'number' && r.k >= ni) r.k += 1;
+    }
+    if (kill) { list.splice(i, 1); dropped++; }
+  }
+  // A closed shape's last edge wraps from the final point back to point 0,
+  // which the shift above already handles; guard against stale refs anyway.
+  for (const c of list) for (const r of [c.a, c.b]) if (r && r.u === e.uid && r.s !== undefined && r.s >= segCount(e)) r.s = segCount(e) - 1;
+  return { index: ni, dropped, total: n };
+}
+
+function addPointAtScreen(sx, sy, opts = {}) {
+  const commit = opts.commit !== false;
+  const hit = hitTestSketch(sx, sy);
+  if (!hit || hit.kind !== 'seg') return false;
+  const e = entByUid(hit.u);
+  if (!e || (e.type !== 'polyline' && e.type !== 'rect')) return false;
+  const p = projectOntoSeg(e, hit.s, sx, sy);
+  const res = insertPointOnEdge(e, hit.s, p);
+  if (res === -1) return false;
+  selItems = [{kind:'pt', u:e.uid, k:res.index}];
+  solveSketch();
+  if (commit) scheduleExtrude();     // otherwise the caller saves once the drag ends
+  updateConstraintPanel(); renderFeatureTree(); scheduleRender();
+  flashCstStatus(res.dropped ? `Point added · ${res.dropped} rule${res.dropped>1?'s':''} on that edge removed` : 'Point added · drag it to reshape', false);
+  return { u: e.uid, index: res.index };
+}
+
+// Delete selected corner points of polylines (keeps at least 3 on a closed
+// shape, 2 on an open line). Returns true if anything was removed.
+function deleteSelectedPoints() {
+  const pts = selItems.filter(s => s.kind === 'pt');
+  if (!pts.length || pts.length !== selItems.length) return false;
+  let removed = 0;
+  const byEnt = {};
+  for (const p of pts) (byEnt[p.u] = byEnt[p.u] || []).push(p.k);
+  const list = sketchConstraints();
+  for (const [u, ks] of Object.entries(byEnt)) {
+    const e = entByUid(u);
+    if (!e || e.type !== 'polyline') continue;
+    const min = e.closed ? 3 : 2;
+    for (const k of ks.filter(k => typeof k === 'number').sort((a, b) => b - a)) {
+      if (e.points.length <= min) break;
+      const nBefore = e.points.length;
+      e.points.splice(k, 1);
+      removed++;
+      // The two edges touching k (k-1 and k) become one edge at k-1.
+      const prevEdge = e.closed ? (k - 1 + nBefore) % nBefore : k - 1;
+      for (let i = list.length-1; i >= 0; i--) {
+        const c = list[i]; let kill = false;
+        for (const r of [c.a, c.b]) {
+          if (!r || r.u !== u) continue;
+          if (r.k === k) kill = true;
+          else if (typeof r.k === 'number' && r.k > k) r.k -= 1;
+          if (r.s !== undefined) {
+            if (r.s === k || r.s === prevEdge) kill = true;
+            else if (r.s > k) r.s -= 1;
+          }
+        }
+        if (kill) list.splice(i, 1);
+      }
+    }
+  }
+  if (!removed) return false;
+  selItems = [];
+  solveSketch(); scheduleExtrude(); updateConstraintPanel(); renderFeatureTree(); scheduleRender();
+  flashCstStatus(`${removed} point${removed>1?'s':''} removed`, false);
+  return true;
 }
 
 // ════════════════════════════════════════════════════════════════════
@@ -2781,7 +2928,8 @@ function setTool(t) {
   linePoints=[]; rectStart=null; circleCenter=null;
   arcPts=[]; polyCenter=null; splinePts=[];
   hideLenPopup();
-  if (t !== 'edit') { selItems = []; hoverHit = null; updateConstraintPanel(); }
+  if (t !== 'edit' && t !== 'addpt') { selItems = []; hoverHit = null; updateConstraintPanel(); }
+  hoverAddPt = null;
   pendingDrag = null;
   tool=t;
   document.querySelectorAll('.tb-btn[id^="tool-"]').forEach(b=>b.classList.remove('active'));
@@ -2815,7 +2963,8 @@ function updateHint() {
     arc:      '<b>Arc tool (A)</b><br>Click 1: start · Click 2: through-point · Click 3: end<br>Three-point arc',
     polygon:  '<b>Polygon tool (G)</b><br>Click 1: set centre · Click 2: set radius/rotation<br>Adjust sides in toolbar',
     spline:   '<b>Spline tool (S)</b><br>Click to add control points<br>Double-click: end · Right-click/Esc: cancel',
-    edit:     '<b>Select &amp; Move (E / V)</b><br>Drag a point, edge or whole shape to move it<br>Click to select · <b>Shift</b>-click to add · then pick a constraint on the right<br><b>Ctrl</b>: no snap · <b>Del</b>: delete selected shapes',
+    addpt:    '<b>Add Point (I)</b><br>Click an edge to add a point · hold and drag to place it<br>Drag an existing point to move it<br><b>Ctrl</b>: no snap · Remove a point: Select tool, click it, <b>Del</b>',
+    edit:     '<b>Select &amp; Move (E / V)</b><br>Drag a point, edge or whole shape to move it<br><b>Double-click an edge</b> to add a point · select a point + <b>Del</b> to remove it<br>Click to select · <b>Shift</b>-click to add · then pick a constraint on the right<br><b>Ctrl</b>: no snap · <b>Del</b> on an edge: delete the shape',
   };
   document.getElementById('hint-box').innerHTML = hints[tool]||'';
 }
@@ -2862,6 +3011,7 @@ document.getElementById('tool-arc').addEventListener('click',     ()=>setTool('a
 document.getElementById('tool-polygon').addEventListener('click', ()=>setTool('polygon'));
 document.getElementById('tool-spline').addEventListener('click',  ()=>setTool('spline'));
 document.getElementById('tool-edit').addEventListener('click',    ()=>setTool('edit'));
+document.getElementById('tool-addpt').addEventListener('click',   ()=>setTool('addpt'));
 document.getElementById('btn-undo').addEventListener('click',     ()=>undoLast());
 document.getElementById('ext-prompt-yes').addEventListener('click',  ()=>answerExtrude('extrude'));
 document.getElementById('ext-prompt-no').addEventListener('click',   ()=>answerExtrude('flat'));
@@ -2999,9 +3149,15 @@ sk.addEventListener('mousemove', e => {
   hoverLabelIdx = hitLabel(x, y);
   if (hoverLabelIdx >= 0) {
     sk.style.cursor = 'pointer';
-  } else if (tool === 'edit') {
+  } else if (tool === 'edit' || tool === 'addpt') {
     hoverHit = isPanning ? null : hitTestSketch(x, y);
-    sk.style.cursor = hoverHit ? (hoverHit.kind==='body' ? 'move' : 'grab') : 'default';
+    hoverAddPt = null;
+    if (hoverHit && hoverHit.kind === 'seg') {
+      const he = entByUid(hoverHit.u);
+      if (he) hoverAddPt = projectOntoSeg(he, hoverHit.s, x, y);
+    }
+    if (tool === 'addpt') sk.style.cursor = hoverHit && hoverHit.kind === 'seg' ? 'copy' : (hoverHit && hoverHit.kind === 'pt' ? 'grab' : 'default');
+    else sk.style.cursor = hoverHit ? (hoverHit.kind==='body' ? 'move' : 'grab') : 'default';
   } else {
     sk.style.cursor = 'crosshair';
   }
@@ -3022,6 +3178,20 @@ sk.addEventListener('mousedown', e => {
 
   dragStarted = false;
   // Select tool: remember what was pressed; it becomes a drag if the mouse moves
+  if (tool === 'addpt' && hitLabel(x, y) < 0) {
+    const hit = hitTestSketch(x, y);
+    if (hit && hit.kind === 'seg') {
+      const res = addPointAtScreen(x, y, { commit: false });
+      if (res) {
+        // Hold the new point under the mouse; it becomes a drag if the mouse moves
+        pendingDrag = { hit: {kind:'pt', u: res.u, k: res.index}, sx:x, sy:y, w0: ctow(x, y), shift:false, added:true };
+      }
+    } else if (hit && hit.kind === 'pt') {
+      pendingDrag = { hit, sx:x, sy:y, w0: ctow(x, y), shift:false };
+    }
+    e.preventDefault();
+    return;
+  }
   if (tool === 'edit' && hitLabel(x, y) < 0) {
     const hit = hitTestSketch(x, y);
     pendingDrag = { hit, sx:x, sy:y, w0: ctow(x, y), shift: e.shiftKey };
@@ -3041,6 +3211,12 @@ sk.addEventListener('mouseup', e => {
     endDrag();
     pendingDrag = null;
     sk.style.cursor = 'grab';
+    return;
+  }
+  if (pendingDrag && pendingDrag.added) {
+    pendingDrag = null;
+    dragStarted = true;
+    scheduleExtrude(); updateConstraintPanel(); scheduleRender();
     return;
   }
   // A press-and-release without moving = select
@@ -3080,7 +3256,7 @@ sk.addEventListener('click', e => {
     });
     return;
   }
-  if (tool === 'edit') return;   // Select tool handles its clicks on mouseup
+  if (tool === 'edit' || tool === 'addpt') return;   // these tools handle clicks on mouseup
 
   // ── Rect: two-click ──────────────────────────────────────────────
   if (tool==='rect') {
@@ -3198,6 +3374,13 @@ sk.addEventListener('click', e => {
 });
 
 sk.addEventListener('dblclick', e => {
+  // Select tool: double-click an edge to add a point on it
+  if (tool === 'edit') {
+    const {x, y} = evXY(e);
+    addPointAtScreen(x, y);
+    return;
+  }
+  if (tool === 'addpt') return;
   // End spline on double-click
   if (tool==='spline' && splinePts.length>=2) {
     // Remove the duplicate point added by the second click of dblclick
@@ -3282,9 +3465,12 @@ window.addEventListener('keydown', e => {
     if (e.key==='g'||e.key==='G') setTool('polygon');
     if (e.key==='s'||e.key==='S') setTool('spline');
     if (e.key==='e'||e.key==='E'||e.key==='v'||e.key==='V') setTool('edit');
+    if (e.key==='i'||e.key==='I') setTool('addpt');
     if (e.key==='x'||e.key==='X') toggleConstructionMode();
     if (e.key==='Delete' || e.key==='Backspace') {
-      if (selItems.length) {
+      if (selItems.length && deleteSelectedPoints()) {
+        // only corner points were selected: they were removed, the shape stays
+      } else if (selItems.length) {
         const gone = new Set(selItems.map(s => s.u));
         activeSketch().entities = ents().filter(en => !gone.has(en.uid));
         selItems = []; solveSketch(); scheduleExtrude(); updateConstraintPanel(); renderFeatureTree(); scheduleRender();
