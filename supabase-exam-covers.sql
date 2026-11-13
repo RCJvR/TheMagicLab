@@ -92,13 +92,13 @@ begin
   if auth.uid() is distinct from '31a201b0-f426-455a-973a-b1862001b748'::uuid then
     raise exception 'acc: admin only' using errcode = '42501'; end if;
   if p_roster is not null then
-    delete from public.acc_roster;
+    delete from public.acc_roster where true;   -- Supabase rejects DELETE without WHERE from API calls
     insert into public.acc_roster (sno, first, last, grade, cls)
     select r->>'sno', r->>'first', r->>'last', r->>'grade', r->>'cls' from jsonb_array_elements(p_roster) r
     on conflict (sno) do nothing;
   end if;
   if p_groups is not null then
-    delete from public.acc_groups;
+    delete from public.acc_groups where true;   -- Supabase rejects DELETE without WHERE from API calls
     insert into public.acc_groups (id, grade, subject, codes, key, kclass, staff, members)
     select g->>'id', g->>'grade', g->>'subject',
            array(select jsonb_array_elements_text(g->'codes')), g->>'key', g->>'kclass', coalesce(g->>'staff', ''),
@@ -107,7 +107,7 @@ begin
     on conflict (id) do nothing;
   end if;
   if p_sessions is not null then
-    delete from public.acc_sessions;
+    delete from public.acc_sessions where true;   -- Supabase rejects DELETE without WHERE from API calls
     insert into public.acc_sessions (id, exam_date, session, grade, code, paper, subject, duration, start_time, end_time, time_guessed, units)
     select s->>'id', (s->>'date')::date, s->>'session', s->>'grade', s->>'code', coalesce(s->>'paper', ''), coalesce(s->>'subject', ''),
            nullif(s->>'duration', '')::numeric, coalesce(s->>'start', ''), coalesce(s->>'end', ''), coalesce((s->>'timeGuessed')::boolean, false),

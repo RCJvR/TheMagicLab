@@ -522,16 +522,28 @@ textarea.c-in { resize: vertical; min-height: 70px; line-height: 1.45; }
     host.appendChild(el('h3', { text: 'Accommodations register learners on the class lists', style: 'margin-top:18px' }));
     host.appendChild(el('p', { class: 'c-hint', text: 'Check the ones not marked "exact". A learner who is not on the class lists (for example a PM class) is still placed by their class on the register.' }));
     host.appendChild(el('table', { class: 'c-table' }, [el('thead', {}, [el('tr', {}, [el('th', { text: 'Register' }), el('th', { text: 'Class list' }), el('th', { text: 'Match' })])]), tb]));
-    host.appendChild(el('div', { class: 'c-actions' }, [el('button', { class: 'c-btn primary', type: 'button', text: 'Save to the database', onclick: saveImport })]));
+    host.appendChild(el('div', { class: 'c-actions' }, [el('button', { class: 'c-btn primary', type: 'button', id: 'saveImp', text: 'Save to the database', onclick: saveImport }),
+      el('span', { class: 'c-hint', id: 'saveStatus', role: 'status' })]));
   }
   function saveImport() {
     var links = Array.prototype.map.call($('impResult').querySelectorAll('select[data-id]'), function (s) { return { id: s.getAttribute('data-id'), sno: s.value || null }; });
     var groups = IMP.groups.map(function (g) { return { id: g.id, grade: g.grade, subject: g.subject, codes: g.codes, key: g.key, kclass: g.kclass, staff: g.staff, members: g.members.map(function (m) { return m.sno; }) }; });
-    var st = $('impStatus'); st.textContent = 'Saving…';
+    var st = $('impStatus'), ss = $('saveStatus'), btn = $('saveImp');
+    btn.disabled = true; btn.textContent = 'Saving…'; ss.className = 'c-hint'; ss.textContent = 'Saving ' + IMP.roster.length + ' learners and the timetable…';
     rpc('acc_admin_covers_import', { p_roster: IMP.roster, p_groups: groups, p_sessions: IMP.tt ? IMP.tt.sessions : null, p_sources: IMP.files })
       .then(function (n) { return rpc('acc_admin_link_learners', { p_links: links }).then(function () { return n; }); })
-      .then(function (n) { st.textContent = 'Saved: ' + n.roster + ' learners, ' + n.groups + ' key classes, ' + n.sessions + ' exam papers.'; $('impResult').innerHTML = ''; return loadData(); })
-      .catch(function (e) { console.error(e); st.textContent = 'Not saved: ' + (e.message || e); });
+      .then(function (n) {
+        var msg = 'Saved: ' + n.roster + ' learners, ' + n.groups + ' key classes, ' + n.sessions + ' exam papers.';
+        st.textContent = msg; $('impResult').innerHTML = ''; toast('Saved to the database');
+        st.scrollIntoView({ block: 'center', behavior: 'smooth' });
+        return loadData();
+      })
+      .catch(function (e) {
+        console.error(e);
+        btn.disabled = false; btn.textContent = 'Save to the database';
+        ss.className = 'c-hint c-bad'; ss.textContent = 'Not saved: ' + (e.message || e);
+        toast('Not saved: ' + (e.message || 'see the message next to the button'));
+      });
   }
 })();
 </script>
