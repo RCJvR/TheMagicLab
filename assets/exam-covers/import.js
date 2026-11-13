@@ -390,6 +390,33 @@
             if (left.length) byIni = left;
           }
           var pick = byIni.length ? byIni : cand;
+          // still more than one class possible (no initials, or one teacher with two classes):
+          // take the class whose size is closest to the timetable's learner count
+          if (r.learners) {
+            var opts = [];
+            var taken = {}; b.rows.forEach(function (o) { if (o !== r && o._class) taken[o._class] = 1; });
+            function optKey(c) { return c.x.code + '|' + c.g.subject + '|' + c.g.key + '|' + c.g.kclass; }
+            // every class the initials allow is already another row's: look at the key's other classes
+            if (pick.length && pick.every(function (c) { return taken[optKey(c)]; })) {
+              var rest = cand.filter(function (c) { return !taken[optKey(c)]; });
+              if (rest.length) pick = rest;
+            }
+            pick.forEach(function (c) {
+              var k = c.x.code + '|' + c.g.subject + '|' + c.g.key + '|' + c.g.kclass;
+              if (!opts.some(function (o) { return o.k === k; })) {
+                var size = 0;
+                groups.forEach(function (g) { if (g.grade === c.g.grade && g.subject === c.g.subject && g.key === c.g.key && g.kclass === c.g.kclass) size += g.members.length; });
+                opts.push({ k: k, size: size });
+              }
+            });
+            if (opts.length > 1) {
+              // rows of this block already given a class keep theirs (one teacher, two classes)
+              opts.sort(function (a2, b2) { return (taken[a2.k] ? 1000 : 0) + Math.abs(a2.size - r.learners) - ((taken[b2.k] ? 1000 : 0) + Math.abs(b2.size - r.learners)); });
+              var best = opts[0].k;
+              pick = pick.filter(function (c) { return optKey(c) === best; });
+            }
+            if (pick.length) r._class = optKey(pick[0]);
+          }
           var x0 = pick.length ? pick[0].x : null;
           var gs = pick.filter(function (c) { return x0 && c.x.code === x0.code; }).map(function (c) { return c.g; });
           // the export lists one key class under several staff members when a learner or two
@@ -403,7 +430,9 @@
           }
           var members = []; gs.forEach(function (g) { g.members.forEach(function (m) { if (members.indexOf(m.sno) < 0) members.push(m.sno); }); });
           var target = sessionFor(x0, gs.length ? gs[0].grade : b.grade);
-          if (gs.length && target.units.some(function (u) { return u.ref === r.key && u.type === 'key'; })) return;
+          // the same key printed twice for the same class: keep one (a teacher's second class is a different unit)
+          var gid = gs.map(function (g) { return g.id; }).sort().join(',');
+          if (gs.length && target.units.some(function (u) { return u.ref === r.key && u.type === 'key' && (u.groups || []).slice().sort().join(',') === gid; })) return;
           // CNL = Curro Online: a separate school whose learners write here; no class lists for them
           target.units.push({ type: gs.length ? 'key' : (r.key === 'CNL' ? 'online' : 'other'),
             ref: r.key === 'CNL' ? 'Curro Online' : r.key, venue: venue, printed: r.learners || null,
