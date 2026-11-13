@@ -78,6 +78,55 @@
     .snap-sel option{background:#111827;color:#e4e8f8;}
     .snap-sel:focus{outline:none;border-color:var(--text-3);}
     .tb-label{font-size:0.73rem;color:var(--text2);padding-left:4px;}
+    /* Desktop: the toolbar wraps onto a second row rather than hiding tools off-screen */
+    .toolbar{height:auto;min-height:40px;flex-wrap:wrap;row-gap:3px;padding-block:5px;}
+    @media (max-width: 768px){ .toolbar{flex-wrap:nowrap;height:40px;padding-block:0;} }
+    .toolbar [hidden]{display:none!important;}
+    .tb-btn{flex-shrink:0;white-space:nowrap;}
+    .wb-tabs{display:flex;gap:2px;padding:2px;border:1px solid var(--border);border-radius:7px;flex-shrink:0;}
+    .wb-tab{height:26px;padding:0 10px;border:0;border-radius:5px;background:none;color:var(--text2);font:inherit;font-size:0.75rem;font-weight:700;cursor:pointer;white-space:nowrap;display:flex;align-items:center;}
+    .wb-tab:hover{color:var(--text);}
+    .wb-tab.active{background:var(--surface);color:var(--text);box-shadow:inset 0 0 0 1px var(--border);}
+    .wb-tab:focus-visible,.tb-btn:focus-visible{outline:2px solid var(--accent2);outline-offset:1px;}
+    .wb-group{display:flex;flex-wrap:wrap;align-items:center;gap:3px 2px;min-width:0;}
+    @media (max-width: 768px){ .wb-group{flex-wrap:nowrap;flex-shrink:0;} }
+    .cst-tb{padding:0 7px;}
+    .cst-tb-ico{display:inline-block;min-width:12px;text-align:center;font-weight:800;color:var(--green);}
+    @media (max-width: 1700px){
+      .cst-tb-lbl{display:none;}
+      .cst-tb{min-width:32px;justify-content:center;padding:0 8px;}
+      .cst-tb-ico{font-size:0.95rem;}
+    }
+    .dof-chip{position:absolute;top:10px;right:12px;z-index:3;font-size:0.72rem;font-weight:700;padding:4px 10px;border-radius:99px;border:1px solid var(--border);background:rgba(8,9,11,0.85);pointer-events:none;}
+    .dof-chip.ok{color:var(--green);border-color:rgba(74,207,127,0.5);}
+    .dof-chip.warn{color:#f5b23d;border-color:rgba(245,178,61,0.5);}
+    .dof-chip.bad{color:var(--red);border-color:rgba(245,163,163,0.5);}
+    .cst-dof{display:flex;flex-direction:column;gap:2px;padding:8px 10px;border-radius:8px;border:1px solid var(--border);margin:6px 0 8px;font-size:0.72rem;color:var(--text2);}
+    .cst-dof b{font-size:0.82rem;color:var(--text);}
+    .cst-dof.ok{border-color:rgba(74,207,127,0.45);} .cst-dof.ok b{color:var(--green);}
+    .cst-dof.warn{border-color:rgba(245,178,61,0.45);} .cst-dof.warn b{color:#f5b23d;}
+    .cst-dof.bad{border-color:rgba(245,163,163,0.5);} .cst-dof.bad b{color:var(--red);}
+    .cst-sub{color:var(--text-3,var(--text2));font-size:0.68rem;}
+    .cst-item.bad{background:rgba(245,163,163,0.12);}
+    .main.mode-3d .cst-panel{display:none!important;}
+    .ext-prompt-dof{font-size:0.72rem;line-height:1.4;color:#f5b23d;margin:6px 0 2px;}
+    .ext-prompt-dof.ok{color:var(--green);}
+    .f3-msg{font-size:0.74rem;line-height:1.45;padding:8px 14px;border-bottom:1px solid var(--border);color:var(--green);flex-shrink:0;}
+    .f3-msg.bad{color:#f5b23d;}
+    .feat-props{padding:10px 14px;border-bottom:1px solid var(--border);flex-shrink:0;display:flex;flex-direction:column;gap:8px;}
+    .fp-row{display:flex;align-items:center;gap:8px;font-size:0.74rem;color:var(--text2);}
+    .fp-row > span{width:76px;flex-shrink:0;}
+    .fp-row em{font-style:normal;color:var(--text2);}
+    .fp-in{flex:1;min-width:0;height:26px;padding:0 7px;border-radius:5px;border:1px solid var(--border);background:#111827;color:#e4e8f8;font:inherit;font-size:0.74rem;}
+    .fp-seg{display:flex;border:1px solid var(--border);border-radius:5px;overflow:hidden;}
+    .fp-seg button{border:0;background:none;color:var(--text2);font:inherit;font-size:0.72rem;padding:4px 10px;cursor:pointer;}
+    .fp-seg button.on{background:rgba(217,119,6,0.18);color:var(--accent2);}
+    .fp-note{font-size:0.68rem;line-height:1.45;color:var(--text2);margin:0;}
+    .fp-del{align-self:flex-start;border:1px solid var(--border);background:none;color:var(--text2);font:inherit;font-size:0.72rem;padding:4px 10px;border-radius:5px;cursor:pointer;}
+    .fp-del:hover{color:var(--red);border-color:rgba(245,163,163,0.5);}
+    .feat-del{margin-left:4px;border:0;background:none;color:var(--text2);cursor:pointer;font-size:0.95rem;line-height:1;padding:0 3px;border-radius:3px;}
+    .feat-del:hover{color:var(--red);background:rgba(245,163,163,0.12);}
+    .feat-node.selected{outline:1px solid rgba(217,119,6,0.55);outline-offset:-1px;}
 
     .main{flex:1;display:flex;overflow:hidden;}
 
@@ -358,6 +407,18 @@
   <div id="ml-main" tabindex="-1"></div>
 
 <div class="toolbar">
+  <div class="wb-tabs" id="wb-tabs2d" role="tablist" aria-label="Workbench">
+    <button class="wb-tab active" id="wb-sketch" type="button" role="tab" aria-selected="true" title="Drawing tools">✎ Sketch</button>
+    <button class="wb-tab" id="wb-constraints" type="button" role="tab" aria-selected="false" title="Constraint tools and degrees of freedom">⚓ Constraints</button>
+  </div>
+  <div class="wb-tabs" id="wb-tabs3d" hidden><span class="wb-tab active">⬡ 3D Features</span></div>
+  <div class="tb-sep wb-2d"></div>
+  <!-- Select & Move tool -->
+  <button class="tb-btn wb-2d" id="tool-edit" title="Select &amp; Move — drag points, edges or shapes; select to add constraints (E or V)">
+    <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="3" cy="11" r="2"/><circle cx="11" cy="3" r="2"/><line x1="4.4" y1="9.6" x2="9.6" y2="4.4"/><circle cx="7" cy="7" r="1.5" fill="currentColor" stroke="none"/></svg>
+    Select
+  </button>
+  <div class="wb-group" id="wbg-sketch">
   <!-- Drawing tools -->
   <button class="tb-btn active" id="tool-line" title="Single Line segment (L)">
     <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><line x1="1" y1="13" x2="13" y2="1"/></svg>
@@ -387,11 +448,6 @@
     <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M1 11 C3 2,5 11,7 7 S11 1,13 4"/></svg>
     Spline
   </button>
-  <!-- Select & Move tool -->
-  <button class="tb-btn" id="tool-edit" title="Select &amp; Move — drag points, edges or shapes; select to add constraints (E or V)">
-    <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="3" cy="11" r="2"/><circle cx="11" cy="3" r="2"/><line x1="4.4" y1="9.6" x2="9.6" y2="4.4"/><circle cx="7" cy="7" r="1.5" fill="currentColor" stroke="none"/></svg>
-    Select
-  </button>
   <!-- Add Point tool -->
   <button class="tb-btn" id="tool-addpt" title="Add Point — click an edge to add a point, drag to reshape (I)">
     <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><polyline points="1,12 7,5 13,12"/><circle cx="7" cy="5" r="1.9" fill="currentColor" stroke="none"/><line x1="11" y1="1" x2="11" y2="5"/><line x1="9" y1="3" x2="13" y2="3"/></svg>
@@ -414,15 +470,28 @@
   <span class="tb-label" id="rect-radius-lbl" style="display:none">r =</span>
   <input aria-labelledby="rect-radius-lbl" type="number" class="snap-sel" id="rect-radius" value="5" min="0.5" max="100" step="0.5" style="display:none;width:58px" title="Corner radius (mm)">
   <span class="tb-label" id="rect-radius-unit" style="display:none">mm</span>
+  </div>
+  <div class="wb-group" id="wbg-constraints" hidden></div>
+  <div class="wb-group" id="wbg-3d" hidden>
+    <button class="tb-btn" id="f3-sketch" type="button" title="Start a new sketch on the chosen plane">✎ New sketch</button>
+    <select class="snap-sel" id="f3-plane" aria-label="Plane for the new sketch" title="Plane for the new sketch"><option value="XY">XY (top)</option><option value="XZ">XZ (front)</option><option value="YZ">YZ (side)</option></select>
+    <div class="tb-sep"></div>
+    <button class="tb-btn" id="f3-pad" type="button" title="Pad: extrude the sketch's closed shapes into a solid">⬆ Pad</button>
+    <button class="tb-btn" id="f3-pocket" type="button" title="Pocket: cut the sketch's closed shapes into the solid">⬇ Pocket</button>
+    <button class="tb-btn" id="f3-revolve" type="button" title="Revolve: spin the shape around an axis">◔ Revolve</button>
+    <div class="tb-sep"></div>
+    <button class="tb-btn" id="f3-linpat" type="button" title="Linear pattern: copies of a feature in a straight line">⋮ Linear pattern</button>
+    <button class="tb-btn" id="f3-polpat" type="button" title="Polar pattern: copies of a feature around an axis">✻ Polar pattern</button>
+  </div>
   <div class="tb-sep"></div>
   <button class="tb-btn" id="btn-undo" title="Undo (Ctrl+Z)">↩ Undo</button>
-  <button class="tb-btn" id="btn-clear" title="Clear sketch">✕ Clear</button>
+  <button class="tb-btn wb-2d" id="btn-clear" title="Clear sketch">✕ Clear</button>
   <div class="tb-sep"></div>
   <div style="margin-left:auto"></div>
   <button class="tb-btn" id="btn-mode-3d" title="Switch to 3D view">⬡ View 3D</button>
   <div class="tb-sep"></div>
-  <span id="lbl-snap-sel" class="tb-label">Grid snap</span>
-  <select aria-labelledby="lbl-snap-sel" class="snap-sel" id="snap-sel">
+  <span id="lbl-snap-sel" class="tb-label wb-2d">Grid snap</span>
+  <select aria-labelledby="lbl-snap-sel" class="snap-sel wb-2d" id="snap-sel">
     <option value="1">1 mm</option>
     <option value="2">2 mm</option>
     <option value="5" selected>5 mm</option>
@@ -443,6 +512,7 @@
   <div class="sketch-panel">
     <canvas id="sk"></canvas>
     <div class="sk-overlay">Sketch · XY Plane</div>
+    <div class="dof-chip" id="dof-chip" hidden></div>
 
     <!-- Asked once per profile, then remembered. Sits over the sketch rather
          than blocking it, so drawing can carry on while it is open. -->
@@ -457,6 +527,7 @@
         <button class="ext-btn ext-btn-go" id="ext-prompt-yes">Extrude</button>
         <button class="ext-btn" id="ext-prompt-no">Keep flat</button>
       </div>
+      <div class="ext-prompt-dof" id="ext-prompt-dof" hidden></div>
       <div class="ext-prompt-note">You can undo this with Ctrl&#8288;+&#8288;Z.</div>
     </div>
     <button class="ext-flat-chip" id="ext-flat-chip" hidden></button>
@@ -512,10 +583,14 @@
     <!-- Constraint panel — lasting sketch constraints -->
     <div class="cst-panel" id="cst-panel">
       <div class="panel-title">Constraints — <span id="cst-label">nothing selected</span></div>
+      <div id="cst-dof" class="cst-dof empty"></div>
       <div id="cst-body"></div>
       <div id="cst-status" class="cst-status" role="status" aria-live="polite"></div>
       <div id="cst-list" class="cst-list"></div>
     </div>
+
+    <div class="f3-msg" id="f3-msg" role="status" hidden></div>
+    <div class="feat-props" id="feat-props" hidden></div>
 
     <div id="vp3d">
       <div class="vp-placeholder" id="vp-ph">
@@ -565,96 +640,76 @@ const boot = (async () => {
   setOC(oc); ready = true;
   self.postMessage({ type:'ready' });
 })();
+// Named sketch planes: x and y directions in 3D, and the normal
+const PLANES = {
+  XY: { x:[1,0,0], y:[0,1,0], n:[0,0,1] },
+  XZ: { x:[1,0,0], y:[0,0,1], n:[0,-1,0] },
+  YZ: { x:[0,1,0], y:[0,0,1], n:[1,0,0] },
+};
 self.onmessage = async ({ data }) => {
   if (data.type !== 'build') return;
   if (!ready) { await boot; }
   try {
     const profileList = data.profiles
-      ?? [{ profile:data.profile, height:data.height, operation:'new',
-            filletR:data.filletR||0, chamferR:data.chamferR||0,
-            planeName:'XY', planeOffset:0 }];
+      ?? [{ kind:'extrude', profile:data.profile, height:data.height, operation:'new',
+            filletR:data.filletR||0, chamferR:data.chamferR||0, planeName:'XY', planeOffset:0 }];
     let solid = null;
+    const warnings = [];
     for (const item of profileList) {
       try {
-        const ns = item.normalSign ?? 1;
-        // Replicad's XZ plane has normal = -Y (opposite convention to XY and YZ planes).
-        // Flip the effective direction for XZ so cuts/fuses go the right way on Y-axis faces.
-        const pf = (item.planeName||'XY') === 'XZ' ? -1 : 1;
-        let effectiveH;
-        if (item.operation === 'cut') {
-          effectiveH = -ns * pf * Math.abs(item.height);
-        } else if (item.operation === 'fuse') {
-          effectiveH = ns * pf * Math.abs(item.height);
-        } else {
-          effectiveH = item.height; // 'new' — plain extrude, no flip
-        }
-        const s = makeSolid(item.profile, effectiveH, item.filletR||0, item.chamferR||0,
-                            item.planeName||'XY', item.planeOffset||0);
+        let s = makeTool(item);
+        s = applyPatterns(s, item.patterns || []);
         if (!solid || item.operation === 'new') {
           solid = solid ? solid.fuse(s) : s;
-        } else if (item.operation === 'fuse') {
-          solid = solid.fuse(s);
         } else if (item.operation === 'cut') {
           solid = solid.cut(s);
+        } else {
+          solid = solid.fuse(s);
         }
       } catch(opErr) {
-        // Skip this operation so a bad cut/fuse doesn't abort the whole build
-        console.warn('[ModelMage] skipping op', item.operation, opErr?.message || opErr);
+        const m = (opErr && (opErr.message || opErr.toString && opErr.toString())) || 'error';
+        warnings.push((item.kind === 'revolve' ? 'revolve' : 'extrude') + ' (' + m + ')');
+        console.warn('[ModelMage] skipping op', item.kind, item.operation, m);
       }
     }
+    if (!solid) throw new Error(warnings[0] || 'Nothing to build');
     const m = solid.mesh({ tolerance:0.04, angularTolerance:10 });
     const v = m.vertices  instanceof Float32Array ? m.vertices  : new Float32Array(m.vertices);
     const n = m.normals   instanceof Float32Array ? m.normals   : new Float32Array(m.normals);
     const t = m.triangles instanceof Uint32Array  ? m.triangles : new Uint32Array(m.triangles);
-    self.postMessage({ type:'mesh', v, n, t }, [v.buffer, n.buffer, t.buffer]);
+    self.postMessage({ type:'mesh', v, n, t, warnings }, [v.buffer, n.buffer, t.buffer]);
   } catch(e) {
     const msg = e?.message || e?.toString?.() || JSON.stringify(e) || 'unknown error';
     self.postMessage({ type:'err', msg });
   }
 };
-function _planeTranslate(cx, cy, planeName) {
-  if (planeName === 'YZ') return [0, cx, cy];
-  if (planeName === 'XZ') return [cx, 0, cy];
-  return [cx, cy, 0]; // XY default
-}
 
-function makeSolid(p, h, filletR, chamferR, planeName='XY', planeOffset=0) {
-  let solid;
-  if (p.type === 'circle') {
-    solid = drawCircle(p.r).sketchOnPlane(planeName, planeOffset).extrude(h)
-      .translate(_planeTranslate(p.cx, p.cy, planeName));
-  } else if (p.type === 'rect') {
-    const rw=Math.abs(p.w), rh=Math.abs(p.h), cx=p.x+p.w/2, cy=p.y+p.h/2;
+// The 2D outline of a profile, in sketch coordinates
+function makeDrawing(p) {
+  if (p.type === 'circle') return drawCircle(p.r).translate(p.cx, p.cy);
+  if (p.type === 'rect') {
+    const rw = Math.abs(p.w), rh = Math.abs(p.h), cx = p.x + p.w/2, cy = p.y + p.h/2;
     if (p.cornerR && p.cornerR > 0) {
       const r = Math.min(p.cornerR, rw*0.45, rh*0.45);
-      const hw=rw/2, hh=rh/2, tx=hw-r, ty=hh-r;
-      const N=8, rpts=[];
-      const corners=[[-tx,-ty,Math.PI,Math.PI*3/2],[tx,-ty,Math.PI*3/2,Math.PI*2],[tx,ty,0,Math.PI/2],[-tx,ty,Math.PI/2,Math.PI]];
-      corners.forEach(([cx2,cy2,a0,a1],ci)=>{
-        for(let i=(ci===0?0:1);i<=N;i++){const a=a0+(a1-a0)*i/N;rpts.push([cx2+r*Math.cos(a),cy2+r*Math.sin(a)]);}
+      const hw = rw/2, hh = rh/2, tx = hw-r, ty = hh-r;
+      const N = 8, rpts = [];
+      const corners = [[-tx,-ty,Math.PI,Math.PI*3/2],[tx,-ty,Math.PI*3/2,Math.PI*2],[tx,ty,0,Math.PI/2],[-tx,ty,Math.PI/2,Math.PI]];
+      corners.forEach(([cx2,cy2,a0,a1],ci) => {
+        for (let i=(ci===0?0:1); i<=N; i++) { const a = a0+(a1-a0)*i/N; rpts.push([cx + cx2 + r*Math.cos(a), cy + cy2 + r*Math.sin(a)]); }
       });
-      let sk=draw(rpts[0]);
-      for(let i=1;i<rpts.length;i++) sk=sk.lineTo(rpts[i]);
-      solid = sk.close().sketchOnPlane(planeName, planeOffset).extrude(h)
-        .translate(_planeTranslate(cx, cy, planeName));
-    } else {
-      solid = drawRectangle(rw, rh).sketchOnPlane(planeName, planeOffset).extrude(h)
-        .translate(_planeTranslate(cx, cy, planeName));
+      let sk = draw(rpts[0]);
+      for (let i=1; i<rpts.length; i++) sk = sk.lineTo(rpts[i]);
+      return sk.close();
     }
-  } else if (p.type === 'arc') {
-    let sk = draw(p.p1).threePointsArc(p.pmid, p.p2).lineTo(p.p1);
-    solid = sk.close().sketchOnPlane(planeName, planeOffset).extrude(h);
-  } else if (p.type === 'spline') {
+    return drawRectangle(rw, rh).translate(cx, cy);
+  }
+  if (p.type === 'arc') return draw(p.p1).threePointsArc(p.pmid, p.p2).lineTo(p.p1).close();
+  if (p.type === 'spline') {
     const pts = p.points;
     if (pts.length < 3) throw new Error('Need at least 3 spline points');
-    // Approximate Catmull-Rom spline as a dense polyline (avoids splineTo API uncertainty)
-    const STEPS = 24;
-    const approx = [];
+    const STEPS = 24, approx = [];
     for (let i = 0; i < pts.length - 1; i++) {
-      const p0 = pts[Math.max(0, i - 1)];
-      const p1 = pts[i];
-      const p2 = pts[i + 1];
-      const p3 = pts[Math.min(pts.length - 1, i + 2)];
+      const p0 = pts[Math.max(0, i - 1)], p1 = pts[i], p2 = pts[i + 1], p3 = pts[Math.min(pts.length - 1, i + 2)];
       for (let j = 0; j < STEPS; j++) {
         const t = j / STEPS, t2 = t*t, t3 = t2*t;
         approx.push([
@@ -666,24 +721,74 @@ function makeSolid(p, h, filletR, chamferR, planeName='XY', planeOffset=0) {
     approx.push(pts[pts.length - 1]);
     let sk = draw(approx[0]);
     for (let i = 1; i < approx.length; i++) sk = sk.lineTo(approx[i]);
-    solid = sk.close().sketchOnPlane(planeName, planeOffset).extrude(h);
-  } else {
-    const pts = p.points;
-    if (pts.length < 3) throw new Error('Need at least 3 points');
-    let sk = draw(pts[0]);
-    for (let i = 1; i < pts.length; i++) sk = sk.lineTo(pts[i]);
-    solid = sk.close().sketchOnPlane(planeName, planeOffset).extrude(h);
+    return sk.close();
   }
+  const pts = p.points;
+  if (pts.length < 3) throw new Error('Need at least 3 points');
+  let sk = draw(pts[0]);
+  for (let i = 1; i < pts.length; i++) sk = sk.lineTo(pts[i]);
+  return sk.close();
+}
+
+// The solid for one feature (before it is added to or cut from the part)
+function makeTool(item) {
+  const planeName = item.planeName || 'XY', off = item.planeOffset || 0;
+  const drawing = makeDrawing(item.profile);
+  if (item.kind === 'revolve') {
+    const P = PLANES[planeName] || PLANES.XY;
+    const dir = item.axis === 'H' ? P.x : P.y;
+    const origin = P.n.map(v => v * off);
+    return drawing.sketchOnPlane(planeName, off).revolve(dir, { origin, angle: Math.max(1, Math.min(360, item.angle || 360)) });
+  }
+  const ns = item.normalSign ?? 1;
+  // Replicad's XZ plane has normal = -Y (opposite convention to XY and YZ planes).
+  const pf = planeName === 'XZ' ? -1 : 1;
+  let h;
+  if (item.operation === 'cut') h = -ns * pf * Math.abs(item.height);
+  else if (item.operation === 'fuse') h = ns * pf * Math.abs(item.height);
+  else h = item.height;
+  let solid = drawing.sketchOnPlane(planeName, off).extrude(h);
+  // A pocket drawn on a base plane (not on a face) cuts both ways, so it
+  // reaches the part whichever side of the plane the part is on.
+  if (item.operation === 'cut' && item.both) {
+    const other = makeDrawing(item.profile).sketchOnPlane(planeName, off).extrude(-h);
+    solid = solid.fuse(other);
+  }
+  const filletR = item.filletR || 0, chamferR = item.chamferR || 0;
   if (filletR > 0) {
-    const safeR = Math.min(filletR, h*0.45);
+    const safeR = Math.min(filletR, Math.abs(h)*0.45);
     try { solid = solid.fillet(safeR); } catch(e) {
       try { solid = solid.fillet(safeR*0.5); } catch(_) {}
     }
   } else if (chamferR > 0) {
-    const safeC = Math.min(chamferR, h*0.45);
+    const safeC = Math.min(chamferR, Math.abs(h)*0.45);
     try { solid = solid.chamfer(safeC); } catch(e) {}
   }
   return solid;
+}
+
+// Linear and polar copies of a feature, fused into one tool body
+function applyPatterns(s, patterns) {
+  for (const pt of patterns) {
+    const n = Math.max(1, Math.min(60, Math.round(pt.count || 1)));
+    if (n < 2) continue;
+    const base = s.clone();
+    let acc = s;
+    for (let i = 1; i < n; i++) {
+      let c = base.clone();
+      if (pt.kind === 'linear') {
+        const d = pt.dir, k = (pt.spacing || 0) * i;
+        c = c.translate([d[0]*k, d[1]*k, d[2]*k]);
+      } else {
+        const total = pt.angle || 360;
+        const step = total >= 359.999 ? 360 / n : total / (n - 1);
+        c = c.rotate(step * i, [0, 0, 0], pt.axis || [0, 0, 1]);
+      }
+      acc = acc.fuse(c);
+    }
+    s = acc;
+  }
+  return s;
 }
 `;
 
@@ -701,6 +806,7 @@ worker.onmessage = ({ data }) => {
   } else if (data.type === 'mesh') {
     applyMesh(data.v, data.n, data.t);
     setRebuildStatus('done');
+    if (data.warnings && data.warnings.length) f3Msg('Some features could not be built: ' + data.warnings.join(' · '), true);
   } else if (data.type === 'err') {
     console.warn('[ModelMage]', data.msg);
     setRebuildStatus('error', data.msg);
@@ -805,6 +911,7 @@ function showLenPopup(screenX, screenY, currentLen, onApply) {
 }
 
 function hideLenPopup() {
+  const _u = document.querySelector('#len-popup .lp-unit'); if (_u) _u.textContent = 'mm';
   lenPopup.style.display = 'none';
   lenPopup._onApply = null;
   pendingLenEdit = null;
@@ -814,7 +921,7 @@ lenInput.addEventListener('keydown', e => {
   if (e.key === 'Enter') {
     e.preventDefault();
     const v = parseFloat(lenInput.value);
-    if (v > 0 && lenPopup._onApply) lenPopup._onApply(v);
+    if (isFinite(v) && lenPopup._onApply) lenPopup._onApply(v);
     hideLenPopup();
   } else if (e.key === 'Escape') {
     e.preventDefault();
@@ -1117,6 +1224,7 @@ function render() {
   drawGrid(cW,cH);
   drawFaceUnderlay();
   drawCommitted();
+  drawDofOverlay();
   drawConstraintGlyphs();
   drawSelection();
   drawInProgress();
@@ -1299,8 +1407,17 @@ function drawSelection() {
     ctx.restore();
   }
   // hover preview in Select tool
-  if ((tool === 'edit' || (tool === 'addpt' && hoverHit && (hoverHit.kind === 'seg' || hoverHit.kind === 'pt'))) && !dragState && hoverHit && !isSelected(hoverHit)) items.push({...hoverHit, hover:true});
+  if ((tool === 'edit' || (tool === 'cst' && hoverHit && hoverHit.kind !== 'body') || (tool === 'addpt' && hoverHit && (hoverHit.kind === 'seg' || hoverHit.kind === 'pt'))) && !dragState && hoverHit && !isSelected(hoverHit)) items.push({...hoverHit, hover:true});
   for (const it of items) {
+    if (isVirtual(it.u)) {
+      ctx.globalAlpha = it.hover ? 0.45 : 1;
+      const [ox, oy] = wtoc(0, 0);
+      ctx.beginPath();
+      if (it.u === REF_O) { ctx.arc(ox, oy, 6, 0, Math.PI*2); ctx.fill(); }
+      else if (it.u === REF_AX) { ctx.moveTo(0, oy); ctx.lineTo(W(), oy); ctx.stroke(); }
+      else { ctx.moveTo(ox, 0); ctx.lineTo(ox, H()); ctx.stroke(); }
+      continue;
+    }
     const e = entByUid(it.u); if (!e) continue;
     ctx.globalAlpha = it.hover ? 0.45 : 1;
     if (it.kind === 'seg') {
@@ -1620,7 +1737,6 @@ let selItems = [];        // [{kind:'pt'|'seg'|'circle'|'arc'|'spline'|'body', u
 let pendingDrag = null;   // mousedown in Select, waiting to see if it becomes a drag
 let hoverHit = null;      // what the Select tool would grab right now
 let hoverAddPt = null;    // where a double-click would add a point (world coords)
-let lastSolveResidual = 0;
 
 function ensureUid(e) {
   const sk = activeSketch();
@@ -1686,7 +1802,7 @@ function pointInPoly(px, py, pts) {
 
 // What is under the cursor? Points beat edges, edges beat shape interiors,
 // and shapes drawn later (on top) win.
-function hitTestSketch(sx, sy) {
+function hitTestSketch(sx, sy, opts = {}) {
   const PT_R = 9, EDGE_R = 7;
   const list = ents();
   for (let ei=list.length-1; ei>=0; ei--) {
@@ -1696,6 +1812,7 @@ function hitTestSketch(sx, sy) {
       if (Math.hypot(sx-px, sy-py) < PT_R) return {kind:'pt', u:e.uid, k:p.k};
     }
   }
+  if (opts.refs) { const [ox, oy] = wtoc(0, 0); if (Math.hypot(sx-ox, sy-oy) < PT_R) return {kind:'pt', u:REF_O, k:0}; }
   const [wx, wy] = ctow(sx, sy);
   for (let ei=list.length-1; ei>=0; ei--) {
     const e = list[ei];
@@ -1723,6 +1840,12 @@ function hitTestSketch(sx, sy) {
         if (ptSegDist(sx,sy,a[0],a[1],b[0],b[1]) < EDGE_R) return {kind:'spline', u:e.uid};
       }
     }
+  }
+  if (opts.refs) {
+    const [ox, oy] = wtoc(0, 0);
+    if (Math.abs(sy - oy) < 5) return {kind:'seg', u:REF_AX, s:0};
+    if (Math.abs(sx - ox) < 5) return {kind:'seg', u:REF_AY, s:0};
+    return null;     // constraint tools never pick shape interiors
   }
   for (let ei=list.length-1; ei>=0; ei--) {
     const e = list[ei];
@@ -1758,229 +1881,466 @@ function selectItem(item, additive) {
 function clearSelection() { selItems = []; pendingDrag = null; updateConstraintPanel(); scheduleRender(); }
 
 // ════════════════════════════════════════════════════════════════════
-// CONSTRAINT SOLVER
+// CONSTRAINT SOLVER (equation based) + DEGREES OF FREEDOM
 // ════════════════════════════════════════════════════════════════════
 //
-// A small iterative (Gauss-Seidel / position-based) solver. Each pass nudges
-// the points so every constraint is a bit closer to true; after a few hundred
-// passes everything that can be satisfied is. Points that are being dragged,
-// or that carry a Fix constraint, do not move.
+// Every point is two unknowns (x, y) and every circle radius is one. Each
+// constraint is one or two equations that must equal zero. A damped
+// Gauss-Newton (Levenberg-Marquardt) solver moves the unknowns until all
+// equations hold, changing as little as possible.
+//
+// Degrees of freedom (DOF) = unknowns − independent equations. A sketch with
+// 0 DOF is fully constrained: nothing in it can move by accident.
+//
+// The origin and the two axes are fixed references that constraints can use:
+//   {u:'O', k:0}  origin point      {u:'AX', s:0}  X axis   {u:'AY', s:0}  Y axis
 
-function wrapPi(a)     { while (a <= -Math.PI) a += 2*Math.PI; while (a > Math.PI) a -= 2*Math.PI; return a; }
-function wrapHalfPi(a) { while (a <= -Math.PI/2) a += Math.PI; while (a > Math.PI/2) a -= Math.PI; return a; }
+const REF_O = 'O', REF_AX = 'AX', REF_AY = 'AY';
+const isVirtual = u => u === REF_O || u === REF_AX || u === REF_AY;
+var lastSolveResidual = 0;
+var dofInfo = null;          // result of analyseSketch(), refreshed after each change
 
-function buildSolverModel(pins) {
-  const P = {}, R = {};           // points and circle radii
-  const implicit = [];            // rect edges stay horizontal/vertical
-  for (const e of ents()) {
+// World position of a point ref, whether virtual or real
+function refPoint(r) {
+  if (r.u === REF_O) return [0, 0];
+  const e = entByUid(r.u); if (!e) return null;
+  return getPt(e, r.k);
+}
+// The two end refs of a segment ref (virtual axes return fixed points)
+function segRefs(r) {
+  if (r.u === REF_AX) return [{c:[0,0]}, {c:[1,0]}];
+  if (r.u === REF_AY) return [{c:[0,0]}, {c:[0,1]}];
+  const e = entByUid(r.u); if (!e) return null;
+  const ks = segEndKeys(e, r.s); if (!ks) return null;
+  return [{u:r.u, k:ks[0]}, {u:r.u, k:ks[1]}];
+}
+
+// Arcs are stored as start, a point on the arc and end. Keep that middle
+// point exactly half-way along the arc so it is not a hidden extra freedom.
+function normalizeArc(e) {
+  if (e.type !== 'arc') return;
+  const g = arcGeom(e.p1, e.pmid, e.p2);
+  if (!g) return;
+  const mx = (e.p1[0]+e.p2[0])/2, my = (e.p1[1]+e.p2[1])/2;
+  let dx = mx - g.cx, dy = my - g.cy, L = Math.hypot(dx, dy);
+  if (L < 1e-9) { dx = -(e.p2[1]-e.p1[1]); dy = e.p2[0]-e.p1[0]; L = Math.hypot(dx, dy) || 1; }
+  const c1 = [g.cx + dx/L*g.r, g.cy + dy/L*g.r], c2 = [g.cx - dx/L*g.r, g.cy - dy/L*g.r];
+  const d1 = Math.hypot(c1[0]-e.pmid[0], c1[1]-e.pmid[1]), d2 = Math.hypot(c2[0]-e.pmid[0], c2[1]-e.pmid[1]);
+  e.pmid = d1 <= d2 ? c1 : c2;
+}
+
+// ── Build the system of unknowns and equations ─────────────────────────
+// `only` (optional Set of uids) limits the system to those entities.
+function buildSystem(cs, only) {
+  const x = [], key = new Map(), owner = [];
+  const list = ents().filter(e => !only || only.has(e.uid));
+  for (const e of list) {
     ensureUid(e);
-    for (const p of entityPointList(e)) P[e.uid+':'+p.k] = {x:p.x, y:p.y, f:false};
-    if (e.type === 'circle') R[e.uid] = {v:e.r, f:false};
-    if (e.type === 'rect') {
-      implicit.push({type:'horizontal', a:{u:e.uid, s:0}}, {type:'vertical', a:{u:e.uid, s:1}},
-                    {type:'horizontal', a:{u:e.uid, s:2}}, {type:'vertical', a:{u:e.uid, s:3}});
+    for (const p of entityPointList(e)) {
+      key.set(e.uid+':'+p.k, x.length); owner.push(e.uid); x.push(p.x);
+      owner.push(e.uid); x.push(p.y);
     }
+    if (e.type === 'circle') { key.set(e.uid+':r', x.length); owner.push(e.uid); x.push(e.r); }
   }
-  for (const c of sketchConstraints()) {
-    if (c.type === 'fix') {
-      const q = P[c.a.u+':'+c.a.k];
-      if (q) { q.x = c.value[0]; q.y = c.value[1]; q.f = true; }
+  const eqs = [];
+  // Accessors: each returns a function of the unknown vector X
+  const P = r => {
+    if (r.c) { const c = r.c; return { f: () => c, d: [] }; }
+    if (r.u === REF_O) return { f: () => [0, 0], d: [] };
+    const i = key.get(r.u+':'+r.k);
+    if (i === undefined) { const p = refPoint(r) || [0,0]; return { f: () => p, d: [] }; }
+    return { f: X => [X[i], X[i+1]], d: [i, i+1] };
+  };
+  const S = r => { const s = segRefs(r); return s ? [P(s[0]), P(s[1])] : null; };
+  const Rad = u => {
+    const e = entByUid(u);
+    if (e && e.type === 'circle') {
+      const i = key.get(u+':r');
+      if (i === undefined) { const v = e.r; return { f: () => v, d: [] }; }
+      return { f: X => X[i], d: [i] };
     }
-  }
-  if (pins) for (const [key, pos] of Object.entries(pins)) {
-    const q = P[key];
-    if (q && !q.f) { q.x = pos[0]; q.y = pos[1]; q.f = true; }
-  }
-  return {P, R, implicit};
-}
-
-function segPts(M, ref) {
-  const e = entByUid(ref.u);
-  if (!e) return null;
-  const ks = segEndKeys(e, ref.s);
-  if (!ks) return null;
-  const A = M.P[ref.u+':'+ks[0]], B = M.P[ref.u+':'+ks[1]];
-  return A && B ? [A, B] : null;
-}
-function ptRef(M, ref) { return M.P[ref.u+':'+ref.k] || null; }
-
-function share(A, B, dx, dy) {     // move A by +d·wa and B by −d·wb so they meet
-  const wa = A.f?0:1, wb = B.f?0:1, ws = wa+wb;
-  if (!ws) return;
-  A.x += dx*wa/ws; A.y += dy*wa/ws;
-  B.x -= dx*wb/ws; B.y -= dy*wb/ws;
-}
-function projDist(A, B, L) {
-  let dx = B.x-A.x, dy = B.y-A.y, d = Math.hypot(dx, dy);
-  if (d < 1e-9) { dx = 1e-3; dy = 0; d = 1e-3; }
-  const k = (d - L) / d;
-  share(A, B, dx*k, dy*k);
-  return Math.abs(d - L);
-}
-function rotSeg(A, B, delta) {
-  if (A.f && B.f) return false;
-  let px, py;
-  if (A.f) { px = A.x; py = A.y; } else if (B.f) { px = B.x; py = B.y; }
-  else { px = (A.x+B.x)/2; py = (A.y+B.y)/2; }
-  const c = Math.cos(delta), s = Math.sin(delta);
-  for (const Q of [A, B]) if (!Q.f) {
-    const dx = Q.x-px, dy = Q.y-py;
-    Q.x = px + dx*c - dy*s; Q.y = py + dx*s + dy*c;
-  }
-  return true;
-}
-function segAngle(A, B) { return Math.atan2(B.y-A.y, B.x-A.x); }
-function relRotate(s1, s2, err) {  // turn two segments toward each other by err
-  const f1 = !(s1[0].f && s1[1].f), f2 = !(s2[0].f && s2[1].f);
-  if (f1 && f2) { rotSeg(s1[0], s1[1], err/2); rotSeg(s2[0], s2[1], -err/2); }
-  else if (f1) rotSeg(s1[0], s1[1], err);
-  else if (f2) rotSeg(s2[0], s2[1], -err);
-}
-function pullPointToLine(Pt, A, B, foot) {
-  const dx = Pt.x-foot[0], dy = Pt.y-foot[1];
-  const wp = Pt.f?0:1, wl = (A.f||B.f)?0:1, ws = wp+wl;
-  if (!ws) return Math.hypot(dx, dy);
-  Pt.x -= dx*wp/ws; Pt.y -= dy*wp/ws;
-  if (wl) { A.x += dx*wl/ws; A.y += dy*wl/ws; B.x += dx*wl/ws; B.y += dy*wl/ws; }
-  return Math.hypot(dx, dy);
-}
-
-// One relaxation step for one constraint. Returns how far off it was.
-function relax(M, c) {
+    if (e && e.type === 'arc') {               // radius of the 3-point arc
+      const a = P({u, k:'p1'}), m = P({u, k:'pmid'}), b = P({u, k:'p2'});
+      return { f: X => { const g = arcGeom(a.f(X), m.f(X), b.f(X)); return g ? g.r : 0; }, d: [...a.d, ...m.d, ...b.d] };
+    }
+    return null;
+  };
+  const Ctr = u => {   // circle / arc centre as a point accessor
+    const e = entByUid(u);
+    if (e && e.type === 'circle') return P({u, k:'c'});
+    if (e && e.type === 'arc') {
+      const a = P({u, k:'p1'}), m = P({u, k:'pmid'}), b = P({u, k:'p2'});
+      return { f: X => { const g = arcGeom(a.f(X), m.f(X), b.f(X)); return g ? [g.cx, g.cy] : a.f(X); }, d: [...a.d, ...m.d, ...b.d] };
+    }
+    return null;
+  };
+  const add = (c, deps, fn) => eqs.push({ c, d: [...new Set(deps)], fn });
+  const len = (a, b) => Math.hypot(b[0]-a[0], b[1]-a[1]) || 1e-9;
   const deg = Math.PI/180;
-  switch (c.type) {
-    case 'coincident': {
-      const A = ptRef(M,c.a), B = ptRef(M,c.b); if (!A||!B) return 0;
-      const err = Math.hypot(B.x-A.x, B.y-A.y);
-      share(A, B, B.x-A.x, B.y-A.y); return err;
+
+  // Implicit shape rules
+  for (const e of list) {
+    if (e.type === 'rect') {
+      const C = k => P({u:e.uid, k});
+      const c0=C(0), c1=C(1), c2=C(2), c3=C(3);
+      add(null, [...c0.d, ...c1.d], X => c1.f(X)[1] - c0.f(X)[1]);
+      add(null, [...c1.d, ...c2.d], X => c2.f(X)[0] - c1.f(X)[0]);
+      add(null, [...c2.d, ...c3.d], X => c3.f(X)[1] - c2.f(X)[1]);
+      add(null, [...c3.d, ...c0.d], X => c0.f(X)[0] - c3.f(X)[0]);
     }
-    case 'horizontal': case 'vertical': {
-      let A, B;
-      if (c.b) { A = ptRef(M,c.a); B = ptRef(M,c.b); }
-      else { const s = segPts(M,c.a); if (!s) return 0; [A,B] = s; }
-      if (!A||!B) return 0;
-      if (c.type === 'horizontal') { const d = B.y-A.y; share(A, B, 0, d); return Math.abs(d); }
-      const d = B.x-A.x; share(A, B, d, 0); return Math.abs(d);
-    }
-    case 'length': {
-      const s = segPts(M,c.a); if (!s) return 0;
-      return projDist(s[0], s[1], c.value);
-    }
-    case 'distance': {
-      const A = ptRef(M,c.a), B = ptRef(M,c.b); if (!A||!B) return 0;
-      return projDist(A, B, c.value);
-    }
-    case 'angle': {
-      const s = segPts(M,c.a); if (!s) return 0;
-      const err = wrapPi(c.value*deg - segAngle(s[0], s[1]));
-      rotSeg(s[0], s[1], err); return Math.abs(err)*10;
-    }
-    case 'parallel': case 'perpendicular': {
-      const s1 = segPts(M,c.a), s2 = segPts(M,c.b); if (!s1||!s2) return 0;
-      const target = c.type === 'parallel' ? 0 : Math.PI/2;
-      const err = wrapHalfPi(segAngle(s2[0],s2[1]) - segAngle(s1[0],s1[1]) - target);
-      relRotate(s1, s2, err); return Math.abs(err)*10;
-    }
-    case 'equal': {
-      if (c.a.s === undefined) {        // two circles
-        const r1 = M.R[c.a.u], r2 = M.R[c.b.u]; if (!r1||!r2) return 0;
-        const err = Math.abs(r1.v-r2.v);
-        if (r1.f && !r2.f) r2.v = r1.v; else if (r2.f && !r1.f) r1.v = r2.v;
-        else if (!r1.f && !r2.f) r1.v = r2.v = (r1.v+r2.v)/2;
-        return err;
-      }
-      const s1 = segPts(M,c.a), s2 = segPts(M,c.b); if (!s1||!s2) return 0;
-      const L1 = Math.hypot(s1[1].x-s1[0].x, s1[1].y-s1[0].y);
-      const L2 = Math.hypot(s2[1].x-s2[0].x, s2[1].y-s2[0].y);
-      const lock1 = s1[0].f && s1[1].f, lock2 = s2[0].f && s2[1].f;
-      const L = lock1 ? L1 : lock2 ? L2 : (L1+L2)/2;
-      projDist(s1[0], s1[1], L); projDist(s2[0], s2[1], L);
-      return Math.abs(L1-L2);
-    }
-    case 'radius': {
-      const r = M.R[c.a.u]; if (!r) return 0;
-      const err = Math.abs(r.v - c.value);
-      r.v = c.value; r.f = true; return err;
-    }
-    case 'pointOnLine': {
-      const Pt = ptRef(M,c.a), s = segPts(M,c.b); if (!Pt||!s) return 0;
-      const [A,B] = s, dx = B.x-A.x, dy = B.y-A.y, L2 = dx*dx+dy*dy;
-      if (L2 < 1e-12) return 0;
-      const t = ((Pt.x-A.x)*dx + (Pt.y-A.y)*dy) / L2;
-      return pullPointToLine(Pt, A, B, [A.x+t*dx, A.y+t*dy]);
-    }
-    case 'midpoint': {
-      const Pt = ptRef(M,c.a), s = segPts(M,c.b); if (!Pt||!s) return 0;
-      const [A,B] = s;
-      return pullPointToLine(Pt, A, B, [(A.x+B.x)/2, (A.y+B.y)/2]);
-    }
-    case 'fix': {
-      const A = ptRef(M,c.a); if (!A) return 0;
-      return Math.hypot(A.x-c.value[0], A.y-c.value[1]);
+    if (e.type === 'arc') {
+      const a = P({u:e.uid, k:'p1'}), m = P({u:e.uid, k:'pmid'}), b = P({u:e.uid, k:'p2'});
+      add(null, [...a.d, ...m.d, ...b.d], X => len(m.f(X), a.f(X)) - len(m.f(X), b.f(X)));
     }
   }
-  return 0;
+
+  for (const c of cs) {
+    switch (c.type) {
+      case 'coincident': {
+        const A = P(c.a), B = P(c.b);
+        add(c, [...A.d, ...B.d], X => B.f(X)[0] - A.f(X)[0]);
+        add(c, [...A.d, ...B.d], X => B.f(X)[1] - A.f(X)[1]);
+        break;
+      }
+      case 'horizontal': case 'vertical': {
+        let A, B;
+        if (c.b) { A = P(c.a); B = P(c.b); } else { const s = S(c.a); if (!s) break; [A, B] = s; }
+        const ax = c.type === 'horizontal' ? 1 : 0;
+        add(c, [...A.d, ...B.d], X => B.f(X)[ax] - A.f(X)[ax]);
+        break;
+      }
+      case 'length': {
+        const s = S(c.a); if (!s) break; const [A, B] = s;
+        add(c, [...A.d, ...B.d], X => len(A.f(X), B.f(X)) - c.value);
+        break;
+      }
+      case 'distance': {
+        const A = P(c.a), B = P(c.b);
+        add(c, [...A.d, ...B.d], X => len(A.f(X), B.f(X)) - c.value);
+        break;
+      }
+      case 'hdist': case 'vdist': {
+        let A, B;
+        if (c.b) { A = P(c.a); B = P(c.b); } else { const s = S(c.a); if (!s) break; [A, B] = s; }
+        const ax = c.type === 'hdist' ? 0 : 1;
+        add(c, [...A.d, ...B.d], X => (B.f(X)[ax] - A.f(X)[ax]) - c.value);   // value is signed
+        break;
+      }
+      case 'angle': {
+        const s1 = S(c.a); if (!s1) break;
+        const th = c.value * deg, cs_ = Math.cos(th), sn = Math.sin(th);
+        if (c.b) {
+          const s2 = S(c.b); if (!s2) break;
+          add(c, [...s1[0].d, ...s1[1].d, ...s2[0].d, ...s2[1].d], X => {
+            const a0 = s1[0].f(X), a1 = s1[1].f(X), b0 = s2[0].f(X), b1 = s2[1].f(X);
+            const u = [a1[0]-a0[0], a1[1]-a0[1]], v = [b1[0]-b0[0], b1[1]-b0[1]];
+            const cr = u[0]*v[1]-u[1]*v[0], dt = u[0]*v[0]+u[1]*v[1];
+            return (cr*cs_ - dt*sn) / (len(a0,a1)*len(b0,b1));
+          });
+        } else {
+          add(c, [...s1[0].d, ...s1[1].d], X => {
+            const a = s1[0].f(X), b = s1[1].f(X), dx = b[0]-a[0], dy = b[1]-a[1];
+            return (dy*cs_ - dx*sn) / len(a, b);
+          });
+        }
+        break;
+      }
+      case 'parallel': case 'perpendicular': {
+        const s1 = S(c.a), s2 = S(c.b); if (!s1 || !s2) break;
+        const par = c.type === 'parallel';
+        add(c, [...s1[0].d, ...s1[1].d, ...s2[0].d, ...s2[1].d], X => {
+          const a0 = s1[0].f(X), a1 = s1[1].f(X), b0 = s2[0].f(X), b1 = s2[1].f(X);
+          const u = [a1[0]-a0[0], a1[1]-a0[1]], v = [b1[0]-b0[0], b1[1]-b0[1]];
+          const val = par ? (u[0]*v[1]-u[1]*v[0]) : (u[0]*v[0]+u[1]*v[1]);
+          return val / (len(a0,a1)*len(b0,b1));
+        });
+        break;
+      }
+      case 'equal': {
+        if (c.a.s === undefined) {
+          const r1 = Rad(c.a.u), r2 = Rad(c.b.u); if (!r1 || !r2) break;
+          add(c, [...r1.d, ...r2.d], X => r1.f(X) - r2.f(X));
+        } else {
+          const s1 = S(c.a), s2 = S(c.b); if (!s1 || !s2) break;
+          add(c, [...s1[0].d, ...s1[1].d, ...s2[0].d, ...s2[1].d], X => len(s1[0].f(X), s1[1].f(X)) - len(s2[0].f(X), s2[1].f(X)));
+        }
+        break;
+      }
+      case 'radius': {
+        const r = Rad(c.a.u); if (!r) break;
+        add(c, r.d, X => r.f(X) - c.value);
+        break;
+      }
+      case 'pointOnLine': {
+        const A = P(c.a), s = S(c.b); if (!s) break;
+        add(c, [...A.d, ...s[0].d, ...s[1].d], X => {
+          const p = A.f(X), a = s[0].f(X), b = s[1].f(X);
+          return ((b[0]-a[0])*(p[1]-a[1]) - (b[1]-a[1])*(p[0]-a[0])) / len(a, b);
+        });
+        break;
+      }
+      case 'pointOnCircle': {
+        const A = P(c.a), C = Ctr(c.b.u), r = Rad(c.b.u); if (!C || !r) break;
+        add(c, [...A.d, ...C.d, ...r.d], X => len(A.f(X), C.f(X)) - r.f(X));
+        break;
+      }
+      case 'midpoint': {
+        const A = P(c.a), s = S(c.b); if (!s) break;
+        add(c, [...A.d, ...s[0].d, ...s[1].d], X => A.f(X)[0] - (s[0].f(X)[0] + s[1].f(X)[0])/2);
+        add(c, [...A.d, ...s[0].d, ...s[1].d], X => A.f(X)[1] - (s[0].f(X)[1] + s[1].f(X)[1])/2);
+        break;
+      }
+      case 'tangent': {       // line a tangent to circle b; side stored in c.side (+1/−1)
+        const s = S(c.a), C = Ctr(c.b.u), r = Rad(c.b.u); if (!s || !C || !r) break;
+        const side = c.side || 1;
+        add(c, [...s[0].d, ...s[1].d, ...C.d, ...r.d], X => {
+          const a = s[0].f(X), b = s[1].f(X), p = C.f(X);
+          const d = ((b[0]-a[0])*(p[1]-a[1]) - (b[1]-a[1])*(p[0]-a[0])) / len(a, b);
+          return d - side * r.f(X);
+        });
+        break;
+      }
+      case 'fix': {
+        const A = P(c.a);
+        add(c, A.d, X => A.f(X)[0] - c.value[0]);
+        add(c, A.d, X => A.f(X)[1] - c.value[1]);
+        break;
+      }
+    }
+  }
+  return { x, key, owner, eqs };
 }
 
-function writeBack(M) {
+// Numeric Jacobian row for one equation (only its own unknowns)
+function eqGrad(eq, X) {
+  const h = 1e-7, f0 = eq.fn(X), g = [];
+  for (const i of eq.d) {
+    const old = X[i]; X[i] = old + h;
+    g.push((eq.fn(X) - f0) / h);
+    X[i] = old;
+  }
+  return { f0, g };
+}
+
+// Solve dense symmetric positive system A·d = b (Cholesky, falls back to Gauss)
+function solveLinear(A, b, n) {
+  const M = A.map(r => r.slice()), v = b.slice();
+  for (let c = 0; c < n; c++) {
+    let p = c, best = Math.abs(M[c][c]);
+    for (let r = c+1; r < n; r++) if (Math.abs(M[r][c]) > best) { best = Math.abs(M[r][c]); p = r; }
+    if (best < 1e-300) continue;
+    if (p !== c) { [M[p], M[c]] = [M[c], M[p]]; [v[p], v[c]] = [v[c], v[p]]; }
+    for (let r = c+1; r < n; r++) {
+      const f = M[r][c] / M[c][c]; if (!f) continue;
+      for (let k = c; k < n; k++) M[r][k] -= f * M[c][k];
+      v[r] -= f * v[c];
+    }
+  }
+  const d = new Array(n).fill(0);
+  for (let r = n-1; r >= 0; r--) {
+    let s = v[r];
+    for (let k = r+1; k < n; k++) s -= M[r][k] * d[k];
+    d[r] = Math.abs(M[r][r]) > 1e-300 ? s / M[r][r] : 0;
+  }
+  return d;
+}
+
+// Levenberg-Marquardt. pins: [{i, t, w}] soft targets for unknowns.
+function lmSolve(sys, pins) {
+  const n = sys.x.length;
+  if (!n) return { X: [], worst: 0 };
+  const X = sys.x.slice(), home = sys.x.slice();
+  const WC = 1e4, WR = 1e-4;              // constraints ≫ pins (1) ≫ "stay put"
+  const cost = Y => {
+    let s = 0;
+    for (const e of sys.eqs) { const f = e.fn(Y); s += WC*f*f; }
+    for (const p of pins) { const f = Y[p.i]-p.t; s += p.w*f*f; }
+    for (let i = 0; i < n; i++) { const f = Y[i]-home[i]; s += WR*f*f; }
+    return s;
+  };
+  let lambda = 1e-3, cur = cost(X);
+  for (let it = 0; it < 60; it++) {
+    const A = Array.from({length:n}, () => new Array(n).fill(0)), b = new Array(n).fill(0);
+    for (const e of sys.eqs) {
+      const { f0, g } = eqGrad(e, X);
+      for (let a = 0; a < e.d.length; a++) {
+        const ia = e.d[a]; b[ia] -= WC * g[a] * f0;
+        for (let c = 0; c < e.d.length; c++) A[ia][e.d[c]] += WC * g[a] * g[c];
+      }
+    }
+    for (const p of pins) { A[p.i][p.i] += p.w; b[p.i] -= p.w * (X[p.i]-p.t); }
+    for (let i = 0; i < n; i++) { A[i][i] += WR; b[i] -= WR * (X[i]-home[i]); }
+    let improved = false;
+    for (let tries = 0; tries < 8; tries++) {
+      const Ad = A.map((r, i) => { const q = r.slice(); q[i] += lambda * (r[i] || 1e-9); return q; });
+      const d = solveLinear(Ad, b, n);
+      const Y = X.map((v, i) => v + d[i]);
+      const nc = cost(Y);
+      if (nc <= cur) {
+        for (let i = 0; i < n; i++) X[i] = Y[i];
+        const step = Math.max(...d.map(Math.abs));
+        cur = nc; lambda = Math.max(lambda/3, 1e-9); improved = true;
+        if (step < 1e-10) it = 999;
+        break;
+      }
+      lambda *= 8;
+    }
+    if (!improved) break;
+  }
+  let worst = 0;
+  for (const e of sys.eqs) worst = Math.max(worst, Math.abs(e.fn(X)));
+  return { X, worst };
+}
+
+function writeBackSystem(sys, X) {
+  const done = new Set(sys.owner);
   for (const e of ents()) {
-    const g = k => { const q = M.P[e.uid+':'+k]; return [q.x, q.y]; };
+    if (!done.has(e.uid)) continue;
+    const g = k => { const i = sys.key.get(e.uid+':'+k); return [X[i], X[i+1]]; };
     if (e.type === 'polyline' || e.type === 'spline') e.points = e.points.map((_, i) => g(i));
-    else if (e.type === 'circle') { [e.cx, e.cy] = g('c'); e.r = Math.max(0.1, M.R[e.uid].v); }
+    else if (e.type === 'circle') { [e.cx, e.cy] = g('c'); e.r = Math.max(0.1, X[sys.key.get(e.uid+':r')]); }
     else if (e.type === 'arc') { e.p1 = g('p1'); e.pmid = g('pmid'); e.p2 = g('p2'); }
     else if (e.type === 'rect') {
-      const cs = [0,1,2,3].map(g);
-      const xs = cs.map(c=>c[0]), ys = cs.map(c=>c[1]);
+      const cs = [0,1,2,3].map(g), xs = cs.map(c=>c[0]), ys = cs.map(c=>c[1]);
       e.x = Math.min(...xs); e.y = Math.min(...ys);
       e.w = Math.max(0.1, Math.max(...xs) - e.x); e.h = Math.max(0.1, Math.max(...ys) - e.y);
     }
   }
 }
 
-// Solve the active sketch. `pins` = {"uid:k": [x,y]} for points held by the
+// Which entities are tied together by constraints? (so a drag only solves
+// the group it touches)
+function constraintGroups(cs) {
+  const parent = {};
+  const find = u => { while (parent[u] !== u) { parent[u] = parent[parent[u]]; u = parent[u]; } return u; };
+  for (const e of ents()) parent[e.uid] = e.uid;
+  for (const c of cs) {
+    const us = [c.a, c.b].filter(r => r && !isVirtual(r.u) && parent[r.u] !== undefined).map(r => r.u);
+    for (let i = 1; i < us.length; i++) parent[find(us[i])] = find(us[0]);
+  }
+  return u => find(u);
+}
+
+// Solve the active sketch. `pins` = {"uid:k": [x,y]} points held by the
 // mouse; `radiusPins` = {uid: r} for a circle edge being dragged.
 function solveSketch(pins, radiusPins) {
   if (!activeSketch()) return 0;
-  const cs = sketchConstraints().filter(c => constraintValid(c));
-  sketchConstraints().splice(0, Infinity, ...cs);   // drop constraints on deleted shapes
-  const M = buildSolverModel(pins);
-  if (radiusPins) for (const [u, r] of Object.entries(radiusPins)) if (M.R[u] && !cs.some(c=>c.type==='radius'&&c.a.u===u)) { M.R[u].v = r; M.R[u].f = true; }
-  const all = M.implicit.concat(cs);
-  if (!all.length && !pins && !radiusPins) { lastSolveResidual = 0; return 0; }
-  let worst = 0;
-  // While dragging, points that are not held prefer to stay where they are,
-  // so only what the constraints force actually moves (e.g. the far corner
-  // of a rectangle stays put when you drag one corner).
+  ensureAllUids();
+  const all = sketchConstraints();
+  const cs = all.filter(c => constraintValid(c));
+  if (cs.length !== all.length) all.splice(0, Infinity, ...cs);   // drop constraints on deleted shapes
+
+  let only = null;
   if (pins || radiusPins) {
-    const free = Object.values(M.P).filter(q => !q.f);
-    const home = free.map(q => [q.x, q.y]);
-    for (let it=0; it<250; it++) {
-      for (let i=0; i<free.length; i++) {
-        free[i].x += (home[i][0]-free[i].x)*0.15;
-        free[i].y += (home[i][1]-free[i].y)*0.15;
-      }
-      for (const c of all) relax(M, c);
-    }
+    const grp = constraintGroups(cs), roots = new Set();
+    for (const k of Object.keys(pins || {})) roots.add(grp(k.slice(0, k.indexOf(':'))));
+    for (const u of Object.keys(radiusPins || {})) roots.add(grp(u));
+    only = new Set(ents().filter(e => roots.has(grp(e.uid))).map(e => e.uid));
   }
-  for (let it=0; it<400; it++) {
-    worst = 0;
-    for (const c of all) worst = Math.max(worst, relax(M, c));
-    if (worst < 1e-6) break;
+  const useCs = only ? cs.filter(c => [c.a, c.b].some(r => r && only.has(r.u))) : cs;
+  const sys = buildSystem(useCs, only);
+  const pinList = [];
+  for (const [k, pos] of Object.entries(pins || {})) {
+    const i = sys.key.get(k);
+    if (i !== undefined) { pinList.push({i, t:pos[0], w:1}, {i:i+1, t:pos[1], w:1}); }
   }
-  writeBack(M);
-  lastSolveResidual = worst;
+  for (const [u, r] of Object.entries(radiusPins || {})) {
+    const i = sys.key.get(u+':r');
+    if (i !== undefined) pinList.push({i, t:r, w:1});
+  }
+  // Nothing to solve and nothing held: leave the geometry alone
+  if (!sys.eqs.length && !pinList.length) { lastSolveResidual = 0; return 0; }
+  const { X, worst } = lmSolve(sys, pinList);
+  writeBackSystem(sys, X);
+  if (!pins && !radiusPins) lastSolveResidual = worst;
   return worst;
 }
 
 function constraintValid(c) {
   const ok = r => {
     if (!r) return true;
+    if (r.u === REF_O) return r.k === 0;
+    if (r.u === REF_AX || r.u === REF_AY) return r.s === 0;
     const e = entByUid(r.u); if (!e) return false;
     if (r.s !== undefined) return r.s < segCount(e);
     if (r.k !== undefined) return getPt(e, r.k) !== null;
     return true;
   };
   return ok(c.a) && ok(c.b);
+}
+
+// ── Degrees of freedom ─────────────────────────────────────────────────
+// Row-reduce the Jacobian; the null space is "the ways the sketch can still
+// move". Its rows for each entity tell us that entity's own DOF.
+function rankOf(rows, ncols, tol) {
+  const M = rows.map(r => r.slice());
+  let rank = 0; const pivots = [];
+  for (let c = 0; c < ncols && rank < M.length; c++) {
+    let p = rank, best = Math.abs(M[rank][c]);
+    for (let r = rank+1; r < M.length; r++) if (Math.abs(M[r][c]) > best) { best = Math.abs(M[r][c]); p = r; }
+    if (best <= tol) continue;
+    [M[p], M[rank]] = [M[rank], M[p]];
+    const piv = M[rank][c];
+    for (let k = c; k < ncols; k++) M[rank][k] /= piv;
+    for (let r = 0; r < M.length; r++) {
+      if (r === rank) continue;
+      const f = M[r][c]; if (!f) continue;
+      for (let k = c; k < ncols; k++) M[r][k] -= f * M[rank][k];
+    }
+    pivots.push(c); rank++;
+  }
+  return { rank, M: M.slice(0, rank), pivots };
+}
+
+function analyseSketch() {
+  if (!activeSketch()) { dofInfo = null; return null; }
+  const cs = sketchConstraints().filter(c => constraintValid(c));
+  const sys = buildSystem(cs, null);
+  const n = sys.x.length;
+  const X = sys.x;
+  const J = sys.eqs.map(e => {
+    const row = new Array(n).fill(0); const { g } = eqGrad(e, X);
+    e.d.forEach((i, a) => { row[i] = g[a]; });
+    return row;
+  });
+  const { rank, M, pivots } = rankOf(J, n, 1e-6);
+  // Null space basis
+  const pivSet = new Set(pivots), free = [];
+  for (let c = 0; c < n; c++) if (!pivSet.has(c)) free.push(c);
+  const N = free.map(fc => {
+    const v = new Array(n).fill(0); v[fc] = 1;
+    M.forEach((row, ri) => { v[pivots[ri]] = -row[fc]; });
+    return v;
+  });
+  const dofOf = idxs => {
+    if (!idxs.length || !N.length) return 0;
+    const rows = idxs.map(i => N.map(v => v[i]));
+    return rankOf(rows, N.length, 1e-6).rank;
+  };
+  const ix = k => { const i = sys.key.get(k); return i === undefined ? [] : [i, i+1]; };
+  const pointFree = {}, entDof = {}, segDof = {};
+  for (const e of ents()) {
+    const pts = entityPointList(e);
+    for (const p of pts) pointFree[e.uid+':'+p.k] = dofOf(ix(e.uid+':'+p.k)) > 0;
+    const all = pts.flatMap(p => ix(e.uid+':'+p.k));
+    if (e.type === 'circle') all.push(sys.key.get(e.uid+':r'));
+    entDof[e.uid] = dofOf(all);
+    const ns = segCount(e);
+    for (let s = 0; s < ns; s++) {
+      const [ka, kb] = segEndKeys(e, s);
+      segDof[e.uid+':'+s] = dofOf([...ix(e.uid+':'+ka), ...ix(e.uid+':'+kb)]);
+    }
+  }
+  let worst = 0;
+  const bad = new Set();
+  for (const e of sys.eqs) { const f = Math.abs(e.fn(X)); worst = Math.max(worst, f); if (f > 1e-4 && e.c) bad.add(e.c); }
+  const redundant = sys.eqs.length - rank;
+  dofInfo = {
+    dof: n - rank, unknowns: n, equations: sys.eqs.length, redundant: Math.max(0, redundant),
+    conflicting: worst > 1e-4, badConstraints: bad, pointFree, entDof, segDof,
+    empty: ents().length === 0,
+  };
+  return dofInfo;
 }
 
 // ════════════════════════════════════════════════════════════════════
@@ -2219,26 +2579,232 @@ function ptSegDist(px,py,x1,y1,x2,y2) {
 }
 
 // ════════════════════════════════════════════════════════════════════
-// CONSTRAINT PANEL
+// CONSTRAINT WORKBENCH — tools, panel, glyphs, DOF display
 // ════════════════════════════════════════════════════════════════════
 
 const CST_INFO = {
   coincident:   { icon:'●', name:'Coincident' },
+  pointOnLine:  { icon:'⋯', name:'Point on line' },
+  pointOnCircle:{ icon:'◌', name:'Point on circle' },
   horizontal:   { icon:'H', name:'Horizontal' },
   vertical:     { icon:'V', name:'Vertical' },
-  length:       { icon:'↔', name:'Length' },
-  distance:     { icon:'↔', name:'Distance' },
-  angle:        { icon:'∠', name:'Angle' },
   parallel:     { icon:'∥', name:'Parallel' },
   perpendicular:{ icon:'⊥', name:'Perpendicular' },
+  tangent:      { icon:'⌒', name:'Tangent' },
   equal:        { icon:'=', name:'Equal' },
-  radius:       { icon:'R', name:'Radius' },
-  pointOnLine:  { icon:'⋯', name:'Point on line' },
   midpoint:     { icon:'M', name:'Midpoint' },
-  fix:          { icon:'⚓', name:'Fixed' },
+  fix:          { icon:'⚓', name:'Lock' },
+  length:       { icon:'↔', name:'Length' },
+  distance:     { icon:'↔', name:'Distance' },
+  hdist:        { icon:'⟷', name:'Horizontal distance' },
+  vdist:        { icon:'↕', name:'Vertical distance' },
+  radius:       { icon:'R', name:'Radius' },
+  angle:        { icon:'∠', name:'Angle' },
 };
 
+// The constraint tools, in toolbar order. `resolve(sel)` looks at what is
+// selected and answers: need more, wrong selection, or ready (with the
+// constraint to add, and whether it needs a typed value).
+const CST_TOOLS = [
+  { id:'coincident', key:'', hint:'Click two points (or a point and the origin) to join them. Two circles: make them concentric.' },
+  { id:'pointOn', label:'Point on object', icon:'⋯', hint:'Click a point, then a line, axis or circle it must lie on.' },
+  { id:'horizontal', hint:'Click a line, or two points, to make them horizontal.' },
+  { id:'vertical', hint:'Click a line, or two points, to make them vertical.' },
+  { id:'parallel', hint:'Click two lines to make them parallel.' },
+  { id:'perpendicular', hint:'Click two lines to make them meet at 90°.' },
+  { id:'tangent', hint:'Click a line and a circle or arc to make the line touch it.' },
+  { id:'equal', hint:'Click two lines (same length) or two circles/arcs (same radius).' },
+  { id:'midpoint', hint:'Click a point, then the line it must sit in the middle of.' },
+  { id:'fix', label:'Lock', icon:'⚓', hint:'Click a point to lock it where it is. Click a locked point to unlock it.' },
+  { id:'distance', label:'Distance', icon:'↔', dim:true, hint:'Click a line (its length) or two points (distance between them), then type the size.' },
+  { id:'hdist', dim:true, hint:'Click a line, two points, or one point (distance from the origin), then type the size.' },
+  { id:'vdist', dim:true, hint:'Click a line, two points, or one point (distance from the origin), then type the size.' },
+  { id:'radius', dim:true, hint:'Click a circle or arc, then type the radius.' },
+  { id:'angle', dim:true, hint:'Click one line (angle to horizontal) or two lines (angle between them), then type the angle.' },
+];
+const cstToolById = id => CST_TOOLS.find(t => t.id === id);
+var cstTool = null;          // active constraint tool id, when tool === 'cst'
+var showDof = true;          // draw DOF badges on the sketch
+
+const stripRef = it => it.kind==='pt' ? {u:it.u, k:it.k} : it.kind==='seg' ? {u:it.u, s:it.s} : {u:it.u};
+function curSegVec(ref) {
+  const s = segRefs(ref); if (!s) return null;
+  const a = s[0].c || refPoint(s[0]), b = s[1].c || refPoint(s[1]);
+  return [a, b];
+}
+
+function resolveTool(id, sel) {
+  const P = sel.filter(s => s.kind === 'pt');
+  const S = sel.filter(s => s.kind === 'seg');
+  const C = sel.filter(s => s.kind === 'circle' || s.kind === 'arc');
+  const n = sel.length, other = n - P.length - S.length - C.length;
+  const NEED = { status:'need' }, BAD = msg => ({ status:'bad', msg });
+  if (other) return BAD('That tool does not work on splines or shape interiors.');
+  const realSeg = s => s.u !== REF_AX && s.u !== REF_AY;
+  const ready = (c, dim) => ({ status:'ready', c, dim });
+  switch (id) {
+    case 'coincident':
+      if (n < 2) return NEED;
+      if (P.length === 2) return ready({type:'coincident', a:stripRef(P[0]), b:stripRef(P[1])});
+      if (C.length === 2 && C.every(c => c.kind === 'circle')) return ready({type:'coincident', a:{u:C[0].u, k:'c'}, b:{u:C[1].u, k:'c'}});
+      return BAD('Coincident needs two points (or two circles).');
+    case 'pointOn':
+      if (n < 2) return NEED;
+      if (P.length === 1 && S.length === 1) return ready({type:'pointOnLine', a:stripRef(P[0]), b:stripRef(S[0])});
+      if (P.length === 1 && C.length === 1) return ready({type:'pointOnCircle', a:stripRef(P[0]), b:{u:C[0].u}});
+      return BAD('Pick one point and one line, axis or circle.');
+    case 'horizontal': case 'vertical':
+      if (n === 1 && S.length === 1 && realSeg(S[0])) return ready({type:id, a:stripRef(S[0])});
+      if (n === 1 && P.length === 1) return NEED;
+      if (P.length === 2) return ready({type:id, a:stripRef(P[0]), b:stripRef(P[1])});
+      return BAD('Pick one line or two points.');
+    case 'parallel': case 'perpendicular':
+      if (n < 2 && S.length === n) return NEED;
+      if (S.length === 2 && S.some(realSeg)) return ready({type:id, a:stripRef(S[0]), b:stripRef(S[1])});
+      return BAD('Pick two lines.');
+    case 'tangent': {
+      if (n < 2 && (S.length + C.length) === n) return NEED;
+      if (S.length === 1 && C.length === 1 && realSeg(S[0])) {
+        const [a, b] = curSegVec(S[0]);
+        const e = entByUid(C[0].u);
+        const ctr = e.type === 'circle' ? [e.cx, e.cy] : (() => { const g = arcGeom(e.p1, e.pmid, e.p2); return [g.cx, g.cy]; })();
+        const d = ((b[0]-a[0])*(ctr[1]-a[1]) - (b[1]-a[1])*(ctr[0]-a[0]));
+        return ready({type:'tangent', a:stripRef(S[0]), b:{u:C[0].u}, side: d >= 0 ? 1 : -1});
+      }
+      return BAD('Pick one line and one circle or arc.');
+    }
+    case 'equal':
+      if (n < 2) return NEED;
+      if (S.length === 2 && S.every(realSeg)) return ready({type:'equal', a:stripRef(S[0]), b:stripRef(S[1])});
+      if (C.length === 2) return ready({type:'equal', a:{u:C[0].u}, b:{u:C[1].u}});
+      return BAD('Pick two lines or two circles.');
+    case 'midpoint':
+      if (n < 2) return NEED;
+      if (P.length === 1 && S.length === 1 && realSeg(S[0])) return ready({type:'midpoint', a:stripRef(P[0]), b:stripRef(S[0])});
+      return BAD('Pick one point and one line.');
+    case 'fix':
+      if (n === 1 && P.length === 1 && P[0].u !== REF_O) return ready({type:'fix', a:stripRef(P[0]), value: refPoint(P[0])});
+      return BAD('Pick one point of your drawing.');
+    case 'distance':
+      if (n === 1 && S.length === 1 && realSeg(S[0])) {
+        const [a, b] = curSegVec(S[0]);
+        return ready({type:'length', a:stripRef(S[0]), value: Math.hypot(b[0]-a[0], b[1]-a[1])}, 'mm');
+      }
+      if (n === 1 && P.length === 1) return NEED;
+      if (P.length === 2) {
+        const a = refPoint(P[0]), b = refPoint(P[1]);
+        return ready({type:'distance', a:stripRef(P[0]), b:stripRef(P[1]), value: Math.hypot(b[0]-a[0], b[1]-a[1])}, 'mm');
+      }
+      return BAD('Pick one line or two points.');
+    case 'hdist': case 'vdist': {
+      const ax = id === 'hdist' ? 0 : 1;
+      if (n === 1 && S.length === 1 && realSeg(S[0])) {
+        const [a, b] = curSegVec(S[0]);
+        return ready({type:id, a:stripRef(S[0]), value: b[ax]-a[ax]}, 'mm');
+      }
+      if (n === 1 && P.length === 1) {
+        if (P[0].u === REF_O) return NEED;
+        // a lone point: distance from the origin (a second click on another point also works)
+        const b = refPoint(P[0]);
+        return { status:'readyOrMore', c:{type:id, a:{u:REF_O, k:0}, b:stripRef(P[0]), value: b[ax]}, dim:'mm' };
+      }
+      if (P.length === 2) {
+        const a = refPoint(P[0]), b = refPoint(P[1]);
+        return ready({type:id, a:stripRef(P[0]), b:stripRef(P[1]), value: b[ax]-a[ax]}, 'mm');
+      }
+      return BAD('Pick a line, one point or two points.');
+    }
+    case 'radius':
+      if (n === 1 && C.length === 1) {
+        const e = entByUid(C[0].u);
+        const r = e.type === 'circle' ? e.r : (arcGeom(e.p1, e.pmid, e.p2) || {r:0}).r;
+        return ready({type:'radius', a:{u:C[0].u}, value:r}, 'mm');
+      }
+      return BAD('Pick one circle or arc.');
+    case 'angle': {
+      if (n === 1 && S.length === 1 && realSeg(S[0])) {
+        const [a, b] = curSegVec(S[0]);
+        return { status:'readyOrMore', c:{type:'angle', a:stripRef(S[0]), value: Math.atan2(b[1]-a[1], b[0]-a[0])*180/Math.PI}, dim:'°' };
+      }
+      if (S.length === 2) {
+        const [a0, a1] = curSegVec(S[0]), [b0, b1] = curSegVec(S[1]);
+        const u = [a1[0]-a0[0], a1[1]-a0[1]], v = [b1[0]-b0[0], b1[1]-b0[1]];
+        const ang = Math.atan2(u[0]*v[1]-u[1]*v[0], u[0]*v[0]+u[1]*v[1]) * 180/Math.PI;
+        return ready({type:'angle', a:stripRef(S[0]), b:stripRef(S[1]), value: ang}, '°');
+      }
+      return BAD('Pick one or two lines.');
+    }
+  }
+  return BAD('Unknown tool');
+}
+
+// A value-taking constraint: ask for the number at the cursor, then add it.
+function askValueThenAdd(c, unit, sx, sy) {
+  const shown = (c.type === 'hdist' || c.type === 'vdist') ? Math.abs(c.value) : c.value;
+  document.querySelector('#len-popup .lp-unit').textContent = unit;
+  showLenPopup(sx, sy, shown, v => {
+    if (unit === 'mm' && !(v > 0) && c.type !== 'hdist' && c.type !== 'vdist') return;
+    let val = v;
+    if (c.type === 'hdist' || c.type === 'vdist') val = (c.value < 0 ? -1 : 1) * Math.abs(v);
+    addConstraint({...c, value: val});
+    selItems = []; updateConstraintPanel(); scheduleRender();
+  });
+}
+
+let _cstLastClick = [0, 0];
+function cstToolClick(sx, sy, shift) {
+  const hit = hitTestSketch(sx, sy, { refs:true });
+  _cstLastClick = [sx, sy];
+  if (!hit || hit.kind === 'body') { selItems = []; updateConstraintPanel(); scheduleRender(); return; }
+  if (isSelected(hit)) selItems = selItems.filter(s => !sameItem(s, hit));
+  else selItems.push(hit);
+  applyToolIfReady(sx, sy, false);
+}
+function applyToolIfReady(sx, sy, fromButton) {
+  const res = resolveTool(cstTool, selItems);
+  if (res.status === 'ready' || (res.status === 'readyOrMore' && fromButton)) {
+    if (res.dim) askValueThenAdd(res.c, res.dim, sx, sy);
+    else {
+      if (res.c.type === 'fix') {
+        const ex = sketchConstraints().find(o => o.type === 'fix' && o.a.u === res.c.a.u && o.a.k === res.c.a.k);
+        if (ex) { removeConstraint(ex); flashCstStatus('Point unlocked', false); selItems = []; updateConstraintPanel(); scheduleRender(); return; }
+      }
+      addConstraint(res.c);
+      selItems = [];
+    }
+  } else if (res.status === 'readyOrMore') {
+    // e.g. one point picked for a horizontal distance: wait briefly for a second
+    // click; pressing Enter (or clicking empty space) uses the origin.
+    flashCstStatus('Click a second point, or press Enter to measure from the origin', false);
+  } else if (res.status === 'bad') {
+    // Start again from the last click alone: it may be the right pick on its own
+    if (!fromButton && selItems.length > 1) {
+      selItems = selItems.slice(-1);
+      const again = resolveTool(cstTool, selItems);
+      if (again.status !== 'bad') { applyToolIfReady(sx, sy, false); return; }
+    }
+    flashCstStatus(res.msg, true);
+    selItems = [];
+  }
+  updateConstraintPanel(); scheduleRender();
+}
+function cstToolEnter() {
+  if (tool !== 'cst') return false;
+  const res = resolveTool(cstTool, selItems);
+  if (res.status === 'readyOrMore' || res.status === 'ready') {
+    const [sx, sy] = _cstLastClick;
+    if (res.dim) askValueThenAdd(res.c, res.dim, sx, sy);
+    else { addConstraint(res.c); selItems = []; }
+    updateConstraintPanel(); scheduleRender();
+    return true;
+  }
+  return false;
+}
+
 function entLabel(u) {
+  if (u === REF_O) return 'Origin';
+  if (u === REF_AX) return 'X axis';
+  if (u === REF_AY) return 'Y axis';
   const i = ents().findIndex(e => e.uid === u);
   const e = ents()[i];
   if (!e) return '?';
@@ -2247,71 +2813,20 @@ function entLabel(u) {
 }
 function refLabel(r) {
   if (!r) return '';
+  if (isVirtual(r.u)) return entLabel(r.u);
   if (r.s !== undefined) return `${entLabel(r.u)} edge ${r.s+1}`;
   if (r.k !== undefined) return `${entLabel(r.u)} ${r.k==='c' ? 'centre' : 'pt ' + (typeof r.k==='number' ? r.k+1 : r.k)}`;
   return entLabel(r.u);
 }
+function fmtVal(c) {
+  if (c.type==='length'||c.type==='distance'||c.type==='radius') return ` ${(+c.value).toFixed(c.value<10?2:1)} mm`;
+  if (c.type==='hdist'||c.type==='vdist') return ` ${Math.abs(+c.value).toFixed(Math.abs(c.value)<10?2:1)} mm`;
+  if (c.type==='angle') return ` ${(+c.value).toFixed(1)}°`;
+  return '';
+}
 function constraintText(c) {
   const info = CST_INFO[c.type] || {icon:'?', name:c.type};
-  let v = '';
-  if (c.type==='length'||c.type==='distance'||c.type==='radius') v = ` ${(+c.value).toFixed(c.value<10?2:1)} mm`;
-  if (c.type==='angle') v = ` ${(+c.value).toFixed(1)}°`;
-  return `<span class="cst-ico">${info.icon}</span>${info.name}${v} <span class="cst-ref">${refLabel(c.a)}${c.b?' · '+refLabel(c.b):''}</span>`;
-}
-
-function curSegLength(ref) {
-  const e = entByUid(ref.u); const [ka,kb] = segEndKeys(e, ref.s);
-  const a = getPt(e,ka), b = getPt(e,kb);
-  return Math.hypot(b[0]-a[0], b[1]-a[1]);
-}
-function curSegAngle(ref) {
-  const e = entByUid(ref.u); const [ka,kb] = segEndKeys(e, ref.s);
-  const a = getPt(e,ka), b = getPt(e,kb);
-  return Math.atan2(b[1]-a[1], b[0]-a[0]) * 180/Math.PI;
-}
-
-// Which constraint buttons make sense for what is selected?
-function availableConstraints() {
-  const pts = selItems.filter(s => s.kind==='pt');
-  const segs = selItems.filter(s => s.kind==='seg');
-  const circ = selItems.filter(s => s.kind==='circle');
-  const n = selItems.length;
-  const out = [];
-  const strip = it => it.kind==='pt' ? {u:it.u, k:it.k} : it.kind==='seg' ? {u:it.u, s:it.s} : {u:it.u};
-  if (n===1 && segs.length===1) {
-    out.push({type:'horizontal', a:strip(segs[0])}, {type:'vertical', a:strip(segs[0])});
-    out.push({type:'length', a:strip(segs[0]), value: curSegLength(segs[0]), input:'mm'});
-    out.push({type:'angle',  a:strip(segs[0]), value: curSegAngle(segs[0]), input:'°'});
-  }
-  if (n===2 && segs.length===2) {
-    out.push({type:'parallel', a:strip(segs[0]), b:strip(segs[1])},
-             {type:'perpendicular', a:strip(segs[0]), b:strip(segs[1])},
-             {type:'equal', a:strip(segs[0]), b:strip(segs[1])});
-  }
-  if (n===2 && pts.length===2) {
-    const A = getPt(entByUid(pts[0].u), pts[0].k), B = getPt(entByUid(pts[1].u), pts[1].k);
-    out.push({type:'coincident', a:strip(pts[0]), b:strip(pts[1])},
-             {type:'horizontal', a:strip(pts[0]), b:strip(pts[1]), label:'Horizontal (same height)'},
-             {type:'vertical',   a:strip(pts[0]), b:strip(pts[1]), label:'Vertical (in line)'},
-             {type:'distance',   a:strip(pts[0]), b:strip(pts[1]), value: Math.hypot(B[0]-A[0], B[1]-A[1]), input:'mm'});
-  }
-  if (n===1 && pts.length===1) {
-    const already = sketchConstraints().find(c => c.type==='fix' && c.a.u===pts[0].u && c.a.k===pts[0].k);
-    if (already) out.push({remove: already, label:'Unfix point'});
-    else out.push({type:'fix', a:strip(pts[0]), value: getPt(entByUid(pts[0].u), pts[0].k)});
-  }
-  if (n===2 && pts.length===1 && segs.length===1) {
-    out.push({type:'pointOnLine', a:strip(pts[0]), b:strip(segs[0])},
-             {type:'midpoint',    a:strip(pts[0]), b:strip(segs[0])});
-  }
-  if (n===1 && circ.length===1) {
-    out.push({type:'radius', a:strip(circ[0]), value: entByUid(circ[0].u).r, input:'mm'});
-  }
-  if (n===2 && circ.length===2) {
-    out.push({type:'equal', a:strip(circ[0]), b:strip(circ[1]), label:'Equal radius'},
-             {type:'coincident', a:{u:circ[0].u, k:'c'}, b:{u:circ[1].u, k:'c'}, label:'Concentric'});
-  }
-  return out;
+  return `<span class="cst-ico">${info.icon}</span>${info.name}${fmtVal(c)} <span class="cst-ref">${refLabel(c.a)}${c.b?' · '+refLabel(c.b):''}</span>`;
 }
 
 function sameRef(a, b) {
@@ -2323,13 +2838,13 @@ function sameRef(a, b) {
 function addConstraint(c) {
   if (!activeSketch()) return;
   const list = sketchConstraints();
-  const single = ['length','angle','radius','fix','distance'];
-  const idx = list.findIndex(o => o.type===c.type && sameRef(o.a,c.a) && sameRef(o.b,c.b));
+  const single = ['length','angle','radius','fix','distance','hdist','vdist','tangent'];
+  const same = o => o.type===c.type && ((sameRef(o.a,c.a) && sameRef(o.b,c.b)) || (sameRef(o.a,c.b) && sameRef(o.b,c.a)));
+  const idx = list.findIndex(same);
   if (idx >= 0) {
     if (single.includes(c.type)) list.splice(idx, 1);
     else { flashCstStatus('Already has that constraint', false); return; }
   }
-  // H and V on the same segment cannot both hold
   if (c.type==='horizontal' || c.type==='vertical') {
     const other = c.type==='horizontal' ? 'vertical' : 'horizontal';
     const j = list.findIndex(o => o.type===other && sameRef(o.a,c.a) && sameRef(o.b,c.b));
@@ -2337,11 +2852,14 @@ function addConstraint(c) {
   }
   const clean = { type:c.type, a:c.a };
   if (c.b) clean.b = c.b;
+  if (c.side) clean.side = c.side;
   if (c.value !== undefined) clean.value = Array.isArray(c.value) ? c.value.slice() : +c.value;
   list.push(clean);
   const res = solveSketch();
   scheduleExtrude(); updateConstraintPanel(); scheduleRender();
-  if (res > 1e-3) flashCstStatus('These constraints fight each other — remove one (×) or press Ctrl+Z', true);
+  const d = dofInfo;
+  if (res > 1e-4) flashCstStatus('These constraints fight each other. Remove one (×) or press Ctrl+Z.', true);
+  else if (d && d.redundant > 0) flashCstStatus(`${CST_INFO[c.type].name} added, but it repeats a rule that was already there (redundant).`, true);
   else flashCstStatus(`✓ ${CST_INFO[c.type].name} added`, false);
 }
 function removeConstraint(c) {
@@ -2359,84 +2877,97 @@ function flashCstStatus(msg, bad) {
   el.textContent = msg;
   el.style.color = bad ? 'var(--red)' : 'var(--green)';
   clearTimeout(_cstStatusTimer);
-  if (!bad) _cstStatusTimer = setTimeout(() => { el.textContent = ''; }, 2500);
+  _cstStatusTimer = setTimeout(() => { el.textContent = ''; }, bad ? 6000 : 2500);
 }
 
 function escHtml(s) { return String(s).replace(/[&<>"]/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[ch])); }
 
+// Points snapped onto another shape's point get a real Coincident constraint,
+// so the DOF count is honest (two lines that only look joined are not joined).
+function processNewEntities() {
+  const sk = activeSketch(); if (!sk) return;
+  const list = sketchConstraints();
+  for (const e of sk.entities) {
+    if (e._ac) continue;
+    ensureUid(e);
+    normalizeArc(e);
+    for (const p of entityPointList(e)) {
+      if (e.type === 'circle') continue;          // a centre landing on a point is rarely meant
+      for (const o of sk.entities) {
+        if (o === e || o.type === 'circle') continue;
+        ensureUid(o);
+        const q = entityPointList(o).find(q => Math.hypot(q.x-p.x, q.y-p.y) < 1e-6);
+        if (!q) continue;
+        const a = {u:e.uid, k:p.k}, b = {u:o.uid, k:q.k};
+        const exists = list.some(c => c.type==='coincident' && ((sameRef(c.a,a)&&sameRef(c.b,b))||(sameRef(c.a,b)&&sameRef(c.b,a))));
+        if (!exists) list.push({type:'coincident', a, b});
+        break;                                    // one join per point is enough
+      }
+    }
+    e._ac = 1;
+  }
+}
+
+function dofStatus(d) {
+  if (!d || d.empty) return { cls:'empty', text:'Empty sketch', sub:'Draw something on the Sketch workbench first.' };
+  if (d.conflicting) return { cls:'bad', text:'Over-constrained', sub:'Some constraints contradict each other (shown in red). Remove one.' };
+  if (d.dof === 0) return { cls:'ok', text:'Fully constrained', sub: d.redundant ? `0 DOF · ${d.redundant} redundant constraint${d.redundant>1?'s':''}` : '0 degrees of freedom — nothing can move by accident. Ready to extrude.' };
+  return { cls:'warn', text:`${d.dof} degree${d.dof>1?'s':''} of freedom left`, sub:'Under-constrained: parts can still move. Green = fully fixed.' };
+}
+
 function updateConstraintPanel() {
   const panel = document.getElementById('cst-panel');
   if (!panel) return;
-  const body = document.getElementById('cst-body');
-  const listEl = document.getElementById('cst-list');
-  const label = document.getElementById('cst-label');
   if (!activeSketch()) { panel.style.display = 'none'; return; }
   panel.style.display = 'block';
-  selItems = selItems.filter(it => entByUid(it.u));
+  processNewEntities();
+  selItems = selItems.filter(it => isVirtual(it.u) || entByUid(it.u));
+  const d = analyseSketch();
+  const st = dofStatus(d);
+  const dofBox = document.getElementById('cst-dof');
+  dofBox.className = 'cst-dof ' + st.cls;
+  dofBox.innerHTML = `<b>${st.text}</b><span>${st.sub}</span>`;
+  const chip = document.getElementById('dof-chip');
+  if (chip) { chip.className = 'dof-chip ' + st.cls; chip.textContent = d && !d.empty ? (d.conflicting ? 'Over-constrained' : d.dof === 0 ? 'Fully constrained' : `${d.dof} DOF`) : ''; chip.hidden = !d || d.empty; }
 
-  const kinds = { pt:'point', seg:'edge', circle:'circle', arc:'arc', spline:'spline' };
-  if (!selItems.length) label.textContent = 'nothing selected';
-  else {
-    const counts = {};
-    for (const s of selItems) counts[kinds[s.kind]] = (counts[kinds[s.kind]]||0) + 1;
-    label.textContent = Object.entries(counts).map(([k,v]) => `${v} ${k}${v>1?'s':''}`).join(' + ');
+  const label = document.getElementById('cst-label');
+  const body = document.getElementById('cst-body');
+  if (tool === 'cst' && cstTool) {
+    const t = cstToolById(cstTool);
+    label.textContent = (t.label || CST_INFO[t.id]?.name || t.id) + ' tool';
+    body.innerHTML = `<div class="cst-help">${escHtml(t.hint)}<br><span class="cst-sub">Esc: back to Select</span></div>`;
+  } else if (wbActive === 'constraints') {
+    label.textContent = 'pick a tool';
+    body.innerHTML = `<div class="cst-help">Choose a constraint tool in the toolbar, then click the geometry. You can also select first (Shift-click for more) and then click the tool.</div>`;
+  } else {
+    label.textContent = '';
+    body.innerHTML = '';
   }
 
-  body.innerHTML = '';
-  const opts = availableConstraints();
-  if (!selItems.length) {
-    body.innerHTML = `<div class="cst-help">Pick the <b>Select</b> tool (E). Click a line, point or circle — <b>Shift</b>-click to add more — then choose a constraint. Drag points, edges or whole shapes to move them.</div>`;
-  } else if (!opts.length) {
-    body.innerHTML = `<div class="cst-help">No constraint for this combination. Try: 1 edge · 2 edges · 2 points · a point + an edge · 1 or 2 circles.</div>`;
-  }
-  const quick = document.createElement('div'); quick.className = 'cst-quick-row';
-  for (const o of opts) {
-    if (o.input) {
-      const row = document.createElement('div'); row.className = 'cst-row';
-      const id = 'cst-in-' + o.type;
-      row.innerHTML = `<span class="cst-lbl">${CST_INFO[o.type].name}</span>
-        <input type="number" class="cst-inp" id="${id}" step="${o.input==='°'?1:0.1}" value="${(+o.value).toFixed(o.input==='°'?1:2)}" aria-label="${CST_INFO[o.type].name}">
-        <span class="cst-unit">${o.input}</span><button class="cst-btn">Lock</button>`;
-      const inp = row.querySelector('input');
-      const go = () => {
-        const v = parseFloat(inp.value);
-        if (isNaN(v) || (o.input==='mm' && v <= 0)) return;
-        addConstraint({...o, value: v});
-      };
-      row.querySelector('button').addEventListener('click', go);
-      inp.addEventListener('keydown', e => { if (e.key==='Enter') go(); e.stopPropagation(); });
-      body.appendChild(row);
-    } else {
-      const b = document.createElement('button'); b.className = 'cst-quick';
-      if (o.remove) { b.textContent = o.label; b.addEventListener('click', () => removeConstraint(o.remove)); }
-      else {
-        b.innerHTML = `<span class="cst-ico">${CST_INFO[o.type].icon}</span>${escHtml(o.label || CST_INFO[o.type].name)}`;
-        b.addEventListener('click', () => addConstraint(o));
-      }
-      quick.appendChild(b);
-    }
-  }
-  if (quick.children.length) body.insertBefore(quick, body.firstChild);
-
-  // Existing constraints in this sketch
+  const listEl = document.getElementById('cst-list');
   const cs = sketchConstraints();
-  listEl.innerHTML = cs.length ? `<div class="cst-list-title">In this sketch (${cs.length})</div>` : '';
+  listEl.innerHTML = cs.length ? `<div class="cst-list-title">Constraints in this sketch (${cs.length})</div>` : '';
   cs.forEach(c => {
     const row = document.createElement('div'); row.className = 'cst-item';
     const involved = selItems.length && selItems.some(s => s.u===c.a.u || (c.b && s.u===c.b.u));
     if (involved) row.classList.add('hl');
+    if (d && d.badConstraints.has(c)) row.classList.add('bad');
     row.innerHTML = `<span class="cst-item-txt">${constraintText(c)}</span><button class="cst-del" title="Remove constraint" aria-label="Remove constraint">×</button>`;
     row.querySelector('.cst-del').addEventListener('click', () => removeConstraint(c));
-    if (c.type==='length'||c.type==='distance'||c.type==='radius'||c.type==='angle') {
+    if (['length','distance','radius','angle','hdist','vdist'].includes(c.type)) {
       row.querySelector('.cst-item-txt').title = 'Double-click to change the value';
       row.addEventListener('dblclick', () => {
-        const nv = prompt(`New ${CST_INFO[c.type].name.toLowerCase()} value`, (+c.value).toFixed(2));
+        const cur = (c.type==='hdist'||c.type==='vdist') ? Math.abs(c.value) : c.value;
+        const nv = prompt(`New ${CST_INFO[c.type].name.toLowerCase()} value`, (+cur).toFixed(2));
         const v = parseFloat(nv);
-        if (!isNaN(v) && (c.type==='angle' || v > 0)) { c.value = v; solveSketch(); scheduleExtrude(); updateConstraintPanel(); scheduleRender(); }
+        if (isNaN(v) || (c.type!=='angle' && c.type!=='hdist' && c.type!=='vdist' && v <= 0)) return;
+        c.value = (c.type==='hdist'||c.type==='vdist') ? (c.value < 0 ? -1 : 1) * Math.abs(v) : v;
+        solveSketch(); scheduleExtrude(); updateConstraintPanel(); scheduleRender();
       });
     }
     listEl.appendChild(row);
   });
+  if (typeof refreshExtrudePrompt === 'function') refreshExtrudePrompt();
 }
 
 // Typing a number on a dimension label locks it as a Length/Radius constraint.
@@ -2454,64 +2985,376 @@ function hasLengthConstraint(entityIdx, segIdx) {
   return sketchConstraints().some(c => c.type==='length' && c.a.u===e.uid && c.a.s===segIdx);
 }
 
-// ── Canvas drawing of constraint glyphs ──────────────────────────────
+// ── Canvas: constraint glyphs ────────────────────────────────────────
+function cstBadge(x, y, txt, color) {
+  ctx.save();
+  ctx.font = 'bold 10px JetBrains Mono,monospace';
+  const w = Math.max(14, ctx.measureText(txt).width + 6);
+  ctx.fillStyle = 'rgba(12,16,28,0.92)';
+  ctx.strokeStyle = color; ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.roundRect ? ctx.roundRect(x-w/2, y-7, w, 14, 3) : ctx.rect(x-w/2, y-7, w, 14);
+  ctx.fill(); ctx.stroke();
+  ctx.fillStyle = color; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  ctx.fillText(txt, x, y+0.5);
+  ctx.restore();
+}
 function drawConstraintGlyphs() {
   const cs = sketchConstraints();
   if (!cs.length) return;
-  const perSeg = {};
-  const badge = (x, y, txt, color) => {
-    ctx.save();
-    ctx.font = 'bold 10px JetBrains Mono,monospace';
-    const w = Math.max(14, ctx.measureText(txt).width + 6);
-    ctx.fillStyle = 'rgba(12,16,28,0.92)';
-    ctx.strokeStyle = color; ctx.lineWidth = 1;
-    ctx.beginPath(); ctx.roundRect ? ctx.roundRect(x-w/2, y-7, w, 14, 3) : ctx.rect(x-w/2, y-7, w, 14);
-    ctx.fill(); ctx.stroke();
-    ctx.fillStyle = color; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-    ctx.fillText(txt, x, y+0.5);
-    ctx.restore();
-  };
+  const perSeg = {}, perPt = {};
   const segAnchor = (ref) => {
-    const e = entByUid(ref.u); if (!e) return null;
-    const ks = segEndKeys(e, ref.s); if (!ks) return null;
-    const a = wtoc(...getPt(e, ks[0])), b = wtoc(...getPt(e, ks[1]));
+    if (isVirtual(ref.u)) return null;
+    const v = curSegVec(ref); if (!v) return null;
+    const a = wtoc(...v[0]), b = wtoc(...v[1]);
     const key = ref.u + ':' + ref.s;
     const n = perSeg[key] = (perSeg[key] || 0) + 1;
     const dx = b[0]-a[0], dy = b[1]-a[1], L = Math.hypot(dx, dy) || 1;
     const mx = (a[0]+b[0])/2, my = (a[1]+b[1])/2;
-    // opposite side from the length label, spread along the edge
     return [mx + dy/L*13 + dx/L*(n-1)*18, my - dx/L*13 + dy/L*(n-1)*18];
   };
-  const ptAnchor = (ref, n=0) => {
-    const e = entByUid(ref.u); if (!e) return null;
-    const p = getPt(e, ref.k); if (!p) return null;
+  const ptAnchor = (ref) => {
+    if (ref.u === REF_O) return null;
+    const p = refPoint(ref); if (!p) return null;
+    const key = ref.u+':'+ref.k; const n = perPt[key] = (perPt[key]||0) + 1;
     const [x, y] = wtoc(p[0], p[1]);
-    return [x + 11 + n*16, y - 11];
+    return [x + 11 + (n-1)*16, y - 11];
   };
-  const bad = lastSolveResidual > 1e-3;
-  const col = bad ? 'rgba(248,113,113,1)' : 'rgba(52,211,153,1)';
-  const perPt = {};
+  const ok = 'rgba(52,211,153,1)', red = 'rgba(248,113,113,1)';
   for (const c of cs) {
     const info = CST_INFO[c.type]; if (!info) continue;
+    const col = dofInfo && dofInfo.badConstraints.has(c) ? red : ok;
     if (c.type === 'length' || c.type === 'radius') continue;   // shown on the dimension label
-    if (c.a && c.a.s !== undefined) {
-      const p = segAnchor(c.a); if (p) badge(p[0], p[1], c.type==='angle' ? `∠${Math.round(c.value)}°` : info.icon, col);
-      if (c.b && c.b.s !== undefined) { const q = segAnchor(c.b); if (q) badge(q[0], q[1], info.icon, col); }
-    } else if (c.a && c.a.k !== undefined) {
-      if (c.type === 'coincident') {
-        const e = entByUid(c.a.u), p = e && getPt(e, c.a.k);
-        if (p) { const [x,y] = wtoc(p[0],p[1]); ctx.save(); ctx.strokeStyle = col; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(x,y,6,0,Math.PI*2); ctx.stroke(); ctx.restore(); }
-        continue;
+    let txt = info.icon;
+    if (c.type === 'angle') txt = `∠${Math.round(c.value)}°`;
+    if (c.type === 'hdist') txt = `⟷${Math.abs(c.value).toFixed(Math.abs(c.value)<10?1:0)}`;
+    if (c.type === 'vdist') txt = `↕${Math.abs(c.value).toFixed(Math.abs(c.value)<10?1:0)}`;
+    if (c.type === 'distance') txt = `↔${(+c.value).toFixed(c.value<10?1:0)}`;
+    if (c.type === 'coincident') {
+      for (const r of [c.a, c.b]) {
+        const p = refPoint(r); if (!p) continue;
+        const [x, y] = wtoc(p[0], p[1]);
+        ctx.save(); ctx.strokeStyle = col; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(x, y, 6, 0, Math.PI*2); ctx.stroke(); ctx.restore();
       }
-      const k = c.a.u+':'+c.a.k; const n = perPt[k] = (perPt[k]||0) + 1;
-      const p = ptAnchor(c.a, n-1);
-      let txt = info.icon;
-      if (c.type === 'distance') txt = `↔${(+c.value).toFixed(c.value<10?1:0)}`;
-      if (p) badge(p[0], p[1], txt, col);
-    } else if (c.type === 'equal') {   // circles
-      for (const r of [c.a, c.b]) { const e = entByUid(r.u); if (e) { const [x,y] = wtoc(e.cx, e.cy + e.r); badge(x, y+10, '=', col); } }
+      continue;
+    }
+    const placed = [];
+    for (const r of [c.a, c.b]) {
+      if (!r) continue;
+      let p = null;
+      if (r.s !== undefined) p = segAnchor(r);
+      else if (r.k !== undefined) p = ptAnchor(r);
+      else { const e = entByUid(r.u); if (e && e.type === 'circle') { const [x,y] = wtoc(e.cx, e.cy + e.r); p = [x, y-10]; } else if (e && e.type==='arc') { const [x,y] = wtoc(...e.pmid); p = [x, y-12]; } }
+      if (p) placed.push(p);
+      if (['hdist','vdist','distance','angle','fix'].includes(c.type) && placed.length) break;  // show once
+    }
+    for (const p of placed) cstBadge(p[0], p[1], txt, col);
+  }
+}
+
+// ── Canvas: DOF overlay (green = fully fixed, amber badge = DOF left) ──
+function drawDofOverlay() {
+  const d = dofInfo; if (!d || d.empty) return;
+  const green = 'rgba(52,211,153,0.95)', amber = 'rgba(245,158,11,1)';
+  const SB = showDof && (wbActive === 'constraints' || tool === 'cst');
+  ctx.save();
+  ctx.lineWidth = 2.4; ctx.strokeStyle = green;
+  for (const e of ents()) {
+    if (e.construction) continue;
+    const ns = segCount(e);
+    for (let s = 0; s < ns; s++) {
+      const fd = d.segDof[e.uid+':'+s];
+      const [ka, kb] = segEndKeys(e, s);
+      const a = wtoc(...getPt(e, ka)), b = wtoc(...getPt(e, kb));
+      if (fd === 0) { ctx.beginPath(); ctx.moveTo(a[0], a[1]); ctx.lineTo(b[0], b[1]); ctx.stroke(); }
+      else if (SB && fd > 0) {
+        const dx = b[0]-a[0], dy = b[1]-a[1], L = Math.hypot(dx, dy) || 1;
+        if (L > 34) cstBadge((a[0]+b[0])/2 - dy/L*13, (a[1]+b[1])/2 + dx/L*13 + 14, `${fd} DOF`, amber);
+      }
+    }
+    const ed = d.entDof[e.uid];
+    if (e.type === 'circle') {
+      const [cx, cy] = wtoc(e.cx, e.cy);
+      if (ed === 0) { ctx.beginPath(); ctx.arc(cx, cy, e.r*zoom, 0, Math.PI*2); ctx.stroke(); }
+      else if (SB) cstBadge(cx, cy - e.r*zoom - 12, `${ed} DOF`, amber);
+    }
+    if (e.type === 'arc') {
+      const g = arcGeom(e.p1, e.pmid, e.p2);
+      if (g) {
+        const [cx, cy] = wtoc(g.cx, g.cy);
+        if (ed === 0) { ctx.beginPath(); ctx.arc(cx, cy, g.r*zoom, g.startAngle, g.endAngle, !g.ccw); ctx.stroke(); }
+        else if (SB) { const [mx, my] = wtoc(...e.pmid); cstBadge(mx, my - 14, `${ed} DOF`, amber); }
+      }
+    }
+    if (e.type === 'spline' && SB && ed > 0) { const m = e.points[Math.floor(e.points.length/2)]; const [x, y] = wtoc(m[0], m[1]); cstBadge(x, y - 14, `${ed} DOF`, amber); }
+    // points: green when fixed
+    for (const p of entityPointList(e)) {
+      if (d.pointFree[e.uid+':'+p.k] === false) {
+        const [x, y] = wtoc(p.x, p.y);
+        ctx.fillStyle = green; ctx.beginPath(); ctx.arc(x, y, 3.6, 0, Math.PI*2); ctx.fill();
+      }
     }
   }
+  ctx.restore();
+}
+
+// ════════════════════════════════════════════════════════════════════
+// WORKBENCHES — Sketch / Constraints (2D) and 3D Features
+// ════════════════════════════════════════════════════════════════════
+
+var wbActive = 'sketch';
+var selectedFeatureId = null;
+var lastScreen = { x: 200, y: 200 };
+const DRAW_TOOLS = ['line','polyline','rect','circle','arc','polygon','spline','addpt'];
+const CST_SHORT = { coincident:'Coincident', pointOn:'On object', horizontal:'Horizontal', vertical:'Vertical',
+  parallel:'Parallel', perpendicular:'Perpendicular', tangent:'Tangent', equal:'Equal', midpoint:'Midpoint',
+  fix:'Lock', distance:'Distance', hdist:'H distance', vdist:'V distance', radius:'Radius', angle:'Angle' };
+
+function showWorkbench(w) {
+  wbActive = w;
+  const is3d = !!document.querySelector('.main')?.classList.contains('mode-3d');
+  const set = (id, hide) => { const el = document.getElementById(id); if (el) el.hidden = hide; };
+  set('wbg-sketch', is3d || w !== 'sketch');
+  set('wbg-constraints', is3d || w !== 'constraints');
+  set('wbg-3d', !is3d);
+  set('wb-tabs2d', is3d);
+  set('wb-tabs3d', !is3d);
+  document.querySelectorAll('.wb-2d').forEach(el => { el.hidden = is3d; });
+  for (const [id, v] of [['wb-sketch','sketch'], ['wb-constraints','constraints']]) {
+    const b = document.getElementById(id); if (!b) continue;
+    b.classList.toggle('active', w === v); b.setAttribute('aria-selected', String(w === v));
+  }
+  updateConstraintPanel(); scheduleRender();
+}
+function setWorkbench(w) {
+  if (w === 'constraints') { showWorkbench('constraints'); setTool('edit'); }
+  else { showWorkbench('sketch'); if (tool === 'cst') setTool('edit'); }
+}
+
+function setCstTool(id) {
+  linePoints=[]; rectStart=null; circleCenter=null; arcPts=[]; polyCenter=null; splinePts=[];
+  hideLenPopup(); pendingDrag = null; hoverAddPt = null;
+  if (tool === 'cst') selItems = [];      // switching tools: start a fresh pick
+  if (wbActive !== 'constraints') showWorkbench('constraints');
+  tool = 'cst'; cstTool = id;
+  document.querySelectorAll('.tb-btn[id^="tool-"], .tb-btn[id^="cst-"]').forEach(b => b.classList.remove('active'));
+  document.getElementById('cst-' + id)?.classList.add('active');
+  ['poly-sides-lbl','poly-sides','rect-submode','rect-radius-lbl','rect-radius','rect-radius-unit']
+    .forEach(i => { const el = document.getElementById(i); if (el) el.style.display = 'none'; });
+  updateHint(); updateConstraintPanel(); scheduleRender();
+  if (selItems.length) applyToolIfReady(lastScreen.x, lastScreen.y, true);
+}
+function cstHintHtml() {
+  const t = cstToolById(cstTool); if (!t) return '';
+  return `<b>${escHtml(CST_SHORT[t.id] || t.id)} constraint</b><br>${escHtml(t.hint)}<br>Esc: back to Select`;
+}
+
+// Build the constraint toolbar from CST_TOOLS
+function buildConstraintToolbar() {
+  const g = document.getElementById('wbg-constraints'); if (!g) return;
+  const frag = document.createDocumentFragment();
+  for (const t of CST_TOOLS) {
+    const b = document.createElement('button');
+    b.className = 'tb-btn cst-tb'; b.id = 'cst-' + t.id; b.type = 'button';
+    b.title = (CST_SHORT[t.id] || t.id) + ' — ' + t.hint;
+    const icon = t.icon || CST_INFO[t.id]?.icon || '?';
+    b.setAttribute('aria-label', CST_SHORT[t.id] || t.id);
+    b.innerHTML = `<span class="cst-tb-ico" aria-hidden="true">${icon}</span><span class="cst-tb-lbl">${CST_SHORT[t.id] || t.id}</span>`;
+    b.addEventListener('click', () => setTool('cst:' + t.id));
+    frag.appendChild(b);
+    if (t.id === 'fix') { const sep = document.createElement('div'); sep.className = 'tb-sep'; frag.appendChild(sep); }
+  }
+  const sep = document.createElement('div'); sep.className = 'tb-sep'; frag.appendChild(sep);
+  const dofBtn = document.createElement('button');
+  dofBtn.className = 'tb-btn active'; dofBtn.id = 'btn-show-dof'; dofBtn.type = 'button';
+  dofBtn.title = 'Show how many degrees of freedom each line, circle and arc still has';
+  dofBtn.textContent = 'Show DOF';
+  dofBtn.addEventListener('click', () => { showDof = !showDof; dofBtn.classList.toggle('active', showDof); scheduleRender(); });
+  frag.appendChild(dofBtn);
+  const joinBtn = document.createElement('button');
+  joinBtn.className = 'tb-btn'; joinBtn.id = 'btn-join'; joinBtn.type = 'button';
+  joinBtn.title = 'Add a Coincident constraint wherever two shapes already share a corner';
+  joinBtn.textContent = 'Join corners';
+  joinBtn.addEventListener('click', () => {
+    const before = sketchConstraints().length;
+    ents().forEach(e => { delete e._ac; });
+    processNewEntities(); solveSketch(); scheduleExtrude(); updateConstraintPanel(); scheduleRender();
+    const n = sketchConstraints().length - before;
+    flashCstStatus(n ? `${n} corner${n>1?'s':''} joined` : 'No loose corners found', false);
+  });
+  frag.appendChild(joinBtn);
+  g.appendChild(frag);
+}
+
+// ── 3D features ──────────────────────────────────────────────────────
+function f3Msg(text, bad) {
+  const el = document.getElementById('f3-msg'); if (!el) return;
+  el.textContent = text || '';
+  el.classList.toggle('bad', !!bad);
+  el.hidden = !text;
+}
+function sketchWithProfiles() {
+  const a = activeSketch();
+  if (a && getAllProfiles(a).length) return a;
+  return [...featureTree].reverse().find(f => f.type === 'sketch' && getAllProfiles(f).length) || null;
+}
+function unusedProfiles(sk) {
+  sk.extrudeChoice = sk.extrudeChoice || {};
+  return getAllProfiles(sk).map((_, i) => i).filter(i => !sk.extrudeChoice[i] || sk.extrudeChoice[i] === 'flat');
+}
+const isSolidFeature = f => f.type === 'extrude' || f.type === 'revolve';
+function dofNoteFor(sk) {
+  if (!sk || sk.id !== activeSketchId) return '';
+  const d = analyseSketch();
+  if (!d || d.empty) return '';
+  if (d.conflicting) return ` Note: ${sk.name} is over-constrained.`;
+  if (d.dof > 0) return ` Note: ${sk.name} still has ${d.dof} degree${d.dof>1?'s':''} of freedom, so it could change by accident. Fully constrain it for a reliable part.`;
+  return ` ${sk.name} is fully constrained.`;
+}
+function nextName(prefix) {
+  const n = featureTree.filter(f => (f.name || '').startsWith(prefix)).length + 1;
+  return `${prefix} ${n}`;
+}
+
+function f3PadPocket(kind) {
+  const sk = sketchWithProfiles();
+  if (!sk) { f3Msg('Draw a closed shape in a sketch first.', true); return; }
+  activeSketchId = sk.id;
+  const idxs = unusedProfiles(sk);
+  if (!idxs.length) { f3Msg(`Every closed shape in ${sk.name} is already used. Start a new sketch, or click a feature in the tree to change it.`, true); return; }
+  const hadSolid = featureTree.some(isSolidFeature);
+  if (kind === 'pocket' && !hadSolid) { f3Msg('A pocket cuts into a solid. Pad a shape first.', true); return; }
+  idxs.forEach(i => { sk.extrudeChoice[i] = 'extrude'; });
+  syncExtrudeNodes();
+  const nodes = featureTree.filter(f => f.type === 'extrude' && f.sketchId === sk.id && idxs.includes(f.profileIdx));
+  nodes.forEach((n, j) => {
+    n.operation = kind === 'pocket' ? 'cut' : (hadSolid || j > 0 ? 'fuse' : 'new');
+    n.name = nextName(kind === 'pocket' ? 'Pocket' : 'Pad');
+  });
+  if (nodes[0]) selectFeatureNode(nodes[0]);
+  renderFeatureTree(); scheduleExtrude();
+  f3Msg(`${kind === 'pocket' ? 'Pocket' : 'Pad'} added — set its ${kind === 'pocket' ? 'depth' : 'height'} on the right.` + dofNoteFor(sk), false);
+}
+
+function f3Revolve() {
+  const sk = sketchWithProfiles();
+  if (!sk) { f3Msg('Draw a closed shape in a sketch first.', true); return; }
+  activeSketchId = sk.id;
+  const idxs = unusedProfiles(sk);
+  if (!idxs.length) { f3Msg(`Every closed shape in ${sk.name} is already used. Start a new sketch.`, true); return; }
+  const hadSolid = featureTree.some(isSolidFeature);
+  let first = null;
+  idxs.forEach((i, j) => {
+    sk.extrudeChoice[i] = 'revolve';
+    const node = { id:newId('rv'), type:'revolve', name:nextName('Revolve'), sketchId:sk.id, profileIdx:i,
+                   axis:'V', angle:360, operation: (hadSolid || j > 0) ? 'fuse' : 'new' };
+    featureTree.push(node); first = first || node;
+  });
+  selectFeatureNode(first);
+  renderFeatureTree(); scheduleExtrude();
+  f3Msg('Revolve added — choose the axis on the right. The shape must sit on one side of the axis.' + dofNoteFor(sk), false);
+}
+
+function f3Pattern(kind) {
+  const solids = featureTree.filter(isSolidFeature);
+  if (!solids.length) { f3Msg('Make a pad, pocket or revolve first, then pattern it.', true); return; }
+  const target = featureTree.find(f => f.id === selectedFeatureId && isSolidFeature(f)) || solids[solids.length - 1];
+  const node = kind === 'linear'
+    ? { id:newId('pt'), type:'pattern', kind:'linear', name:nextName('Linear pattern'), targetId:target.id, dir:'X', count:3, spacing:20 }
+    : { id:newId('pt'), type:'pattern', kind:'polar', name:nextName('Polar pattern'), targetId:target.id, axis:'Z', count:6, angle:360 };
+  featureTree.push(node);
+  selectFeatureNode(node);
+  renderFeatureTree(); scheduleExtrude();
+  f3Msg(`Patterning ${target.name}. Change the feature, count and spacing on the right.`, false);
+}
+
+function deleteFeature(id) {
+  const node = featureTree.find(f => f.id === id); if (!node) return;
+  const sk = featureTree.find(f => f.id === node.sketchId);
+  if (sk && sk.extrudeChoice && node.profileIdx != null) {
+    if (node.type === 'revolve') delete sk.extrudeChoice[node.profileIdx];
+    if (node.type === 'extrude') sk.extrudeChoice[node.profileIdx] = 'flat';
+  }
+  featureTree = featureTree.filter(f => f.id !== id && !(f.type === 'pattern' && f.targetId === id));
+  if (selectedFeatureId === id) selectedFeatureId = null;
+  renderFeatProps(null);
+  renderFeatureTree(); scheduleExtrude();
+  f3Msg(`${node.name} deleted. Ctrl+Z brings it back.`, false);
+}
+
+// Properties panel for revolve and pattern features (pads/pockets use the Extrude panel)
+function renderFeatProps(node) {
+  const box = document.getElementById('feat-props');
+  const ep = document.querySelector('.ext-panel');
+  if (!box) return;
+  if (!node || (node.type !== 'revolve' && node.type !== 'pattern')) { box.hidden = true; if (ep) ep.style.display = ''; return; }
+  if (ep) ep.style.display = 'none';
+  box.hidden = false;
+  const opt = (v, cur, label) => `<option value="${v}"${v === cur ? ' selected' : ''}>${label}</option>`;
+  let html = `<div class="panel-title">${escHtml(node.name)}</div>`;
+  if (node.type === 'revolve') {
+    const first = featureTree.filter(isSolidFeature)[0] === node;
+    html += `
+      <label class="fp-row"><span>Axis</span><select id="fp-axis" class="fp-in">${opt('V', node.axis, 'Sketch vertical axis (Y)')}${opt('H', node.axis, 'Sketch horizontal axis (X)')}</select></label>
+      <label class="fp-row"><span>Angle</span><input id="fp-angle" class="fp-in" type="number" min="1" max="360" step="1" value="${node.angle}"><em>°</em></label>
+      ${first ? '' : `<div class="fp-row"><span>Operation</span><div class="fp-seg"><button type="button" id="fp-op-add" class="${node.operation !== 'cut' ? 'on' : ''}">Add</button><button type="button" id="fp-op-cut" class="${node.operation === 'cut' ? 'on' : ''}">Cut (groove)</button></div></div>`}
+      <p class="fp-note">The shape spins around the axis line through the sketch origin. It must not cross the axis.</p>`;
+  } else {
+    const solids = featureTree.filter(isSolidFeature);
+    html += `<label class="fp-row"><span>Feature</span><select id="fp-target" class="fp-in">${solids.map(f => opt(f.id, node.targetId, escHtml(f.name))).join('')}</select></label>`;
+    if (node.kind === 'linear') {
+      html += `
+        <label class="fp-row"><span>Direction</span><select id="fp-dir" class="fp-in">${opt('X', node.dir, 'X')}${opt('Y', node.dir, 'Y')}${opt('Z', node.dir, 'Z (up)')}${opt('-X', node.dir, '−X')}${opt('-Y', node.dir, '−Y')}${opt('-Z', node.dir, '−Z')}</select></label>
+        <label class="fp-row"><span>Copies</span><input id="fp-count" class="fp-in" type="number" min="2" max="50" step="1" value="${node.count}"></label>
+        <label class="fp-row"><span>Spacing</span><input id="fp-spacing" class="fp-in" type="number" min="0.1" step="0.5" value="${node.spacing}"><em>mm</em></label>
+        <p class="fp-note">Total copies, including the original, spaced evenly in a straight line.</p>`;
+    } else {
+      html += `
+        <label class="fp-row"><span>Axis</span><select id="fp-paxis" class="fp-in">${opt('Z', node.axis, 'Z (up)')}${opt('X', node.axis, 'X')}${opt('Y', node.axis, 'Y')}</select></label>
+        <label class="fp-row"><span>Copies</span><input id="fp-count" class="fp-in" type="number" min="2" max="60" step="1" value="${node.count}"></label>
+        <label class="fp-row"><span>Total angle</span><input id="fp-pangle" class="fp-in" type="number" min="1" max="360" step="1" value="${node.angle}"><em>°</em></label>
+        <p class="fp-note">Copies spread around the axis through the origin. 360° spaces them evenly all the way round.</p>`;
+    }
+  }
+  html += `<button type="button" id="fp-delete" class="fp-del">Delete ${escHtml(node.name)}</button>`;
+  box.innerHTML = html;
+  const changed = () => { renderFeatureTree(); scheduleExtrude(); };
+  const num = (id, lo, hi, fn) => { const el = document.getElementById(id); if (!el) return; el.addEventListener('change', () => { const v = Math.max(lo, Math.min(hi, parseFloat(el.value) || lo)); el.value = v; fn(v); changed(); }); };
+  const sel = (id, fn) => { const el = document.getElementById(id); if (el) el.addEventListener('change', () => { fn(el.value); changed(); }); };
+  sel('fp-axis', v => node.axis = v);
+  num('fp-angle', 1, 360, v => node.angle = v);
+  document.getElementById('fp-op-add')?.addEventListener('click', () => { node.operation = 'fuse'; renderFeatProps(node); changed(); });
+  document.getElementById('fp-op-cut')?.addEventListener('click', () => { node.operation = 'cut'; renderFeatProps(node); changed(); });
+  sel('fp-target', v => node.targetId = v);
+  sel('fp-dir', v => node.dir = v);
+  sel('fp-paxis', v => node.axis = v);
+  num('fp-count', 2, 60, v => node.count = Math.round(v));
+  num('fp-spacing', 0.1, 10000, v => node.spacing = v);
+  num('fp-pangle', 1, 360, v => node.angle = v);
+  document.getElementById('fp-delete').addEventListener('click', () => deleteFeature(node.id));
+}
+
+const AXIS_VEC = { X:[1,0,0], Y:[0,1,0], Z:[0,0,1], '-X':[-1,0,0], '-Y':[0,-1,0], '-Z':[0,0,-1] };
+
+function wireWorkbenchUI() {
+  document.getElementById('wb-sketch')?.addEventListener('click', () => setWorkbench('sketch'));
+  document.getElementById('wb-constraints')?.addEventListener('click', () => setWorkbench('constraints'));
+  document.getElementById('f3-pad')?.addEventListener('click', () => f3PadPocket('pad'));
+  document.getElementById('f3-pocket')?.addEventListener('click', () => f3PadPocket('pocket'));
+  document.getElementById('f3-revolve')?.addEventListener('click', f3Revolve);
+  document.getElementById('f3-linpat')?.addEventListener('click', () => f3Pattern('linear'));
+  document.getElementById('f3-polpat')?.addEventListener('click', () => f3Pattern('polar'));
+  document.getElementById('f3-sketch')?.addEventListener('click', () => {
+    const plane = document.getElementById('f3-plane')?.value || 'XY';
+    const skId = newId('sk');
+    const n = featureTree.filter(f => f.type === 'sketch').length + 1;
+    featureTree.push({ id:skId, type:'sketch', name:`Sketch ${n}`, plane, entities:[] });
+    activeSketchId = skId;
+    document.querySelector('.sk-overlay').textContent = `Sketch ${n} · ${plane} Plane`;
+    setMode3d(false); setWorkbench('sketch'); setTool('line');
+    renderFeatureTree(); scheduleRender();
+  });
+  buildConstraintToolbar();
+  showWorkbench('sketch');
 }
 
 // ════════════════════════════════════════════════════════════════════
@@ -2669,8 +3512,9 @@ function syncExtrudeNodes() {
   // with no answer yet are left flat and picked up by the prompt; profiles
   // answered 'flat' are left alone for good.
   sk.extrudeChoice = sk.extrudeChoice || {};
-  for (let i = existing.length; i < profs.length; i++) {
+  for (let i = 0; i < profs.length; i++) {
     if (sk.extrudeChoice[i] !== 'extrude') continue;
+    if (featureTree.some(f => f.type==='extrude' && f.sketchId===activeSketchId && f.profileIdx===i)) continue;
     featureTree.push({
       id:newId('ex'), type:'extrude',
       name: i===0?'Extrude 1':`Extrude ${i+1}`,
@@ -2690,29 +3534,30 @@ function syncExtrudeNodes() {
 function collectExtrudePayload() {
   // Sync extrude nodes for the active sketch so newly drawn profiles get nodes
   if (activeSketch()) syncExtrudeNodes();
-
   const items = [];
   for (const node of featureTree) {
-    if (node.type !== 'extrude') continue;
+    if (node.type !== 'extrude' && node.type !== 'revolve') continue;
     const sk = featureTree.find(f => f.id === node.sketchId);
     if (!sk) continue;
-    const profs = getAllProfiles(sk);
-    const entry = profs[node.profileIdx];
+    const entry = getAllProfiles(sk)[node.profileIdx];
     if (!entry) continue;
     const { planeName, planeOffset } = planeFromSketch(sk);
-    // normalSign: +1 if the face's outward normal is in the positive axis direction.
-    // Needed so cut operations extrude into the solid, not away from it.
     const normalSign = (typeof sk.plane === 'object' ? sk.plane.normalSign : null) ?? 1;
-    items.push({
-      profile:   entry.profile,
-      height:    node.height,
-      operation: node.operation,
-      filletR:   node.filletR,
-      chamferR:  node.chamferR,
-      planeName,
-      planeOffset,
-      normalSign,
-    });
+    if (node.type === 'extrude') {
+      items.push({ id:node.id, kind:'extrude', profile:entry.profile, height:node.height, operation:node.operation,
+                   filletR:node.filletR, chamferR:node.chamferR, planeName, planeOffset, normalSign,
+                   both: typeof sk.plane === 'string', patterns:[] });
+    } else {
+      items.push({ id:node.id, kind:'revolve', profile:entry.profile, axis:node.axis, angle:node.angle,
+                   operation:node.operation, planeName, planeOffset, patterns:[] });
+    }
+  }
+  for (const node of featureTree) {
+    if (node.type !== 'pattern') continue;
+    const it = items.find(i => i.id === node.targetId);
+    if (!it) continue;
+    if (node.kind === 'linear') it.patterns.push({ kind:'linear', dir:AXIS_VEC[node.dir] || [1,0,0], spacing:+node.spacing || 10, count:+node.count || 2 });
+    else it.patterns.push({ kind:'polar', axis:AXIS_VEC[node.axis] || [0,0,1], angle:+node.angle || 360, count:+node.count || 2 });
   }
   return items;
 }
@@ -2769,11 +3614,13 @@ function updateUndoButton() {
 
 function scheduleExtrude() {
   clearTimeout(extTimer);
+  if (typeof processNewEntities === 'function') processNewEntities();
   commitHistory();
   const hasAny = featureTree.some(f => f.type==='sketch' && getAllProfiles(f).length > 0);
   if (hasAny) extTimer = setTimeout(doExtrude, 300);
   refreshExtrudePrompt();
   scheduleAutosave();
+  if (typeof updateConstraintPanel === 'function') updateConstraintPanel();
 }
 
 //  ── "Extrude this profile?" ──────────────────────────────────────────────
@@ -2809,6 +3656,15 @@ function refreshExtrudePrompt() {
     box.hidden = false;
   } else {
     box.hidden = true;
+  }
+  const dn = document.getElementById('ext-prompt-dof');
+  if (dn) {
+    const d = dofInfo;
+    let t = '';
+    if (d && !d.empty && d.conflicting) t = '⚠ This sketch is over-constrained. Fix it on the Constraints workbench first.';
+    else if (d && !d.empty && d.dof > 0) t = `⚠ This sketch still has ${d.dof} degree${d.dof>1?'s':''} of freedom, so it could change by accident. For a reliable part, fully constrain it first (Constraints workbench).`;
+    else if (d && !d.empty) t = '✓ Fully constrained — safe to extrude.';
+    dn.textContent = t; dn.hidden = !t; dn.classList.toggle('ok', !!d && !d.empty && !d.conflicting && d.dof === 0);
   }
   if (chip) {
     const f = flatProfileCount();
@@ -2925,6 +3781,9 @@ document.getElementById('rect-radius').addEventListener('input', function() {
 // ════════════════════════════════════════════════════════════════════
 
 function setTool(t) {
+  if (t.startsWith('cst:')) { setCstTool(t.slice(4)); return; }
+  if (DRAW_TOOLS.includes(t) && wbActive !== 'sketch' && !document.querySelector('.main')?.classList.contains('mode-3d')) showWorkbench('sketch');
+  cstTool = null;
   linePoints=[]; rectStart=null; circleCenter=null;
   arcPts=[]; polyCenter=null; splinePts=[];
   hideLenPopup();
@@ -2932,7 +3791,7 @@ function setTool(t) {
   hoverAddPt = null;
   pendingDrag = null;
   tool=t;
-  document.querySelectorAll('.tb-btn[id^="tool-"]').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.tb-btn[id^="tool-"], .tb-btn[id^="cst-"]').forEach(b=>b.classList.remove('active'));
   const btn=document.getElementById('tool-'+t);
   if (btn) btn.classList.add('active');
 
@@ -2950,6 +3809,7 @@ function setTool(t) {
   document.getElementById('rect-radius-unit').style.display = showRR ? '' : 'none';
 
   updateHint();
+  updateConstraintPanel();
   scheduleRender();
 }
 window.setTool = setTool;
@@ -2966,7 +3826,7 @@ function updateHint() {
     addpt:    '<b>Add Point (I)</b><br>Click an edge to add a point · hold and drag to place it<br>Drag an existing point to move it<br><b>Ctrl</b>: no snap · Remove a point: Select tool, click it, <b>Del</b>',
     edit:     '<b>Select &amp; Move (E / V)</b><br>Drag a point, edge or whole shape to move it<br><b>Double-click an edge</b> to add a point · select a point + <b>Del</b> to remove it<br>Click to select · <b>Shift</b>-click to add · then pick a constraint on the right<br><b>Ctrl</b>: no snap · <b>Del</b> on an edge: delete the shape',
   };
-  document.getElementById('hint-box').innerHTML = hints[tool]||'';
+  document.getElementById('hint-box').innerHTML = tool === 'cst' ? cstHintHtml() : (hints[tool]||'');
 }
 
 function undoLast() {
@@ -3108,6 +3968,7 @@ function evXY(e) {
 }
 
 sk.addEventListener('mousemove', e => {
+  { const _p = evXY(e); lastScreen = { x:_p.x, y:_p.y }; }
   ctrlHeld  = e.ctrlKey;
   shiftHeld = e.shiftKey;
   // spaceHeld tracked via keydown/keyup — don't override here
@@ -3149,8 +4010,8 @@ sk.addEventListener('mousemove', e => {
   hoverLabelIdx = hitLabel(x, y);
   if (hoverLabelIdx >= 0) {
     sk.style.cursor = 'pointer';
-  } else if (tool === 'edit' || tool === 'addpt') {
-    hoverHit = isPanning ? null : hitTestSketch(x, y);
+  } else if (tool === 'edit' || tool === 'addpt' || tool === 'cst') {
+    hoverHit = isPanning ? null : hitTestSketch(x, y, { refs: tool === 'cst' });
     hoverAddPt = null;
     if (hoverHit && hoverHit.kind === 'seg') {
       const he = entByUid(hoverHit.u);
@@ -3178,6 +4039,12 @@ sk.addEventListener('mousedown', e => {
 
   dragStarted = false;
   // Select tool: remember what was pressed; it becomes a drag if the mouse moves
+  if (tool === 'cst') {
+    if (hitLabel(x, y) < 0) cstToolClick(x, y, e.shiftKey);
+    dragStarted = true;
+    e.preventDefault();
+    return;
+  }
   if (tool === 'addpt' && hitLabel(x, y) < 0) {
     const hit = hitTestSketch(x, y);
     if (hit && hit.kind === 'seg') {
@@ -3256,7 +4123,7 @@ sk.addEventListener('click', e => {
     });
     return;
   }
-  if (tool === 'edit' || tool === 'addpt') return;   // these tools handle clicks on mouseup
+  if (tool === 'edit' || tool === 'addpt' || tool === 'cst') return;   // these tools handle clicks themselves
 
   // ── Rect: two-click ──────────────────────────────────────────────
   if (tool==='rect') {
@@ -3450,6 +4317,8 @@ window.addEventListener('keydown', e => {
       document.getElementById('st-info').textContent='';
       return;
     }
+    if (e.key==='Enter' && cstToolEnter()) { e.preventDefault(); return; }
+    if (e.key==='Escape' && tool === 'cst') { selItems = []; setTool('edit'); return; }
     if (e.key==='Escape') {
       if (selItems.length) clearSelection();
       hideLenPopup();
@@ -3917,6 +4786,8 @@ function setMode3d(on) {
   const btn    = document.getElementById('btn-mode-3d');
 
   main.classList.toggle('mode-3d', on);
+  showWorkbench(wbActive);
+  if (!on) f3Msg('');
   btn.textContent = on ? '✎ Edit Sketch' : '⬡ View 3D';
   btn.title       = on ? 'Back to 2D sketch' : 'Switch to 3D view';
 
@@ -4012,22 +4883,30 @@ function renderFeatureTree() {
     const underDatum = node.type==='sketch' && node.datumId;
     const skOfDatum  = node.type==='extrude' && featureTree.find(f=>f.id===node.sketchId)?.datumId;
     div.className = 'feat-node'
-      + (node.type==='extrude' ? (skOfDatum ? ' extrude-under-datum' : ' extrude-node') : '')
+      + (node.type==='extrude' ? (skOfDatum ? ' extrude-under-datum' : ' extrude-node') : (node.type==='revolve'||node.type==='pattern') ? ' extrude-node' : '')
       + (underDatum ? ' sketch-under-datum' : '');
     if (node.type==='sketch' && node.id===activeSketchId) div.classList.add('active');
-    const icon = node.type==='sketch' ? '✏' : '⬡';
+    const icon = node.type==='sketch' ? '✏' : node.type==='revolve' ? '◔' : node.type==='pattern' ? (node.kind==='polar' ? '✻' : '⋮') : '⬡';
     let sub='', badge='';
+    const subSpan = t => `<span style="font-size:0.62rem;color:var(--text2);display:block">${t}</span>`;
     if (node.type==='extrude') {
       const hLabel = node.operation==='cut' ? 'depth' : 'h';
-      sub=`<span style="font-size:0.62rem;color:var(--text2);display:block">${hLabel}${node.height}mm`
-        +(node.filletR?` · f${node.filletR}`:'')+(node.chamferR?` · c${node.chamferR}`:'')+`</span>`;
-      badge=`<span class="feat-node-op op-${node.operation}">${node.operation.toUpperCase()}</span>`;
+      sub=subSpan(`${hLabel}${node.height}mm`+(node.filletR?` · f${node.filletR}`:'')+(node.chamferR?` · c${node.chamferR}`:''));
+      badge=`<span class="feat-node-op op-${node.operation}">${node.operation==='cut'?'POCKET':node.operation==='new'?'PAD':'PAD+'}</span>`;
+    } else if (node.type==='revolve') {
+      sub=subSpan(`${node.angle}° about sketch ${node.axis==='H'?'X':'Y'} axis`);
+      badge=`<span class="feat-node-op op-${node.operation}">${node.operation==='cut'?'GROOVE':'REVOLVE'}</span>`;
+    } else if (node.type==='pattern') {
+      const t = featureTree.find(f=>f.id===node.targetId);
+      sub=subSpan(`${node.count}× ${node.kind==='linear' ? node.dir+' '+node.spacing+'mm' : node.angle+'° about '+node.axis} · ${t?t.name:'feature missing'}`);
     } else {
       const pl=typeof node.plane==='string'?node.plane:`${node.plane.axis}+${node.plane.offset.toFixed(1)}`;
-      sub=`<span style="font-size:0.62rem;color:var(--text2);display:block">${pl}</span>`;
+      sub=subSpan(pl);
     }
-    div.innerHTML=`<span style="flex-shrink:0">${icon}</span><span class="feat-node-name">${node.name}${sub}</span>${badge}`;
-    div.addEventListener('click',()=>selectFeatureNode(node));
+    if (node.id === selectedFeatureId) div.classList.add('selected');
+    const del = (node.type==='extrude'||node.type==='revolve'||node.type==='pattern') ? '<button class="feat-del" type="button" title="Delete feature" aria-label="Delete feature">×</button>' : '';
+    div.innerHTML=`<span style="flex-shrink:0">${icon}</span><span class="feat-node-name">${node.name}${sub}</span>${badge}${del}`;
+    div.addEventListener('click',(ev)=>{ if (ev.target.closest('.feat-del')) { ev.stopPropagation(); deleteFeature(node.id); return; } selectFeatureNode(node); });
     list.appendChild(div);
   }
 }
@@ -4051,6 +4930,8 @@ function _syncOpToggle(node) {
 }
 
 function selectFeatureNode(node) {
+  if (node.type==='extrude' || node.type==='revolve' || node.type==='pattern') selectedFeatureId = node.id;
+  if (node.type==='sketch') renderFeatProps(null);
   if (node.type==='datum') {
     // Create a new sketch on this datum plane
     _addSketchOnDatum(node.id, node.plane);
@@ -4062,7 +4943,10 @@ function selectFeatureNode(node) {
     const pl=typeof node.plane==='string'?node.plane:`${node.plane.axis} +${node.plane.offset.toFixed(1)}`;
     document.querySelector('.sk-overlay').textContent=`${node.name} · ${pl} Plane`;
     scheduleRender();
+  } else if (node.type==='revolve' || node.type==='pattern') {
+    renderFeatProps(node);
   } else if (node.type==='extrude') {
+    renderFeatProps(null);
     const ep=document.querySelector('.ext-panel');
     ep.dataset.activeExtrudeId=node.id;
     document.getElementById('s-h').value=node.height;
@@ -4216,6 +5100,7 @@ document.getElementById('btn-clear-stl').addEventListener('click', () => {
 
 // ════════════════════════════════════════════════════════════════════
 // INIT
+wireWorkbenchUI();
 // ════════════════════════════════════════════════════════════════════
 
 updateHint();
