@@ -1392,14 +1392,12 @@ body.sheet-side .sheet-in { width: 100%; }
     if (!em) $('muLink').value = '';
     buildBar(); musicPlace();
   }
-  // the player sits in the bottom right-hand corner; where the toolbar would
-  // reach under it (a narrower screen) it sits just above the toolbar instead
+  // the player sits in the bottom right-hand corner, over the toolbar's end
+  // when they meet (the toolbar slides away by itself)
   function musicPlace() {
     var el = $('music'); if (!el || el.classList.contains('off')) return;
-    var gap = Math.max(12, Math.round(Math.min(innerWidth, innerHeight) * 0.024)), bar = $('bar').getBoundingClientRect();
-    el.style.left = 'auto'; el.style.right = gap + 'px';
-    var clear = innerWidth - gap - el.offsetWidth > bar.right + 8;
-    el.style.bottom = (clear ? gap : innerHeight - bar.top + 10) + 'px';
+    var gap = Math.max(12, Math.round(Math.min(innerWidth, innerHeight) * 0.024));
+    el.style.left = 'auto'; el.style.right = gap + 'px'; el.style.bottom = gap + 'px';
   }
   window.addEventListener('resize', musicPlace);
   function musicPanel(open) {
