@@ -130,7 +130,20 @@
         var body = all(doc, W, 'body')[0];
         var sectPr = kids(body, 'sectPr')[0];
         Array.prototype.slice.call(body.childNodes).forEach(function (n) { if (n !== sectPr) body.removeChild(n); });
-        covers.forEach(function (c) {
+        // Each cover is its own section: class covers A4 portrait (as the template);
+        // accommodation covers on A3 landscape with the cover on the right half and the
+        // left half blank, so the sheet folds around the pack with the cover in front.
+        function sectionFor(c) {
+          var sp = sectPr.cloneNode(true);
+          if (c.kind !== 'acc') return sp;
+          var sz = kids(sp, 'pgSz')[0], mar = kids(sp, 'pgMar')[0];
+          sz.setAttributeNS(W, 'w:w', '23811'); sz.setAttributeNS(W, 'w:h', '16838'); sz.setAttributeNS(W, 'w:orient', 'landscape');
+          if (sz.hasAttributeNS(W, 'code')) sz.removeAttributeNS(W, 'code');
+          mar.setAttributeNS(W, 'w:left', String(11906 + 720));     // the whole left A4 half, plus the normal margin
+          kids(sp, 'pgBorders').forEach(function (b) { sp.removeChild(b); });   // a border round the whole sheet would frame the blank half
+          return sp;
+        }
+        covers.forEach(function (c, n) {
           var tbl;
           if (c.kind === 'acc') {
             tbl = doc.importNode(T.accTable, true);
@@ -140,8 +153,17 @@
           }
           fill(tbl, c.f, c.kind);
           body.insertBefore(tbl, sectPr);
-          body.insertBefore(doc.importNode(T.spacer, true), sectPr);
+          var sp = doc.importNode(T.spacer, true);
+          if (n < covers.length - 1) {
+            // a section ends with the paragraph that carries its settings
+            var pPr = kids(sp, 'pPr')[0]; if (!pPr) { pPr = doc.createElementNS(W, 'w:pPr'); sp.insertBefore(pPr, sp.firstChild); }
+            pPr.appendChild(sectionFor(c));
+          }
+          body.insertBefore(sp, sectPr);
         });
+        // the last section's settings are the body's own
+        var lastSect = sectionFor(covers[covers.length - 1]);
+        body.replaceChild(lastSect, sectPr);
         // every drawing needs its own id, and repeated paragraph ids confuse Word
         var id = 1;
         all(doc, WP, 'docPr').forEach(function (d) { d.setAttribute('id', String(id++)); });
@@ -181,8 +203,8 @@
     });
   }
   function pdfText(s) {
-    return String(s == null ? '' : s).replace(/[‘’]/g, "'").replace(/[“”]/g, '"').replace(/[–—]/g, '-')
-      .replace(/…/g, '...').replace(/[^\x00-\xFF]/g, '?');
+    return String(s == null ? '' : s).replace(/[\u2018\u2019]/g, "'").replace(/[\u201C\u201D]/g, '"').replace(/[\u2013\u2014]/g, '-')
+      .replace(/\u2026/g, '...').replace(/[^\x00-\xFF]/g, '?');
   }
 
   function pdf(covers) {
@@ -191,11 +213,12 @@
       covers.forEach(function (c) { var i = PAGE_CODES.indexOf(c.code); if (c.kind === 'class' && i > -1) need.push(T.pageImages[i][0]); });
       need.push(T.pageImages[0][1]);   // the school logo
       return Promise.all(need.filter(function (v, i, a) { return v && a.indexOf(v) === i; }).map(image)).then(function () {
-        var doc = new global.jspdf.jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+        function a3(c) { return c.kind === 'acc'; }   // accommodation covers: A3 landscape, cover on the right half
+        var doc = new global.jspdf.jsPDF({ orientation: a3(covers[0]) ? 'landscape' : 'portrait', unit: 'mm', format: a3(covers[0]) ? 'a3' : 'a4' });
         var logo = T.images[T.pageImages[0][1]];
         covers.forEach(function (c, n) {
-          if (n) doc.addPage();
-          drawCover(doc, c, logo);
+          if (n) doc.addPage(a3(c) ? 'a3' : 'a4', a3(c) ? 'landscape' : 'portrait');
+          drawCover(doc, c, logo, a3(c) ? 210 : 0);
         });
         return doc;
       });
@@ -204,15 +227,17 @@
 
   // Template geometry (twips/EMU converted to mm): margins 12.7, label column 89.5, value column 91.2,
   // rows 8 mm (454 twips), title row 12 mm, page border 8.5 mm from the edge.
-  function drawCover(doc, c, logo) {
-    var L = 12.7, MID = L + 89.5, Rt = L + 89.5 + 91.2, y = 12.7, ROW = 8, f = c.f;
-    doc.setDrawColor(0); doc.setLineWidth(0.8); doc.rect(8.5, 8.5, 210 - 17, 297 - 17);
+  function drawCover(doc, c, logo, ox) {
+    ox = ox || 0;                                   // 210 mm: drawn on the right half of an A3 sheet
+    var L = ox + 12.7, MID = L + 89.5, Rt = L + 89.5 + 91.2, y = 12.7, ROW = 8, f = c.f;
+    doc.setDrawColor(0); doc.setLineWidth(0.8);
+    if (!ox) doc.rect(8.5, 8.5, 210 - 17, 297 - 17);   // A3: no frame (as in the Word file)
     var i = PAGE_CODES.indexOf(c.code), icon = c.kind === 'class' && i > -1 ? T.images[T.pageImages[i][0]] : null;
     if (icon) doc.addImage(icon.data, icon.type, L + 2, y, 41.4, 49.1, icon.alias);   // alias: stored once, reused on every page
     if (logo) doc.addImage(logo.data, logo.type, Rt - 70.4, y + 4, 70.4, 40, logo.alias);
     y += 51;
     doc.setFont('helvetica', 'bold'); doc.setFontSize(18); doc.setTextColor(13);
-    doc.text(c.kind === 'acc' ? 'ACCOMMODATION: FRONT COVER' : 'EXAMINATION FRONT COVER', 105, y + 7.5, { align: 'center' });
+    doc.text(c.kind === 'acc' ? 'ACCOMMODATION: FRONT COVER' : 'EXAMINATION FRONT COVER', ox + 105, y + 7.5, { align: 'center' });
     y += 12;
     function label(t, yy) { doc.setFont('helvetica', 'bold'); doc.setFontSize(14); doc.text(t, L, yy); var w = doc.getTextWidth(t); doc.setLineWidth(0.3); doc.line(L, yy + 0.8, L + w, yy + 0.8); }
     function value(t, x0, x1, yy) {
