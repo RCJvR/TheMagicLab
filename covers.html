@@ -387,13 +387,13 @@ textarea.c-in { resize: vertical; min-height: 70px; line-height: 1.45; }
              teachers: teachers, afr: papers(afr), eng: papers(eng), additional: additional, acc: accLines } });
       sep.forEach(function (l) {
         var cat = l.accommodations.indexOf('Smaller venue: CAT Lab') > -1;
-        var add = [l.comment].filter(Boolean).join(' ').split(/(?<=[.;])\s+/).filter(Boolean);
-        if (l.accommodations.indexOf(BOTH) > -1) add.unshift('Needs both an English and an Afrikaans paper.');
+        // the register's comment stays off the cover (the teacher sees it in the preview and can add a line)
+        var add = [];
         if (shared.extra) add.push(shared.extra);
         covers.push({ id: 'a|' + key + '|' + l.id, kind: 'acc', code: c.code, unit: u, learner: l,
           title: l.name + ' · ' + (cat ? 'CAT Lab' : 'separate venue'),
           f: { venue: cat ? 'Smaller venue: CAT Lab' : 'Separate venue', date: shared.date, subject: c.subject, grade: c.grade, time: shared.time,
-               examiner: shared.examiner, teachers: teachers, learner: l.name + (l.class_name ? ' (' + l.class_name + ')' : '') + (l.internal ? ', internally granted' : ''),
+               examiner: shared.examiner, teachers: teachers, learner: l.name + (l.class_name ? ' (' + l.class_name + ')' : ''),
                additional: add, acc: l.accommodations.filter(function (a) { return SEPARATE.indexOf(a) < 0 || true; }) } });
       });
     });
@@ -425,6 +425,9 @@ textarea.c-in { resize: vertical; min-height: 70px; line-height: 1.45; }
         fields.appendChild(el('label', { for: id, text: fd[1] })); fields.appendChild(input);
       });
       var who = null;
+      if (cv.kind === 'acc' && cv.learner && cv.learner.comment) {
+        who = el('div', { class: 'c-who' }, [el('span', { class: 'c-hint', text: 'Note on the register (not printed): ' + cv.learner.comment })]);
+      }
       if (cv.kind === 'class' && cv.acc.length) {
         who = el('div', { class: 'c-who' }, [el('span', { class: 'c-hint', text: 'Learners with accommodations in this group — tick those who write separately (they get their own accommodation cover):' })]);
         cv.acc.forEach(function (l) {
