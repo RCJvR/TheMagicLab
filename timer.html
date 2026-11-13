@@ -371,12 +371,12 @@ body.sheet-side .sheet-in { width: 100%; }
 .recmenu button[aria-checked="true"] { font-weight: 800; }
 .recmenu button[aria-checked="true"]::before { content: ''; position: absolute; left: 14px; top: 50%; width: 10px; height: 10px; margin-top: -5px; border-radius: 50%; background: var(--accent); }
 .recmenu small { font-size: 13px; font-weight: 600; opacity: 0.7; }
-.music { width: min(400px, calc(100vw - 24px)); gap: 8px; padding: 12px; }
+.music { width: min(400px, calc(100vw - 24px)); gap: 8px; padding: 12px; transform: none; }
 .music.off { position: fixed; left: -10000px !important; top: 0; bottom: auto !important; visibility: hidden; }
 .mu-row { display: flex; gap: 6px; padding: 0 4px; }
 .mu-row input { flex: 1; min-width: 0; font: inherit; font-size: 14px; color: var(--fg); background: var(--bg); box-sizing: border-box;
   border: 1px solid color-mix(in srgb, var(--fg) 30%, transparent); border-radius: 10px; padding: 9px 10px; }
-.mu-row button { font: inherit; font-size: 14px; font-weight: 800; color: var(--bg); background: var(--fg); border: 0; border-radius: 10px; padding: 0 14px; cursor: pointer; display: inline-flex; align-items: center; }
+.mu-row button { font: inherit; font-size: 14px; font-weight: 800; color: var(--bg); background: var(--fg); border: 0; border-radius: 10px; padding: 0 14px; cursor: pointer; display: inline-flex; flex-direction: row; align-items: center; justify-content: center; }
 .mu-bad { font-size: 13px; line-height: 1.4; color: var(--warn); margin: 0; padding: 0 6px; }
 .mu-player iframe { display: block; width: 100%; border: 0; border-radius: 12px; background: #000; }
 .mu-player:empty { display: none; }
@@ -1392,12 +1392,16 @@ body.sheet-side .sheet-in { width: 100%; }
     if (!em) $('muLink').value = '';
     buildBar(); musicPlace();
   }
+  // the player sits in the bottom right-hand corner; where the toolbar would
+  // reach under it (a narrower screen) it sits just above the toolbar instead
   function musicPlace() {
     var el = $('music'); if (!el || el.classList.contains('off')) return;
-    var b = $('bar').querySelector('[data-role="music"]'), r = b ? b.getBoundingClientRect() : { left: innerWidth / 2, width: 0, top: innerHeight - 80 };
-    el.style.left = Math.max(200, Math.min(innerWidth - 200, r.left + r.width / 2)) + 'px';
-    el.style.bottom = (innerHeight - r.top + 10) + 'px';
+    var gap = Math.max(12, Math.round(Math.min(innerWidth, innerHeight) * 0.024)), bar = $('bar').getBoundingClientRect();
+    el.style.left = 'auto'; el.style.right = gap + 'px';
+    var clear = innerWidth - gap - el.offsetWidth > bar.right + 8;
+    el.style.bottom = (clear ? gap : innerHeight - bar.top + 10) + 'px';
   }
+  window.addEventListener('resize', musicPlace);
   function musicPanel(open) {
     var el = musicBox();
     musicOpen = !!open;
