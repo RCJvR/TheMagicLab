@@ -905,10 +905,18 @@ const worker = new Worker(
 let workerReady = false;
 let pendingBuild = null;
 
+// Builds sent to the worker and not yet answered. "Start fresh" marks them
+// as stale so a model from the old drawing cannot reappear afterwards.
+let buildsInFlight = 0, staleBuilds = 0;
+function sendBuild(msg) { buildsInFlight++; worker.postMessage(msg); }
 worker.onmessage = ({ data }) => {
+  if ((data.type === 'mesh' || data.type === 'err') && buildsInFlight > 0) {
+    buildsInFlight--;
+    if (staleBuilds > 0) { staleBuilds--; return; }
+  }
   if (data.type === 'ready') {
     workerReady = true;
-    if (pendingBuild) { worker.postMessage(pendingBuild); pendingBuild = null; }
+    if (pendingBuild) { sendBuild(pendingBuild); pendingBuild = null; }
   } else if (data.type === 'mesh') {
     applyMesh(data.v, data.n, data.t);
     setRebuildStatus('done');
@@ -1297,11 +1305,10 @@ function tryRestoreAutosave() {
 
 function discardAutosaveAndStartFresh() {
   try { localStorage.removeItem(AUTOSAVE_KEY); } catch (e) {}
-  initFeatureTree();
+  if (typeof tutorialActive !== 'undefined' && tutorialActive) stopTutorial(true);
+  freshModel('line');
   const fi = document.getElementById('filename-input');
   if (fi) fi.value = 'sketch';
-  selItems = [];
-  renderFeatureTree(); scheduleRender(); scheduleExtrude();
   document.getElementById('mm-restore-toast')?.remove();
 }
 
@@ -3772,16 +3779,27 @@ function closeTutorialPicker() { document.getElementById('tut-overlay')?.remove(
 function modelHasWork() {
   return featureTree.some(f => (f.type === 'sketch' && f.entities && f.entities.length) || f.type !== 'sketch');
 }
-function freshModel() {
+// A completely new, empty model: the feature tree, the sketch canvas, the 3D
+// view and every panel that was showing the old drawing.
+function freshModel(tool) {
+  clearTimeout(extTimer);
+  pendingBuild = null;
+  staleBuilds = buildsInFlight;            // results still on their way are for the old drawing
   initFeatureTree();
-  selItems = []; rollbackId = null; selectedFeatureId = null;
+  selItems = []; rollbackId = null; selectedFeatureId = null; dragState = null; pendingDrag = null; boxSel = null;
   linePoints=[]; rectStart=null; circleCenter=null; arcPts=[]; polyCenter=null; splinePts=[];
+  _sketchFaceTris = null; _sketchFaceEdges = null;   // the outline of the face the old sketch was on
+  hideLenPopup();
   clearSolid();
+  hasAutoSwitchedTo3d = false;
+  renderFeatProps(null);
+  f3Msg('');
   setMode3d(false);
   showWorkbench('sketch');
-  setTool('edit');
+  setTool(tool || 'edit');
   document.querySelector('.sk-overlay').textContent = 'Sketch 1 · XY Plane';
-  renderFeatureTree(); scheduleRender(); scheduleExtrude();
+  renderFeatureTree(); updateConstraintPanel(); scheduleRender(); scheduleExtrude();
+  refreshExtrudePrompt();
 }
 
 function startTutorial(id) {
@@ -4426,7 +4444,7 @@ function doExtrude() {
   if (!profiles.length) { clearSolid(); return; }
   setRebuildStatus('building');
   const msg = {type:'build', profiles};
-  if (workerReady) worker.postMessage(msg);
+  if (workerReady) sendBuild(msg);
   else pendingBuild = msg;
 }
 
@@ -5868,6 +5886,9 @@ function selectFeatureNode(node, opts = {}) {
   }
   if (node.type==='sketch') {
     activeSketchId = node.id;
+    // Show the outline of this sketch's face (and only this one's)
+    if (node.datumId && typeof node.plane === 'object') _buildSketchUnderlay(node.plane);
+    else { _sketchFaceTris = null; _sketchFaceEdges = null; }
     setMode3d(false);
     const pl=planeLabel(node.plane);
     document.querySelector('.sk-overlay').textContent=`${node.name} · ${pl}${pl==='Angled face'?'':' Plane'}`;
