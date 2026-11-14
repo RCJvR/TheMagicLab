@@ -112,6 +112,7 @@
 
   function paint() {
     lesson.classList.toggle('ml-focus-on', on);
+    if (bar) bar.classList.toggle('is-on', on);
     segs.forEach(function (s, k) {
       s.classList.toggle('is-blurred', on && k !== cur);
       s.classList.toggle('is-current', on && k === cur);
