@@ -185,7 +185,7 @@
       background: #06091a; display: flex; overflow: hidden;
     }
 
-    #lineNumbers {
+    .line-numbers {
       font-family: var(--font-mono); font-size: 12px; line-height: 21px;
       width: 36px; flex-shrink: 0;
       background: rgba(0,0,0,0.28); border-right: 1px solid rgba(255,255,255,0.06);
@@ -210,6 +210,55 @@
       overflow: hidden; white-space: pre; overflow-wrap: normal;
       z-index: 1; color: #e2e8ff;
     }
+
+    /* ── External CSS: two file panes stacked in the editor column ──
+       Off: only the HTML pane shows, exactly as before. On: a file bar
+       names each pane (index.html / style.css) and a drag bar between
+       them sets how the height is shared. */
+    .editor-stack { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+    .file-pane { display: flex; flex-direction: column; min-height: 0; flex: 1 1 0; }
+    .file-bar {
+      flex-shrink: 0; display: flex; align-items: center; gap: 8px;
+      padding: 5px 8px 5px 12px; background: rgba(0,0,0,0.30);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      font-family: var(--font-mono); font-size: 11px; color: var(--text-2);
+    }
+    .file-bar .file-name { font-weight: 700; color: var(--text); }
+    .file-bar .file-kind { color: var(--text-3); }
+    .file-bar .file-save {
+      margin-left: auto; display: flex; align-items: center; gap: 5px;
+      padding: 3px 9px; border-radius: 99px; border: 1px solid var(--border);
+      background: var(--surface); color: var(--text2); cursor: pointer;
+      font-family: var(--font-body); font-size: 11px; font-weight: 600;
+    }
+    .file-bar .file-save:hover { background: rgba(255,255,255,0.10); color: var(--text); }
+    .link-status { display: inline-flex; align-items: center; gap: 5px; font-family: var(--font-body); font-size: 11px; font-weight: 600; }
+    .link-status::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+    .link-status.linked   { color: var(--good); }
+    .link-status.unlinked { color: var(--warn); }
+    .pane-split {
+      flex-shrink: 0; height: 8px; cursor: row-resize; touch-action: none;
+      background: rgba(255,255,255,0.03);
+      border-top: 1px solid var(--border2); border-bottom: 1px solid var(--border2);
+    }
+    .pane-split:hover, .pane-split.dragging { background: var(--acc-mid); }
+    .css-hint {
+      flex-shrink: 0; display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+      padding: 8px 12px; font-size: 12px; line-height: 1.5;
+      background: rgba(245,178,61,0.08); border-bottom: 1px solid rgba(245,178,61,0.22);
+      color: var(--text2);
+    }
+    .css-hint code { font-family: var(--font-mono); font-size: 11px; color: var(--text); }
+    .css-hint button {
+      padding: 4px 10px; border-radius: 7px; cursor: pointer;
+      border: 1px solid var(--acc-line); background: var(--acc-soft); color: var(--text);
+      font-family: var(--font-body); font-size: 11px; font-weight: 700; white-space: nowrap;
+    }
+    .css-hint button:hover { background: var(--acc-mid); }
+    #appShell:not(.ext-css) #htmlPane .file-bar,
+    #appShell:not(.ext-css) #paneSplit,
+    #appShell:not(.ext-css) #cssPane { display: none; }
+    #extCssBtn.active { background: var(--acc-mid); border-color: var(--acc-line); color: var(--text); }
 
     /* HTML syntax colours */
     .hl-tag   { color: #67e8f9; }
@@ -552,6 +601,9 @@
       <button id="learnWebBtn" class="hdr-btn" style="background:rgba(6,182,212,0.18);border-color:rgba(6,182,212,0.40);color:#67e8f9;">
         <i data-lucide="book-open" style="width:13px;height:13px;"></i> Learn HTML
       </button>
+      <button id="extCssBtn" class="hdr-btn" aria-pressed="false" title="Write your CSS in its own style.css file">
+        <i data-lucide="file-code-2" style="width:13px;height:13px;"></i> External CSS
+      </button>
       <button id="saveBtn" class="hdr-btn"><i data-lucide="download" style="width:13px;height:13px;"></i> Save</button>
       <button id="loadBtn" class="hdr-btn"><i data-lucide="upload"   style="width:13px;height:13px;"></i> Load</button>
       <a href="index.html" class="home-btn"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-2px;flex-shrink:0"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg> Home</a>
@@ -585,9 +637,15 @@
         </div>
       </div>
 
+      <div class="editor-stack" id="editorStack">
+      <div class="file-pane" id="htmlPane">
+      <div class="file-bar">
+        <span class="file-name">index.html</span><span class="file-kind">structure</span>
+        <button class="file-save" id="saveHtmlBtn" title="Download index.html"><i data-lucide="download" style="width:12px;height:12px;"></i> Save .html</button>
+      </div>
       <div class="editor-wrap" id="editorWrap">
         <label for="codeEditor" class="sr-only">HTML and CSS code editor</label>
-        <div id="lineNumbers"></div>
+        <div id="lineNumbers" class="line-numbers"></div>
         <div id="highlightLayer" class="highlight-layer" aria-hidden="true"></div>
         <textarea id="codeEditor" class="code-editor" spellcheck="false" autocorrect="off" autocapitalize="off"><!DOCTYPE html>
 <html>
@@ -646,6 +704,25 @@
   </div>
 </body>
 </html></textarea>
+      </div>
+      </div>
+
+      <div id="paneSplit" class="pane-split" role="separator" aria-orientation="horizontal" aria-label="Resize the HTML and CSS editors"></div>
+
+      <div class="file-pane" id="cssPane">
+        <div class="file-bar">
+          <span class="file-name">style.css</span><span class="file-kind">styling</span>
+          <span id="linkStatus" class="link-status unlinked">not linked</span>
+          <button class="file-save" id="saveCssBtn" title="Download style.css"><i data-lucide="download" style="width:12px;height:12px;"></i> Save .css</button>
+        </div>
+        <div id="cssHint" class="css-hint hidden"></div>
+        <div class="editor-wrap">
+          <label for="cssEditor" class="sr-only">CSS code editor (style.css)</label>
+          <div id="cssLineNumbers" class="line-numbers"></div>
+          <div id="cssHighlightLayer" class="highlight-layer" aria-hidden="true"></div>
+          <textarea id="cssEditor" class="code-editor" spellcheck="false" autocorrect="off" autocapitalize="off" placeholder="/* Your styles go here, e.g.\n\nh1 {\n  color: #4f46e5;\n} */"></textarea>
+        </div>
+      </div>
       </div>
 
       <div id="examplesPanel" class="hidden">
@@ -829,6 +906,7 @@ p {
             <button class="wt-load-btn" data-example="css">&#x1F4E5; Load CSS example</button>
           </div>
           <div class="wt-callout tip">Try changing <code>color: #4f46e5</code> to any hex colour code — like <code>#ef4444</code> for red or <code>#10b981</code> for green.</div>
+          <div class="wt-callout info"><strong>Good habit:</strong> real websites keep CSS in its own file, called an <em>external stylesheet</em>, and link it from the <code>&lt;head&gt;</code> with <code>&lt;link rel="stylesheet" href="style.css"&gt;</code>. One stylesheet can then style every page of a site. Click <strong>External CSS</strong> at the top to get a separate <code>style.css</code> editor.</div>
         </div>
 
         <!-- Slide 3: Classes -->
@@ -1403,6 +1481,17 @@ const loadBtn           = document.getElementById('loadBtn');
 const fileInput         = document.getElementById('fileInput');
 const mainGrid          = document.getElementById('mainGrid');
 const resizeHandle      = document.getElementById('resizeHandle');
+const editorStack       = document.getElementById('editorStack');
+const cssEditor         = document.getElementById('cssEditor');
+const cssHighlightLayer = document.getElementById('cssHighlightLayer');
+const cssLineNumbers    = document.getElementById('cssLineNumbers');
+const extCssBtn         = document.getElementById('extCssBtn');
+const htmlPane          = document.getElementById('htmlPane');
+const paneSplit         = document.getElementById('paneSplit');
+const linkStatus        = document.getElementById('linkStatus');
+const cssHint           = document.getElementById('cssHint');
+const CSS_FILE          = 'style.css';
+let extCss = false; // is the style.css pane showing?
 
 // ── Mobile bottom tab bar (Lesson / Code / Preview) — same pattern as Code
 // Conjurer and Java Genie. "Lesson" reuses the existing tutorial overlay via
@@ -1429,7 +1518,7 @@ mobileTabBtns.forEach(btn => btn.addEventListener("click", () => setMobileTab(bt
 setMobileTab("code");
 
 // ── Syntax highlighting (HTML/CSS aware) ──────────────────────────────────────
-function highlight(code) {
+function highlight(code, cssOnly) {
   const esc = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
   const TOKENS = [
     { re: /^<!--[\s\S]*?-->/, cls: 'hl-cmt' },
@@ -1451,7 +1540,9 @@ function highlight(code) {
   // Detect CSS region
   const styleMatch = code.match(/<style[^>]*>([\s\S]*?)<\/style>/i);
   let cssStart = -1, cssEnd = -1;
-  if (styleMatch) {
+  if (cssOnly) {
+    cssStart = 0; cssEnd = code.length;
+  } else if (styleMatch) {
     cssStart = code.indexOf(styleMatch[1]);
     cssEnd   = cssStart + styleMatch[1].length;
   }
@@ -1505,6 +1596,18 @@ function updateHighlight() {
   highlightLayer.innerHTML = highlight(codeEditor.value);
   highlightLayer.scrollTop  = codeEditor.scrollTop;
   highlightLayer.scrollLeft = codeEditor.scrollLeft;
+  updateLinkStatus();
+}
+
+// The style.css editor: same overlay technique, CSS-only highlighting.
+function updateCssEditor() {
+  cssHighlightLayer.innerHTML = highlight(cssEditor.value, true) + '\n';
+  cssHighlightLayer.scrollTop  = cssEditor.scrollTop;
+  cssHighlightLayer.scrollLeft = cssEditor.scrollLeft;
+  const lines = cssEditor.value.split('\n').length;
+  cssLineNumbers.innerHTML = Array.from({length: lines}, (_, i) => i+1).join('<br>');
+  updateLinkStatus();
+  wwAutosave.scheduleAutosave();
 }
 
 // ── Line numbers ──────────────────────────────────────────────────────────────
@@ -1518,32 +1621,47 @@ function updateLineNumbers() {
 // ── Autosave last program, restore on load ──────────────────────────────────
 const wwAutosave = WorkAutosave.init({
   key: 'web-wizard',
-  getState: () => ({ code: codeEditor.value }),
-  hasContent: (data) => typeof data.code === 'string' && data.code.trim() && data.code !== WW_DEFAULT_CODE,
-  restore: (data) => { codeEditor.value = data.code; updateLineNumbers(); updateHighlight(); },
-  discard: () => { codeEditor.value = WW_DEFAULT_CODE; updateLineNumbers(); updateHighlight(); },
+  getState: () => ({ code: codeEditor.value, css: cssEditor.value, extCss }),
+  hasContent: (data) => (typeof data.code === 'string' && data.code.trim() && data.code !== WW_DEFAULT_CODE)
+                     || (typeof data.css === 'string' && data.css.trim()),
+  restore: (data) => {
+    codeEditor.value = data.code || WW_DEFAULT_CODE;
+    cssEditor.value = typeof data.css === 'string' ? data.css : '';
+    updateLineNumbers(); updateHighlight(); updateCssEditor();
+    setExtCss(!!data.extCss);
+  },
+  discard: () => { codeEditor.value = WW_DEFAULT_CODE; cssEditor.value = ''; updateLineNumbers(); updateHighlight(); updateCssEditor(); },
   toastLabel: 'Restored your last page'
 });
 
 function toggleLineNumbers() {
   lineNumbersVisible = !lineNumbersVisible;
-  lineNumbers.style.display = lineNumbersVisible ? '' : 'none';
   const left = lineNumbersVisible ? '36px' : '0';
-  highlightLayer.style.left = left;
-  codeEditor.style.left = left;
+  [lineNumbers, cssLineNumbers].forEach(el => el.style.display = lineNumbersVisible ? '' : 'none');
+  [highlightLayer, codeEditor, cssHighlightLayer, cssEditor].forEach(el => el.style.left = left);
   lineNumbersToggle.classList.toggle('active', lineNumbersVisible);
 }
 lineNumbersToggle.addEventListener('click', toggleLineNumbers);
 
-// ── Tab key → 2 spaces ───────────────────────────────────────────────────────
-codeEditor.addEventListener('keydown', e => {
+// ── Tab key → 2 spaces (both editors) ────────────────────────────────────────
+[codeEditor, cssEditor].forEach(ta => ta.addEventListener('keydown', e => {
   if (e.key === 'Tab') {
     e.preventDefault();
-    const s = codeEditor.selectionStart, en = codeEditor.selectionEnd;
-    codeEditor.value = codeEditor.value.substring(0,s) + '  ' + codeEditor.value.substring(en);
-    codeEditor.selectionStart = codeEditor.selectionEnd = s + 2;
-    updateLineNumbers(); updateHighlight();
+    const s = ta.selectionStart, en = ta.selectionEnd;
+    ta.value = ta.value.substring(0,s) + '  ' + ta.value.substring(en);
+    ta.selectionStart = ta.selectionEnd = s + 2;
+    ta.dispatchEvent(new Event('input'));
   }
+}));
+
+cssEditor.addEventListener('input', () => {
+  updateCssEditor();
+  if (autoRun) scheduleRun();
+});
+cssEditor.addEventListener('scroll', () => {
+  cssLineNumbers.scrollTop     = cssEditor.scrollTop;
+  cssHighlightLayer.scrollTop  = cssEditor.scrollTop;
+  cssHighlightLayer.scrollLeft = cssEditor.scrollLeft;
 });
 
 codeEditor.addEventListener('input', () => {
@@ -1558,11 +1676,14 @@ codeEditor.addEventListener('scroll', () => {
   highlightLayer.scrollLeft = codeEditor.scrollLeft;
 });
 
-codeEditor.addEventListener('click',  updateCursor);
-codeEditor.addEventListener('keyup',  updateCursor);
-function updateCursor() {
-  const val = codeEditor.value;
-  const pos = codeEditor.selectionStart;
+[codeEditor, cssEditor].forEach(ta => {
+  ta.addEventListener('click', updateCursor);
+  ta.addEventListener('keyup', updateCursor);
+});
+function updateCursor(e) {
+  const ta  = (e && e.target) || codeEditor;
+  const val = ta.value;
+  const pos = ta.selectionStart;
   const lines = val.substring(0, pos).split('\n');
   lineColReadout.textContent = `Ln ${lines.length}, Col ${lines[lines.length-1].length + 1}`;
 }
@@ -1583,8 +1704,21 @@ function scheduleRun() {
 }
 
 // ── Preview ───────────────────────────────────────────────────────────────────
+// Does the HTML link the external stylesheet? Matches href="style.css" or
+// "./style.css" on a <link> tag, wherever rel sits among the attributes.
+const CSS_LINK_RE = /<link\b[^>]*\bhref\s*=\s*["'](?:\.\/)?style\.css["'][^>]*>/gi;
+function htmlLinksCss(html) { CSS_LINK_RE.lastIndex = 0; return CSS_LINK_RE.test(html); }
+
 function refreshPreview() {
   let code = codeEditor.value;
+  // The preview is a blob: URL, so it can't fetch style.css itself. Put the
+  // CSS in where the <link> is, the way a browser would load it. With no
+  // <link>, nothing is applied: linking the file is part of the lesson.
+  if (htmlLinksCss(code)) {
+    const css = cssEditor.value.replace(/<\/style/gi, '<\\/style');
+    CSS_LINK_RE.lastIndex = 0;
+    code = code.replace(CSS_LINK_RE, () => `<style data-file="${CSS_FILE}">\n${css}\n</style>`);
+  }
   // Student code rarely includes a viewport meta tag. Without one, mobile
   // browsers render the iframe's document at a desktop-width virtual
   // viewport (~980px) and scale it down, making the preview look like a
@@ -1617,8 +1751,15 @@ runButton.addEventListener('click', () => {
   }
 });
 resetButton.addEventListener('click', () => {
-  codeEditor.value = examples.hello_world;
-  updateLineNumbers(); updateHighlight();
+  if (extCss) {
+    // In External CSS mode, reset to the same starter page split into files.
+    const split = splitInternalCss(examples.hello_world);
+    codeEditor.value = split.html;
+    cssEditor.value  = split.css;
+  } else {
+    codeEditor.value = examples.hello_world;
+  }
+  updateLineNumbers(); updateHighlight(); updateCssEditor();
   refreshPreview();
 });
 
@@ -1681,13 +1822,13 @@ window.addEventListener('orientationchange', () => setTimeout(applyPreviewSize, 
 
 // ── Tab switching ─────────────────────────────────────────────────────────────
 editorTab.addEventListener('click', () => {
-  editorWrap.classList.remove('hidden');
+  editorStack.classList.remove('hidden');
   examplesPanel.classList.add('hidden');
   editorTab.classList.add('active');
   examplesTab.classList.remove('active');
 });
 examplesTab.addEventListener('click', () => {
-  editorWrap.classList.add('hidden');
+  editorStack.classList.add('hidden');
   examplesPanel.classList.remove('hidden');
   examplesTab.classList.add('active');
   editorTab.classList.remove('active');
@@ -1714,21 +1855,40 @@ document.querySelectorAll('.exampleLoader').forEach(btn => {
 });
 
 // ── Save / Load ───────────────────────────────────────────────────────────────
-saveBtn.addEventListener('click', () => {
-  const blob = new Blob([codeEditor.value], {type: 'text/html;charset=utf-8'});
+function downloadFile(text, name, type) {
+  const blob = new Blob([text], {type: type + ';charset=utf-8'});
   const url  = URL.createObjectURL(blob);
   const a    = document.createElement('a');
-  a.href = url; a.download = 'my-page.html'; a.click();
-  URL.revokeObjectURL(url);
+  a.href = url; a.download = name;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+// With External CSS on, the page is saved as index.html so it sits next to
+// style.css in one folder, the way a real site is laid out.
+const saveHtml = () => downloadFile(codeEditor.value, extCss ? 'index.html' : 'my-page.html', 'text/html');
+const saveCss  = () => downloadFile(cssEditor.value, CSS_FILE, 'text/css');
+saveBtn.addEventListener('click', () => {
+  saveHtml();
+  if (extCss) setTimeout(saveCss, 400); // a short gap so the browser takes both downloads
 });
+document.getElementById('saveHtmlBtn').addEventListener('click', saveHtml);
+document.getElementById('saveCssBtn').addEventListener('click', saveCss);
 
 loadBtn.addEventListener('click', () => fileInput.click());
 fileInput.addEventListener('change', e => {
   const file = e.target.files[0]; if (!file) return;
   const reader = new FileReader();
+  const isCss = /\.css$/i.test(file.name);
   reader.onload = ev => {
-    codeEditor.value = ev.target.result;
-    updateLineNumbers(); updateHighlight(); refreshPreview();
+    if (isCss) {
+      cssEditor.value = ev.target.result;
+      updateCssEditor();
+      setExtCss(true);
+    } else {
+      codeEditor.value = ev.target.result;
+      updateLineNumbers(); updateHighlight();
+    }
+    refreshPreview();
     editorTab.click();
   };
   reader.readAsText(file);
@@ -1760,6 +1920,115 @@ document.addEventListener('mouseup', () => {
   document.body.style.userSelect = '';
 });
 
+
+// ── External CSS ──────────────────────────────────────────────────────────────
+// Takes the first <style> block out of a page and puts a <link> to style.css
+// in its place. Used by "Move it into style.css" and by Reset in this mode.
+function splitInternalCss(html) {
+  const m = html.match(/([ \t]*)<style[^>]*>([\s\S]*?)<\/style>/i);
+  if (!m) return { html, css: '' };
+  const indent = m[1];
+  const lines = m[2].replace(/^\n+|\s+$/g, '').split('\n');
+  const pad = Math.min(...lines.filter(l => l.trim()).map(l => l.match(/^ */)[0].length));
+  const css = lines.map(l => l.slice(pad)).join('\n') + '\n';
+  return {
+    html: html.replace(m[0], `${indent}<link rel="stylesheet" href="${CSS_FILE}">`),
+    css,
+  };
+}
+
+function addLinkTag(html) {
+  const tag = `<link rel="stylesheet" href="${CSS_FILE}">`;
+  if (/<\/head>/i.test(html)) return html.replace(/([ \t]*)<\/head>/i, (m0, ind) => `${ind}  ${tag}\n${ind}</head>`);
+  if (/<html[^>]*>/i.test(html)) return html.replace(/<html[^>]*>/i, m0 => `${m0}\n<head>\n  ${tag}\n</head>`);
+  return `${tag}\n${html}`;
+}
+
+function setHint(htmlStr, btnLabel, onClick) {
+  if (!htmlStr) { cssHint.classList.add('hidden'); cssHint.innerHTML = ''; return; }
+  cssHint.innerHTML = `<span>${htmlStr}</span>`;
+  if (btnLabel) {
+    const b = document.createElement('button');
+    b.type = 'button'; b.textContent = btnLabel;
+    b.addEventListener('click', onClick);
+    cssHint.appendChild(b);
+  }
+  cssHint.classList.remove('hidden');
+}
+
+function updateLinkStatus() {
+  if (!linkStatus || typeof cssEditor === 'undefined') return;
+  const html = codeEditor.value;
+  const linked = htmlLinksCss(html);
+  linkStatus.textContent = linked ? 'linked from index.html' : 'not linked';
+  linkStatus.className = 'link-status ' + (linked ? 'linked' : 'unlinked');
+  if (!extCss) return;
+  const hasStyleTag = /<style[^>]*>[\s\S]*?\S[\s\S]*?<\/style>/i.test(html);
+  if (hasStyleTag && !cssEditor.value.trim()) {
+    setHint('Your page still has its CSS inside a <code>&lt;style&gt;</code> tag. Move it into <code>style.css</code>?',
+      'Move it into style.css', () => {
+        const split = splitInternalCss(codeEditor.value);
+        codeEditor.value = split.html;
+        cssEditor.value  = split.css;
+        updateLineNumbers(); updateHighlight(); updateCssEditor(); refreshPreview();
+      });
+  } else if (!linked) {
+    setHint('The page can\'t see this file yet. Link it inside <code>&lt;head&gt;</code>: <code>&lt;link rel="stylesheet" href="style.css"&gt;</code>',
+      'Add the link for me', () => {
+        codeEditor.value = addLinkTag(codeEditor.value);
+        updateLineNumbers(); updateHighlight(); refreshPreview();
+      });
+  } else if (hasStyleTag) {
+    setHint('Tip: this page uses <code>style.css</code> and a <code>&lt;style&gt;</code> tag. Keeping all your CSS in <code>style.css</code> is easier to manage.');
+  } else {
+    setHint('');
+  }
+}
+
+function setExtCss(on) {
+  extCss = on;
+  appShellEl.classList.toggle('ext-css', on);
+  extCssBtn.classList.toggle('active', on);
+  extCssBtn.setAttribute('aria-pressed', on ? 'true' : 'false');
+  if (on) {
+    // Give the editor column a little more room for two files, unless the
+    // learner has already dragged it wider.
+    const w = parseInt(mainGrid.style.gridTemplateColumns);
+    if (window.innerWidth > 1100 && w < 500) mainGrid.style.gridTemplateColumns = '500px 4px 1fr';
+    editorTab.click();
+  }
+  updateLinkStatus();
+  applyPreviewSize();
+  wwAutosave.scheduleAutosave();
+}
+extCssBtn.addEventListener('click', () => {
+  setExtCss(!extCss);
+  if (extCss) cssEditor.focus();
+  if (extCss && window.MagicLabProgress) {
+    MagicLabProgress.track(ML_TOOLS.WEB_WIZARD, 'external_css_on', { grade: 8 });
+  }
+});
+
+// Drag bar between the two panes sets the HTML pane's share of the height.
+paneSplit.addEventListener('pointerdown', e => {
+  e.preventDefault();
+  paneSplit.setPointerCapture(e.pointerId);
+  paneSplit.classList.add('dragging');
+  const move = ev => {
+    const r = editorStack.getBoundingClientRect();
+    const pct = Math.max(20, Math.min(80, (ev.clientY - r.top) / r.height * 100));
+    htmlPane.style.flex = `0 0 ${pct}%`;
+  };
+  const up = () => {
+    paneSplit.classList.remove('dragging');
+    paneSplit.removeEventListener('pointermove', move);
+    paneSplit.removeEventListener('pointerup', up);
+    paneSplit.removeEventListener('pointercancel', up);
+  };
+  paneSplit.addEventListener('pointermove', move);
+  paneSplit.addEventListener('pointerup', up);
+  paneSplit.addEventListener('pointercancel', up);
+});
 
 // ── Web Wizard Tutorial ───────────────────────────────────────────────────────
 (function() {
@@ -1900,6 +2169,7 @@ document.addEventListener('mouseup', () => {
 })();
 
 // ── Init ──────────────────────────────────────────────────────────────────────
+updateCssEditor();
 if (wwAutosave.tryRestore()) wwAutosave.showToast();
 updateLineNumbers();
 updateHighlight();
