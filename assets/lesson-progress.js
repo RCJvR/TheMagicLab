@@ -58,7 +58,9 @@
     fill.style.width = (share * 100).toFixed(2) + '%';
   }
   function queue() {
-    if (!queued) { queued = true; window.requestAnimationFrame(update); }
+    // A plain timer, not requestAnimationFrame: some lesson pages replace requestAnimationFrame
+    // (the simulation pause), and the bar must not depend on that.
+    if (!queued) { queued = true; window.setTimeout(update, 16); }
   }
 
   place();
