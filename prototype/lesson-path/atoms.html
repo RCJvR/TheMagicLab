@@ -177,6 +177,7 @@ body { background: var(--bg, #08090b); }
 .pr-btn { margin-top: 12px; width: 100%; font: inherit; font-size: 15px; font-weight: 900; letter-spacing: .04em; text-transform: uppercase; padding: 14px 18px; border: 0; border-radius: 14px; color: #08090b; background: #4acf6b; box-shadow: 0 5px 0 #2a9a48; cursor: pointer; }
 .pr-btn:active { transform: translateY(2px); box-shadow: 0 3px 0 #2a9a48; }
 .pr-done { font-size: 13px; color: #4acf6b; font-weight: 700; margin-top: 10px; }
+.pr-tap { display: block; margin-top: 8px; font-size: 12px; opacity: .75; }
 .pr-foot { display: flex; justify-content: space-between; margin-top: 40px; font-size: 14px; }
 .pr-foot a { color: var(--text); font-weight: 700; text-decoration: none; }
 </style>
@@ -253,20 +254,25 @@ body { background: var(--bg, #08090b); }
         opts.appendChild(b);
       });
     }
+    function finish() {
+      done[sec] = true; seg(sec, true);
+      box.innerHTML = '<div class="pr-done">Section complete</div>';
+      if (sec + 1 < TITLES.length) mark(sec + 1);
+    }
     function answer(q, k, b, box) {
       var all = box.querySelectorAll('.pr-opt');
       all.forEach(function (x, j) { x.disabled = true; if (j === q.ans) x.classList.add('right'); });
       if (k !== q.ans) b.classList.add('wrong');
       var ok = k === q.ans, fb = box.querySelector('.pr-fb-slot');
-      fb.innerHTML = '<div class="pr-fb ' + (ok ? 'ok' : 'no') + '"><b>' + (ok ? 'Correct!' : 'Not quite.') + '</b>' + (q.exp || '').replace(/</g, '&lt;') + '</div>';
-      var last = at === qs.length - 1;
-      var btn = document.createElement('button'); btn.type = 'button'; btn.className = 'pr-btn';
-      btn.textContent = last ? 'Finish section' : 'Continue';
-      btn.addEventListener('click', function () {
-        if (last) { done[sec] = true; seg(sec, true); box.innerHTML = '<div class="pr-done">Section complete. Next section →</div>'; if (done[sec + 1] !== undefined || sec + 1 < TITLES.length) { mark(Math.min(sec + 1, TITLES.length - 1)); } }
-        else { at++; show(); }
-      });
-      fb.appendChild(btn);
+      fb.innerHTML = '<div class="pr-fb ' + (ok ? 'ok' : 'no') + '" tabindex="0"><b>' + (ok ? 'Correct!' : 'Not quite.') + '</b>' +
+        (q.exp || '').replace(/</g, '&lt;') + '<small class="pr-tap">Moving on… tap to continue now</small></div>';
+      var last = at === qs.length - 1, moved = false, timer;
+      function go() {
+        if (moved) return; moved = true; clearTimeout(timer);
+        if (last) { finish(); } else { at++; show(); }
+      }
+      timer = setTimeout(go, 3200);
+      fb.firstChild.addEventListener('click', go);
     }
     box.dataset.ready = '1';
     show();
