@@ -43,6 +43,8 @@
     queued = false;
     var top = lesson.getBoundingClientRect().top + window.pageYOffset;
     var height = lesson.getBoundingClientRect().height;
+    // A locked lesson shows no text to follow (members-only), so the bar is hidden rather than left empty.
+    bar.style.display = height > 0 ? '' : 'none';
     if (height <= 0) return;
     // The reader counts as a little way down the screen (40%), so the bar moves
     // just before the text reaches the top. Within the last screen of the page
