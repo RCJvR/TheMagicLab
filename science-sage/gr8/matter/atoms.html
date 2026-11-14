@@ -6,6 +6,8 @@
 <script defer src="/assets/lesson-toc.js"></script>
 <link rel="stylesheet" href="/assets/lesson-progress.css">
 <script defer src="/assets/lesson-progress.js"></script>
+<script defer src="/assets/section-checks.js"></script>
+<link rel="stylesheet" href="/assets/section-checks.css">
 <link rel="stylesheet" href="/assets/focus-reading.css">
 <script defer src="/assets/focus-reading.js"></script>
 <script src="/assets/sim-fit.js"></script>
@@ -634,6 +636,8 @@ const QUESTIONS = [
   {text:'An atom has 15 protons and a mass number of 31. A classmate claims this atom must have 31 electrons, because the mass number represents the total number of particles in the atom. What is wrong with this claim, and how many neutrons does the atom actually have?', opts:['The claim is correct — the atom has 31 electrons and 0 neutrons', 'The claim is wrong: in a neutral atom, electrons equal the number of protons (15), not the mass number. Mass number = protons + neutrons, so neutrons = 31 − 15 = 16', 'The claim is wrong because mass number only counts electrons, so there are 31 electrons and 15 neutrons', 'The claim is correct only if the atom carries an electric charge'], ans:1, exp:'The mass number is the total of protons AND neutrons — it does not tell you the number of electrons directly. In a neutral atom, electrons always equal the number of protons (here, 15). To find neutrons: mass number − protons = 31 − 15 = 16 neutrons.'},
   {text:'In Rutherford\'s gold-foil experiment, most alpha particles passed straight through the gold foil, but a small number bounced almost straight back. Thomson\'s "plum pudding" model — a ball of spread-out positive charge with electrons scattered through it — predicted every particle should pass through with only slight deflection. What did the unexpected bounce-back result reveal, and why could the plum pudding model not explain it?', opts:['It showed atoms have no internal structure at all — just empty space with nothing inside', 'It revealed that atoms have a tiny, extremely dense, positively charged nucleus — a concentration of charge and mass that a spread-out "plum pudding" of positive charge could never produce, since spread-out charge could not exert enough force to reverse a fast-moving particle', 'It proved that electrons are heavier than protons', 'It showed that gold is not actually an element'], ans:1, exp:'If positive charge were spread evenly through the whole atom (as Thomson proposed), it would be far too weak and diffuse anywhere to reverse the direction of a fast alpha particle. The fact that a small fraction bounced almost straight back meant they were hitting something small, dense, and strongly charged — leading Rutherford to propose a tiny positive nucleus at the centre, with the rest of the atom being mostly empty space.'},
 ];
+// Section checks: which of the questions above appear at the end of each section (0-based).
+window.ML_SECTION_CHECKS = { questions: QUESTIONS, sections: { 0: [0], 1: [1, 2, 5, 6], 2: [4], 3: [3, 7] } };
 let score = 0, answered = new Array(QUESTIONS.length).fill(false);
 function buildPractice() {
   document.getElementById('questions').innerHTML = QUESTIONS.map((q, qi) => `
