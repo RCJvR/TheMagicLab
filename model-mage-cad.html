@@ -171,6 +171,11 @@
     .ext-btn-go{background:#f2f5f9;border-color:#f2f5f9;color:#08090b;}
     .ext-btn-go:hover{background:#fff;border-color:#fff;color:#08090b;}
     .ext-prompt-note{margin-top:8px;font-size:0.62rem;color:var(--text2);opacity:0.75;}
+    .ext-btn[hidden]{display:none;}
+    .ext-btn-hole{border-color:rgba(245,163,163,0.45);color:#f5a3a3;}
+    .ext-btn-hole:hover{background:rgba(245,163,163,0.12);border-color:#f5a3a3;color:#ffd0d0;}
+    .ext-prompt-thru{display:flex;align-items:center;gap:6px;font-size:0.68rem;color:var(--text2);margin:-4px 0 9px;cursor:pointer;}
+    .ext-prompt-thru[hidden]{display:none;}
 
     /*  Shown when profiles were kept flat, so that choice is never a dead end. */
     .ext-flat-chip{
@@ -519,13 +524,17 @@
     <div class="ext-prompt" id="ext-prompt" hidden>
       <div class="ext-prompt-title" id="ext-prompt-title">Extrude this profile?</div>
       <div class="ext-prompt-row">
-        <label class="ext-prompt-label" for="ext-prompt-height">Height</label>
+        <label class="ext-prompt-label" for="ext-prompt-height" id="ext-prompt-hlabel">Height</label>
         <input class="ext-prompt-input" id="ext-prompt-height" type="number" min="0.1" step="1" value="40">
         <span class="ext-prompt-unit">mm</span>
       </div>
+      <label class="ext-prompt-thru" id="ext-prompt-thru-row" hidden>
+        <input type="checkbox" id="ext-prompt-thru"> Hole goes right through
+      </label>
       <div class="ext-prompt-actions">
-        <button class="ext-btn ext-btn-go" id="ext-prompt-yes">Extrude</button>
-        <button class="ext-btn" id="ext-prompt-no">Keep flat</button>
+        <button class="ext-btn ext-btn-go" id="ext-prompt-yes" title="Pad: add material — the shape grows out of the part">⬆ Pad</button>
+        <button class="ext-btn ext-btn-hole" id="ext-prompt-pocket" title="Pocket: cut a hole into the part" hidden>⬇ Hole</button>
+        <button class="ext-btn" id="ext-prompt-no" title="Leave it as a flat drawing for now">Keep flat</button>
       </div>
       <div class="ext-prompt-dof" id="ext-prompt-dof" hidden></div>
       <div class="ext-prompt-note">You can undo this with Ctrl&#8288;+&#8288;Z.</div>
@@ -3544,7 +3553,9 @@ function collectExtrudePayload() {
     const { planeName, planeOffset } = planeFromSketch(sk);
     const normalSign = (typeof sk.plane === 'object' ? sk.plane.normalSign : null) ?? 1;
     if (node.type === 'extrude') {
-      items.push({ id:node.id, kind:'extrude', profile:entry.profile, height:node.height, operation:node.operation,
+      // "Through" holes cut far past any part a learner will make
+      const h = (node.thru && node.operation === 'cut') ? 2000 : node.height;
+      items.push({ id:node.id, kind:'extrude', profile:entry.profile, height:h, operation:node.operation,
                    filletR:node.filletR, chamferR:node.chamferR, planeName, planeOffset, normalSign,
                    both: typeof sk.plane === 'string', patterns:[] });
     } else {
@@ -3649,7 +3660,12 @@ function refreshExtrudePrompt() {
   if (pend.length && !is3d) {
     const n = pend.length;
     document.getElementById('ext-prompt-title').textContent =
-      n === 1 ? 'Extrude this profile?' : `Extrude ${n} new profiles?`;
+      n === 1 ? 'Make this shape 3D?' : `Make ${n} new shapes 3D?`;
+    // A hole needs a solid to cut into
+    const canHole = featureTree.some(f => f.type === 'extrude' || f.type === 'revolve');
+    document.getElementById('ext-prompt-pocket').hidden = !canHole;
+    document.getElementById('ext-prompt-thru-row').hidden = !canHole;
+    document.getElementById('ext-prompt-hlabel').textContent = canHole ? 'Height / depth' : 'Height';
     const h = document.getElementById('ext-prompt-height');
     const sk = activeSketch();
     if (h && document.activeElement !== h) h.value = (sk && sk.extrudeHeight != null) ? sk.extrudeHeight : extH;
@@ -3672,18 +3688,35 @@ function refreshExtrudePrompt() {
     if (f > 0) chip.textContent = f === 1 ? '1 profile kept flat · Extrude it' : `${f} profiles kept flat · Extrude them`;
   }
 }
+// choice: 'pad' (add material), 'pocket' (cut a hole) or 'flat'
 function answerExtrude(choice) {
   const sk = activeSketch();
   if (!sk) return;
+  if (choice === 'extrude') choice = 'pad';
   sk.extrudeChoice = sk.extrudeChoice || {};
-  if (choice === 'extrude') {
-    const h = parseFloat((document.getElementById('ext-prompt-height') || {}).value);
-    if (isFinite(h) && h > 0) { sk.extrudeHeight = h; extH = h; }
+  const pend = pendingProfiles();
+  if (choice === 'flat') {
+    pend.forEach(i => { sk.extrudeChoice[i] = 'flat'; });
+    renderFeatureTree();
+    scheduleExtrude();
+    clearTimeout(extTimer); doExtrude();
+    return;
   }
-  pendingProfiles().forEach(i => { sk.extrudeChoice[i] = choice; });
+  const h = parseFloat((document.getElementById('ext-prompt-height') || {}).value);
+  if (isFinite(h) && h > 0) { sk.extrudeHeight = h; extH = h; }
+  const thru = choice === 'pocket' && !!document.getElementById('ext-prompt-thru')?.checked;
+  const hadSolid = featureTree.some(f => f.type === 'extrude' || f.type === 'revolve');
+  pend.forEach(i => { sk.extrudeChoice[i] = 'extrude'; });
+  syncExtrudeNodes();
+  const nodes = featureTree.filter(f => f.type === 'extrude' && f.sketchId === sk.id && pend.includes(f.profileIdx));
+  nodes.forEach((n, j) => {
+    n.operation = choice === 'pocket' ? 'cut' : (hadSolid || j > 0 ? 'fuse' : 'new');
+    n.thru = thru;
+    const prefix = choice === 'pocket' ? 'Pocket' : 'Pad';
+    n.name = `${prefix} ${featureTree.filter(f => (f.name || '').startsWith(prefix)).length + 1}`;
+  });
   renderFeatureTree();
   scheduleExtrude();          // commits history, so this is undoable
-  if (choice !== 'extrude') { clearTimeout(extTimer); doExtrude(); }
 }
 function extrudeKeptFlat() {
   const sk = activeSketch();
@@ -3873,7 +3906,8 @@ document.getElementById('tool-spline').addEventListener('click',  ()=>setTool('s
 document.getElementById('tool-edit').addEventListener('click',    ()=>setTool('edit'));
 document.getElementById('tool-addpt').addEventListener('click',   ()=>setTool('addpt'));
 document.getElementById('btn-undo').addEventListener('click',     ()=>undoLast());
-document.getElementById('ext-prompt-yes').addEventListener('click',  ()=>answerExtrude('extrude'));
+document.getElementById('ext-prompt-yes').addEventListener('click',  ()=>answerExtrude('pad'));
+document.getElementById('ext-prompt-pocket').addEventListener('click', ()=>answerExtrude('pocket'));
 document.getElementById('ext-prompt-no').addEventListener('click',   ()=>answerExtrude('flat'));
 document.getElementById('ext-flat-chip').addEventListener('click',   ()=>extrudeKeptFlat());
 document.getElementById('ext-prompt-height').addEventListener('keydown', e=>{
@@ -4891,7 +4925,7 @@ function renderFeatureTree() {
     const subSpan = t => `<span style="font-size:0.62rem;color:var(--text2);display:block">${t}</span>`;
     if (node.type==='extrude') {
       const hLabel = node.operation==='cut' ? 'depth' : 'h';
-      sub=subSpan(`${hLabel}${node.height}mm`+(node.filletR?` · f${node.filletR}`:'')+(node.chamferR?` · c${node.chamferR}`:''));
+      sub=subSpan((node.thru && node.operation==='cut' ? 'through all' : `${hLabel}${node.height}mm`)+(node.filletR?` · f${node.filletR}`:'')+(node.chamferR?` · c${node.chamferR}`:''));
       badge=`<span class="feat-node-op op-${node.operation}">${node.operation==='cut'?'POCKET':node.operation==='new'?'PAD':'PAD+'}</span>`;
     } else if (node.type==='revolve') {
       sub=subSpan(`${node.angle}° about sketch ${node.axis==='H'?'X':'Y'} axis`);
