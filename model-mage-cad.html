@@ -113,6 +113,12 @@
     .ext-prompt-dof.ok{color:var(--green);}
     .f3-msg{font-size:0.74rem;line-height:1.45;padding:8px 14px;border-bottom:1px solid var(--border);color:var(--green);flex-shrink:0;}
     .f3-msg.bad{color:#f5b23d;}
+    .f3-msg.editing{display:flex;align-items:center;gap:10px;color:var(--text);background:rgba(217,119,6,0.10);border-bottom-color:rgba(217,119,6,0.35);}
+    .f3-msg.editing[hidden]{display:none;}
+    .f3-msg.editing span{flex:1;min-width:0;}
+    .f3-msg.editing button{flex-shrink:0;border:1px solid rgba(217,119,6,0.6);background:rgba(217,119,6,0.18);color:var(--accent2);font:inherit;font-size:0.72rem;font-weight:700;padding:4px 10px;border-radius:5px;cursor:pointer;}
+    .feat-node.rolled{opacity:0.4;}
+    .feat-node.editing{outline:1px solid rgba(217,119,6,0.9);outline-offset:-1px;background:rgba(217,119,6,0.10);}
     .feat-props{padding:10px 14px;border-bottom:1px solid var(--border);flex-shrink:0;display:flex;flex-direction:column;gap:8px;}
     .fp-row{display:flex;align-items:center;gap:8px;font-size:0.74rem;color:var(--text2);}
     .fp-row > span{width:76px;flex-shrink:0;}
@@ -1235,6 +1241,7 @@ function render() {
   drawDofOverlay();
   drawConstraintGlyphs();
   drawSelection();
+  drawBoxSel();
   drawInProgress();
   drawSnapIndicator();
 }
@@ -1745,6 +1752,122 @@ let selItems = [];        // [{kind:'pt'|'seg'|'circle'|'arc'|'spline'|'body', u
 let pendingDrag = null;   // mousedown in Select, waiting to see if it becomes a drag
 let hoverHit = null;      // what the Select tool would grab right now
 let hoverAddPt = null;    // where a double-click would add a point (world coords)
+let boxSel = null;        // {x0,y0,x1,y1} screen coords while dragging a selection box
+
+// ── Selection box (AutoCAD style) ─────────────────────────────────────
+// Drag left → right: WINDOW — only lines/circles/arcs completely inside.
+// Drag right → left: CROSSING — anything touched, plus every part connected
+// to it (shared corners or Coincident constraints).
+
+// Points along an arc, from p1 through pmid to p2
+function arcSamples(e, n = 24) {
+  const g = arcGeom(e.p1, e.pmid, e.p2);
+  if (!g) return [e.p1, e.pmid, e.p2];
+  const ang = p => Math.atan2(p[1]-g.cy, p[0]-g.cx);
+  const a1 = ang(e.p1), am = ang(e.pmid), a2 = ang(e.p2);
+  const norm = a => ((a % (2*Math.PI)) + 2*Math.PI) % (2*Math.PI);
+  let sweep = norm(a2 - a1);                       // counter-clockwise sweep
+  if (norm(am - a1) > sweep) sweep = sweep - 2*Math.PI;   // pmid not on it: go clockwise
+  const out = [];
+  for (let i = 0; i <= n; i++) { const a = a1 + sweep * i / n; out.push([g.cx + g.r*Math.cos(a), g.cy + g.r*Math.sin(a)]); }
+  return out;
+}
+
+// Every selectable piece of an entity, with the points that describe it
+function entityPieces(e) {
+  if (e.type === 'polyline' || e.type === 'rect') {
+    return Array.from({length: segCount(e)}, (_, s) => {
+      const [ka, kb] = segEndKeys(e, s);
+      return { item:{kind:'seg', u:e.uid, s}, pts:[getPt(e, ka), getPt(e, kb)] };
+    });
+  }
+  if (e.type === 'circle') {
+    const pts = []; for (let i = 0; i <= 32; i++) { const a = i/32*2*Math.PI; pts.push([e.cx + e.r*Math.cos(a), e.cy + e.r*Math.sin(a)]); }
+    return [{ item:{kind:'circle', u:e.uid}, pts }];
+  }
+  if (e.type === 'arc') return [{ item:{kind:'arc', u:e.uid}, pts: arcSamples(e) }];
+  if (e.type === 'spline' && e.points.length >= 2) return [{ item:{kind:'spline', u:e.uid}, pts: catmullRomExpand(e.points) }];
+  return [];
+}
+
+function segsCross(a, b, c, d) {
+  const o = (p, q, r) => Math.sign((q[0]-p[0])*(r[1]-p[1]) - (q[1]-p[1])*(r[0]-p[0]));
+  return o(a,b,c) !== o(a,b,d) && o(c,d,a) !== o(c,d,b);
+}
+function polylineTouchesRect(pts, R) {
+  const inside = p => p[0] >= R.x0 && p[0] <= R.x1 && p[1] >= R.y0 && p[1] <= R.y1;
+  if (pts.some(inside)) return true;
+  const corners = [[R.x0,R.y0],[R.x1,R.y0],[R.x1,R.y1],[R.x0,R.y1]];
+  for (let i = 0; i < pts.length - 1; i++)
+    for (let j = 0; j < 4; j++)
+      if (segsCross(pts[i], pts[i+1], corners[j], corners[(j+1)%4])) return true;
+  return false;
+}
+
+// Entities joined by shared corners or Coincident constraints → groups
+function connectionGroups() {
+  const parent = {};
+  const find = u => { while (parent[u] !== u) { parent[u] = parent[parent[u]]; u = parent[u]; } return u; };
+  const join = (a, b) => { parent[find(a)] = find(b); };
+  const list = ents();
+  list.forEach(e => { ensureUid(e); parent[e.uid] = e.uid; });
+  for (let i = 0; i < list.length; i++) {
+    const pi = entityPointList(list[i]);
+    for (let j = i+1; j < list.length; j++) {
+      const pj = entityPointList(list[j]);
+      if (pi.some(p => pj.some(q => Math.hypot(p.x-q.x, p.y-q.y) < 1e-6))) join(list[i].uid, list[j].uid);
+    }
+  }
+  for (const c of sketchConstraints()) {
+    if (c.type !== 'coincident' || !c.b) continue;
+    if (parent[c.a.u] !== undefined && parent[c.b.u] !== undefined) join(c.a.u, c.b.u);
+  }
+  return find;
+}
+
+function finishBoxSelect(additive) {
+  const b = boxSel; boxSel = null;
+  const crossing = b.x1 < b.x0;
+  const [wa, wb] = [ctow(b.x0, b.y0), ctow(b.x1, b.y1)];
+  const R = { x0:Math.min(wa[0], wb[0]), x1:Math.max(wa[0], wb[0]), y0:Math.min(wa[1], wb[1]), y1:Math.max(wa[1], wb[1]) };
+  const inside = p => p[0] >= R.x0 && p[0] <= R.x1 && p[1] >= R.y0 && p[1] <= R.y1;
+  let picked = [];
+  for (const e of ents()) {
+    for (const piece of entityPieces(e)) {
+      const hit = crossing ? polylineTouchesRect(piece.pts, R) : piece.pts.every(inside);
+      if (hit) picked.push(piece.item);
+    }
+  }
+  if (crossing && picked.length) {
+    // Bring along everything connected to what the box touched
+    const grp = connectionGroups();
+    const roots = new Set(picked.map(it => grp(it.u)));
+    picked = [];
+    for (const e of ents()) if (roots.has(grp(e.uid))) entityPieces(e).forEach(p => picked.push(p.item));
+  }
+  if (!additive) selItems = [];
+  for (const it of picked) if (!isSelected(it)) selItems.push(it);
+  updateConstraintPanel(); scheduleRender();
+  const n = picked.length;
+  flashCstStatus(n ? `${n} item${n>1?'s':''} selected (${crossing ? 'crossing — touched and connected' : 'window — fully inside'})` : 'Nothing inside the box', !n);
+}
+
+function drawBoxSel() {
+  if (!boxSel) return;
+  const b = boxSel, crossing = b.x1 < b.x0;
+  const x = Math.min(b.x0, b.x1), y = Math.min(b.y0, b.y1), w = Math.abs(b.x1 - b.x0), h = Math.abs(b.y1 - b.y0);
+  ctx.save();
+  ctx.fillStyle = crossing ? 'rgba(74,207,127,0.10)' : 'rgba(91,147,255,0.12)';
+  ctx.strokeStyle = crossing ? 'rgba(74,207,127,0.95)' : 'rgba(91,147,255,0.95)';
+  ctx.lineWidth = 1.2;
+  if (crossing) ctx.setLineDash([6, 4]);
+  ctx.fillRect(x, y, w, h); ctx.strokeRect(x + 0.5, y + 0.5, w, h);
+  ctx.setLineDash([]);
+  ctx.font = '10px JetBrains Mono,monospace';
+  ctx.fillStyle = ctx.strokeStyle;
+  ctx.fillText(crossing ? 'Crossing: touched + connected' : 'Window: fully inside', x + 4, y - 5 < 10 ? y + h + 12 : y - 5);
+  ctx.restore();
+}
 
 function ensureUid(e) {
   const sk = activeSketch();
@@ -3254,6 +3377,9 @@ function buildConstraintToolbar() {
 // ── 3D features ──────────────────────────────────────────────────────
 function f3Msg(text, bad) {
   const el = document.getElementById('f3-msg'); if (!el) return;
+  // Keep the "Editing…" banner up while a feature is being edited (errors still show)
+  if (rollbackId && el.classList.contains('editing') && !bad) return;
+  el.classList.remove('editing');
   el.textContent = text || '';
   el.classList.toggle('bad', !!bad);
   el.hidden = !text;
@@ -3342,6 +3468,7 @@ function deleteFeature(id) {
   }
   featureTree = featureTree.filter(f => f.id !== id && !(f.type === 'pattern' && f.targetId === id));
   if (selectedFeatureId === id) selectedFeatureId = null;
+  if (rollbackId === id) { rollbackId = null; const m = document.getElementById('f3-msg'); if (m) m.classList.remove('editing'); }
   renderFeatProps(null);
   renderFeatureTree(); scheduleExtrude();
   f3Msg(`${node.name} deleted. Ctrl+Z brings it back.`, false);
@@ -3601,7 +3728,11 @@ function collectExtrudePayload() {
   // Sync extrude nodes for the active sketch so newly drawn profiles get nodes
   if (activeSketch()) syncExtrudeNodes();
   const items = [];
+  // While a feature is being edited, build the model only up to that step
+  const stopAt = rollbackId ? featureTree.findIndex(f => f.id === rollbackId) : -1;
+  const inHistory = node => stopAt < 0 || featureTree.indexOf(node) <= stopAt;
   for (const node of featureTree) {
+    if (!inHistory(node)) continue;
     if (node.type !== 'extrude' && node.type !== 'revolve') continue;
     const sk = featureTree.find(f => f.id === node.sketchId);
     if (!sk) continue;
@@ -3621,7 +3752,7 @@ function collectExtrudePayload() {
     }
   }
   for (const node of featureTree) {
-    if (node.type !== 'pattern') continue;
+    if (node.type !== 'pattern' || !inHistory(node)) continue;
     const it = items.find(i => i.id === node.targetId);
     if (!it) continue;
     if (node.kind === 'linear') it.patterns.push({ kind:'linear', dir:AXIS_VEC[node.dir] || [1,0,0], spacing:+node.spacing || 10, count:+node.count || 2 });
@@ -3914,7 +4045,7 @@ function updateHint() {
     polygon:  '<b>Polygon tool (G)</b><br>Click 1: set centre · Click 2: set radius/rotation<br>Adjust sides in toolbar',
     spline:   '<b>Spline tool (S)</b><br>Click to add control points<br>Double-click: end · Right-click/Esc: cancel',
     addpt:    '<b>Add Point (I)</b><br>Click an edge to add a point · hold and drag to place it<br>Drag an existing point to move it<br><b>Ctrl</b>: no snap · Remove a point: Select tool, click it, <b>Del</b>',
-    edit:     '<b>Select &amp; Move (E / V)</b><br>Drag a point, edge or whole shape to move it<br><b>Double-click an edge</b> to add a point · select a point + <b>Del</b> to remove it<br>Click to select · <b>Shift</b>-click to add · then pick a constraint on the right<br><b>Ctrl</b>: no snap · <b>Del</b> on an edge: delete the shape',
+    edit:     '<b>Select &amp; Move (E / V)</b><br>Drag a point, edge or whole shape to move it<br><b>Double-click an edge</b> to add a point · select a point + <b>Del</b> to remove it<br>Click to select · <b>Shift</b>-click to add · then pick a constraint on the right<br>Drag on empty space: <b>left→right</b> selects what is fully inside · <b>right→left</b> selects what it touches and everything connected<br><b>Ctrl</b>: no snap · <b>Del</b> on an edge: delete the shape',
   };
   document.getElementById('hint-box').innerHTML = tool === 'cst' ? cstHintHtml() : (hints[tool]||'');
 }
@@ -4067,6 +4198,16 @@ sk.addEventListener('mousemove', e => {
   const [wx,wy]=ctow(x,y);
   const [sx,sy]=snapPt(wx,wy);
 
+  // Select tool, pressed on empty space: drag a selection box
+  if (tool === 'edit' && pendingDrag && !pendingDrag.hit && !dragState) {
+    if (!boxSel && Math.hypot(x-pendingDrag.sx, y-pendingDrag.sy) > 4) boxSel = { x0:pendingDrag.sx, y0:pendingDrag.sy, x1:x, y1:y };
+    if (boxSel) {
+      boxSel.x1 = x; boxSel.y1 = y;
+      sk.style.cursor = 'crosshair';
+      scheduleRender();
+      return;
+    }
+  }
   // Select tool: start a drag once the mouse has moved a few pixels
   if (pendingDrag && !dragState && pendingDrag.hit && Math.hypot(x-pendingDrag.sx, y-pendingDrag.sy) > 3) {
     beginDrag(pendingDrag);
@@ -4163,6 +4304,14 @@ sk.addEventListener('mousedown', e => {
 sk.addEventListener('mouseup', e => {
   if (e.button===1||isPanning) { isPanning=false; return; }
   if (e.button!==0) return;
+
+  // Finish a selection box
+  if (boxSel) {
+    finishBoxSelect(pendingDrag ? pendingDrag.shift : e.shiftKey);
+    pendingDrag = null;
+    dragStarted = true;
+    return;
+  }
 
   // End drag
   if (dragState) {
@@ -4409,6 +4558,7 @@ window.addEventListener('keydown', e => {
       return;
     }
     if (e.key==='Enter' && cstToolEnter()) { e.preventDefault(); return; }
+    if (e.key==='Escape' && rollbackId) { finishEdit(false); return; }
     if (e.key==='Escape' && tool === 'cst') { selItems = []; setTool('edit'); return; }
     if (e.key==='Escape') {
       if (selItems.length) clearSelection();
@@ -4878,7 +5028,7 @@ function setMode3d(on) {
 
   main.classList.toggle('mode-3d', on);
   showWorkbench(wbActive);
-  if (!on) f3Msg('');
+  if (!on) { if (rollbackId) finishEdit(true); f3Msg(''); }
   btn.textContent = on ? '✎ Edit Sketch' : '⬡ View 3D';
   btn.title       = on ? 'Back to 2D sketch' : 'Switch to 3D view';
 
@@ -4995,9 +5145,28 @@ function renderFeatureTree() {
       sub=subSpan(pl);
     }
     if (node.id === selectedFeatureId) div.classList.add('selected');
+    if (rollbackId) {
+      const ri = featureTree.findIndex(f => f.id === rollbackId);
+      const ni = featureTree.indexOf(node);
+      if (ri >= 0 && ni > ri) div.classList.add('rolled');
+      if (node.id === rollbackId) div.classList.add('editing');
+    }
     const del = (node.type==='extrude'||node.type==='revolve'||node.type==='pattern') ? '<button class="feat-del" type="button" title="Delete feature" aria-label="Delete feature">×</button>' : '';
     div.innerHTML=`<span style="flex-shrink:0">${icon}</span><span class="feat-node-name">${node.name}${sub}</span>${badge}${del}`;
-    div.addEventListener('click',(ev)=>{ if (ev.target.closest('.feat-del')) { ev.stopPropagation(); deleteFeature(node.id); return; } selectFeatureNode(node); });
+    div.title = 'Click to select · double-click to edit';
+    div.addEventListener('click',(ev)=>{
+      if (ev.target.closest('.feat-del')) { ev.stopPropagation(); deleteFeature(node.id); return; }
+      // The tree re-renders on every click, so a double-click is detected by
+      // two clicks on the same feature in quick succession.
+      const now = Date.now();
+      if (_treeLastClick.id === node.id && now - _treeLastClick.t < 450) {
+        _treeLastClick = { id:null, t:0 };
+        editFeature(node);
+        return;
+      }
+      _treeLastClick = { id:node.id, t:now };
+      selectFeatureNode(node, { single:true });
+    });
     list.appendChild(div);
   }
 }
@@ -5020,12 +5189,59 @@ function _syncOpToggle(node) {
   }
 }
 
-function selectFeatureNode(node) {
+// ── Editing history: double-click a tree item to go back to that step ──
+var rollbackId = null;           // feature being edited; later features are hidden
+let _treeLastClick = { id:null, t:0 };
+
+function editFeature(node) {
+  if (node.type === 'sketch') {
+    // Re-open the sketch; features built on it update when you return to 3D
+    finishEdit(true);
+    selectFeatureNode(node);           // opens it in 2D
+    setWorkbench('sketch');
+    flashCstStatus(`Editing ${node.name} — changes flow through to the 3D model`, false);
+    return;
+  }
+  if (node.type === 'datum') { selectFeatureNode(node); return; }
+  rollbackId = node.id;
+  if (!document.querySelector('.main').classList.contains('mode-3d')) setMode3d(true);
+  selectFeatureNode(node);
+  showEditBanner(node);
+  renderFeatureTree();
+  scheduleExtrude();
+}
+function finishEdit(silent) {
+  if (!rollbackId) return;
+  rollbackId = null;
+  const el = document.getElementById('f3-msg');
+  if (el) { el.classList.remove('editing'); el.hidden = true; el.innerHTML = ''; }
+  renderFeatureTree();
+  scheduleExtrude();
+  if (!silent) f3Msg('Finished editing — the full model is back.', false);
+}
+function showEditBanner(node) {
+  const el = document.getElementById('f3-msg'); if (!el) return;
+  const later = featureTree.length - 1 - featureTree.findIndex(f => f.id === node.id);
+  el.classList.remove('bad'); el.classList.add('editing'); el.hidden = false;
+  el.innerHTML = `<span>Editing <b>${escHtml(node.name)}</b>. The model is shown up to this step${later > 0 ? '; later features are hidden' : ''}. Change its settings below.</span><button type="button" id="btn-finish-edit">Finish editing</button>`;
+  document.getElementById('btn-finish-edit').addEventListener('click', () => finishEdit(false));
+}
+
+function selectFeatureNode(node, opts = {}) {
   if (node.type==='extrude' || node.type==='revolve' || node.type==='pattern') selectedFeatureId = node.id;
   if (node.type==='sketch') renderFeatProps(null);
   if (node.type==='datum') {
     // Create a new sketch on this datum plane
     _addSketchOnDatum(node.id, node.plane);
+    return;
+  }
+  if (node.type==='sketch' && opts.single) {
+    // Single click: make it the active sketch (for Pad/Pocket/Revolve) without leaving this view
+    activeSketchId = node.id;
+    selectedFeatureId = node.id;
+    const pl=typeof node.plane==='string'?node.plane:`${node.plane.axis} +${node.plane.offset.toFixed(1)}`;
+    document.querySelector('.sk-overlay').textContent=`${node.name} · ${pl} Plane`;
+    updateConstraintPanel(); scheduleRender(); renderFeatureTree();
     return;
   }
   if (node.type==='sketch') {
