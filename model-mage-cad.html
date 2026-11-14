@@ -842,13 +842,18 @@ function makeTool(item) {
   if (item.operation === 'cut') h = -ns * pf * Math.abs(item.height);
   else if (item.operation === 'fuse') h = ns * pf * Math.abs(item.height);
   else h = item.height;
-  let solid = onPlane(drawing).extrude(h);
-  if (item.nudge) {
-    // Retry geometry: a little longer, and moved back so it starts outside the face
-    const N = pd ? pd.normal : (PLANES[planeName] || PLANES.XY).n;
-    const sg = Math.sign(h) || 1, e = item.nudge;
-    solid = onPlane(makeDrawing(item.profile)).extrude(h + sg * 2 * e).translate(N.map(v => -sg * e * v));
-  }
+  // A feature sketched on a face of the part starts 0.02 mm behind that face
+  // (outside it for a pocket, inside it for a pad) and still ends at the same
+  // depth. The stored face plane is only as exact as the screen mesh it came
+  // from, so starting exactly on it can leave a hair-thin skin over a hole or
+  // make OpenCascade fail. A retry ("nudge") also reaches a little past the end.
+  const N = pd ? pd.normal : (PLANES[planeName] || PLANES.XY).n;
+  const sg = Math.sign(h) || 1;
+  const back = (item.face && item.operation !== 'new' ? 0.02 : 0) + (item.nudge || 0);
+  const longer = back + (item.nudge || 0);
+  let solid = back
+    ? onPlane(drawing).extrude(h + sg * longer).translate(N.map(v => -sg * back * v))
+    : onPlane(drawing).extrude(h);
   // A pocket drawn on a base plane (not on a face) cuts both ways, so it
   // reaches the part whichever side of the plane the part is on.
   if (item.operation === 'cut' && item.both) {
@@ -4224,7 +4229,7 @@ function collectExtrudePayload() {
       const h = (node.thru && node.operation === 'cut') ? 2000 : node.height;
       items.push({ id:node.id, name:node.name, kind:'extrude', profile:entry.profile, height:h, operation:node.operation,
                    filletR:node.filletR, chamferR:node.chamferR, planeName, planeOffset, planeDef, normalSign,
-                   both: typeof sk.plane === 'string', patterns:[] });
+                   both: typeof sk.plane === 'string', face: typeof sk.plane === 'object', patterns:[] });
     } else {
       items.push({ id:node.id, name:node.name, kind:'revolve', profile:entry.profile, axis:node.axis, angle:node.angle,
                    operation:node.operation, planeName, planeOffset, planeDef, patterns:[] });
@@ -5239,7 +5244,8 @@ modelGroup.rotation.x=-Math.PI/2;
 scene.add(modelGroup);
 
 const mat=new THREE.MeshStandardMaterial({color:0xb0c8e4,roughness:0.28,metalness:0.06});
-const wireMat=new THREE.MeshBasicMaterial({color:0x17c4c0,wireframe:true,transparent:true,opacity:0.05});
+// Outline only the real edges (corners, hole rims), not every triangle of the mesh
+const wireMat=new THREE.LineBasicMaterial({color:0x0b2a33,transparent:true,opacity:0.55});
 const _faceHlMat=new THREE.MeshBasicMaterial({color:0x17c4c0,transparent:true,opacity:0.45,side:THREE.DoubleSide,depthTest:true,polygonOffset:true,polygonOffsetFactor:-1,polygonOffsetUnits:-1});
 var modelMesh=null, wireMesh=null, lastGeo=null;
 var _faceHlMesh=null;
@@ -5253,7 +5259,8 @@ function applyMesh(verts,norms,tris) {
   geo.setIndex(new THREE.BufferAttribute(tris,1));
   lastGeo=geo;
   modelMesh=new THREE.Mesh(geo,mat); modelMesh.castShadow=true; modelGroup.add(modelMesh);
-  wireMesh=new THREE.Mesh(geo,wireMat); modelGroup.add(wireMesh);
+  if (wireMesh && wireMesh.geometry && wireMesh.geometry !== geo) wireMesh.geometry.dispose();
+  wireMesh=new THREE.LineSegments(new THREE.EdgesGeometry(geo, 25), wireMat); modelGroup.add(wireMesh);
   document.getElementById('vp-ph').style.display='none';
   document.getElementById('vp-badge').style.display='';
   document.getElementById('btn-stl').classList.add('show');
@@ -5375,9 +5382,9 @@ function _raycastFace(clientX, clientY) {
   let x = new THREE.Vector3(0, 0, 1).cross(n);
   if (x.length() < 1e-6) x = new THREE.Vector3(1, 0, 0);
   x.normalize();
-  const r3 = v => [+v.x.toFixed(6), +v.y.toFixed(6), +v.z.toFixed(6)];
+  const r3 = v => [+v.x.toFixed(10), +v.y.toFixed(10), +v.z.toFixed(10)];
   const origin = n.clone().multiplyScalar(offset);
-  return { plane: { axis:'N', normal:r3(n), xDir:r3(x), origin:r3(origin), offset:+offset.toFixed(3),
+  return { plane: { axis:'N', normal:r3(n), xDir:r3(x), origin:r3(origin), offset:+offset.toFixed(6),
                     normalSign:1, seedPoint:[p.x, p.y, p.z] }, hit };
 }
 
