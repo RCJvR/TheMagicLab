@@ -206,13 +206,13 @@
 
 <!-- EXPLORE -->
 <div class="tab-panel" id="tab-explore">
-  <h2 style="font-size:18px;font-weight:800;color:#fff;margin-bottom:6px">Geological Timeline Explorer</h2>
-  <p style="font-size:13px;color:var(--muted);margin-bottom:20px">Click an event to see where it falls on Earth's timeline (not drawn to a strict linear scale, so early events are still visible).</p>
-  <div class="ml-predict" style="margin:0 0 16px;padding:10px 14px;border-radius:10px;background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.22);font-size:13px;line-height:1.6;color:rgba(226,232,240,.88)"><strong style="color:#fde68a">Predict first:</strong> Which came first: the first land plants or the first dinosaurs? <strong style="color:#fde68a">Then test it:</strong> Click both events on the timeline to check.</div>
+  <h2 style="font-size:20px;font-weight:800;color:#f2f5f9;margin-bottom:6px">Geological Timeline Explorer</h2>
+  <p style="font-size:15px;line-height:1.6;color:rgba(226,232,240,.72);margin-bottom:16px;max-width:68ch">Click an event to see where it falls on Earth's timeline (not drawn to a strict linear scale, so early events are still visible).</p>
+  <div class="ml-predict" style="margin:0 0 16px;padding:12px 16px;border-radius:10px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.075);border-left:2px solid #74d154;font-size:15px;line-height:1.6;color:#e3e8ef"><strong style="color:#f2f5f9">Predict first:</strong> Which came first: the first land plants or the first dinosaurs? <strong style="color:#f2f5f9">Then test it:</strong> Click both events on the timeline to check.</div>
   <div class="sim-outer">
     <div class="sim-canvas-wrap">
       <h3>Timeline (present day on the right)</h3>
-      <canvas id="timelineCanvas" height="150" role="img" aria-label="Geological Timeline Explorer: interactive simulation"></canvas>
+      <canvas id="timelineCanvas" height="150" role="img" aria-label="Geological Timeline Explorer. Click an event to see where it falls on Earth&#x27;s timeline (not drawn to a strict linear scale, so early events are still visible)."></canvas>
     </div>
     <div class="event-list" id="eventList"></div>
     <div class="event-info" id="eventInfo"></div>
@@ -273,7 +273,7 @@ function switchTab(id,btn){
    Uses a log-ish compressed position (0=oldest,1=present) so old & recent events are both visible.
 ═══════════════════════════════════════════════ */
 const EVENTS = [
-  {id:'cambrian', name:'Cambrian Explosion', mya:541, pos:0.06, color:'#4ade80',
+  {id:'cambrian', name:'Cambrian Explosion', mya:541, pos:0.02, color:'#4ade80',
    desc:'A relatively short period around 541 million years ago that saw the rapid appearance of most major animal groups still around today, giving huge insight into the origins of animal diversity.'},
   {id:'permian', name:'Permian Extinction', mya:250, pos:0.35, color:'#f97316',
    desc:'Around 250 million years ago, roughly 90% of all life on Earth went extinct — the largest of the five mass extinctions. Hypotheses include massive volcanic activity and/or a meteorite impact.'},
@@ -316,9 +316,9 @@ function drawTimeline(){
   const lineY = H*0.55, padX = 30;
   // era bands (rough, illustrative widths matching event positions)
   const bands = [
-    {label:'PALEOZOIC', from:0, to:0.42, color:'rgba(74,222,128,0.10)'},
-    {label:'MESOZOIC', from:0.42, to:0.78, color:'rgba(249,115,22,0.10)'},
-    {label:'CENOZOIC', from:0.78, to:1, color:'rgba(96,165,250,0.10)'},
+    {label:'PALEOZOIC', from:0, to:0.35, color:'rgba(74,222,128,0.10)'},
+    {label:'MESOZOIC', from:0.35, to:0.68, color:'rgba(249,115,22,0.10)'},
+    {label:'CENOZOIC', from:0.68, to:1, color:'rgba(96,165,250,0.10)'},
   ];
   bands.forEach(b=>{
     const x1 = padX + b.from*(W-2*padX), x2 = padX + b.to*(W-2*padX);
@@ -330,7 +330,7 @@ function drawTimeline(){
   ctx.strokeStyle='rgba(255,255,255,0.25)'; ctx.lineWidth=2;
   ctx.beginPath(); ctx.moveTo(padX,lineY); ctx.lineTo(W-padX,lineY); ctx.stroke();
   ctx.fillStyle='rgba(255,255,255,0.4)'; ctx.font='10px "JetBrains Mono",monospace'; ctx.textAlign='left';
-  ctx.fillText('~541 Mya', padX, lineY+22);
+  ctx.fillText('~541 Mya (not to scale: extinctions mark the era boundaries)', padX, lineY+22);
   ctx.textAlign='right';
   ctx.fillText('TODAY', W-padX, lineY+22);
 

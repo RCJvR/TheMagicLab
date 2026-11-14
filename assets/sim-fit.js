@@ -23,6 +23,23 @@
  */
 (function () {
   'use strict';
+  // Phone layout for every simulation panel (applies even when the zoom below is opted out).
+  // Many lesson pages put their controls in a two-column .sim-controls-row whose slider rows cannot
+  // shrink, which made 23 pages scroll sideways at 390 px. Stack them, and keep readouts two-up.
+  (function () {
+    var P = ['#tab-explore', '#tab-simulate', '#panel-explore'];
+    var sel = function (s) { return P.map(function (p) { return p + ' ' + s; }).join(','); };
+    var st = document.createElement('style');
+    st.id = 'ml-sim-phone';
+    st.textContent = '@media (max-width:640px){' +
+      sel('.sim-controls-row') + '{grid-template-columns:minmax(0,1fr) !important}' +
+      sel('.readout-grid') + ',' + sel('.elem-info-grid') + '{grid-template-columns:repeat(2,minmax(0,1fr)) !important}' +
+      sel('.slider-row') + '{flex-wrap:wrap;row-gap:4px}' +
+      sel('.slider-row label') + '{min-width:0 !important;flex:1 1 auto}' +
+      sel('canvas') + '{max-width:100%}' +
+      '}';
+    (document.head || document.documentElement).appendChild(st);
+  })();
   if (document.documentElement.hasAttribute('data-ml-no-fit')) return;
   var MAX_Z = 1.5, MIN_Z = 1.08, MAX_H_SHARE = 0.72;
   var PANEL = '#tab-explore, #tab-simulate, #panel-explore';

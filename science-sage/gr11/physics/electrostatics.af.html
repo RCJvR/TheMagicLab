@@ -265,15 +265,15 @@
 
 <!-- EXPLORE TAB -->
 <div id="tab-explore" class="tab-panel">
-  <div class="ml-predict" style="margin:0 0 16px;padding:10px 14px;border-radius:10px;background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.22);font-size:13px;line-height:1.6;color:rgba(226,232,240,.88)"><strong style="color:#fde68a">Voorspel eers:</strong> Waar tussen twee gelyke positiewe ladings sal 'n klein positiewe toetslading geen netto krag voel nie? <strong style="color:#fde68a">Toets dit dan:</strong> Plaas twee gelyke positiewe ladings in die veldkaart en kyk na die pyltjies tussen hulle.</div>
+  <div class="ml-predict" style="margin:0 0 16px;padding:12px 16px;border-radius:10px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.075);border-left:2px solid #74d154;font-size:15px;line-height:1.6;color:#e3e8ef"><strong style="color:#f2f5f9">Voorspel eers:</strong> Waar tussen twee gelyke positiewe ladings sal 'n klein positiewe toetslading geen netto krag voel nie? <strong style="color:#f2f5f9">Toets dit dan:</strong> Plaas twee gelyke positiewe ladings in die veldkaart en kyk na die pyltjies tussen hulle.</div>
   <div class="sim-outer">
     <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:4px">
-      <button class="mode-btn active" id="btn-coulomb" onclick="setSimMode('coulomb',this)">⚡ Coulomb-berekenaar</button>
-      <button class="mode-btn" id="btn-fieldmap" onclick="setSimMode('fieldmap',this)">🗺️ Veldkaart</button>
+      <button class="mode-btn active" id="btn-coulomb" onclick="setSimMode('coulomb',this)">Coulomb-berekenaar</button>
+      <button class="mode-btn" id="btn-fieldmap" onclick="setSimMode('fieldmap',this)">Veldkaart</button>
     </div>
     <div class="sim-canvas-wrap">
       <h3 id="sim-title">Coulomb-berekenaar — Superposisie van 3 Ladings</h3>
-      <canvas id="simCanvas" height="420" role="img" aria-label="Coulomb-berekenaar — Superposisie van 3 Ladings: interaktiewe simulasie"></canvas>
+      <canvas id="simCanvas" height="420" role="img" aria-label="Coulomb-berekenaar — Superposisie van 3 Ladings. Klik enige plek op die skerm om &#x27;n lading te plaas. Klik weer op dieselfde plek om te wissel: positief → negatief → verwyder. Die rooster van pyle wys die elektriese veldrigting en -grootte by elke punt."></canvas>
     </div>
     <div class="sim-controls-row" id="coulomb-controls">
       <div class="ctrl-card">
@@ -394,7 +394,7 @@ function resizeCanvas() {
 
 function initSim() {
   if (raf) cancelAnimationFrame(raf);
-  if (simMode === 'coulomb') { drawCoulomb(); }
+  if (simMode === 'coulomb') { canvas.onclick = null; drawCoulomb(); }
   else { drawFieldMap(); canvas.onclick = handleFieldMapClick; }
 }
 
@@ -454,7 +454,7 @@ function drawCoulomb() {
   drawArrow(ctx, x2, lineY - 110, x2 + Fnet * arrowScale, lineY - 110, '#34d399', 'F_net');
 
   // distance labels
-  ctx.fillStyle = 'rgba(210,218,245,0.45)'; ctx.font = '11px var(--fm)'; ctx.textAlign = 'center';
+  ctx.fillStyle = 'rgba(210,218,245,0.45)'; ctx.font = '11px "JetBrains Mono", monospace'; ctx.textAlign = 'center';
   ctx.fillText('r₁₂ = ' + r12.toFixed(2) + ' m', (x1 + x2) / 2, lineY + 30);
   ctx.fillText('r₂₃ = ' + r23.toFixed(2) + ' m', (x2 + x3) / 2, lineY + 30);
 }
@@ -473,9 +473,9 @@ function drawChargeBall(x, y, q, label, ctx) {
   ctx.fillStyle = grd;
   ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.fill();
   ctx.strokeStyle = col + '88'; ctx.lineWidth = 1.5; ctx.stroke();
-  ctx.fillStyle = '#fff'; ctx.font = 'bold 12px var(--fd)'; ctx.textAlign = 'center';
+  ctx.fillStyle = '#fff'; ctx.font = 'bold 12px "Cabinet Grotesk", sans-serif'; ctx.textAlign = 'center';
   ctx.fillText(label, x, y + 4);
-  ctx.fillStyle = col; ctx.font = '10px var(--fm)'; ctx.textAlign = 'center';
+  ctx.fillStyle = col; ctx.font = '10px "JetBrains Mono", monospace'; ctx.textAlign = 'center';
   ctx.fillText((q >= 0 ? '+' : '') + (q * 1e6).toFixed(1) + 'µC', x, y + r + 16);
 }
 
@@ -491,7 +491,7 @@ function drawArrow(ctx, x1, y1, x2, y2, color, label) {
   ctx.lineTo(x2 - 10 * Math.cos(ang - 0.4), y2 - 10 * Math.sin(ang - 0.4));
   ctx.lineTo(x2 - 10 * Math.cos(ang + 0.4), y2 - 10 * Math.sin(ang + 0.4));
   ctx.closePath(); ctx.fill();
-  ctx.fillStyle = color; ctx.font = 'bold 10px var(--fm)'; ctx.textAlign = dx > 0 ? 'right' : 'left';
+  ctx.fillStyle = color; ctx.font = 'bold 10px "JetBrains Mono", monospace'; ctx.textAlign = dx > 0 ? 'right' : 'left';
   ctx.fillText(label, dx > 0 ? x2 + 6 : x2 - 6, y1 + 4);
 }
 

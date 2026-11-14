@@ -244,18 +244,18 @@
 </div>
 
 <div id="tab-explore" class="tab-panel">
-  <div class="ml-predict" style="margin:0 0 16px;padding:10px 14px;border-radius:10px;background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.22);font-size:13px;line-height:1.6;color:rgba(226,232,240,.88)"><strong style="color:#fde68a">Predict first:</strong> Which gas forms when vinegar reacts with eggshell, and how could you test for it? <strong style="color:#fde68a">Then test it:</strong> Run Vinegar + Eggshell, then CO₂ + Lime water.</div>
+  <div class="ml-predict" style="margin:0 0 16px;padding:12px 16px;border-radius:10px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.075);border-left:2px solid #74d154;font-size:15px;line-height:1.6;color:#e3e8ef"><strong style="color:#f2f5f9">Predict first:</strong> Which gas forms when vinegar reacts with eggshell, and how could you test for it? <strong style="color:#f2f5f9">Then test it:</strong> Run Vinegar + Eggshell, then CO₂ + Lime water.</div>
   <div class="explore-wrap">
     <div class="canvas-card">
-      <canvas id="cv" width="520" height="400" role="img" aria-label="Chemical Reactions: interactive simulation"></canvas>
+      <canvas id="cv" width="520" height="400" role="img" aria-label="Chemical Reactions"></canvas>
     </div>
     <div class="controls">
       <div class="ctrl-card">
         <div class="ctrl-label">Reaction</div>
-        <button class="mode-btn active" onclick="setRxn('vinegar',this)">🥚 Vinegar + Eggshell</button>
-        <button class="mode-btn" onclick="setRxn('limewater',this)">💨 CO₂ + Lime water</button>
-        <button class="mode-btn" onclick="setRxn('ferment',this)">🍺 Fermentation</button>
-        <button class="react-btn" id="react-btn" onclick="triggerReaction()">▶ React!</button>
+        <button class="mode-btn active" onclick="setRxn('vinegar',this)">Vinegar + Eggshell</button>
+        <button class="mode-btn" onclick="setRxn('limewater',this)">CO₂ + Lime water</button>
+        <button class="mode-btn" onclick="setRxn('ferment',this)">Fermentation</button>
+        <button class="react-btn" id="react-btn" onclick="triggerReaction()">React!</button>
       </div>
       <div class="ctrl-card">
         <div class="ctrl-label">Status</div>
@@ -311,7 +311,7 @@ function setRxn(r,btn){
   document.querySelectorAll('.mode-btn').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
   document.getElementById('st-rxn').textContent=rxnData[r].label;
-  document.getElementById('react-btn').textContent='▶ React!';
+  document.getElementById('react-btn').textContent='React!';
   document.getElementById('react-btn').disabled=false;
   if(raf) cancelAnimationFrame(raf); initSim();
 }
@@ -350,7 +350,7 @@ function loop(){
   ctx.beginPath();ctx.moveTo(125,310);ctx.lineTo(127,150);ctx.lineTo(393,150);ctx.lineTo(395,310);ctx.closePath();ctx.fill();
 
   // Reactant labels
-  ctx.font='12px var(--fd)';ctx.textAlign='center';
+  ctx.font='12px "Cabinet Grotesk", sans-serif';ctx.textAlign='center';
   if(phase==='before'){
     ctx.fillStyle='rgba(248,113,113,0.8)';
     ctx.fillText(d.reactA,W/2,130);
@@ -393,7 +393,7 @@ function loop(){
   }
 
   // Labels bottom
-  ctx.fillStyle='rgba(210,218,245,0.4)';ctx.font='11px var(--fd)';ctx.textAlign='center';
+  ctx.fillStyle='rgba(210,218,245,0.4)';ctx.font='11px "Cabinet Grotesk", sans-serif';ctx.textAlign='center';
   ctx.fillText(phase==='before'?'Before reaction':phase==='reacting'?'Reaction in progress...':'After reaction',W/2,360);
 }
 

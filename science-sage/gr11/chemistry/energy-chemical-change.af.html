@@ -304,11 +304,11 @@ input[type=range]{flex:1;accent-color:#c084fc;cursor:pointer}
 
 <!-- EXPLORE TAB -->
 <div id="tab-explore" class="tab-panel">
-  <div class="ml-predict" style="margin:0 0 16px;padding:10px 14px;border-radius:10px;background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.22);font-size:13px;line-height:1.6;color:rgba(226,232,240,.88)"><strong style="color:#fde68a">Voorspel eers:</strong> Is die produkte in 'n eksotermiese reaksie hoër of laer in energie as die reagense? <strong style="color:#fde68a">Toets dit dan:</strong> Bou albei soorte energiediagramme en vergelyk die teken van ΔH.</div>
+  <div class="ml-predict" style="margin:0 0 16px;padding:12px 16px;border-radius:10px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.075);border-left:2px solid #74d154;font-size:15px;line-height:1.6;color:#e3e8ef"><strong style="color:#f2f5f9">Voorspel eers:</strong> Is die produkte in 'n eksotermiese reaksie hoër of laer in energie as die reagense? <strong style="color:#f2f5f9">Toets dit dan:</strong> Bou albei soorte energiediagramme en vergelyk die teken van ΔH.</div>
   <div class="sim-outer">
     <div class="sim-canvas-wrap">
       <h3 id="simTitle">Energiediagram-bouer</h3>
-      <canvas id="energyCanvas" height="380" role="img" aria-label="Energiediagram-bouer: interaktiewe simulasie"></canvas>
+      <canvas id="energyCanvas" height="380" role="img" aria-label="Energiediagram-bouer"></canvas>
     </div>
 
     <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:4px">
@@ -564,9 +564,9 @@ function drawDiagram(eaF, eaR, catalyst, dH) {
   // Set product = 0, reactant = eaR - eaF (positive if exo since dH = eaF-eaR → dH<0 means eaF<eaR → reactant higher)
   // Actually let's set reactant=0 baseline, peak = eaF, product = eaF-eaR
   const baseline = eaR > eaF ? eaR + 20 : eaF + 20; // top value
-  const rE = eaR; // reactant energy
-  const pE = dH;  // product energy (dH = eaF - eaR; if exo dH<0 so product lower)
-  const peakE = eaR + eaF; // peak above zero
+  const rE = 0; // reactants are the zero of the energy scale
+  const pE = dH;  // products sit ΔH above (endo) or below (exo) the reactants
+  const peakE = eaF; // activated complex: Ea(forward) above the reactants
 
   const allE = [rE, pE, peakE];
   const minE = Math.min(...allE) - 20;
@@ -606,7 +606,7 @@ function drawDiagram(eaF, eaR, catalyst, dH) {
   // Catalyst curve
   if (catalyst) {
     const catEa = Math.round(eaF * 0.55);
-    const catPeakE = eaR + catEa;
+    const catPeakE = catEa;
     const catPeakY = yPos(catPeakE);
     ctx.strokeStyle = 'rgba(250,204,21,0.7)';
     ctx.lineWidth = 2;
@@ -693,9 +693,9 @@ function drawDiagram(eaF, eaR, catalyst, dH) {
 
 // ── Calorimetry Mode ──────────────────────────────────────────────────────────
 const rxnData = {
-  combustion:    { dHpermol: -890,  M: 16,   name: 'CH₄-verbranding', startT: 22, exo: true  },
-  neutralisation:{ dHpermol: -57.3, M: 36.5, name: 'HCl+NaOH-neutralisasie', startT: 20, exo: true  },
-  dissolve:      { dHpermol: +25.7, M: 80,   name: 'NH₄NO₃-oplossing', startT: 23, exo: false }
+  combustion:    { dHpermol: -890,  M: 16,   mWater: 2000, name: 'CH₄-verbranding', startT: 22, exo: true  },
+  neutralisation:{ dHpermol: -57.3, M: 36.5, mWater: 100, name: 'HCl+NaOH-neutralisasie', startT: 20, exo: true  },
+  dissolve:      { dHpermol: +25.7, M: 80,   mWater: 100, name: 'NH₄NO₃-oplossing', startT: 23, exo: false }
 };
 
 function resetCalorimetry() {
@@ -720,7 +720,7 @@ function startCalorimetry() {
   const rd = rxnData[rxn];
   const mol = mass / rd.M;
   const Q = mol * Math.abs(rd.dHpermol) * 1000; // in J
-  const mWater = 100; // 100g water
+  const mWater = rd.mWater; // combustion heats a 2 kg water bath so ΔT stays below boiling
   const dT = Q / (mWater * 4.18);
   caloTarget = rd.startT + (rd.exo ? dT : -dT);
   caloMol = mol;

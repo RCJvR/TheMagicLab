@@ -292,11 +292,11 @@ canvas{display:block;border-radius:10px;background:#040710;width:100%}
 
 <!-- VERKEN-OORTJIE -->
 <div id="tab-explore" class="tab-panel">
-  <div class="ml-predict" style="margin:0 0 16px;padding:10px 14px;border-radius:10px;background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.22);font-size:13px;line-height:1.6;color:rgba(226,232,240,.88)"><strong style="color:#fde68a">Voorspel eers:</strong> Watter elektrode in die Daniell-sel verloor met tyd massa: sink of koper? <strong style="color:#fde68a">Toets dit dan:</strong> Kyk na die galvaniese sel en volg die rigting van elektronvloei.</div>
+  <div class="ml-predict" style="margin:0 0 16px;padding:12px 16px;border-radius:10px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.075);border-left:2px solid #74d154;font-size:15px;line-height:1.6;color:#e3e8ef"><strong style="color:#f2f5f9">Voorspel eers:</strong> Watter elektrode in die Daniell-sel verloor met tyd massa: sink of koper? <strong style="color:#f2f5f9">Toets dit dan:</strong> Kyk na die galvaniese sel en volg die rigting van elektronvloei.</div>
   <div class="sim-outer">
     <div class="sim-canvas-wrap">
       <h3 id="cellTitle">Daniell-sel (Galvanies) &mdash; Zn | Zn&sup2;&spades; || Cu&sup2;&spades; | Cu</h3>
-      <canvas id="cellCanvas" height="380" role="img" aria-label="Daniell-sel (Galvanies) — Zn | Zn²⁺ || Cu²⁺ | Cu: interaktiewe simulasie"></canvas>
+      <canvas id="cellCanvas" height="380" role="img" aria-label="Daniell-sel (Galvanies) — Zn | Zn²⁺ || Cu²⁺ | Cu"></canvas>
     </div>
     <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:4px">
       <button class="mode-btn active" id="btnGalvanic" onclick="setCellMode('galvanic')">Galvaniese Sel</button>
@@ -504,14 +504,24 @@ function drawCell(ctx, W, H) {
   const anodeColor = isGalv ? '#a3e635' : '#f87171';
   const anodeLabel = isGalv ? 'Zn' : 'Cu';
   const anodeSolLabel = isGalv ? 'ZnSO₄(aq)' : 'CuSO₄(aq)';
-  const anodeSign = '−';
+  const anodeSign = isGalv ? '−' : '+'; // galvanic anode is negative; electrolytic anode is joined to the + terminal
 
   // Linker beker vloeistof
-  ctx.fillStyle = isGalv ? 'rgba(163,230,53,0.12)' : 'rgba(248,113,113,0.12)';
-  ctx.fillRect(beaker1X, liquidY, beakerW, liquidH);
-  ctx.strokeStyle = isGalv ? 'rgba(163,230,53,0.4)' : 'rgba(248,113,113,0.4)';
-  ctx.lineWidth = 2;
-  ctx.strokeRect(beaker1X, beakerY, beakerW, beakerH);
+  if (isGalv) {
+    ctx.fillStyle = 'rgba(163,230,53,0.12)';
+    ctx.fillRect(beaker1X, liquidY, beakerW, liquidH);
+    ctx.strokeStyle = 'rgba(163,230,53,0.4)';
+    ctx.lineWidth = 2;
+    ctx.strokeRect(beaker1X, beakerY, beakerW, beakerH);
+  } else {
+    // Electrolysis: both electrodes stand in ONE container of electrolyte; no salt bridge
+    const tankW = beaker2X + beakerW - beaker1X;
+    ctx.fillStyle = 'rgba(96,165,250,0.12)';
+    ctx.fillRect(beaker1X, liquidY, tankW, liquidH);
+    ctx.strokeStyle = 'rgba(147,197,253,0.45)';
+    ctx.lineWidth = 2;
+    ctx.strokeRect(beaker1X, beakerY, tankW, beakerH);
+  }
 
   // Linker elektrode
   const elecW = 20, elecH = 120;
@@ -542,13 +552,15 @@ function drawCell(ctx, W, H) {
   const cathodeColor = isGalv ? '#f59e0b' : '#f59e0b';
   const cathodeLabel = isGalv ? 'Cu' : 'Cu';
   const cathodeSolLabel = isGalv ? 'CuSO₄(aq)' : 'CuSO₄(aq)';
-  const cathodeSign = '+';
+  const cathodeSign = isGalv ? '+' : '−';
 
-  ctx.fillStyle = isGalv ? 'rgba(245,158,11,0.12)' : 'rgba(245,158,11,0.12)';
-  ctx.fillRect(beaker2X, liquidY, beakerW, liquidH);
-  ctx.strokeStyle = 'rgba(245,158,11,0.4)';
-  ctx.lineWidth = 2;
-  ctx.strokeRect(beaker2X, beakerY, beakerW, beakerH);
+  if (isGalv) {
+    ctx.fillStyle = 'rgba(245,158,11,0.12)';
+    ctx.fillRect(beaker2X, liquidY, beakerW, liquidH);
+    ctx.strokeStyle = 'rgba(245,158,11,0.4)';
+    ctx.lineWidth = 2;
+    ctx.strokeRect(beaker2X, beakerY, beakerW, beakerH);
+  }
 
   const el2X = beaker2X + beakerW/2 - elecW/2;
   const el2Y = beakerY - 30;
@@ -652,7 +664,8 @@ function drawCell(ctx, W, H) {
   ctx.textAlign = 'left';
   ctx.fillText('e⁻ →', leftWireX + 8, wireY - 8);
 
-  // ── Soutbrug ──
+  // ── Soutbrug (slegs galvaniese sel) ──
+  if (!isGalv) return;
   const sbW = beaker2X - (beaker1X + beakerW);
   const sbX = beaker1X + beakerW;
   const sbY = beakerY + beakerH * 0.3;

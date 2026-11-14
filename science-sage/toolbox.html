@@ -108,7 +108,9 @@
       $('tools').innerHTML = TOOLS.map(([href, ic, t, d, tag]) => `<a class="tool" href="${href}"><div class="tool-ic"><i data-lucide="${ic}" style="width:19px;height:19px"></i></div><div><div class="tool-t">${esc(t[k])}</div><p class="tool-d">${esc(d[k])}</p><span class="tool-tag">${esc(tag)}</span></div></a>`).join('');
     }
     function paintPills() {
-      $('gpills').innerHTML = ['all', 7, 8, 9, 10, 11, 12].map(x => `<button class="gpill${String(x) === String(grade) ? ' on' : ''}" type="button" data-g="${x}">${x === 'all' ? (lang === 'af' ? 'Alle grade' : 'All grades') : 'Gr ' + x}</button>`).join('');
+      // Only offer grades that actually have tools listed (a Grade 7 pill used to return nothing)
+      const gradesWithTools = [...new Set((window.SS_TOOLBOX || []).map(e => e.g))].sort((a, b) => a - b);
+      $('gpills').innerHTML = ['all', ...gradesWithTools].map(x => `<button class="gpill${String(x) === String(grade) ? ' on' : ''}" type="button" data-g="${x}">${x === 'all' ? (lang === 'af' ? 'Alle grade' : 'All grades') : 'Gr ' + x}</button>`).join('');
     }
     const hl = (text, q) => { if (!q) return esc(text); const i = text.toLowerCase().indexOf(q); return i < 0 ? esc(text) : esc(text.slice(0, i)) + '<mark>' + esc(text.slice(i, i + q.length)) + '</mark>' + esc(text.slice(i + q.length)); };
     function paintList() {

@@ -182,7 +182,8 @@
 .wb-memo summary{cursor:pointer;font-size:13px;font-weight:700;color:#86efac;list-style:revert}
 .wb-memo-body{margin-top:8px;font-size:13.5px;line-height:1.8;color:rgba(210,218,245,.85);background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.18);border-radius:10px;padding:12px 16px}
 @media print{.wb-memo{display:none!important}}
-</style><style id="ml-exam-q">.wb-q.ml-exam-q{border-color:rgba(252,211,77,.35)}.ml-exam-q .wb-qnum{color:#fcd34d}</style></head>
+</style><style id="ml-exam-q">.wb-q.ml-exam-q{border-color:rgba(252,211,77,.35)}.ml-exam-q .wb-qnum{color:#fcd34d}</style><link rel="stylesheet" href="/assets/explore-kit.css">
+</head>
 <body>
   <a class="ml-skip" href="#ml-main">Skip to content</a>
 <nav data-ml-bar="science-sage" data-ml-home="/science-sage/index.html">
@@ -235,23 +236,12 @@
 
 <!-- EXPLORE -->
 <div class="tab-panel" id="tab-explore">
-  <h2 style="font-size:18px;font-weight:800;color:#fff;margin-bottom:6px">Oefening- en Respirasiesimulator</h2>
-  <p style="font-size:13px;color:var(--muted);margin-bottom:20px">Verhoog die oefenintensiteit en kyk hoe die liggaam van aërobiese na anaërobiese respirasie oorskakel namate suurstofaanvraag die voorraad oortref.</p>
-  <div class="ml-predict" style="margin:0 0 16px;padding:10px 14px;border-radius:10px;background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.22);font-size:13px;line-height:1.6;color:rgba(226,232,240,.88)"><strong style="color:#fde68a">Voorspel eers:</strong> Op watter punt tydens oefening sal die spiere op anaërobiese respirasie begin staatmaak? <strong style="color:#fde68a">Toets dit dan:</strong> Verhoog die oefenintensiteit en kyk hoe die energiebron verander.</div>
-  <div class="sim-outer">
-    <div class="sim-canvas-wrap">
-      <h3>Spiersel se energiebron</h3>
-      <canvas id="respCanvas" height="240" role="img" aria-label="Oefening- en Respirasiesimulator: interaktiewe simulasie"></canvas>
-    </div>
-    <div class="ctrl-card">
-      <div id="lbl-intensitySlider" class="ctrl-label">Oefenintensiteit <span class="val" id="intensityVal">Rustend</span></div>
-      <input aria-labelledby="lbl-intensitySlider" type="range" id="intensitySlider" min="0" max="100" value="0">
-    </div>
-    <div class="mode-readout">
-      <div class="mode-badge" id="modeBadge">AËROBIES</div>
-      <div class="mode-desc" id="modeDesc">Volop suurstof beskikbaar — spiere respireer aërobies, en stel energie doeltreffend vry.</div>
-    </div>
-  </div>
+  <h2 style="font-size:20px;font-weight:800;color:#f2f5f9;margin-bottom:6px">Oefening- en Respirasiesimulator</h2>
+  <p style="font-size:15px;line-height:1.6;color:rgba(226,232,240,.72);margin-bottom:16px;max-width:68ch">Verhoog die oefenintensiteit en kyk hoe die liggaam van aërobiese na anaërobiese respirasie oorskakel namate suurstofaanvraag die voorraad oortref.</p>
+  <div class="ml-predict" style="margin:0 0 16px;padding:12px 16px;border-radius:10px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.075);border-left:2px solid #74d154;font-size:15px;line-height:1.6;color:#e3e8ef"><strong style="color:#f2f5f9">Voorspel eers:</strong> Op watter punt tydens oefening sal die spiere op anaërobiese respirasie begin staatmaak? <strong style="color:#f2f5f9">Toets dit dan:</strong> Verhoog die oefenintensiteit en kyk hoe die energiebron verander.</div>
+  <div id="mlx-root"></div>
+  <script src="/assets/explore-kit.js"></script>
+  <script src="/assets/explore/respiration.js"></script>
 </div>
 
 <!-- PRACTICE -->
@@ -307,91 +297,7 @@ function switchTab(id,btn){
   if(id === 'explore' && typeof resizeCanvas === 'function') resizeCanvas();
 }
 
-/* ═══════════════════════════════════════════════
-   EXERCISE & RESPIRATION SIMULATOR
-═══════════════════════════════════════════════ */
-const canvas = document.getElementById('respCanvas');
-const ctx = canvas.getContext('2d');
-let W,H;
-let intensity = 0;
-let lacticAcid = 0;
-let particles = [];
-
-function resizeCanvas(){
-  W = canvas.offsetWidth || 600; H = 240;
-  canvas.width = W*devicePixelRatio; canvas.height = H*devicePixelRatio;
-  ctx.scale(devicePixelRatio, devicePixelRatio);
-}
-
-document.getElementById('intensitySlider').addEventListener('input', e=>{
-  intensity = +e.target.value;
-  document.getElementById('intensityVal').textContent = intensity<20?'Rustend':intensity<60?'Matige oefening':'Intensiewe oefening';
-  const anaerobic = intensity > 65;
-  const badge = document.getElementById('modeBadge');
-  badge.textContent = anaerobic ? 'ANAËROBIES' : 'AËROBIES';
-  badge.style.background = anaerobic ? 'rgba(239,68,68,0.18)' : 'rgba(34,197,94,0.18)';
-  badge.style.color = anaerobic ? '#fca5a5' : '#86efac';
-  document.getElementById('modeDesc').textContent = anaerobic
-    ? 'Suurstofaanvraag het die voorraad oortref — spiere skakel oor na anaërobiese respirasie, produseer melksuur en stel energie minder doeltreffend vry.'
-    : 'Volop suurstof beskikbaar — spiere respireer aërobies, en stel energie doeltreffend vry.';
-});
-
-function draw(){
-  ctx.clearRect(0,0,W,H);
-  const anaerobic = intensity > 65;
-  lacticAcid += anaerobic ? 0.012 : -0.02;
-  lacticAcid = Math.max(0, Math.min(1, lacticAcid));
-
-  // muscle cell (rounded rect)
-  const cx = W/2, cy = H/2;
-  ctx.save();
-  ctx.beginPath();
-  ctx.roundRect ? ctx.roundRect(cx-90,cy-60,180,120,20) : ctx.rect(cx-90,cy-60,180,120);
-  const muscleColor = anaerobic ? `rgba(239,68,68,${0.15+lacticAcid*0.25})` : 'rgba(34,197,94,0.15)';
-  ctx.fillStyle = muscleColor; ctx.fill();
-  ctx.strokeStyle = anaerobic ? 'rgba(239,68,68,0.6)' : 'rgba(34,197,94,0.6)';
-  ctx.lineWidth = 2; ctx.stroke();
-  ctx.restore();
-
-  ctx.fillStyle='rgba(255,255,255,0.5)'; ctx.font='11px "JetBrains Mono",monospace'; ctx.textAlign='center';
-  ctx.fillText('SPIERSEL', cx, cy-70);
-
-  // spawn particles: O2 in when aerobic, lactic acid dots accumulate when anaerobic
-  if (!anaerobic && Math.random()<0.3){
-    particles.push({x:cx+(Math.random()-0.5)*160, y:cy+70, vy:-1.2-Math.random(), type:'o2'});
-  }
-  if (anaerobic && Math.random()<0.4){
-    particles.push({x:cx+(Math.random()-0.5)*140, y:cy+(Math.random()-0.5)*100, vy:0, type:'lactic', life:60});
-  }
-  particles.forEach(p=>{
-    if (p.type==='o2'){
-      p.y += p.vy;
-      ctx.beginPath(); ctx.arc(p.x,p.y,4,0,Math.PI*2);
-      ctx.fillStyle='rgba(96,165,250,0.85)'; ctx.fill();
-    } else {
-      p.life--;
-      ctx.beginPath(); ctx.arc(p.x,p.y,3,0,Math.PI*2);
-      ctx.fillStyle='rgba(248,113,113,0.7)'; ctx.fill();
-    }
-  });
-  particles = particles.filter(p => p.type==='o2' ? p.y > cy-70 : p.life > 0);
-
-  // lactic acid meter
-  const meterX = W-50, meterY = 20, meterH = H-40;
-  ctx.strokeStyle='rgba(255,255,255,0.15)'; ctx.lineWidth=1;
-  ctx.strokeRect(meterX, meterY, 24, meterH);
-  const fillH = meterH*lacticAcid;
-  ctx.fillStyle='rgba(239,68,68,0.75)';
-  ctx.fillRect(meterX, meterY+meterH-fillH, 24, fillH);
-  ctx.fillStyle='rgba(255,255,255,0.5)'; ctx.font='9px "JetBrains Mono",monospace'; ctx.textAlign='center';
-  ctx.fillText('MELK', meterX+12, meterY-6);
-  ctx.fillText('SUUR', meterX+12, meterY+8);
-
-  requestAnimationFrame(draw);
-}
-window.addEventListener('resize', resizeCanvas);
-resizeCanvas();
-draw();
+function draw(){} function resizeCanvas(){} // the simulation is assets/explore/respiration.js
 
 /* ═══════════════════════════════════════════════
    PRACTICE

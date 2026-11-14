@@ -238,17 +238,17 @@
 </div>
 
 <div id="tab-explore" class="tab-panel">
-  <div class="ml-predict" style="margin:0 0 16px;padding:10px 14px;border-radius:10px;background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.22);font-size:13px;line-height:1.6;color:rgba(226,232,240,.88)"><strong style="color:#fde68a">Predict first:</strong> If you could travel at the speed of light, how long would it take to reach the nearest star? <strong style="color:#fde68a">Then test it:</strong> Check the Scale of distances view.</div>
+  <div class="ml-predict" style="margin:0 0 16px;padding:12px 16px;border-radius:10px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.075);border-left:2px solid #74d154;font-size:15px;line-height:1.6;color:#e3e8ef"><strong style="color:#f2f5f9">Predict first:</strong> If you could travel at the speed of light, how long would it take to reach the nearest star? <strong style="color:#f2f5f9">Then test it:</strong> Check the Scale of distances view.</div>
   <div class="explore-wrap">
     <div class="canvas-card">
-      <canvas id="cv" width="520" height="420" role="img" aria-label="Beyond the Solar System: interactive simulation"></canvas>
+      <canvas id="cv" width="520" height="420" role="img" aria-label="Beyond the Solar System"></canvas>
     </div>
     <div class="controls">
       <div class="ctrl-card">
         <div class="ctrl-label">View</div>
-        <button class="mode-btn active" onclick="setMode('milkyway',this)">🌌 Milky Way</button>
-        <button class="mode-btn" onclick="setMode('distances',this)">📏 Scale of distances</button>
-        <button class="mode-btn" onclick="setMode('galaxies',this)">🌀 Galaxy types</button>
+        <button class="mode-btn active" onclick="setMode('milkyway',this)">Milky Way</button>
+        <button class="mode-btn" onclick="setMode('distances',this)">Scale of distances</button>
+        <button class="mode-btn" onclick="setMode('galaxies',this)">Galaxy types</button>
       </div>
       <div class="ctrl-card">
         <div class="ctrl-label">Scale facts</div>
@@ -368,21 +368,21 @@ function drawMilkyWay(){
   ctx.fillStyle='#fde68a';ctx.fill();
   ctx.strokeStyle='rgba(253,224,71,0.6)';ctx.lineWidth=8;
   ctx.beginPath();ctx.arc(sx,sy,10,0,Math.PI*2);ctx.stroke();
-  ctx.fillStyle='#fde68a';ctx.font='bold 10px var(--fd)';ctx.textAlign='left';
+  ctx.fillStyle='#fde68a';ctx.font='bold 10px "Cabinet Grotesk", sans-serif';ctx.textAlign='left';
   ctx.fillText('Our Sun',sx+14,sy+4);
 
   // Core label
-  ctx.fillStyle='rgba(253,186,116,0.7)';ctx.font='bold 10px var(--fd)';ctx.textAlign='center';
+  ctx.fillStyle='rgba(253,186,116,0.7)';ctx.font='bold 10px "Cabinet Grotesk", sans-serif';ctx.textAlign='center';
   ctx.fillText('Galactic centre',W/2,H/2+6);
 
   // Diameter line
   ctx.setLineDash([4,4]);ctx.strokeStyle='rgba(251,146,60,0.3)';ctx.lineWidth=1;
   ctx.beginPath();ctx.moveTo(W/2-210,H/2);ctx.lineTo(W/2+210,H/2);ctx.stroke();
   ctx.setLineDash([]);
-  ctx.fillStyle='rgba(251,146,60,0.6)';ctx.font='10px var(--fd)';ctx.textAlign='center';
+  ctx.fillStyle='rgba(251,146,60,0.6)';ctx.font='10px "Cabinet Grotesk", sans-serif';ctx.textAlign='center';
   ctx.fillText('← ~100 000 light years →',W/2,H/2+56);
 
-  ctx.fillStyle='rgba(210,218,245,0.5)';ctx.font='11px var(--fd)';
+  ctx.fillStyle='rgba(210,218,245,0.5)';ctx.font='11px "Cabinet Grotesk", sans-serif';
   ctx.fillText('Milky Way — barred spiral galaxy',W/2,20);
 }
 
@@ -413,13 +413,13 @@ function drawDistances(){
     // Body
     ctx.beginPath();ctx.arc(it.x,H/2,it.size,0,Math.PI*2);ctx.fillStyle=it.color;ctx.fill();
     // Label
-    ctx.fillStyle='rgba(210,218,245,0.8)';ctx.font='9.5px var(--fd)';ctx.textAlign='center';
+    ctx.fillStyle='rgba(210,218,245,0.8)';ctx.font='9.5px "Cabinet Grotesk", sans-serif';ctx.textAlign='center';
     const lines=it.label.split('(');
     ctx.fillText(lines[0].trim(),it.x,H/2+it.size+16);
     if(lines[1]) ctx.fillText('('+lines[1],it.x,H/2+it.size+28);
   });
 
-  ctx.fillStyle='rgba(210,218,245,0.4)';ctx.font='11px var(--fd)';ctx.textAlign='center';
+  ctx.fillStyle='rgba(210,218,245,0.4)';ctx.font='11px "Cabinet Grotesk", sans-serif';ctx.textAlign='center';
   ctx.fillText('Scale of distances (not to scale — sizes exaggerated for visibility)',W/2,H-16);
 }
 
@@ -434,7 +434,7 @@ function drawGalaxies(){
   drawIrregular(390,150,'Irregular\n(e.g. Magellanic\nClouds)','#22d3ee');
 
   // LMC/SMC
-  ctx.fillStyle='rgba(34,211,238,0.7)';ctx.font='bold 10px var(--fd)';ctx.textAlign='center';
+  ctx.fillStyle='rgba(34,211,238,0.7)';ctx.font='bold 10px "Cabinet Grotesk", sans-serif';ctx.textAlign='center';
   ctx.fillText('Magellanic Clouds visible from South Africa!',W/2,H-16);
 }
 
@@ -453,7 +453,7 @@ function drawSpiral(cx,cy,label,color){
   const g=ctx.createRadialGradient(cx,cy,0,cx,cy,18);
   g.addColorStop(0,'rgba(253,230,138,0.9)');g.addColorStop(1,'transparent');
   ctx.fillStyle=g;ctx.beginPath();ctx.ellipse(cx,cy,18,10,0,0,Math.PI*2);ctx.fill();
-  ctx.fillStyle='rgba(210,218,245,0.75)';ctx.font='bold 10px var(--fd)';ctx.textAlign='center';
+  ctx.fillStyle='rgba(210,218,245,0.75)';ctx.font='bold 10px "Cabinet Grotesk", sans-serif';ctx.textAlign='center';
   label.split('\n').forEach((l,i)=>ctx.fillText(l,cx,cy+85+i*13));
 }
 
@@ -466,7 +466,7 @@ function drawElliptical(cx,cy,label,color){
     ctx.beginPath();ctx.arc(cx+r*Math.cos(th),cy+r*Math.sin(th)*0.65,0.8,0,Math.PI*2);
     ctx.fillStyle='rgba(255,255,255,0.5)';ctx.fill();
   }
-  ctx.fillStyle='rgba(210,218,245,0.75)';ctx.font='bold 10px var(--fd)';ctx.textAlign='center';
+  ctx.fillStyle='rgba(210,218,245,0.75)';ctx.font='bold 10px "Cabinet Grotesk", sans-serif';ctx.textAlign='center';
   ctx.fillText(label,cx,cy+85);
 }
 
@@ -478,7 +478,7 @@ function drawIrregular(cx,cy,label,color){
     ctx.beginPath();ctx.arc(pts[i].x,pts[i].y,1,0,Math.PI*2);
     ctx.fillStyle='rgba(34,211,238,0.5)';ctx.fill();
   }
-  ctx.fillStyle='rgba(210,218,245,0.75)';ctx.font='bold 10px var(--fd)';ctx.textAlign='center';
+  ctx.fillStyle='rgba(210,218,245,0.75)';ctx.font='bold 10px "Cabinet Grotesk", sans-serif';ctx.textAlign='center';
   label.split('\n').forEach((l,i)=>ctx.fillText(l,cx,cy+85+i*13));
 }
 

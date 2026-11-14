@@ -296,7 +296,7 @@ select option{background:#1a1f35}
 
 <!-- ===== EXPLORE TAB ===== -->
 <div class="tab-panel" id="tab-explore">
-  <div class="ml-predict" style="margin:0 0 16px;padding:10px 14px;border-radius:10px;background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.22);font-size:13px;line-height:1.6;color:rgba(226,232,240,.88)"><strong style="color:#fde68a">Voorspel eers:</strong> In Fe + O₂ → Fe₂O₃, hoeveel ysteratome het die regterkant nodig? Werk die koëffisiënte uit voordat jy die knoppies gebruik. <strong style="color:#fde68a">Toets dit dan:</strong> Gebruik die + / − knoppies totdat elke ry van die atoomtellingtabel groen word.</div>
+  <div class="ml-predict" style="margin:0 0 16px;padding:12px 16px;border-radius:10px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.075);border-left:2px solid #74d154;font-size:15px;line-height:1.6;color:#e3e8ef"><strong style="color:#f2f5f9">Voorspel eers:</strong> In Fe + O₂ → Fe₂O₃, hoeveel ysteratome het die regterkant nodig? Werk die koëffisiënte uit voordat jy die knoppies gebruik. <strong style="color:#f2f5f9">Toets dit dan:</strong> Gebruik die + / − knoppies totdat elke ry van die atoomtellingtabel groen word.</div>
   <div class="sim-outer">
     <div class="sim-canvas-wrap">
       <h3 id="balTitle">Vergelykingsbalanseerder</h3>
@@ -318,7 +318,7 @@ select option{background:#1a1f35}
       <div class="ctrl-card">
         <div class="ctrl-label">Hoe om te gebruik</div>
         <p style="font-size:12px;color:var(--muted);line-height:1.7">Gebruik die + / − stappers onder elke formule om die koëffisiënt daarvan te verander. Hou die atoomtelling-tabel hieronder dop — pasende rye word groen. Maak elke ry groen om die vergelyking te balanseer. Klik 'n ander vergelyking hierbo om nog een te probeer.</p>
-        <button class="mode-btn" style="margin-top:6px" onclick="resetEquation()">↺ Herstel Koëffisiënte</button>
+        <button class="mode-btn" style="margin-top:6px" onclick="resetEquation()">Herstel Koëffisiënte</button>
       </div>
     </div>
   </div>
@@ -703,7 +703,13 @@ function renderBalancer(){
   document.getElementById('balTableRight').innerHTML = rightRow;
 
   const statusEl = document.getElementById('balStatus');
-  if(allBalanced){
+  // CAPS expects the lowest whole-number coefficients (4HCl, not 2H₂ + 2Cl₂ → 4HCl)
+  const gcdC = (a, b) => b ? gcdC(b, a % b) : a;
+  const gAll = curCoeffs.left.concat(curCoeffs.right).reduce((a, b) => gcdC(a, b), 0);
+  if(allBalanced && gAll > 1){
+    statusEl.textContent = 'Gebalanseer, maar nie in die kleinste heelgetalverhouding nie: deel elke koëffisiënt deur ' + gAll + '.';
+    statusEl.className = 'balance-status bad';
+  } else if(allBalanced){
     statusEl.textContent = '✓ Gebalanseer! Elke element het gelyke atome aan beide kante.';
     statusEl.className = 'balance-status ok';
   } else {

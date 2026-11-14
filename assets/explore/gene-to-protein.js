@@ -32,6 +32,9 @@ MLX.ready(function () {
     short: { en: 'stop codon: protein cut short', af: 'stopkodon: proteïen verkort' }, shift: { en: 'frameshift: amino acids after it all change', af: 'raamverskuiwing: aminosure daarna verander almal' },
     nostart: { en: 'no start codon (AUG): no protein', af: 'geen beginkodon (AUG) nie: geen proteïen' }, orig2: { en: 'original gene', af: 'oorspronklike geen' },
     stop: { en: 'STOP', af: 'STOP' },
+    many: { en: 'more than one amino acid changed (more than one substitution)', af: 'meer as een aminosuur verander (meer as een substitusie)' },
+    inframe: { en: 'in-frame insertion or deletion (a multiple of 3 bases): amino acids added or removed, the reading frame is kept', af: 'invoeging of verwydering in die leesraam (\'n veelvoud van 3 basisse): aminosure bygevoeg of verwyder, die leesraam bly behoue' },
+    newstart: { en: 'the start codon moved: translation begins at a different AUG, so the reading frame changes', af: 'die beginkodon het geskuif: translasie begin by \'n ander AUG, dus verander die leesraam' },
   };
   let tpl = ORIGINAL, tool = 'change';
   const base0 = express(ORIGINAL);
@@ -49,11 +52,14 @@ MLX.ready(function () {
     if (e.start < 0) return L(T.nostart);
     const a = base0.prot, b = e.prot;
     if (a.join('') === b.join('')) return L(T.same);
+    // A frameshift comes only from inserting or deleting a number of bases that is not a multiple of 3
     if (tpl.length % 3 !== ORIGINAL.length % 3) return L(T.shift);
+    if (e.start !== base0.start && (e.start - base0.start) % 3 !== 0) return L(T.newstart);
     const stopAt = b.indexOf('*');
     if (stopAt >= 0 && stopAt < a.indexOf('*')) return L(T.short);
+    if (tpl.length !== ORIGINAL.length) return L(T.inframe);
     const diff = a.filter((x, i) => b[i] !== x).length;
-    return diff === 1 ? L(T.one) : L(T.shift);
+    return diff === 1 ? L(T.one) : L(T.many);
   }
   function update() {
     const e = express(tpl);

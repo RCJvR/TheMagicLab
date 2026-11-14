@@ -64,7 +64,7 @@
         <div class="row c3">
           <label class="field"><span data-af="Oppervlak">Surface</span>
             <select id="surface"><option value="flat" data-af="Plat">Flat</option><option value="incline" data-af="Skuinsvlak">Incline</option><option value="ceiling" data-af="Hang van plafon">Hanging</option><option value="none" data-af="Geen">None</option></select></label>
-          <label class="field"><span data-af="Hoek θ (°)">Angle θ (°)</span><input type="text" id="theta" inputmode="decimal"></label>
+          <label class="field"><span data-af="Hoek θ (°, 5–70)">Angle θ (°, 5–70)</span><input type="text" id="theta" inputmode="decimal"></label>
           <label class="field"><span data-af="Massa (kg, opsioneel)">Mass (kg, optional)</span><input type="text" id="mass" inputmode="decimal"></label>
         </div>
         <div class="row c2">
@@ -289,7 +289,7 @@
     function paintTop() { ['surface', 'theta', 'mass', 'style', 'objLabel', 'title'].forEach(k => { $(k).value = st[k]; }); ['showMag', 'scale', 'comps', 'resultant'].forEach(k => { $(k).checked = st[k]; }); }
     function onForce(e) {
       const d = e.target.dataset; if (d.i == null) return;
-      const f = st.forces[+d.i]; f[d.k] = e.target.value;
+      const f = st.forces[+d.i]; f[d.k] = e.target.value; if (d.k === 'mag') delete f.auto;
       if (d.k === 'dir') paintForces();
       render();
     }
@@ -306,10 +306,22 @@
         t: () => F('T', 'up', ''),
         a: () => F('F_A', 'right', ''),
       }[b.dataset.p];
-      st.forces.push(P()); paintForces(); render();
+      const nf = P(); if (b.dataset.p === 'w' || b.dataset.p === 'n') nf.auto = b.dataset.p;
+      st.forces.push(nf); paintForces(); render();
     });
     ['surface', 'style'].forEach(k => $(k).addEventListener('change', (e) => { st[k] = e.target.value; render(); }));
-    ['theta', 'mass', 'objLabel', 'title'].forEach(k => $(k).addEventListener('input', (e) => { st[k] = e.target.value; render(); }));
+    // Weight and normal force added from the presets follow the mass and angle (until the learner types their own value)
+    function syncAutoForces() {
+      const m = num(st.mass), g = 9.8, th = theta() * Math.PI / 180;
+      let changed = false;
+      st.forces.forEach(f => {
+        if (!f.auto) return;
+        const v = m > 0 ? +(f.auto === 'w' ? m * g : m * g * Math.cos(th)).toFixed(2) : '';
+        if (String(f.mag) !== String(v)) { f.mag = v; changed = true; }
+      });
+      if (changed) paintForces();
+    }
+    ['theta', 'mass', 'objLabel', 'title'].forEach(k => $(k).addEventListener('input', (e) => { st[k] = e.target.value; if (k === 'theta' || k === 'mass') syncAutoForces(); render(); }));
     ['showMag', 'scale', 'comps', 'resultant'].forEach(k => $(k).addEventListener('change', (e) => { st[k] = e.target.checked; render(); }));
     $('examples').addEventListener('change', (e) => { if (e.target.value) { example(e.target.value); paintTop(); paintForces(); render(); } e.target.value = ''; });
     K.attach({ getSvg: () => $('plot').querySelector('svg'), fileBase: () => (st.title || 'force-diagram').replace(/[^\w\- ]+/g, '').replace(/\s+/g, '-').slice(0, 40) || 'force-diagram', print: 'printBtn', copy: 'copyImg', png: 'dlPng', svg: 'dlSvg', worksheet: 'toWs' });

@@ -245,13 +245,13 @@
 
 <!-- EXPLORE -->
 <div class="tab-panel" id="tab-explore">
-  <h2 style="font-size:18px;font-weight:800;color:#fff;margin-bottom:6px">Transpirasietempo-simulator</h2>
-  <p style="font-size:13px;color:var(--muted);margin-bottom:20px">Verstel die vier omgewingsfaktore en kyk hoe vinnig water deur die xileem opgetrek word en van die blaar verlore gaan.</p>
-  <div class="ml-predict" style="margin:0 0 16px;padding:10px 14px;border-radius:10px;background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.22);font-size:13px;line-height:1.6;color:rgba(226,232,240,.88)"><strong style="color:#fde68a">Voorspel eers:</strong> Watter een sal waterverlies uit die blaar verhoog: meer wind, hoër humiditeit, of albei? <strong style="color:#fde68a">Toets dit dan:</strong> Verander een faktor op 'n slag en kyk na die transpirasietempo.</div>
+  <h2 style="font-size:20px;font-weight:800;color:#f2f5f9;margin-bottom:6px">Transpirasietempo-simulator</h2>
+  <p style="font-size:15px;line-height:1.6;color:rgba(226,232,240,.72);margin-bottom:16px;max-width:68ch">Verstel die vier omgewingsfaktore en kyk hoe vinnig water deur die xileem opgetrek word en van die blaar verlore gaan.</p>
+  <div class="ml-predict" style="margin:0 0 16px;padding:12px 16px;border-radius:10px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.075);border-left:2px solid #74d154;font-size:15px;line-height:1.6;color:#e3e8ef"><strong style="color:#f2f5f9">Voorspel eers:</strong> Watter een sal waterverlies uit die blaar verhoog: meer wind, hoër humiditeit, of albei? <strong style="color:#f2f5f9">Toets dit dan:</strong> Verander een faktor op 'n slag en kyk na die transpirasietempo.</div>
   <div class="sim-outer">
     <div class="sim-canvas-wrap">
       <h3>Waterbeweging deur die plant</h3>
-      <canvas id="transCanvas" height="280" role="img" aria-label="Transpirasietempo-simulator: interaktiewe simulasie"></canvas>
+      <canvas id="transCanvas" height="280" role="img" aria-label="Transpirasietempo-simulator. Verstel die vier omgewingsfaktore en kyk hoe vinnig water deur die xileem opgetrek word en van die blaar verlore gaan."></canvas>
     </div>
     <div class="sim-controls-row">
       <div class="ctrl-card">
@@ -347,11 +347,14 @@ function resizeCanvas(){
 }
 
 function computeRate(){
+  // The factors MULTIPLY: water vapour only diffuses out if the stomata are open (light) AND the air is
+  // drier than the leaf (humidity). At 100% humidity there is no gradient; in the dark the stomata close.
   const tempF = Math.max(0, Math.min(1, (temp-5)/35));
-  const lightF = light/100;
-  const humF = 1 - hum/100;
-  const windF = 0.5 + (wind/100)*0.5;
-  return Math.max(0.02, Math.min(1, tempF*0.35 + lightF*0.25 + humF*0.25 + windF*0.15));
+  const stomata = 0.08 + 0.92 * (light/100);      // a little water is still lost through the cuticle
+  const gradient = 1 - hum/100;
+  const warmth = 0.35 + 0.65 * tempF;             // warm air holds more vapour, steepening the gradient
+  const windF = 0.6 + 0.4 * (wind/100);           // wind removes the humid layer next to the leaf
+  return Math.max(0, Math.min(1, stomata * gradient * warmth * windF));
 }
 
 function updateReadout(){

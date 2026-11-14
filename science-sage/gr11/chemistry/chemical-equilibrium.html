@@ -316,11 +316,11 @@ input[type=range]{flex:1;accent-color:#c084fc;cursor:pointer}
 
 <!-- EXPLORE TAB -->
 <div id="tab-explore" class="tab-panel">
-  <div class="ml-predict" style="margin:0 0 16px;padding:10px 14px;border-radius:10px;background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.22);font-size:13px;line-height:1.6;color:rgba(226,232,240,.88)"><strong style="color:#fde68a">Predict first:</strong> If you add more reactant to a system at equilibrium, which way will the equilibrium shift? <strong style="color:#fde68a">Then test it:</strong> In the Le Chatelier demo, add reactant and watch the concentration bars.</div>
+  <div class="ml-predict" style="margin:0 0 16px;padding:12px 16px;border-radius:10px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.075);border-left:2px solid #74d154;font-size:15px;line-height:1.6;color:#e3e8ef"><strong style="color:#f2f5f9">Predict first:</strong> If you add more reactant to a system at equilibrium, which way will the equilibrium shift? <strong style="color:#f2f5f9">Then test it:</strong> In the Le Chatelier demo, add reactant and watch the concentration bars.</div>
   <div class="sim-outer">
     <div class="sim-canvas-wrap">
       <h3 id="eqSimTitle">Equilibrium Simulator — Dynamic Approach to Equilibrium</h3>
-      <canvas id="eqCanvas" height="380" role="img" aria-label="Equilibrium Simulator — Dynamic Approach to Equilibrium: interactive simulation"></canvas>
+      <canvas id="eqCanvas" height="380" role="img" aria-label="Equilibrium Simulator — Dynamic Approach to Equilibrium"></canvas>
     </div>
 
     <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:4px">
@@ -773,8 +773,17 @@ function applyStress(stress) {
   animateLC();
 }
 
+let lcTarget = null;
 function animateLC() {
   if (lcAnimId) clearTimeout(lcAnimId);
+  // Solve exactly for the shift x (A−x, B−x, C+2x) that makes Qc = Kc.
+  // f(x) = (C+2x)² − Kc(A−x)(B−x) increases with x, so bisection always converges.
+  const A0 = lcA, B0 = lcB, C0 = lcC, K = lcKc;
+  let lo = -C0 / 2 + 1e-6, hi = Math.min(A0, B0) - 1e-6;
+  const f = x => (C0 + 2*x) * (C0 + 2*x) - K * (A0 - x) * (B0 - x);
+  for (let i = 0; i < 60; i++) { const mid = (lo + hi) / 2; if (f(mid) > 0) hi = mid; else lo = mid; }
+  const x = (lo + hi) / 2;
+  lcTarget = { A: A0 - x, B: B0 - x, C: C0 + 2*x };
   lcStepAnim();
 }
 
@@ -782,13 +791,16 @@ function lcStepAnim() {
   const total = lcA + lcB + lcC;
   // Equilibrium: Kc = C²/(A*B). With stoich A+B⇌2C, if shift by x: A-x, B-x, C+2x
   // Approximate: gradient descent toward equilibrium
-  const qc = (lcC * lcC) / (Math.max(0.001, lcA) * Math.max(0.001, lcB));
-  const diff = qc - lcKc;
-  if (Math.abs(diff) < 0.005) { updateLCReadouts(); drawLC(); return; }
-  const step = diff > 0 ? -0.04 : 0.04; // reverse if Qc > Kc
-  lcA = Math.max(0.05, lcA - step);
-  lcB = Math.max(0.05, lcB - step);
-  lcC = Math.max(0.05, lcC + 2 * step);
+  // Ease towards the exact equilibrium found in animateLC (no overshoot, no flicker)
+  if (!lcTarget) { updateLCReadouts(); drawLC(); return; }
+  const dA = lcTarget.A - lcA;
+  if (Math.abs(dA) < 0.002) {
+    lcA = lcTarget.A; lcB = lcTarget.B; lcC = lcTarget.C; lcTarget = null;
+    updateLCReadouts(); drawLC(); return;
+  }
+  lcA += dA * 0.15;
+  lcB += (lcTarget.B - lcB) * 0.15;
+  lcC += (lcTarget.C - lcC) * 0.15;
   updateLCReadouts();
   drawLC();
   lcAnimId = setTimeout(lcStepAnim, 40);
@@ -866,6 +878,20 @@ function drawLC() {
 }
 
 // ── Haber Process ─────────────────────────────────────────────────────────────
+// Equilibrium mole % of NH₃ for a 1:3 N₂:H₂ feed (standard published data), interpolated in T and log P.
+// The same function is used on the Gr 11 and Gr 12 pages so both give the same yield for the same conditions.
+function haberEq(T, P) {
+  const Ts = [200, 300, 400, 500, 600, 700], Ps = [10, 100, 200, 300, 600];
+  const Y = [[50.7, 81.5, 89.0, 89.9, 95.4], [14.7, 52.0, 66.7, 71.0, 84.2], [3.9, 25.2, 38.7, 47.0, 65.2],
+             [1.2, 10.6, 18.3, 24.4, 42.2], [0.5, 4.5, 8.8, 13.8, 23.1], [0.2, 1.9, 4.0, 6.3, 12.0]];
+  const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+  const ti = clamp((T - 200) / 100, 0, 4.999), i = Math.floor(ti), ft = ti - i;
+  const lp = Math.log10(clamp(P, 10, 600)), lps = Ps.map(Math.log10);
+  let j = 0; while (j < 3 && lp > lps[j + 1]) j++;
+  const fp = (lp - lps[j]) / (lps[j + 1] - lps[j]);
+  const at = r => Y[r][j] + (Y[r][j + 1] - Y[r][j]) * fp;
+  return at(i) + (at(i + 1) - at(i)) * ft;
+}
 function updateHaber() {
   const T = parseInt(document.getElementById('haberT').value);
   const P = parseInt(document.getElementById('haberP').value);
@@ -874,9 +900,7 @@ function updateHaber() {
 
   // Approximate NH3 yield: higher P → more yield, higher T → less yield (exothermic)
   // Rough formula: yield ≈ base * pressure_factor * temp_factor
-  const pFactor = 0.3 + 0.5 * (P - 50) / 450;
-  const tFactor = 1.2 - (T - 200) / 700;
-  const yield_pct = Math.max(5, Math.min(98, pFactor * tFactor * 100));
+  const yield_pct = haberEq(T, P);
   document.getElementById('haberYield').innerHTML = yield_pct.toFixed(0) + '<span>%</span>';
 
   const rateLabels = ['Very Slow', 'Slow', 'Moderate', 'Fast', 'Very Fast'];

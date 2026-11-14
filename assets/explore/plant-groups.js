@@ -11,8 +11,8 @@ MLX.ready(function () {
   const G = {
     bryo: { n: { en: 'Bryophytes (mosses)', af: 'Briofiete (mosse)' }, h: { en: 'a few cm', af: '\'n paar cm' }, water: { en: 'absorbed over the surface', af: 'deur die oppervlak geabsorbeer' }, fert: { en: 'sperm swim through water', af: 'sperme swem deur water' } },
     pter: { n: { en: 'Pteridophytes (ferns)', af: 'Pteridofiete (varings)' }, h: { en: 'up to a few metres', af: 'tot \'n paar meter' }, water: { en: 'xylem and phloem', af: 'xileem en floëem' }, fert: { en: 'sperm swim through water', af: 'sperme swem deur water' } },
-    gymn: { n: { en: 'Gymnosperms (conifers)', af: 'Gimnosperme (naaldbome)' }, h: { en: 'up to 100 m', af: 'tot 100 m' }, water: { en: 'xylem and phloem', af: 'xileem en floëem' }, fert: { en: 'pollen carried by wind', af: 'stuifmeel deur wind gedra' } },
-    angi: { n: { en: 'Angiosperms (flowering plants)', af: 'Angiosperme (blomplante)' }, h: { en: 'up to 100 m', af: 'tot 100 m' }, water: { en: 'xylem and phloem', af: 'xileem en floëem' }, fert: { en: 'pollen carried by wind or animals', af: 'stuifmeel deur wind of diere gedra' } },
+    gymn: { n: { en: 'Gymnosperms (conifers)', af: 'Gimnosperme (naaldbome)' }, h: { en: 'up to 100 m', af: 'tot 100 m' }, water: { en: 'xylem and phloem', af: 'xileem en floëem' }, fert: { en: 'wind carries pollen to the ovule (pollination); a pollen tube then delivers the sperm', af: 'wind dra stuifmeel na die saadknop (bestuiwing); \'n stuifmeelbuis lewer dan die sperme af' } },
+    angi: { n: { en: 'Angiosperms (flowering plants)', af: 'Angiosperme (blomplante)' }, h: { en: 'up to 100 m', af: 'tot 100 m' }, water: { en: 'xylem and phloem', af: 'xileem en floëem' }, fert: { en: 'wind or animals carry pollen to the stigma (pollination); a pollen tube grows to the ovule', af: 'wind of diere dra stuifmeel na die stempel (bestuiwing); \'n stuifmeelbuis groei na die saadknop' } },
   };
   const HAB = [{ en: 'Swamp', af: 'Moeras' }, { en: 'Damp forest floor', af: 'Klam woudvloer' }, { en: 'Grassland', af: 'Grasveld' }, { en: 'Semi-desert', af: 'Halfwoestyn' }];
   const T = {
@@ -20,7 +20,7 @@ MLX.ready(function () {
     feat: { en: 'Features', af: 'Kenmerke' }, vasc: { en: 'Vascular tissue (xylem, phloem)', af: 'Vaatweefsel (xileem, floëem)' },
     seeds: { en: 'Seeds and pollen', af: 'Sade en stuifmeel' }, flowers: { en: 'Flowers and fruit', af: 'Blomme en vrugte' },
     hab: { en: 'Habitat', af: 'Habitat' }, res: { en: 'Your plant', af: 'Jou plant' }, group: { en: 'Group', af: 'Groep' },
-    height: { en: 'Can grow', af: 'Kan groei' }, water: { en: 'Water transport', af: 'Watervervoer' }, fert: { en: 'Fertilisation', af: 'Bevrugting' },
+    height: { en: 'Can grow', af: 'Kan groei' }, water: { en: 'Water transport', af: 'Watervervoer' }, fert: { en: 'How sperm reach the egg', af: 'Hoe sperme die eiersel bereik' },
     here: { en: 'In this habitat', af: 'In hierdie habitat' }, thrives: { en: 'grows and reproduces', af: 'groei en plant voort' },
     noRepro: { en: 'grows, cannot reproduce', af: 'groei, kan nie voortplant nie' }, dies: { en: 'dries out', af: 'droog uit' },
   };
@@ -88,7 +88,7 @@ MLX.ready(function () {
     }
     // fertilisation, animated on the right
     const fx0 = W * 0.62, fx1 = W * 0.92, fy = gy - 24;
-    text(ctx, { en: 'Fertilisation', af: 'Bevrugting' }, fx0, 26, { size: 12, weight: 700, color: 'rgba(226,232,240,0.6)' });
+    text(ctx, seeds ? { en: 'Pollination, then fertilisation', af: 'Bestuiwing, dan bevrugting' } : { en: 'Fertilisation', af: 'Bevrugting' }, fx0, 26, { size: 12, weight: 700, color: 'rgba(226,232,240,0.6)' });
     ctx.fillStyle = '#fca5a5'; ctx.beginPath(); ctx.arc(fx1, fy, 12, 0, Math.PI * 2); ctx.fill();
     text(ctx, seeds ? { en: 'ovule (egg inside)', af: 'saadknop (eiersel binne)' } : { en: 'egg', af: 'eiersel' }, fx1, fy + 28, { size: 11, align: 'center', color: '#fecaca' });
     const p = (t0 * 0.35) % 1;

@@ -259,13 +259,13 @@
 
 <!-- EXPLORE -->
 <div class="tab-panel" id="tab-explore">
-  <h2 style="font-size:18px;font-weight:800;color:#fff;margin-bottom:6px">Enzyme Action Lab</h2>
-  <p style="font-size:13px;color:var(--muted);margin-bottom:20px">Adjust temperature and pH and watch how they affect this enzyme's shape and its reaction rate. Find the optimum conditions where the enzyme works fastest.</p>
-  <div class="ml-predict" style="margin:0 0 16px;padding:10px 14px;border-radius:10px;background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.22);font-size:13px;line-height:1.6;color:rgba(226,232,240,.88)"><strong style="color:#fde68a">Predict first:</strong> At what temperature will this human enzyme work fastest? What happens well above that temperature? <strong style="color:#fde68a">Then test it:</strong> Raise the temperature past the optimum and watch the enzyme's shape and rate, then try changing the pH.</div>
+  <h2 style="font-size:20px;font-weight:800;color:#f2f5f9;margin-bottom:6px">Enzyme Action Lab</h2>
+  <p style="font-size:15px;line-height:1.6;color:rgba(226,232,240,.72);margin-bottom:16px;max-width:68ch">Adjust temperature and pH and watch how they affect this enzyme's shape and its reaction rate. Find the optimum conditions where the enzyme works fastest.</p>
+  <div class="ml-predict" style="margin:0 0 16px;padding:12px 16px;border-radius:10px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.075);border-left:2px solid #74d154;font-size:15px;line-height:1.6;color:#e3e8ef"><strong style="color:#f2f5f9">Predict first:</strong> At what temperature will this human enzyme work fastest? What happens well above that temperature? <strong style="color:#f2f5f9">Then test it:</strong> Raise the temperature past the optimum and watch the enzyme's shape and rate, then try changing the pH.</div>
   <div class="sim-outer">
     <div class="sim-canvas-wrap">
       <h3>Lock-and-key model</h3>
-      <canvas id="enzCanvas" height="280" role="img" aria-label="Enzyme Action Lab: interactive simulation"></canvas>
+      <canvas id="enzCanvas" height="280" role="img" aria-label="Enzyme Action Lab. Adjust temperature and pH and watch how they affect this enzyme&#x27;s shape and its reaction rate. Find the optimum conditions where the enzyme works fastest."></canvas>
     </div>
     <div class="sim-controls-row">
       <div class="ctrl-card">
@@ -277,6 +277,7 @@
         <input aria-labelledby="lbl-phSlider" type="range" id="phSlider" min="0" max="140" value="70">
       </div>
     </div>
+    <div style="margin:12px 0"><button type="button" id="enzReset" class="mode-btn" style="min-height:40px;padding:8px 16px;border-radius:8px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.04);color:inherit;font:600 14px/1.2 inherit;cursor:pointer">Use a fresh enzyme</button></div>
     <div class="rate-readout">
       <div class="rate-num" id="rateNum">100%</div>
       <div class="rate-bar-wrap">
@@ -346,6 +347,7 @@ const ctx = canvas.getContext('2d');
 let W, H;
 let t = 0;
 let temp = 37, ph = 7.0;
+let heatDenatured = false; // once heated past ~50 °C the enzyme stays denatured (permanent)
 
 function resizeCanvas(){
   W = canvas.offsetWidth || 600;
@@ -356,18 +358,21 @@ function resizeCanvas(){
 }
 
 function tempFactor(T){
+  // Below the optimum the rate roughly doubles for every 10 °C rise (it is slow, not zero, at 0 °C);
+  // above 37 °C the enzyme starts to denature and the rate falls steeply.
   const opt = 37;
-  if (T <= opt) return Math.max(0, T/opt);
-  return Math.exp(-Math.pow((T-opt)/12, 2));
+  if (T <= opt) return Math.pow(2, (T - opt) / 10);
+  return Math.exp(-Math.pow((T-opt)/7, 2));
 }
 function phFactor(pH){
   return Math.exp(-Math.pow((pH-7)/2.2, 2));
 }
 function computeRate(){
+  if (isDenatured()) return 0;
   return Math.max(0, Math.min(1, tempFactor(temp) * phFactor(ph)));
 }
 function isDenatured(){
-  return temp > 52 || ph < 3 || ph > 11;
+  return heatDenatured || ph < 3 || ph > 11;
 }
 
 function updateReadout(){
@@ -379,7 +384,9 @@ function updateReadout(){
   bar.style.width = pct+'%';
   bar.style.background = pct>=70?'#22c55e':pct>=35?'#fbbf24':'#ef4444';
   let status;
-  if (isDenatured()) status = 'Denatured! The enzyme\'s active site has changed shape and no longer fits the substrate — the reaction has stopped.';
+  if (heatDenatured && temp <= 50) status = "Still denatured: heat denaturation is permanent, so cooling the enzyme does not restore its active site. Use a fresh enzyme to try again.";
+  else if (!heatDenatured && isDenatured()) status = "Denatured by the extreme pH: the active site has changed shape. (Some enzymes recover if the pH returns to normal, but heat damage is permanent.)";
+  else if (isDenatured()) status = 'Denatured! The enzyme\'s active site has changed shape and no longer fits the substrate — the reaction has stopped.';
   else if (pct >= 85) status = 'Optimal conditions — the enzyme\'s active site fits the substrate perfectly.';
   else if (temp < 20) status = 'Too cold — molecules are moving slowly, so collisions between enzyme and substrate are rare.';
   else if (pct < 40) status = 'Conditions are moving away from optimum — the enzyme is working, but slowly.';
@@ -458,7 +465,14 @@ function drawScene(){
 
 document.getElementById('tempSlider').addEventListener('input', e=>{
   temp = parseInt(e.target.value);
+  if (temp > 50) heatDenatured = true;
   document.getElementById('tempVal').textContent = temp+'°C';
+  updateReadout();
+});
+document.getElementById('enzReset').addEventListener('click', ()=>{
+  heatDenatured = false; temp = 37; ph = 7.0;
+  document.getElementById('tempSlider').value = 37; document.getElementById('phSlider').value = 70;
+  document.getElementById('tempVal').textContent = '37°C'; document.getElementById('phVal').textContent = '7.0';
   updateReadout();
 });
 document.getElementById('phSlider').addEventListener('input', e=>{

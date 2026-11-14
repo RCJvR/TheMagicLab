@@ -247,13 +247,13 @@
 
 <!-- EXPLORE -->
 <div class="tab-panel" id="tab-explore">
-  <h2 style="font-size:18px;font-weight:800;color:#fff;margin-bottom:6px">Osmoregulasie- (ADH-) Simulator</h2>
-  <p style="font-size:13px;color:var(--muted);margin-bottom:20px">Sleep die skuifknoppie om die liggaam se hidrasietoestand te verander en kyk hoe ADH-vrystelling, buisiedeurlaatbaarheid en urienuitset reageer.</p>
-  <div class="ml-predict" style="margin:0 0 16px;padding:10px 14px;border-radius:10px;background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.22);font-size:13px;line-height:1.6;color:rgba(226,232,240,.88)"><strong style="color:#fde68a">Voorspel eers:</strong> Wanneer jy ontwater is, sal ADH-vrystelling styg of daal, en wat gebeur met die volume urine? <strong style="color:#fde68a">Toets dit dan:</strong> Sleep die hidrasieskuif na ontwater en kyk wat gebeur.</div>
+  <h2 style="font-size:20px;font-weight:800;color:#f2f5f9;margin-bottom:6px">Osmoregulasie- (ADH-) Simulator</h2>
+  <p style="font-size:15px;line-height:1.6;color:rgba(226,232,240,.72);margin-bottom:16px;max-width:68ch">Sleep die skuifknoppie om die liggaam se hidrasietoestand te verander en kyk hoe ADH-vrystelling, buisiedeurlaatbaarheid en urienuitset reageer.</p>
+  <div class="ml-predict" style="margin:0 0 16px;padding:12px 16px;border-radius:10px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.075);border-left:2px solid #74d154;font-size:15px;line-height:1.6;color:#e3e8ef"><strong style="color:#f2f5f9">Voorspel eers:</strong> Wanneer jy ontwater is, sal ADH-vrystelling styg of daal, en wat gebeur met die volume urine? <strong style="color:#f2f5f9">Toets dit dan:</strong> Sleep die hidrasieskuif na ontwater en kyk wat gebeur.</div>
   <div class="sim-outer">
     <div class="sim-canvas-wrap">
       <h3>Versamelbuis se waterdeurlaatbaarheid</h3>
-      <canvas id="adhCanvas" height="200" role="img" aria-label="Osmoregulasie- (ADH-) Simulator: interaktiewe simulasie"></canvas>
+      <canvas id="adhCanvas" height="200" role="img" aria-label="Osmoregulasie- (ADH-) Simulator. Sleep die skuifknoppie om die liggaam se hidrasietoestand te verander en kyk hoe ADH-vrystelling, buisiedeurlaatbaarheid en urienuitset reageer."></canvas>
     </div>
     <div class="ctrl-card">
       <div id="lbl-hydSlider" class="ctrl-label">Hidrasietoestand <span class="val" id="hydVal">Normaal</span></div>
@@ -338,9 +338,9 @@ function updateADH(){
   const urineVolFactor = 100 - permeability; // low permeability => more water lost => more urine
   const hydLabel = hyd <= -6 ? 'Baie gedehidreer' : hyd <= -2 ? 'Gedehidreer' : hyd < 2 ? 'Normaal' : hyd < 6 ? 'Oorgehidreer' : 'Baie oorgehidreer';
   document.getElementById('hydVal').textContent = hydLabel;
-  document.getElementById('adhVal').textContent = adhLevel>=70?'Hoog':adhLevel>=35?'Normaal':'Laag';
-  document.getElementById('volVal').textContent = urineVolFactor>=65?'Hoog (verdun)':urineVolFactor>=35?'Normaal':'Laag (gekonsentreerd)';
-  document.getElementById('concVal').textContent = permeability>=65?'Gekonsentreerd':permeability>=35?'Normaal':'Verdun';
+  document.getElementById('adhVal').textContent = hyd<=-2?'Hoog':hyd<2?'Normaal':'Laag';
+  document.getElementById('volVal').textContent = hyd>=2?'Hoog (verdun)':hyd>-2?'Normaal':'Laag (gekonsentreerd)';
+  document.getElementById('concVal').textContent = hyd<=-2?'Gekonsentreerd':hyd<2?'Normaal':'Verdun';
 
   const status = document.getElementById('adhStatus');
   if (hyd <= -2){

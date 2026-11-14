@@ -305,11 +305,11 @@
 
 <!-- EXPLORE TAB -->
 <div class="tab-panel" id="tab-explore">
-  <div class="ml-predict" style="margin:0 0 16px;padding:10px 14px;border-radius:10px;background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.22);font-size:13px;line-height:1.6;color:rgba(226,232,240,.88)"><strong style="color:#fde68a">Voorspel eers:</strong> Gly 'n swaarder blok vinniger teen 'n growwe skuinsvlak af as 'n ligter een? <strong style="color:#fde68a">Toets dit dan:</strong> Verander op die skuinsvlak net die massa en vergelyk die versnelling.</div>
+  <div class="ml-predict" style="margin:0 0 16px;padding:12px 16px;border-radius:10px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.075);border-left:2px solid #74d154;font-size:15px;line-height:1.6;color:#e3e8ef"><strong style="color:#f2f5f9">Voorspel eers:</strong> Gly 'n swaarder blok vinniger teen 'n growwe skuinsvlak af as 'n ligter een? <strong style="color:#f2f5f9">Toets dit dan:</strong> Verander op die skuinsvlak net die massa en vergelyk die versnelling.</div>
   <div class="sim-outer">
     <div class="sim-canvas-wrap">
       <h3>Krag- en Bewegingsimulator</h3>
-      <canvas id="nlCanvas" height="380" role="img" aria-label="Krag- en Bewegingsimulator: interaktiewe simulasie"></canvas>
+      <canvas id="nlCanvas" height="380" role="img" aria-label="Krag- en Bewegingsimulator"></canvas>
     </div>
     <div class="sim-controls-row">
       <div class="ctrl-card">
@@ -338,7 +338,7 @@
     </div>
     <div class="readout-grid">
       <div class="readout"><div class="readout-label">Normaalkrag N</div><div class="readout-val" id="ro-N">—<span>N</span></div></div>
-      <div class="readout"><div class="readout-label">Wrywing fk</div><div class="readout-val" id="ro-fk">—<span>N</span></div></div>
+      <div class="readout"><div class="readout-label">Wrywing f (fs of fk)</div><div class="readout-val" id="ro-fk">—<span>N</span></div></div>
       <div class="readout"><div class="readout-label">Nettokrag Fnet</div><div class="readout-val" id="ro-Fn">—<span>N</span></div></div>
       <div class="readout"><div class="readout-label">Versn.</div><div class="readout-val" id="ro-acc">—<span>m·s⁻²</span></div></div>
     </div>
@@ -572,7 +572,7 @@
   }
 
   let simInited=false;
-  function initSim(){if(!simInited){simInited=true;blockX=80;blockVx=0;updateSim();animate();}}
+  function initSim(){if(!simInited){simInited=true;blockX=80;blockVx=0;updateSim();lastT=null;raf=requestAnimationFrame(animate);}}
 
   function getPhysics(){
     const m=+document.getElementById('sl-mass').value;
@@ -580,18 +580,31 @@
       const F=+document.getElementById('sl-F').value;
       const muk=document.getElementById('sl-muk').value/100;
       const N=m*g;
-      const fk=frictionOn?muk*N:0;
-      const Fnet=Math.max(0,F-fk);
+      // Static friction (μs = 1.3 μk) holds a resting block until F exceeds μs·N;
+      // once sliding, kinetic friction μk·N opposes the motion and can slow the block down.
+      const mus=muk*1.3;
+      let fk=0,isStatic=false;
+      if(frictionOn){
+        if(blockVx<=1e-6&&F<=mus*N){fk=F;isStatic=true;}
+        else fk=muk*N;
+      }
+      const Fnet=isStatic?0:F-fk;
       const a=Fnet/m;
-      return{N,fk,Fnet,a,angle:0,m};
+      return{N,fk,Fnet,a,angle:0,m,isStatic};
     } else {
       const ang=+document.getElementById('sl-ang').value*Math.PI/180;
       const muk=document.getElementById('sl-muki').value/100;
       const N=m*g*Math.cos(ang);
-      const fk=frictionOn?muk*N:0;
-      const Fnet=Math.max(0,m*g*Math.sin(ang)-fk);
+      const Wpar=m*g*Math.sin(ang);
+      const mus=muk*1.3;
+      let fk=0,isStatic=false;
+      if(frictionOn){
+        if(blockVx<=1e-6&&Wpar<=mus*N){fk=Wpar;isStatic=true;}
+        else fk=muk*N;
+      }
+      const Fnet=isStatic?0:Wpar-fk;
       const a=Fnet/m;
-      return{N,fk,Fnet,a,angle:+document.getElementById('sl-ang').value,m};
+      return{N,fk,Fnet,a,angle:+document.getElementById('sl-ang').value,m,isStatic};
     }
   }
 
@@ -602,6 +615,7 @@
     const dt=Math.min((ts-lastT)/1000,0.05);lastT=ts;
     const ph=getPhysics();
     blockVx+=ph.a*dt;
+    if(blockVx<0)blockVx=0; // friction can stop the block but never push it backwards
     blockX+=blockVx*dt*30;
     const canvas=document.getElementById('nlCanvas');
     if(blockX>canvas.clientWidth-60){blockX=canvas.clientWidth-60;blockVx=0;}
@@ -638,14 +652,14 @@
       // Force arrows
       const cx=bx,cy=by+bh/2;
       // Weight down
-      drawA(ctx,cx,cy+bh/2+5,cx,cy+bh/2+5+ph.m*g*0.3,'#f87171',2,'W='+ph.m*10+'N');
+      drawA(ctx,cx,cy+bh/2+5,cx,cy+bh/2+5+ph.m*g*0.3,'#f87171',2,'W='+(ph.m*g).toFixed(0)+'N');
       // Normal up
       drawA(ctx,cx,by-5,cx,by-5-ph.N*0.3,'#4ade80',2,'N='+ph.N.toFixed(0)+'N');
       // Applied force right
       const F=+document.getElementById('sl-F').value;
       drawA(ctx,bx+bw/2+5,cy,bx+bw/2+5+F*0.4,cy,'#60a5fa',2,'F='+F+'N');
       // Friction left
-      if(frictionOn&&ph.fk>0) drawA(ctx,bx-bw/2-5,cy,bx-bw/2-5-ph.fk*0.4,cy,'#fbbf24',2,'fk='+ph.fk.toFixed(1)+'N');
+      if(frictionOn&&ph.fk>0) drawA(ctx,bx-bw/2-5,cy,bx-bw/2-5-ph.fk*0.4,cy,'#fbbf24',2,(ph.isStatic?'fs=':'fk=')+ph.fk.toFixed(1)+'N');
 
     } else {
       // Incline
@@ -662,7 +676,7 @@
       ctx.beginPath();ctx.moveTo(baseX,baseY);ctx.lineTo(topX,baseY);ctx.stroke();
 
       // Angle label
-      ctx.fillStyle='rgba(255,255,255,0.4)';ctx.font='11px JetBrains Mono';ctx.textAlign='left';
+      ctx.fillStyle='rgba(255,255,255,0.4)';ctx.font='12px JetBrains Mono';ctx.textAlign='left';
       ctx.fillText(ph.angle+'°',baseX+34,baseY-8);
 
       // Block on slope midpoint
@@ -674,7 +688,7 @@
       ctx.save();ctx.translate(bCx,bCy);ctx.rotate(-ang);
       ctx.fillStyle='rgba(96,165,250,0.25)';ctx.strokeStyle='#60a5fa';ctx.lineWidth=2;
       ctx.beginPath();ctx.roundRect(-bw/2,-bh,bw,bh,5);ctx.fill();ctx.stroke();
-      ctx.fillStyle='#fff';ctx.font='bold 11px Cabinet Grotesk';ctx.textAlign='center';
+      ctx.fillStyle='#fff';ctx.font='bold 12px Cabinet Grotesk';ctx.textAlign='center';
       ctx.fillText(ph.m+' kg',0,-bh/2+4);
 
       // FBD arrows in rotated frame
@@ -685,7 +699,7 @@
       const Wp=ph.m*g*Math.sin(ang);
       drawA(ctx,bw/2+5,-bh/2,bw/2+5+Wp*sc,-bh/2,'#f87171',1.5,'W∥');
       // Friction up slope
-      if(frictionOn&&ph.fk>0) drawA(ctx,-bw/2-5,-bh/2,-bw/2-5-ph.fk*sc,-bh/2,'#fbbf24',1.5,'fk');
+      if(frictionOn&&ph.fk>0) drawA(ctx,-bw/2-5,-bh/2,-bw/2-5-ph.fk*sc,-bh/2,'#fbbf24',1.5,ph.isStatic?'fs':'fk');
       ctx.restore();
     }
 
@@ -708,7 +722,7 @@
     ctx.lineTo(x2-12*Math.cos(ang+0.4),y2-12*Math.sin(ang+0.4));
     ctx.closePath();ctx.fill();
     if(label){
-      ctx.fillStyle='rgba(255,255,255,0.7)';ctx.font='10px JetBrains Mono';ctx.textAlign='center';
+      ctx.fillStyle='rgba(255,255,255,0.7)';ctx.font='12px JetBrains Mono';ctx.textAlign='center';
       ctx.fillText(label,(x1+x2)/2+Math.sin(ang)*10,(y1+y2)/2-Math.cos(ang)*10);
     }
   }

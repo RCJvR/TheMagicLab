@@ -257,13 +257,13 @@
 
 <!-- EXPLORE -->
 <div class="tab-panel" id="tab-explore">
-  <h2 style="font-size:18px;font-weight:800;color:#fff;margin-bottom:6px">Magnetic Field Visualiser</h2>
-  <p style="font-size:13px;color:var(--muted);margin-bottom:20px">Drag the magnets. Switch between unlike poles (attraction) and like poles (repulsion) to see how the field pattern changes. Toggle compass mode to see a needle align with the local field.</p>
-  <div class="ml-predict" style="margin:0 0 16px;padding:10px 14px;border-radius:10px;background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.22);font-size:13px;line-height:1.6;color:rgba(226,232,240,.88)"><strong style="color:#fde68a">Predict first:</strong> Between two north poles, will the field lines join up or push away from each other? <strong style="color:#fde68a">Then test it:</strong> Switch to N–N and compare with N–S.</div>
+  <h2 style="font-size:20px;font-weight:800;color:#f2f5f9;margin-bottom:6px">Magnetic Field Visualiser</h2>
+  <p style="font-size:15px;line-height:1.6;color:rgba(226,232,240,.72);margin-bottom:16px;max-width:68ch">Drag the magnets. Switch between unlike poles (attraction) and like poles (repulsion) to see how the field pattern changes. Toggle compass mode to see a needle align with the local field.</p>
+  <div class="ml-predict" style="margin:0 0 16px;padding:12px 16px;border-radius:10px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.075);border-left:2px solid #74d154;font-size:15px;line-height:1.6;color:#e3e8ef"><strong style="color:#f2f5f9">Predict first:</strong> Between two north poles, will the field lines join up or push away from each other? <strong style="color:#f2f5f9">Then test it:</strong> Switch to N–N and compare with N–S.</div>
   <div class="sim-layout">
     <div class="sim-canvas-wrap">
       <h3>Field Diagram</h3>
-      <canvas id="magCanvas" height="380" role="img" aria-label="Magnetic Field Visualiser: interactive simulation"></canvas>
+      <canvas id="magCanvas" height="380" role="img" aria-label="Magnetic Field Visualiser. Drag the magnets. Switch between unlike poles (attraction) and like poles (repulsion) to see how the field pattern changes. Toggle compass mode to see a needle align with the local field."></canvas>
     </div>
     <div class="controls">
       <div class="ctrl-card">
@@ -418,7 +418,9 @@ function getField(x, y) {
   // In 'unlike' mode: magnet2 N pole faces left (moment pointing left)
   // In 'like' mode: magnet2 N pole faces right (same as magnet1)
   const m1x = 1, m1y = 0;
-  const m2x = poleMode === 'unlike' ? -1 : 1;
+  // Magnet 1's N end faces magnet 2. Unlike poles (attract): magnet 2 is S|N, so its S faces that N (moment +x).
+  // Like poles (repel): magnet 2 is N|S, so N faces N (moment −x).
+  const m2x = poleMode === 'unlike' ? 1 : -1;
   const m2y = 0;
 
   const [B1x, B1y] = dipoleField(x, y, magnets[0].x, magnets[0].y, m1x, m1y, magStrength * 4000);
@@ -436,15 +438,17 @@ function drawMagnet(ctx, mx, my, mode) {
     leftCol = '#3b82f6'; rightCol = '#ef4444';
     leftLabel = 'S'; rightLabel = 'N';
   } else if (mode === 'unlike') {
-    leftCol = '#ef4444'; rightCol = '#3b82f6';
-    leftLabel = 'N'; rightLabel = 'S';
-  } else {
+    // S faces magnet 1's N → attraction
     leftCol = '#3b82f6'; rightCol = '#ef4444';
     leftLabel = 'S'; rightLabel = 'N';
+  } else {
+    // N faces magnet 1's N → repulsion
+    leftCol = '#ef4444'; rightCol = '#3b82f6';
+    leftLabel = 'N'; rightLabel = 'S';
   }
   // Shadow
   ctx.shadowColor = 'rgba(0,0,0,0.4)';
-  ctx.shadowBlur = 10;
+  ctx.shadowBlur = 0;
   // Left half
   ctx.fillStyle = leftCol;
   ctx.beginPath();

@@ -271,11 +271,11 @@ input[type=range]{flex:1;accent-color:#60a5fa;cursor:pointer}
 
 <!-- SIMULATE TAB -->
 <div class="tab-panel" id="tab-explore">
-  <div class="ml-predict" style="margin:0 0 16px;padding:10px 14px;border-radius:10px;background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.22);font-size:13px;line-height:1.6;color:rgba(226,232,240,.88)"><strong style="color:#fde68a">Voorspel eers:</strong> As jy die afstand tussen twee ladings verdubbel, word die krag gehalveer, gekwarteer of verdubbel? <strong style="color:#fde68a">Toets dit dan:</strong> Verdubbel die skeiding in die kragrekenaar en vergelyk die krag.</div>
+  <div class="ml-predict" style="margin:0 0 16px;padding:12px 16px;border-radius:10px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.075);border-left:2px solid #74d154;font-size:15px;line-height:1.6;color:#e3e8ef"><strong style="color:#f2f5f9">Voorspel eers:</strong> As jy die afstand tussen twee ladings verdubbel, word die krag gehalveer, gekwarteer of verdubbel? <strong style="color:#f2f5f9">Toets dit dan:</strong> Verdubbel die skeiding in die kragrekenaar en vergelyk die krag.</div>
   <div class="sim-outer">
     <div class="sim-canvas-wrap">
       <h3>Ladinginteraksie-simulator</h3>
-      <canvas id="eStatCanvas" height="340" role="img" aria-label="Ladinginteraksie-simulator: interaktiewe simulasie"></canvas>
+      <canvas id="eStatCanvas" height="340" role="img" aria-label="Ladinginteraksie-simulator"></canvas>
     </div>
     <div class="sim-controls-row">
       <div class="ctrl-card">
@@ -462,12 +462,15 @@ function updateEStatic(){
   const E1dir=sign1; // +1 = right, -1 = left
   const E2dir=-sign2; // Q2 is to the right: + → field points away from Q2 = leftward = -1 at midpoint
   const Enet=(E1*E1dir+E2*E2dir);
-  const Estr=Math.abs(Enet)>=1?Math.abs(Enet).toFixed(0):''+Math.abs(Enet).toFixed(2);
+  // Large fields in ×10ⁿ notation (e.g. 1.8 × 10⁸) rather than a long string of digits
+  const sup=n=>String(n).replace(/-/g,'⁻').replace(/\d/g,d=>'⁰¹²³⁴⁵⁶⁷⁸⁹'[d]);
+  const aE=Math.abs(Enet), ex=aE>0?Math.floor(Math.log10(aE)):0;
+  const Estr=aE>=1e4?(aE/Math.pow(10,ex)).toFixed(2)+' × 10'+sup(ex):aE>=1?aE.toFixed(0):aE.toFixed(2);
 
   document.getElementById('ro-F').innerHTML=F.toFixed(2)+'<span>N</span>';
   document.getElementById('ro-E').innerHTML=Estr+'<span>N/C</span>';
-  document.getElementById('ro-Q1').innerHTML=(sign1>0?'+':'')+q1mag*1e6+'<span>μC</span>';
-  document.getElementById('ro-Q2').innerHTML=(sign2>0?'+':'')+q2mag*1e6+'<span>μC</span>';
+  document.getElementById('ro-Q1').innerHTML=(sign1>0?'+':'−')+q1mag*1e6+'<span>μC</span>';
+  document.getElementById('ro-Q2').innerHTML=(sign2>0?'+':'−')+q2mag*1e6+'<span>μC</span>';
 
   if(simMode==='lines'){
     drawFieldLines(ctx,W,H,c1x,c1y,c2x,c2y,Q1,Q2,pixPerM);
@@ -516,7 +519,7 @@ function drawCharge(ctx,x,y,Q,mag){
   ctx.fillStyle='#fff';ctx.font='bold 14px Cabinet Grotesk';ctx.textAlign='center';ctx.textBaseline='middle';
   ctx.fillText(Q>0?'+':'−',x,y);
   ctx.textBaseline='alphabetic';
-  ctx.fillStyle='rgba(210,218,245,.6)';ctx.font='9px JetBrains Mono';
+  ctx.fillStyle='rgba(210,218,245,.6)';ctx.font='12px JetBrains Mono';
   ctx.fillText(mag.toFixed(0)+'μC',x,y+30);
 }
 
@@ -597,7 +600,7 @@ function drawFieldLines(ctx,W,H,c1x,c1y,c2x,c2y,Q1,Q2,pixPerM){
   }
 
   // labels
-  ctx.fillStyle='rgba(148,163,184,.5)';ctx.font='10px JetBrains Mono';ctx.textAlign='center';
+  ctx.fillStyle='rgba(148,163,184,.5)';ctx.font='12px JetBrains Mono';ctx.textAlign='center';
   ctx.fillText("Elektriese veldlyne (klik om 'n toetslading te plaas)",W/2,H-10);
 }
 
@@ -623,7 +626,7 @@ function drawForceMode(ctx,W,H,c1x,c1y,c2x,c2y,Q1,Q2,F){
   // F label
   ctx.fillStyle='#fbbf24';ctx.font='bold 12px Cabinet Grotesk';ctx.textAlign='center';
   ctx.fillText('F = '+F.toFixed(3)+' N',W/2,c1y-35);
-  ctx.fillStyle='rgba(210,218,245,.5)';ctx.font='11px JetBrains Mono';
+  ctx.fillStyle='rgba(210,218,245,.5)';ctx.font='12px JetBrains Mono';
   ctx.fillText(sameSign?'↔ AFSTOTEND':'↔ AANTREKKEND',W/2,c1y-18);
 
   // connecting dashed line
@@ -632,11 +635,11 @@ function drawForceMode(ctx,W,H,c1x,c1y,c2x,c2y,Q1,Q2,F){
   ctx.setLineDash([]);
 
   // r label
-  ctx.fillStyle='rgba(210,218,245,.45)';ctx.font='10px JetBrains Mono';ctx.textAlign='center';
+  ctx.fillStyle='rgba(210,218,245,.45)';ctx.font='12px JetBrains Mono';ctx.textAlign='center';
   ctx.fillText('r = '+document.getElementById('slR').value+' cm = '+parseFloat(document.getElementById('slR').value)/100+' m',(c1x+c2x)/2,c1y+22);
 
   // Formula display
-  ctx.fillStyle='rgba(147,197,253,.7)';ctx.font='11px JetBrains Mono';ctx.textAlign='center';
+  ctx.fillStyle='rgba(147,197,253,.7)';ctx.font='12px JetBrains Mono';ctx.textAlign='center';
   ctx.fillText('F = kQ₁Q₂/r² = 9×10⁹ × '+Math.abs(Q1*1e6).toFixed(0)+'×10⁻⁶ × '+Math.abs(Q2*1e6).toFixed(0)+'×10⁻⁶ / '+parseFloat(document.getElementById('slR').value/100).toFixed(2)+'²',W/2,H-14);
 }
 

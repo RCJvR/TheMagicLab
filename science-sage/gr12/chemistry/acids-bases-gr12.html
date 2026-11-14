@@ -131,7 +131,8 @@ input[type=range]{flex:1;accent-color:#2dd4bf;cursor:pointer}
 <script defer src="../../../progress.js"></script>
 <script defer src="../../../lesson-progress-observer.js"></script>
 <style id="ml-touch">@media (pointer:coarse){#tab-explore button,#tab-simulate button,#panel-explore button,#tab-explore select,#tab-simulate select,#panel-explore select{min-height:40px}#tab-explore input[type=range],#tab-simulate input[type=range],#panel-explore input[type=range]{min-height:32px}}</style>
-<style id="ml-wb-memo">.wb-memo{margin-top:12px;border-top:1px dashed rgba(255,255,255,.10);padding-top:10px}.wb-memo summary{cursor:pointer;font-size:13px;font-weight:700;color:#86efac;list-style:revert}.wb-memo-body{margin-top:8px;font-size:13.5px;line-height:1.8;color:rgba(210,218,245,.85);background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.18);border-radius:10px;padding:12px 16px}@media print{.wb-memo{display:none!important}}</style><style id="ml-exam-q">.wb-q.ml-exam-q{border-color:rgba(252,211,77,.35)}.ml-exam-q .wb-qnum{color:#fcd34d}</style></head>
+<style id="ml-wb-memo">.wb-memo{margin-top:12px;border-top:1px dashed rgba(255,255,255,.10);padding-top:10px}.wb-memo summary{cursor:pointer;font-size:13px;font-weight:700;color:#86efac;list-style:revert}.wb-memo-body{margin-top:8px;font-size:13.5px;line-height:1.8;color:rgba(210,218,245,.85);background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.18);border-radius:10px;padding:12px 16px}@media print{.wb-memo{display:none!important}}</style><style id="ml-exam-q">.wb-q.ml-exam-q{border-color:rgba(252,211,77,.35)}.ml-exam-q .wb-qnum{color:#fcd34d}</style><link rel="stylesheet" href="/assets/explore-kit.css">
+</head>
 <body>
   <a class="ml-skip" href="#ml-main">Skip to content</a>
 <nav data-ml-bar="science-sage" data-ml-home="/science-sage/index.html">
@@ -276,41 +277,10 @@ input[type=range]{flex:1;accent-color:#2dd4bf;cursor:pointer}
 
 <!-- EXPLORE TAB -->
 <div id="tab-explore" class="tab-panel">
-  <div class="ml-predict" style="margin:0 0 16px;padding:10px 14px;border-radius:10px;background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.22);font-size:13px;line-height:1.6;color:rgba(226,232,240,.88)"><strong style="color:#fde68a">Predict first:</strong> At the equivalence point of a weak acid–strong base titration, will the pH be 7, below 7 or above 7? <strong style="color:#fde68a">Then test it:</strong> Choose the acid and titrant, then find the steep part of the curve.</div>
-  <div class="sim-outer">
-    <div class="sim-canvas-wrap">
-      <h3>Interactive Titration Curve</h3>
-      <canvas id="titCanvas" height="360" role="img" aria-label="Interactive Titration Curve: interactive simulation"></canvas>
-    </div>
-    <div class="sim-controls-row">
-      <div class="ctrl-card">
-        <div class="ctrl-label">Titration Setup</div>
-        <label for="acidType" style="font-size:12px;color:var(--text);display:block;margin-bottom:4px">Acid in flask</label>
-        <select class="sim-select" id="acidType" onchange="redrawCurve()">
-          <option value="strong">Strong acid (HCl, 0.10 M, 25 mL)</option>
-          <option value="weak">Weak acid (CH₃COOH, 0.10 M, 25 mL, pKa=4.74)</option>
-        </select>
-        <label for="baseType" style="font-size:12px;color:var(--text);display:block;margin-bottom:4px;margin-top:8px">Titrant (burette)</label>
-        <select class="sim-select" id="baseType" onchange="redrawCurve()">
-          <option value="strong">Strong base (NaOH, 0.10 M)</option>
-        </select>
-        <div class="slider-row" style="margin-top:12px">
-          <label for="volSlider">Volume NaOH added</label>
-          <input type="range" id="volSlider" min="0" max="60" step="0.5" value="0" oninput="sliderChange()">
-          <span class="slider-val" id="volVal">0 mL</span>
-        </div>
-      </div>
-      <div class="ctrl-card">
-        <div class="ctrl-label">Current pH Readout</div>
-        <div class="readout-grid">
-          <div class="readout"><div class="readout-label">Volume added</div><div class="readout-val" id="roVol">0.0 mL</div></div>
-          <div class="readout"><div class="readout-label">pH</div><div class="readout-val" id="roPH" style="color:#2dd4bf">--</div></div>
-          <div class="readout"><div class="readout-label">Stage</div><div class="readout-val" id="roStage" style="font-size:11px">--</div></div>
-          <div class="readout"><div class="readout-label">Equivalence</div><div class="readout-val" id="roEP" style="font-size:11px">25.0 mL</div></div>
-        </div>
-      </div>
-    </div>
-  </div>
+  <div class="ml-predict" style="margin:0 0 16px;padding:12px 16px;border-radius:10px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.075);border-left:2px solid #74d154;font-size:15px;line-height:1.6;color:#e3e8ef"><strong style="color:#f2f5f9">Predict first:</strong> At the equivalence point of a weak acid–strong base titration, will the pH be 7, below 7 or above 7? <strong style="color:#f2f5f9">Then test it:</strong> Choose the acid and titrant, then find the steep part of the curve.</div>
+  <div id="mlx-root"></div>
+  <script src="/assets/explore-kit.js"></script>
+  <script src="/assets/explore/titration.js"></script>
 </div>
 
 <!-- PRACTICE TAB -->
@@ -408,179 +378,7 @@ function switchTab(id, btn) {
   if (id === 'explore') setTimeout(() => { redrawCurve(); }, 50);
 }
 
-// ─── Titration Curve ──────────────────────────────────────────────────────────
-function calcPH(volAdded, acidType) {
-  const Va = 25.0, ca = 0.10, cb = 0.10;
-  const na = ca * Va; // mmol
-  const nb = cb * volAdded; // mmol
-  const pKa = 4.74;
-  const Ka = Math.pow(10, -pKa);
-
-  if (acidType === 'strong') {
-    if (volAdded === 0) return 1.00;
-    if (volAdded < Va) {
-      const excessAcid = (na - nb) / (Va + volAdded);
-      return -Math.log10(excessAcid);
-    }
-    if (Math.abs(volAdded - Va) < 0.1) return 7.00;
-    const excessBase = (nb - na) / (Va + volAdded);
-    return 14 + Math.log10(excessBase);
-  } else {
-    // weak acid + strong base
-    if (volAdded === 0) {
-      const h = Math.sqrt(Ka * ca);
-      return -Math.log10(h);
-    }
-    if (volAdded < Va) {
-      const nHA = na - nb;
-      const nA = nb;
-      return pKa + Math.log10(nA / nHA);
-    }
-    if (Math.abs(volAdded - Va) < 0.1) {
-      // hydrolysis of CH3COO-
-      const cb2 = na / (Va + volAdded);
-      const Kb = 1e-14 / Ka;
-      const oh = Math.sqrt(Kb * cb2);
-      return 14 + Math.log10(oh);
-    }
-    const excessBase = (nb - na) / (Va + volAdded);
-    return 14 + Math.log10(excessBase);
-  }
-}
-
-function sliderChange() {
-  const v = parseFloat(document.getElementById('volSlider').value);
-  document.getElementById('volVal').textContent = v.toFixed(1) + ' mL';
-  redrawCurve();
-}
-
-function redrawCurve() {
-  const acidType = document.getElementById('acidType').value;
-  const vol = parseFloat(document.getElementById('volSlider').value);
-  const canvas = document.getElementById('titCanvas');
-  const ctx = canvas.getContext('2d');
-  const dpr = window.devicePixelRatio || 1;
-  const cssW = canvas.offsetWidth || 700;
-  const cssH = 360;
-  canvas.width = cssW * dpr;
-  canvas.height = cssH * dpr;
-  canvas.style.height = cssH + 'px';
-  ctx.setTransform(1,0,0,1,0,0);
-  ctx.scale(dpr, dpr);
-  const W = cssW, H = cssH;
-  ctx.clearRect(0,0,W,H);
-
-  const padL = 55, padR = 20, padT = 20, padB = 45;
-  const gw = W - padL - padR, gh = H - padT - padB;
-  const maxVol = 60, minPH = 0, maxPH = 14;
-
-  // Grid
-  ctx.strokeStyle = 'rgba(255,255,255,0.05)';
-  ctx.lineWidth = 1;
-  for (let i = 0; i <= 7; i++) {
-    const y = padT + (i/7)*gh;
-    ctx.beginPath(); ctx.moveTo(padL, y); ctx.lineTo(padL+gw, y); ctx.stroke();
-  }
-
-  // Axes
-  ctx.strokeStyle = 'rgba(210,218,245,0.3)';
-  ctx.lineWidth = 1.5;
-  ctx.beginPath(); ctx.moveTo(padL, padT); ctx.lineTo(padL, padT+gh); ctx.lineTo(padL+gw, padT+gh); ctx.stroke();
-
-  // Y axis labels (pH)
-  ctx.fillStyle = 'rgba(210,218,245,0.45)';
-  ctx.font = '10px "JetBrains Mono",monospace';
-  ctx.textAlign = 'right';
-  for (let pH = 0; pH <= 14; pH += 2) {
-    const y = padT + gh - (pH/14)*gh;
-    ctx.fillText(pH, padL - 6, y + 4);
-  }
-  // X axis labels (volume)
-  ctx.textAlign = 'center';
-  [0,10,20,25,30,40,50,60].forEach(v2 => {
-    const x = padL + (v2/maxVol)*gw;
-    ctx.fillText(v2, x, padT + gh + 16);
-  });
-
-  // Axis titles
-  ctx.fillStyle = 'rgba(210,218,245,0.4)';
-  ctx.font = '11px "Cabinet Grotesk",sans-serif';
-  ctx.textAlign = 'center';
-  ctx.fillText('Volume NaOH added (mL)', padL + gw/2, H - 6);
-  ctx.save(); ctx.translate(12, padT + gh/2); ctx.rotate(-Math.PI/2);
-  ctx.fillText('pH', 0, 0); ctx.restore();
-
-  // Draw titration curve
-  const curveColor = acidType === 'strong' ? '#2dd4bf' : '#a78bfa';
-  ctx.strokeStyle = curveColor;
-  ctx.lineWidth = 2.5;
-  ctx.beginPath();
-  let first = true;
-  for (let v2 = 0; v2 <= 60; v2 += 0.3) {
-    let pH;
-    try { pH = calcPH(v2, acidType); } catch(e) { continue; }
-    if (pH < 0 || pH > 14 || isNaN(pH) || !isFinite(pH)) continue;
-    const x = padL + (v2/maxVol)*gw;
-    const y = padT + gh - (pH/14)*gh;
-    if (first) { ctx.moveTo(x, y); first = false; } else ctx.lineTo(x, y);
-  }
-  ctx.stroke();
-
-  // Equivalence point line (v=25)
-  const epX = padL + (25/maxVol)*gw;
-  ctx.strokeStyle = 'rgba(251,191,36,0.4)';
-  ctx.lineWidth = 1;
-  ctx.setLineDash([4,4]);
-  ctx.beginPath(); ctx.moveTo(epX, padT); ctx.lineTo(epX, padT+gh); ctx.stroke();
-  ctx.setLineDash([]);
-  ctx.fillStyle = '#fbbf24';
-  ctx.font = '9px "JetBrains Mono",monospace';
-  ctx.textAlign = 'center';
-  ctx.fillText('EP', epX, padT + 12);
-
-  // Half-equivalence for weak acid
-  if (acidType === 'weak') {
-    const hepX = padL + (12.5/maxVol)*gw;
-    const hepPH = 4.74;
-    const hepY = padT + gh - (hepPH/14)*gh;
-    ctx.strokeStyle = 'rgba(167,139,250,0.4)';
-    ctx.lineWidth = 1;
-    ctx.setLineDash([3,4]);
-    ctx.beginPath(); ctx.moveTo(hepX, padT); ctx.lineTo(hepX, padT+gh); ctx.stroke();
-    ctx.setLineDash([]);
-    ctx.fillStyle = '#a78bfa';
-    ctx.font = '9px "JetBrains Mono",monospace';
-    ctx.textAlign = 'center';
-    ctx.fillText('½EP pH=pKa', hepX, padT + 24);
-    // Mark point
-    ctx.beginPath(); ctx.arc(hepX, hepY, 5, 0, Math.PI*2);
-    ctx.fillStyle = '#a78bfa'; ctx.fill();
-  }
-
-  // Current position dot
-  let curPH;
-  try { curPH = calcPH(vol, acidType); } catch(e) { curPH = null; }
-  if (curPH !== null && curPH >= 0 && curPH <= 14) {
-    const curX = padL + (vol/maxVol)*gw;
-    const curY = padT + gh - (curPH/14)*gh;
-    ctx.beginPath(); ctx.arc(curX, curY, 7, 0, Math.PI*2);
-    ctx.fillStyle = '#f87171'; ctx.fill();
-    ctx.strokeStyle = '#fff'; ctx.lineWidth = 1.5; ctx.stroke();
-
-    // pH + H lines
-    ctx.strokeStyle = 'rgba(248,113,113,0.3)';
-    ctx.lineWidth = 1;
-    ctx.setLineDash([3,4]);
-    ctx.beginPath(); ctx.moveTo(curX, curY); ctx.lineTo(padL, curY); ctx.stroke();
-    ctx.beginPath(); ctx.moveTo(curX, curY); ctx.lineTo(curX, padT+gh); ctx.stroke();
-    ctx.setLineDash([]);
-
-    document.getElementById('roPH').textContent = curPH.toFixed(2);
-    document.getElementById('roVol').textContent = vol.toFixed(1) + ' mL';
-    const stage = vol < 25 ? 'Before EP' : vol > 25 ? 'After EP' : 'At EP';
-    document.getElementById('roStage').textContent = stage;
-  }
-}
+function calcPH(){} function redrawCurve(){} function sliderChange(){} // the simulation is assets/explore/titration.js
 
 // ─── Practice Questions ───────────────────────────────────────────────────────
 const NSC_QUESTIONS = [

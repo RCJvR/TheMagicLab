@@ -304,11 +304,11 @@
 
 <!-- EXPLORE TAB -->
 <div class="tab-panel" id="tab-explore">
-  <div class="ml-predict" style="margin:0 0 16px;padding:10px 14px;border-radius:10px;background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.22);font-size:13px;line-height:1.6;color:rgba(226,232,240,.88)"><strong style="color:#fde68a">Voorspel eers:</strong> Kan baie helder lig onder die drempelfrekwensie elektrone vrystel? <strong style="color:#fde68a">Toets dit dan:</strong> Probeer 'n frekwensie onder die metaal se drempel en dan daarbo, en vergelyk.</div>
+  <div class="ml-predict" style="margin:0 0 16px;padding:12px 16px;border-radius:10px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.075);border-left:2px solid #74d154;font-size:15px;line-height:1.6;color:#e3e8ef"><strong style="color:#f2f5f9">Voorspel eers:</strong> Kan baie helder lig onder die drempelfrekwensie elektrone vrystel? <strong style="color:#f2f5f9">Toets dit dan:</strong> Probeer 'n frekwensie onder die metaal se drempel en dan daarbo, en vergelyk.</div>
   <div class="sim-outer">
     <div class="sim-canvas-wrap">
       <h3>Fotoelektriese Effek-simulator</h3>
-      <canvas id="peCanvas" height="320" role="img" aria-label="Fotoelektriese Effek-simulator: interaktiewe simulasie"></canvas>
+      <canvas id="peCanvas" height="320" role="img" aria-label="Fotoelektriese Effek-simulator"></canvas>
     </div>
     <div class="sim-controls-row">
       <div class="ctrl-card">
@@ -624,9 +624,9 @@
     ctx.fillRect(metalX,0,W-metalX,H);
     ctx.strokeStyle='rgba(148,163,184,0.4)';ctx.lineWidth=2;
     ctx.beginPath();ctx.moveTo(metalX,0);ctx.lineTo(metalX,H);ctx.stroke();
-    ctx.fillStyle='rgba(148,163,184,0.3)';ctx.font='bold 11px JetBrains Mono';ctx.textAlign='left';
+    ctx.fillStyle='rgba(148,163,184,0.3)';ctx.font='bold 12px JetBrains Mono';ctx.textAlign='left';
     ctx.fillText('METAAL',metalX+8,20);
-    ctx.fillStyle='rgba(148,163,184,0.5)';ctx.font='9px JetBrains Mono';
+    ctx.fillStyle='rgba(148,163,184,0.5)';ctx.font='12px JetBrains Mono';
     ctx.fillText('W₀='+(W0val/10).toFixed(1)+'×10⁻¹⁹J',metalX+8,34);
 
     // Photon beam (animated pulses)
@@ -645,7 +645,7 @@
     }
 
     // Photon label
-    ctx.fillStyle=photonColor;ctx.font='bold 9px JetBrains Mono';ctx.textAlign='center';
+    ctx.fillStyle=photonColor;ctx.font='bold 12px JetBrains Mono';ctx.textAlign='center';
     ctx.fillText('foton (f='+fval+'×10¹⁴Hz)',metalX/2,H/2-20);
     ctx.fillStyle='rgba(255,255,255,0.3)';
     ctx.fillText('E=hf='+(h*f*1e19).toFixed(2)+'×10⁻¹⁹J',metalX/2,H/2+20);
@@ -660,7 +660,7 @@
       // e− label
       if(e.life>0.5){
         ctx.fillStyle=`rgba(255,255,255,${e.life*0.6})`;
-        ctx.font='7px JetBrains Mono';ctx.textAlign='center';
+        ctx.font='12px JetBrains Mono';ctx.textAlign='center';
         ctx.fillText('e⁻',ex,ey-6);
       }
     });
@@ -677,7 +677,7 @@
     ctx.fillRect(bx,bBot-W0J*scale,bW,W0J*scale);
     ctx.strokeStyle='rgba(251,191,36,0.7)';ctx.lineWidth=1.5;
     ctx.strokeRect(bx,bBot-W0J*scale,bW,W0J*scale);
-    ctx.fillStyle='rgba(251,191,36,0.8)';ctx.font='8px JetBrains Mono';ctx.textAlign='center';
+    ctx.fillStyle='rgba(251,191,36,0.8)';ctx.font='12px JetBrains Mono';ctx.textAlign='center';
     ctx.fillText('W₀',bx+bW/2,bBot-W0J*scale-4);
 
     // Eph bar
@@ -685,7 +685,7 @@
     ctx.fillRect(bx+bW+12,bBot-EphJ*scale,bW,EphJ*scale);
     ctx.strokeStyle=photonColor;ctx.lineWidth=1.5;
     ctx.strokeRect(bx+bW+12,bBot-EphJ*scale,bW,EphJ*scale);
-    ctx.fillStyle=photonColor;ctx.font='8px JetBrains Mono';ctx.textAlign='center';
+    ctx.fillStyle=photonColor;ctx.font='12px JetBrains Mono';ctx.textAlign='center';
     ctx.fillText('hf',bx+bW+12+bW/2,bBot-EphJ*scale-4);
 
     // Ek bracket if ejected
@@ -696,14 +696,14 @@
       ctx.beginPath();ctx.moveTo(brx,y1);ctx.lineTo(brx+6,y1);
       ctx.moveTo(brx+6,y1);ctx.lineTo(brx+6,y2);
       ctx.moveTo(brx+6,y2);ctx.lineTo(brx,y2);ctx.stroke();
-      ctx.fillStyle='rgba(134,239,172,0.8)';ctx.font='7px JetBrains Mono';ctx.textAlign='left';
+      ctx.fillStyle='rgba(134,239,172,0.8)';ctx.font='12px JetBrains Mono';ctx.textAlign='left';
       ctx.fillText('Ek',brx+9,(y1+y2)/2+2);
     }
 
     // Baseline
     ctx.strokeStyle='rgba(255,255,255,0.1)';ctx.lineWidth=1;
     ctx.beginPath();ctx.moveTo(bx-5,bBot);ctx.lineTo(bx+bW*2+25,bBot);ctx.stroke();
-    ctx.fillStyle='rgba(255,255,255,0.2)';ctx.font='8px JetBrains Mono';ctx.textAlign='left';
+    ctx.fillStyle='rgba(255,255,255,0.2)';ctx.font='12px JetBrains Mono';ctx.textAlign='left';
     ctx.fillText('Energie',bx-5,bBot+12);
   }
 

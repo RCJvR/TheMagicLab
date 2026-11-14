@@ -277,13 +277,13 @@
 
 <!-- EXPLORE -->
 <div class="tab-panel" id="tab-explore">
-  <h2 style="font-size:18px;font-weight:800;color:#fff;margin-bottom:6px">Populasiegroei-simulator</h2>
-  <p style="font-size:13px;color:var(--muted);margin-bottom:20px">Pas die groeitempo en drakrag aan, en druk dan Speel om te sien hoe die populasie langs 'n logistiese (S-vormige) kromme groei.</p>
-  <div class="ml-predict" style="margin:0 0 16px;padding:10px 14px;border-radius:10px;background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.22);font-size:13px;line-height:1.6;color:rgba(226,232,240,.88)"><strong style="color:#fde68a">Voorspel eers:</strong> Hoe sal die bevolkingskurwe lyk wanneer dit naby die drakrag kom? <strong style="color:#fde68a">Toets dit dan:</strong> Druk Speel en herhaal dan met 'n laer drakrag.</div>
+  <h2 style="font-size:20px;font-weight:800;color:#f2f5f9;margin-bottom:6px">Populasiegroei-simulator</h2>
+  <p style="font-size:15px;line-height:1.6;color:rgba(226,232,240,.72);margin-bottom:16px;max-width:68ch">Pas die groeitempo en drakrag aan, en druk dan Speel om te sien hoe die populasie langs 'n logistiese (S-vormige) kromme groei.</p>
+  <div class="ml-predict" style="margin:0 0 16px;padding:12px 16px;border-radius:10px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.075);border-left:2px solid #74d154;font-size:15px;line-height:1.6;color:#e3e8ef"><strong style="color:#f2f5f9">Voorspel eers:</strong> Hoe sal die bevolkingskurwe lyk wanneer dit naby die drakrag kom? <strong style="color:#f2f5f9">Toets dit dan:</strong> Druk Speel en herhaal dan met 'n laer drakrag.</div>
   <div class="sim-outer">
     <div class="sim-canvas-wrap">
       <h3>Populasiegrootte oor tyd</h3>
-      <canvas id="popCanvas" height="280" role="img" aria-label="Populasiegroei-simulator: interaktiewe simulasie"></canvas>
+      <canvas id="popCanvas" height="280" role="img" aria-label="Populasiegroei-simulator. Pas die groeitempo en drakrag aan, en druk dan Speel om te sien hoe die populasie langs &#x27;n logistiese (S-vormige) kromme groei."></canvas>
     </div>
     <div class="sim-controls-row">
       <div class="ctrl-card">
@@ -296,8 +296,8 @@
       </div>
     </div>
     <div class="playbar">
-      <button class="play-btn" id="playBtn" onclick="togglePlay()">▶ Speel</button>
-      <button class="play-btn" style="background:linear-gradient(135deg,#64748b,#334155)" onclick="resetSim()">↺ Herstel</button>
+      <button class="play-btn" id="playBtn" onclick="togglePlay()">Speel</button>
+      <button class="play-btn" style="background:linear-gradient(135deg,#64748b,#334155)" onclick="resetSim()">Herstel</button>
       <div class="phase-readout">Fase: <span class="n" id="phaseLabel">Vertraging</span> · Populasie: <span class="n" id="popLabel">10</span></div>
     </div>
   </div>
@@ -384,12 +384,12 @@ document.getElementById('capSlider').addEventListener('input', e=>{
 });
 function togglePlay(){
   playing = !playing;
-  document.getElementById('playBtn').textContent = playing ? '⏸ Pouseer' : '▶ Speel';
+  document.getElementById('playBtn').textContent = playing ? 'Pouseer' : 'Speel';
 }
 function resetSim(){
   pop = 10; t = 0; history = [pop];
   playing = false;
-  document.getElementById('playBtn').textContent = '▶ Speel';
+  document.getElementById('playBtn').textContent = 'Speel';
   updateReadout();
 }
 

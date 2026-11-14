@@ -259,13 +259,13 @@
 
 <!-- EXPLORE -->
 <div class="tab-panel" id="tab-explore">
-  <h2 style="font-size:18px;font-weight:800;color:#fff;margin-bottom:6px">Ensiemwerking-laboratorium</h2>
-  <p style="font-size:13px;color:var(--muted);margin-bottom:20px">Verstel temperatuur en pH en kyk hoe dit hierdie ensiem se vorm en reaksietempo beïnvloed. Vind die optimum toestande waar die ensiem vinnigste werk.</p>
-  <div class="ml-predict" style="margin:0 0 16px;padding:10px 14px;border-radius:10px;background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.22);font-size:13px;line-height:1.6;color:rgba(226,232,240,.88)"><strong style="color:#fde68a">Voorspel eers:</strong> By watter temperatuur werk hierdie menslike ensiem die vinnigste? Wat gebeur ver bo daardie temperatuur? <strong style="color:#fde68a">Toets dit dan:</strong> Verhoog die temperatuur verby die optimum en kyk na die ensiem se vorm en tempo; verander dan die pH.</div>
+  <h2 style="font-size:20px;font-weight:800;color:#f2f5f9;margin-bottom:6px">Ensiemwerking-laboratorium</h2>
+  <p style="font-size:15px;line-height:1.6;color:rgba(226,232,240,.72);margin-bottom:16px;max-width:68ch">Verstel temperatuur en pH en kyk hoe dit hierdie ensiem se vorm en reaksietempo beïnvloed. Vind die optimum toestande waar die ensiem vinnigste werk.</p>
+  <div class="ml-predict" style="margin:0 0 16px;padding:12px 16px;border-radius:10px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.075);border-left:2px solid #74d154;font-size:15px;line-height:1.6;color:#e3e8ef"><strong style="color:#f2f5f9">Voorspel eers:</strong> By watter temperatuur werk hierdie menslike ensiem die vinnigste? Wat gebeur ver bo daardie temperatuur? <strong style="color:#f2f5f9">Toets dit dan:</strong> Verhoog die temperatuur verby die optimum en kyk na die ensiem se vorm en tempo; verander dan die pH.</div>
   <div class="sim-outer">
     <div class="sim-canvas-wrap">
       <h3>Slot-en-sleutel-model</h3>
-      <canvas id="enzCanvas" height="280" role="img" aria-label="Ensiemwerking-laboratorium: interaktiewe simulasie"></canvas>
+      <canvas id="enzCanvas" height="280" role="img" aria-label="Ensiemwerking-laboratorium. Verstel temperatuur en pH en kyk hoe dit hierdie ensiem se vorm en reaksietempo beïnvloed. Vind die optimum toestande waar die ensiem vinnigste werk."></canvas>
     </div>
     <div class="sim-controls-row">
       <div class="ctrl-card">
@@ -277,6 +277,7 @@
         <input aria-labelledby="lbl-phSlider" type="range" id="phSlider" min="0" max="140" value="70">
       </div>
     </div>
+    <div style="margin:12px 0"><button type="button" id="enzReset" class="mode-btn" style="min-height:40px;padding:8px 16px;border-radius:8px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.04);color:inherit;font:600 14px/1.2 inherit;cursor:pointer">Gebruik 'n vars ensiem</button></div>
     <div class="rate-readout">
       <div class="rate-num" id="rateNum">100%</div>
       <div class="rate-bar-wrap">
@@ -346,6 +347,7 @@ const ctx = canvas.getContext('2d');
 let W, H;
 let t = 0;
 let temp = 37, ph = 7.0;
+let heatDenatured = false; // once heated past ~50 °C the enzyme stays denatured (permanent)
 
 function resizeCanvas(){
   W = canvas.offsetWidth || 600;
@@ -356,18 +358,21 @@ function resizeCanvas(){
 }
 
 function tempFactor(T){
+  // Below the optimum the rate roughly doubles for every 10 °C rise (it is slow, not zero, at 0 °C);
+  // above 37 °C the enzyme starts to denature and the rate falls steeply.
   const opt = 37;
-  if (T <= opt) return Math.max(0, T/opt);
-  return Math.exp(-Math.pow((T-opt)/12, 2));
+  if (T <= opt) return Math.pow(2, (T - opt) / 10);
+  return Math.exp(-Math.pow((T-opt)/7, 2));
 }
 function phFactor(pH){
   return Math.exp(-Math.pow((pH-7)/2.2, 2));
 }
 function computeRate(){
+  if (isDenatured()) return 0;
   return Math.max(0, Math.min(1, tempFactor(temp) * phFactor(ph)));
 }
 function isDenatured(){
-  return temp > 52 || ph < 3 || ph > 11;
+  return heatDenatured || ph < 3 || ph > 11;
 }
 
 function updateReadout(){
@@ -379,7 +384,9 @@ function updateReadout(){
   bar.style.width = pct+'%';
   bar.style.background = pct>=70?'#22c55e':pct>=35?'#fbbf24':'#ef4444';
   let status;
-  if (isDenatured()) status = "Gedenatureer! Die ensiem se aktiewe setel het van vorm verander en pas nie meer by die substraat nie — die reaksie het gestop.";
+  if (heatDenatured && temp <= 50) status = "Steeds gedenatureer: denaturering deur hitte is permanent, dus herstel afkoeling nie die aktiewe setel nie. Gebruik 'n vars ensiem om weer te probeer.";
+  else if (!heatDenatured && isDenatured()) status = "Gedenatureer deur die uiterste pH: die aktiewe setel het van vorm verander. (Sommige ensieme herstel as die pH normaal word, maar hitteskade is permanent.)";
+  else if (isDenatured()) status = "Gedenatureer! Die ensiem se aktiewe setel het van vorm verander en pas nie meer by die substraat nie — die reaksie het gestop.";
   else if (pct >= 85) status = "Optimale toestande — die ensiem se aktiewe setel pas perfek by die substraat.";
   else if (temp < 20) status = "Te koud — molekules beweeg stadig, sodat botsings tussen ensiem en substraat skaars is.";
   else if (pct < 40) status = "Toestande beweeg weg van die optimum — die ensiem werk, maar stadig.";
@@ -458,7 +465,14 @@ function drawScene(){
 
 document.getElementById('tempSlider').addEventListener('input', e=>{
   temp = parseInt(e.target.value);
+  if (temp > 50) heatDenatured = true;
   document.getElementById('tempVal').textContent = temp+'°C';
+  updateReadout();
+});
+document.getElementById('enzReset').addEventListener('click', ()=>{
+  heatDenatured = false; temp = 37; ph = 7.0;
+  document.getElementById('tempSlider').value = 37; document.getElementById('phSlider').value = 70;
+  document.getElementById('tempVal').textContent = '37°C'; document.getElementById('phVal').textContent = '7.0';
   updateReadout();
 });
 document.getElementById('phSlider').addEventListener('input', e=>{

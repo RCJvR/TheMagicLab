@@ -272,11 +272,11 @@ canvas{display:block;border-radius:10px;background:#040710;width:100%}
 
 <!-- EXPLORE TAB -->
 <div id="tab-explore" class="tab-panel">
-  <div class="ml-predict" style="margin:0 0 16px;padding:10px 14px;border-radius:10px;background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.22);font-size:13px;line-height:1.6;color:rgba(226,232,240,.88)"><strong style="color:#fde68a">Predict first:</strong> What is the name of a three-carbon chain with an –OH group on the end carbon? <strong style="color:#fde68a">Then test it:</strong> Build it and check the IUPAC name.</div>
+  <div class="ml-predict" style="margin:0 0 16px;padding:12px 16px;border-radius:10px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.075);border-left:2px solid #74d154;font-size:15px;line-height:1.6;color:#e3e8ef"><strong style="color:#f2f5f9">Predict first:</strong> What is the name of a three-carbon chain with an –OH group on the end carbon? <strong style="color:#f2f5f9">Then test it:</strong> Build it and check the IUPAC name.</div>
   <div class="sim-outer">
     <div class="sim-canvas-wrap">
       <h3>Molecule Builder &mdash; Draw Structural Formulae</h3>
-      <canvas id="molCanvas" height="360" role="img" aria-label="Molecule Builder — Draw Structural Formulae: interactive simulation"></canvas>
+      <canvas id="molCanvas" height="360" role="img" aria-label="Molecule Builder — Draw Structural Formulae"></canvas>
     </div>
     <div class="sim-controls-row">
       <div class="ctrl-card">
@@ -430,33 +430,38 @@ function drawMolecule() {
   // Compute name & formula
   let name = '', formula = '', series = '';
   const carbons = fg === 'carboxylic' ? n : n;
+  // Formula with proper subscripts; a count of 1 is not written (CH₄, HCOOH)
+  const SUB = '₀₁₂₃₄₅₆₇₈₉';
+  const el = (sym, k) => k <= 0 ? '' : sym + (k === 1 ? '' : String(k).replace(/\d/g, d => SUB[d]));
   if (fg === 'alkane') {
     name = stemNames[n] + 'ane';
-    formula = 'C' + n + 'H' + (2*n+2);
+    formula = el('C', n) + el('H', 2*n+2);
     series = 'Alkane';
   } else if (fg === 'alkene') {
-    name = n >= 3 ? stemNames[n] + '-1-ene' : stemNames[n] + 'ene';
-    formula = 'C' + n + 'H' + (2*n);
+    name = n < 2 ? 'No alkene has 1 carbon atom (a C=C needs 2)' : (n >= 4 ? stemNames[n] + '-1-ene' : stemNames[n] + 'ene');
+    formula = n < 2 ? '—' : el('C', n) + el('H', 2*n);
     series = 'Alkene';
   } else if (fg === 'alcohol') {
-    name = stemNames[n] + 'an-1-ol';
-    formula = 'C' + n + 'H' + (2*n+1) + 'OH';
+    name = n >= 3 ? stemNames[n] + 'an-1-ol' : stemNames[n] + 'anol';
+    formula = el('C', n) + el('H', 2*n+1) + 'OH';
     series = 'Alcohol';
   } else if (fg === 'carboxylic') {
     name = stemNames[n] + 'anoic acid';
-    formula = 'C' + n + 'H' + (2*n-1) + 'COOH';
+    formula = (n === 1 ? 'H' : el('C', n-1) + el('H', 2*n-1)) + 'COOH';
     series = 'Carboxylic Acid';
   } else if (fg === 'halo') {
-    name = '1-chloro' + stemNames[n] + 'ane';
-    formula = 'C' + n + 'H' + (2*n+1) + 'Cl';
+    name = (n >= 3 ? '1-' : '') + 'chloro' + stemNames[n] + 'ane';
+    formula = el('C', n) + el('H', 2*n+1) + 'Cl';
     series = 'Halogenoalkane';
   } else if (fg === 'aldehyde') {
     name = stemNames[n] + 'anal';
-    formula = 'C' + n + 'H' + (2*n) + 'O';
+    formula = el('C', n) + el('H', 2*n) + 'O';
     series = 'Aldehyde';
   } else if (fg === 'ketone') {
-    name = n >= 3 ? stemNames[n] + 'an-' + Math.floor(n/2) + '-one' : stemNames[n] + 'one';
-    formula = 'C' + n + 'H' + (2*n) + 'O';
+    // The C=O is drawn on carbon floor((n-1)/2)+1; number from the end that gives it the lower locant
+    const p = Math.floor((n-1)/2) + 1, loc = Math.min(p, n + 1 - p);
+    name = n < 3 ? 'No ketone has fewer than 3 carbon atoms' : stemNames[n] + 'an-' + loc + '-one';
+    formula = n < 3 ? '—' : el('C', n) + el('H', 2*n) + 'O';
     series = 'Ketone';
   }
   document.getElementById('iupacName').textContent = name || '--';

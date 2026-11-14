@@ -294,11 +294,11 @@
 
 <!-- EXPLORE TAB -->
 <div class="tab-panel" id="tab-explore">
-  <div class="ml-predict" style="margin:0 0 16px;padding:10px 14px;border-radius:10px;background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.22);font-size:13px;line-height:1.6;color:rgba(226,232,240,.88)"><strong style="color:#fde68a">Voorspel eers:</strong> Bly momentum in 'n volkome onelastiese botsing behoue? En kinetiese energie? <strong style="color:#fde68a">Toets dit dan:</strong> Laat elastiese en volkome onelastiese botsings met dieselfde waardes loop en vergelyk.</div>
+  <div class="ml-predict" style="margin:0 0 16px;padding:12px 16px;border-radius:10px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.075);border-left:2px solid #74d154;font-size:15px;line-height:1.6;color:#e3e8ef"><strong style="color:#f2f5f9">Voorspel eers:</strong> Bly momentum in 'n volkome onelastiese botsing behoue? En kinetiese energie? <strong style="color:#f2f5f9">Toets dit dan:</strong> Laat elastiese en volkome onelastiese botsings met dieselfde waardes loop en vergelyk.</div>
   <div class="sim-outer">
     <div class="sim-canvas-wrap">
       <h3>Botsingsimulator</h3>
-      <canvas id="colCanvas" height="300" role="img" aria-label="Botsingsimulator: interaktiewe simulasie"></canvas>
+      <canvas id="colCanvas" height="300" role="img" aria-label="Botsingsimulator"></canvas>
     </div>
     <div class="sim-controls-row">
       <div class="ctrl-card">
@@ -311,7 +311,7 @@
         </div>
         <div style="margin-top:12px;display:flex;gap:8px">
           <button class="mode-btn active" onclick="resetSim()" style="background:rgba(96,165,250,.12);border-color:rgba(96,165,250,.30);color:#93c5fd">Herstel</button>
-          <button class="mode-btn" id="playBtn" onclick="playSim()">▶ Speel</button>
+          <button class="mode-btn" id="playBtn" onclick="playSim()">Speel</button>
         </div>
       </div>
       <div class="ctrl-card">
@@ -557,7 +557,7 @@
   function resetSim(){
     if(raf){cancelAnimationFrame(raf);raf=null;}
     running=false;collided=false;lastT=null;
-    document.getElementById('playBtn').textContent='▶ Speel';
+    document.getElementById('playBtn').textContent='Speel';
     const m1=+document.getElementById('sl-m1').value,v1i=+document.getElementById('sl-v1').value;
     const m2=+document.getElementById('sl-m2').value,v2i=+document.getElementById('sl-v2').value;
     document.getElementById('sv-m1').textContent=m1+' kg';
@@ -580,8 +580,8 @@
   }
 
   function playSim(){
-    if(running){cancelAnimationFrame(raf);running=false;document.getElementById('playBtn').textContent='▶ Speel';return;}
-    running=true;lastT=null;document.getElementById('playBtn').textContent='⏸ Pouseer';
+    if(running){cancelAnimationFrame(raf);running=false;document.getElementById('playBtn').textContent='Speel';return;}
+    running=true;lastT=null;document.getElementById('playBtn').textContent='Pouseer';
     raf=requestAnimationFrame(simStep);
   }
 
@@ -593,8 +593,9 @@
     b1.x+=b1.v*scale*dt;
     b2.x+=b2.v*scale*dt;
 
-    const r=20;
-    if(!collided&&b1.x+r>=b2.x-r){
+    // Collide when the drawn blocks touch (their drawn radius is 14 + 2m)
+    const r1=14+2*b1.m, r2=14+2*b2.m;
+    if(!collided&&b1.x+r1>=b2.x-r2){
       collided=true;
       doCollision();
     }
@@ -656,7 +657,7 @@
     ctx.beginPath();ctx.moveTo(0,H-50);ctx.lineTo(W,H-50);ctx.stroke();
 
     // Positive direction arrow
-    ctx.fillStyle='rgba(255,255,255,0.2)';ctx.font='10px JetBrains Mono';ctx.textAlign='left';
+    ctx.fillStyle='rgba(255,255,255,0.2)';ctx.font='12px JetBrains Mono';ctx.textAlign='left';
     ctx.fillText('+ →',8,16);
 
     const r1=14+b1.m*2,r2=14+b2.m*2;
@@ -665,7 +666,7 @@
     // Block 1
     ctx.fillStyle='rgba(96,165,250,0.3)';ctx.strokeStyle='#60a5fa';ctx.lineWidth=2;
     ctx.beginPath();ctx.roundRect(b1.x-r1,by-r1*2,r1*2,r1*2,6);ctx.fill();ctx.stroke();
-    ctx.fillStyle='#fff';ctx.font='bold 11px Cabinet Grotesk';ctx.textAlign='center';
+    ctx.fillStyle='#fff';ctx.font='bold 12px Cabinet Grotesk';ctx.textAlign='center';
     ctx.fillText(b1.m+'kg',b1.x,by-r1);
 
     // Velocity arrow for block 1
@@ -677,7 +678,7 @@
     // Block 2
     ctx.fillStyle='rgba(248,113,113,0.3)';ctx.strokeStyle='#f87171';ctx.lineWidth=2;
     ctx.beginPath();ctx.roundRect(b2.x-r2,by-r2*2,r2*2,r2*2,6);ctx.fill();ctx.stroke();
-    ctx.fillStyle='#fff';ctx.font='bold 11px Cabinet Grotesk';ctx.textAlign='center';
+    ctx.fillStyle='#fff';ctx.font='bold 12px Cabinet Grotesk';ctx.textAlign='center';
     ctx.fillText(b2.m+'kg',b2.x,by-r2);
 
     if(Math.abs(b2.v)>0.05){
@@ -686,7 +687,7 @@
     }
 
     // Velocity labels
-    ctx.fillStyle='rgba(255,255,255,0.45)';ctx.font='10px JetBrains Mono';ctx.textAlign='center';
+    ctx.fillStyle='rgba(255,255,255,0.45)';ctx.font='12px JetBrains Mono';ctx.textAlign='center';
     ctx.fillText((b1.v>=0?'+':'')+b1.v.toFixed(1)+' m/s',b1.x,by-r1*2-20);
     ctx.fillText((b2.v>=0?'+':'')+b2.v.toFixed(1)+' m/s',b2.x,by-r2*2-20);
   }

@@ -236,9 +236,9 @@
 
 <!-- EXPLORE -->
 <div class="tab-panel" id="tab-explore">
-  <h2 style="font-size:18px;font-weight:800;color:#fff;margin-bottom:6px">Interaktiewe Punnett-vierkant-generator</h2>
-  <p style="font-size:13px;color:var(--muted);margin-bottom:20px">Kies ouer-genotipes en 'n eienskap. Die Punnett-vierkant word onmiddellik opgedateer en wys al die moontlike nakomeling-kombinasies met genotipe- en fenotipeverhoudings.</p>
-  <div class="ml-predict" style="margin:0 0 16px;padding:10px 14px;border-radius:10px;background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.22);font-size:13px;line-height:1.6;color:rgba(226,232,240,.88)"><strong style="color:#fde68a">Voorspel eers:</strong> Twee ouers is albei heterosigoties vir 'n eienskap. Kan hulle 'n kind met die resessiewe eienskap hê? Watter breukdeel? <strong style="color:#fde68a">Toets dit dan:</strong> Stel albei ouers as heterosigoties en lees die verhoudings af.</div>
+  <h2 style="font-size:20px;font-weight:800;color:#f2f5f9;margin-bottom:6px">Interaktiewe Punnett-vierkant-generator</h2>
+  <p style="font-size:15px;line-height:1.6;color:rgba(226,232,240,.72);margin-bottom:16px;max-width:68ch">Kies ouer-genotipes en 'n eienskap. Die Punnett-vierkant word onmiddellik opgedateer en wys al die moontlike nakomeling-kombinasies met genotipe- en fenotipeverhoudings.</p>
+  <div class="ml-predict" style="margin:0 0 16px;padding:12px 16px;border-radius:10px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.075);border-left:2px solid #74d154;font-size:15px;line-height:1.6;color:#e3e8ef"><strong style="color:#f2f5f9">Voorspel eers:</strong> Twee ouers is albei heterosigoties vir 'n eienskap. Kan hulle 'n kind met die resessiewe eienskap hê? Watter breukdeel? <strong style="color:#f2f5f9">Toets dit dan:</strong> Stel albei ouers as heterosigoties en lees die verhoudings af.</div>
   <div class="sim-outer">
     <div class="sim-controls-row">
       <div class="ctrl-card">
@@ -268,7 +268,7 @@
     </div>
     <div class="sim-canvas-wrap">
       <h3>Punnett-vierkant</h3>
-      <canvas id="punnettCanvas" height="320" role="img" aria-label="Interaktiewe Punnett-vierkant-generator: interaktiewe simulasie"></canvas>
+      <canvas id="punnettCanvas" height="320" role="img" aria-label="Interaktiewe Punnett-vierkant-generator. Kies ouer-genotipes en &#x27;n eienskap. Die Punnett-vierkant word onmiddellik opgedateer en wys al die moontlike nakomeling-kombinasies met genotipe- en fenotipeverhoudings."></canvas>
     </div>
     <div class="punnett-result" id="punnettResult"></div>
   </div>
@@ -335,8 +335,13 @@ function drawPunnett() {
   ctx.clearRect(0, 0, W, H);
 
   const trait = TRAITS[document.getElementById('traitSel').value];
-  const p1 = parseGeno(document.getElementById('p1Sel').value);
-  const p2 = parseGeno(document.getElementById('p2Sel').value);
+  // The selects store BB/Bb/bb; use the chosen trait's own letters (e.g. TT/Tt/tt) for the cross and the labels
+  const toTrait = g => g.replace(/B/g, trait.dom).replace(/b/g, trait.rec);
+  ['p1Sel', 'p2Sel'].forEach(id => [...document.getElementById(id).options].forEach(o => {
+    o.text = o.text.replace(/^[A-Za-z]{2}/, toTrait(o.value));
+  }));
+  const p1 = parseGeno(toTrait(document.getElementById('p1Sel').value));
+  const p2 = parseGeno(toTrait(document.getElementById('p2Sel').value));
 
   // Punnett square layout
   const cx = W / 2;
@@ -479,9 +484,12 @@ function drawPunnett() {
 
   // Result panel
   const genoEntries = Object.entries(genoCount).sort();
-  const genoStr = genoEntries.map(([g, n]) => `${n} ${g}`).join(' : ');
+  // Lowest whole-number ratio (e.g. 2 Bb : 2 bb → 1 Bb : 1 bb)
+  const gcdN = (a, b) => b ? gcdN(b, a % b) : a;
+  const gAll = genoEntries.reduce((acc, [, n]) => gcdN(acc, n), 0) || 1;
+  const genoStr = genoEntries.map(([g, n]) => `${n / gAll} ${g}`).join(' : ');
   const phenoStr = (domCount > 0 && recCount > 0)
-    ? `${domCount} ${trait.domName} : ${recCount} ${trait.recName}`
+    ? `${domCount / gcdN(domCount, recCount)} ${trait.domName} : ${recCount / gcdN(domCount, recCount)} ${trait.recName}`
     : (domCount === 4 ? `4 ${trait.domName} (100%)` : `4 ${trait.recName} (100%)`);
   const recProb = Math.round((recCount / 4) * 100);
   const domProb = 100 - recProb;

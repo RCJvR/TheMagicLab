@@ -311,11 +311,11 @@ select option{background:#1a1f35}
 
 <!-- ===== EXPLORE TAB ===== -->
 <div class="tab-panel" id="tab-explore">
-  <div class="ml-predict" style="margin:0 0 16px;padding:10px 14px;border-radius:10px;background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.22);font-size:13px;line-height:1.6;color:rgba(226,232,240,.88)"><strong style="color:#fde68a">Predict first:</strong> Pick two solutions. Before mixing, predict: will an insoluble product form, and which ions will stay in solution? <strong style="color:#fde68a">Then test it:</strong> Mix them and compare the beaker and the net ionic equation with your prediction.</div>
+  <div class="ml-predict" style="margin:0 0 16px;padding:12px 16px;border-radius:10px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.075);border-left:2px solid #74d154;font-size:15px;line-height:1.6;color:#e3e8ef"><strong style="color:#f2f5f9">Predict first:</strong> Pick two solutions. Before mixing, predict: will an insoluble product form, and which ions will stay in solution? <strong style="color:#f2f5f9">Then test it:</strong> Mix them and compare the beaker and the net ionic equation with your prediction.</div>
   <div class="sim-outer">
     <div class="sim-canvas-wrap">
       <h3 id="precTitle">Precipitation Reaction Simulator</h3>
-      <canvas id="precCanvas" height="300" role="img" aria-label="Precipitation Reaction Simulator: interactive simulation"></canvas>
+      <canvas id="precCanvas" height="300" role="img" aria-label="Precipitation Reaction Simulator. Pick two aqueous solutions to mix. Watch the ions disperse in the beaker — if an insoluble combination forms, a precipitate settles out and the net ionic equation is shown below. If not, the ions simply stay mixed in solution."></canvas>
     </div>
     <div class="sim-controls-row">
       <div class="ctrl-card">
@@ -690,15 +690,19 @@ function updatePrec(){
 
   let precipitate = null;
   let precipitatePair = null;
-  if(precipitateTable[pair1]){ precipitate = precipitateTable[pair1]; precipitatePair = [dataA.cation, dataB.anion]; }
-  else if(precipitateTable[pair2]){ precipitate = precipitateTable[pair2]; precipitatePair = [dataB.cation, dataA.anion]; }
+  if(precipitateTable[pair1]){ precipitate = precipitateTable[pair1]; precipitatePair = [dataA.cation, dataB.anion, dataA.cCharge, dataB.aCharge]; }
+  else if(precipitateTable[pair2]){ precipitate = precipitateTable[pair2]; precipitatePair = [dataB.cation, dataA.anion, dataB.cCharge, dataA.aCharge]; }
 
   let resultText, precipText, eqText;
   if(precipitate){
     resultText = 'Precipitate forms!';
     precipText = precipitate.formula + ' (' + precipitate.colour + ')';
     const catCharge = precipitatePair[0].includes('²') ? '²⁺' : (precipitatePair[0].includes('Ag')||precipitatePair[0].includes('K')||precipitatePair[0].includes('Na') ? '⁺' : '');
-    eqText = precipitatePair[0] + '(aq) + ' + precipitatePair[1] + '(aq) → ' + precipitate.formula + '(s)';
+    // Balance the net ionic equation from the ion charges (e.g. Pb²⁺ + 2I⁻ → PbI₂)
+    const qc = Math.abs(precipitatePair[2]), qa = Math.abs(precipitatePair[3]);
+    const gcd = (a, b) => b ? gcd(b, a % b) : a;
+    const g = gcd(qc, qa), nC = qa / g, nA = qc / g;
+    eqText = (nC > 1 ? nC : '') + precipitatePair[0] + '(aq) + ' + (nA > 1 ? nA : '') + precipitatePair[1] + '(aq) → ' + precipitate.formula + '(s)';
   } else {
     resultText = 'No visible reaction';
     precipText = 'None — all ions remain in solution';

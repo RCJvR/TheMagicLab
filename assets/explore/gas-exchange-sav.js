@@ -66,8 +66,10 @@ MLX.ready(function () {
     return { en: `At ${fmtMm(m.s)} the volume has outgrown the surface: O₂ would take ${fmtT(m.time)} to reach the centre, so the inner cells are starved.`, af: `By ${fmtMm(m.s)} het die volume die oppervlak ontgroei: O₂ sou ${fmtT(m.time)} neem om die middel te bereik, so die binneste selle kry te min.` };
   }
 
-  function o2col(c) {               // blue (plenty) → red (none)
-    return `rgb(${Math.round(239 - 180 * c)},${Math.round(68 + 62 * c)},${Math.round(68 + 178 * c)})`;
+  // Oxygen in the tissue: one neutral-to-green ramp (dark = none, green = plenty).
+  // Red/blue is avoided because textbooks reserve it for oxygenated/deoxygenated blood.
+  function o2col(c) {
+    return `rgb(${Math.round(34 + 40 * c)},${Math.round(38 + 169 * c)},${Math.round(46 + 61 * c)})`;
   }
   function draw(ctx, W, H) {
     const m = model();

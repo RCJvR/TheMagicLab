@@ -91,7 +91,7 @@ MLX.ready(function () {
       ctx.beginPath(); ctx.moveTo(pts[0][0], pts[0][1]);
       for (let k = 1; k < pts.length; k++) { const [x0, y0] = pts[k - 1], [x1, y1] = pts[k]; ctx.quadraticCurveTo((x0 + x1) / 2, Math.max(y0, y1) + 16, x1, y1); }
     }
-    if (hot > 0.05) { ctx.save(); ctx.shadowColor = 'rgba(248,113,113,' + (0.8 * hot) + ')'; ctx.shadowBlur = 18 * hot; ctx.strokeStyle = lineCol; ctx.lineWidth = 2 + 3 * hot; linePath(); ctx.stroke(); ctx.restore(); }
+    if (hot > 0.05) { ctx.save(); ctx.shadowColor = 'rgba(248,113,113,' + (0.8 * hot) + ')'; ctx.shadowBlur = 0; ctx.strokeStyle = lineCol; ctx.lineWidth = 2 + 3 * hot; linePath(); ctx.stroke(); ctx.restore(); }
     ctx.strokeStyle = lineCol; ctx.lineWidth = 2 + 2 * hot; linePath(); ctx.stroke();
     // heat shimmer above the line
     if (hot > 0.1) {
@@ -120,7 +120,7 @@ MLX.ready(function () {
       ctx.fillStyle = '#1f2937'; ctx.fillRect(x - 9, y - 8, 18, 16);
       ctx.beginPath(); ctx.moveTo(x - 11, y - 8); ctx.lineTo(x, y - 17); ctx.lineTo(x + 11, y - 8); ctx.closePath(); ctx.fillStyle = '#374151'; ctx.fill();
       ctx.fillStyle = k < lit ? '#fde047' : '#0b1220';
-      if (k < lit) { ctx.shadowColor = '#fde047'; ctx.shadowBlur = 8; }
+      if (k < lit) { ctx.shadowColor = '#fde047'; ctx.shadowBlur = 0; }
       ctx.fillRect(x - 4, y - 4, 8, 7); ctx.shadowBlur = 0;
     }
     // labels with the voltage at each stage

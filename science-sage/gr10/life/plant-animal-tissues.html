@@ -207,13 +207,13 @@
 
 <!-- EXPLORE -->
 <div class="tab-panel" id="tab-explore">
-  <h2 style="font-size:18px;font-weight:800;color:#fff;margin-bottom:6px">Plant Tissue Explorer</h2>
-  <p style="font-size:13px;color:var(--muted);margin-bottom:20px">Click each tissue type to see a simplified cross-section and learn its function.</p>
-  <div class="ml-predict" style="margin:0 0 16px;padding:10px 14px;border-radius:10px;background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.22);font-size:13px;line-height:1.6;color:rgba(226,232,240,.88)"><strong style="color:#fde68a">Predict first:</strong> Which tissue carries water up a plant, and what should its cells look like to do that job? <strong style="color:#fde68a">Then test it:</strong> Click each tissue type and compare the shape of its cells with its function.</div>
+  <h2 style="font-size:20px;font-weight:800;color:#f2f5f9;margin-bottom:6px">Plant Tissue Explorer</h2>
+  <p style="font-size:15px;line-height:1.6;color:rgba(226,232,240,.72);margin-bottom:16px;max-width:68ch">Click each tissue type to see a simplified cross-section and learn its function.</p>
+  <div class="ml-predict" style="margin:0 0 16px;padding:12px 16px;border-radius:10px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.075);border-left:2px solid #74d154;font-size:15px;line-height:1.6;color:#e3e8ef"><strong style="color:#f2f5f9">Predict first:</strong> Which tissue carries water up a plant, and what should its cells look like to do that job? <strong style="color:#f2f5f9">Then test it:</strong> Click each tissue type and compare the shape of its cells with its function.</div>
   <div class="explore-layout">
     <div class="tissue-list" id="tissueList"></div>
     <div class="tissue-panel">
-      <div class="tissue-canvas-wrap"><canvas id="tissueCanvas" height="220" role="img" aria-label="Plant Tissue Explorer: interactive simulation"></canvas></div>
+      <div class="tissue-canvas-wrap"><canvas id="tissueCanvas" height="220" role="img" aria-label="Plant Tissue Explorer. Click each tissue type to see a simplified cross-section and learn its function."></canvas></div>
       <div class="tissue-name" id="tName">Meristematic tissue</div>
       <div class="tissue-loc" id="tLoc">ROOT &amp; SHOOT TIPS</div>
       <div class="tissue-desc" id="tDesc">Small, tightly-packed, undifferentiated cells that divide rapidly by mitosis, producing new cells for growth in length.</div>
@@ -331,7 +331,8 @@ const TISSUES = [
        const x=30+c*(W-60)/4+20;
        ctx.beginPath(); ctx.moveTo(x,20); ctx.lineTo(x,H-20); ctx.strokeStyle='rgba(96,165,250,0.85)'; ctx.lineWidth=10; ctx.stroke();
        ctx.strokeStyle='rgba(255,255,255,0.4)'; ctx.lineWidth=1;
-       for(let y=25;y<H-20;y+=14){ ctx.beginPath(); ctx.moveTo(x-5,y); ctx.lineTo(x+5,y); ctx.stroke(); }
+       // Xylem vessels are continuous open tubes (no end walls); the walls carry spiral bands of lignin
+       for(let y=22;y<H-24;y+=12){ ctx.beginPath(); ctx.moveTo(x-5,y); ctx.lineTo(x+5,y+6); ctx.stroke(); }
      }
    }},
   {id:'phloem', name:'Phloem', loc:'Roots, stems, leaves (vascular tissue)', color:'#f472b6',
@@ -340,9 +341,14 @@ const TISSUES = [
      for(let c=0;c<4;c++){
        const x=30+c*(W-60)/4+20;
        ctx.beginPath(); ctx.moveTo(x,20); ctx.lineTo(x,H-20); ctx.strokeStyle='rgba(244,114,182,0.5)'; ctx.lineWidth=9; ctx.stroke();
-       for(let y=30;y<H-20;y+=22){
-         ctx.beginPath(); ctx.arc(x+10,y,4,0,Math.PI*2); ctx.fillStyle='rgba(244,114,182,0.9)'; ctx.fill();
+       // Sieve tubes are divided by perforated end walls (sieve plates); a narrow companion cell runs beside each
+       for(let y=48;y<H-24;y+=46){
+         ctx.setLineDash([2,2]); ctx.strokeStyle='rgba(255,255,255,0.75)'; ctx.lineWidth=1.5;
+         ctx.beginPath(); ctx.moveTo(x-5,y); ctx.lineTo(x+5,y); ctx.stroke(); ctx.setLineDash([]);
        }
+       ctx.strokeStyle='rgba(244,114,182,0.9)'; ctx.lineWidth=3;
+       ctx.beginPath(); ctx.moveTo(x+9,24); ctx.lineTo(x+9,H-24); ctx.stroke();
+       for(let y=34;y<H-24;y+=46){ ctx.beginPath(); ctx.arc(x+9,y,2.2,0,Math.PI*2); ctx.fillStyle='#fde68a'; ctx.fill(); }
      }
    }},
 ];

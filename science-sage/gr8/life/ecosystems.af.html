@@ -277,16 +277,16 @@
 
 <!-- EXPLORE -->
 <div class="tab-panel" id="tab-explore">
-  <h2 style="font-size:18px;font-weight:800;color:#fff;margin-bottom:6px">Bou 'n Savanne-Voedselweb</h2>
+  <h2 style="font-size:20px;font-weight:800;color:#f2f5f9;margin-bottom:6px">Bou 'n Savanne-Voedselweb</h2>
   <p style="font-size:13px;color:var(--muted);margin-bottom:18px">Klik enige organisme om sy verbindings te belig. Sleep nodusse om te herrangskik. Gebruik "Verwyder spesie" om kaskade-effekte te sien.</p>
-  <div class="ml-predict" style="margin:0 0 16px;padding:10px 14px;border-radius:10px;background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.22);font-size:13px;line-height:1.6;color:rgba(226,232,240,.88)"><strong style="color:#fde68a">Voorspel eers:</strong> Kies een herbivoor. Wat sal met sy roofdiere en die plante wat dit eet gebeur as dit verdwyn? <strong style="color:#fde68a">Toets dit dan:</strong> Kies dit en gebruik Verwyder gekose spesie om die kettingreaksie te sien.</div>
+  <div class="ml-predict" style="margin:0 0 16px;padding:12px 16px;border-radius:10px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.075);border-left:2px solid #74d154;font-size:15px;line-height:1.6;color:#e3e8ef"><strong style="color:#f2f5f9">Voorspel eers:</strong> Kies een herbivoor. Wat sal met sy roofdiere en die plante wat dit eet gebeur as dit verdwyn? <strong style="color:#f2f5f9">Toets dit dan:</strong> Kies dit en gebruik Verwyder gekose spesie om die kettingreaksie te sien.</div>
   <div class="explore-layout">
     <div class="web-wrap">
-      <canvas id="webCanvas" height="480" role="img" aria-label="Bou &#x27;n Savanne-Voedselweb: interaktiewe simulasie"></canvas>
+      <canvas id="webCanvas" height="480" role="img" aria-label="Bou &#x27;n Savanne-Voedselweb. Klik enige organisme om sy verbindings te belig. Sleep nodusse om te herrangskik. Gebruik ”Verwyder spesie” om kaskade-effekte te sien."></canvas>
     </div>
     <div class="side-panel">
       <div class="ctrl-card node-info" id="nodeInfo">
-        <div style="color:var(--muted);font-size:13px;text-align:center;margin-top:30px">👆 Klik 'n organisme<br>om die besonderhede te sien</div>
+        <div style="color:var(--muted);font-size:13px;text-align:center;margin-top:30px">Klik 'n organisme<br>om die besonderhede te sien</div>
       </div>
       <div class="ctrl-card">
         <div class="ctrl-label">Aksies</div>
@@ -369,47 +369,47 @@ let WW, WH;
 
 // Node definitions — positions are fractions, resolved after resize
 const NODE_DEFS = [
-  {id:'sun',      label:'Son',        icon:'☀️', color:'#fde68a', tcolor:'#fbbf24', trophic:'Energiebron',
+  {id:'sun',      label:'Son',        icon:'', color:'#fde68a', tcolor:'#fbbf24', trophic:'Energiebron',
    diet:[], eatenBy:['grass','acacia'],
    info:'Die Son voorsien die energie wat alle ekosisteme deur fotosintese aandryf. Sonder sonlig kan produsente nie voedsel maak nie en die hele voedselweb stort ineen.',
    fact:'~1% van die sonenergie wat \'n blaar bereik, word werklik na chemiese energie omgeskep.'},
-  {id:'grass',    label:'Gras',      icon:'🌾', color:'#bbf7d0', tcolor:'#22c55e', trophic:'Produsent (1ste)',
+  {id:'grass',    label:'Gras',      icon:'', color:'#bbf7d0', tcolor:'#22c55e', trophic:'Produsent (1ste)',
    diet:['sun'], eatenBy:['zebra','wildebeest','impala'],
    info:'Grasse is die dominante produsente van die savanne. Hulle bind sonenergie in glukose deur fotosintese. Hul diep wortels laat hulle brande en droogte oorleef.',
    fact:'Ná \'n savannebrand loop gras binne dae weer uit van ondergrondse risome — die as verskaf ekstra voedingstowwe.'},
-  {id:'acacia',   label:'Akasia',     icon:'🌳', color:'#bbf7d0', tcolor:'#22c55e', trophic:'Produsent (1ste)',
+  {id:'acacia',   label:'Akasia',     icon:'', color:'#bbf7d0', tcolor:'#22c55e', trophic:'Produsent (1ste)',
    diet:['sun'], eatenBy:['giraffe','impala'],
    info:'Akasiabome is ikoniese savanne-produsente. Baie spesies het dorings en chemiese verdediging teen herbivore ontwikkel. Hulle bind ook stikstof deur bakterieë in wortelknoppies.',
    fact:'Kameelperde het \'n 45 cm grypbare tong om akasiablare tussen dorings uit te trek.'},
-  {id:'zebra',    label:'Sebra',      icon:'🦓', color:'#bfdbfe', tcolor:'#86efac', trophic:'Primêre verbruiker (2de)',
+  {id:'zebra',    label:'Sebra',      icon:'', color:'#bfdbfe', tcolor:'#86efac', trophic:'Primêre verbruiker (2de)',
    diet:['grass'], eatenBy:['lion','wild_dog'],
    info:'Vlaktesebras is weiders — hulle eet gras. Hulle migreer dikwels lang afstande, agter reën aan, om vars gras te vind. Sebras is belangrike prooi vir leeus en wildehonde.',
    fact:'Sebrastrepe kan bytende vlieë verwar en dit vir roofdiere moeiliker maak om individue in \'n trop uit te ken.'},
-  {id:'wildebeest',label:'Wildebees',icon:'🐃', color:'#bfdbfe', tcolor:'#86efac', trophic:'Primêre verbruiker (2de)',
+  {id:'wildebeest',label:'Wildebees',icon:'', color:'#bfdbfe', tcolor:'#86efac', trophic:'Primêre verbruiker (2de)',
    diet:['grass'], eatenBy:['lion','cheetah'],
    info:'Blouwildebeeste is bulkweiders en belangrike prooidiere in die savanne. Hul massiewe jaarlikse migrasie (1,5 miljoen diere in Oos-Afrika, kleiner troppe in SA) vorm hele ekosisteme.',
    fact:'Wildebeeskalwers kan binne minute na geboorte saam met die trop hardloop — \'n verdediging teen roofdiere.'},
-  {id:'impala',   label:'Rooibok',     icon:'🦌', color:'#bfdbfe', tcolor:'#86efac', trophic:'Primêre verbruiker (2de)',
+  {id:'impala',   label:'Rooibok',     icon:'', color:'#bfdbfe', tcolor:'#86efac', trophic:'Primêre verbruiker (2de)',
    diet:['grass','acacia'], eatenBy:['lion','cheetah','wild_dog'],
    info:'Rooibokke is beide weiders en blaareters, wat hulle een van die aanpasbaarste herbivore in Afrika-savannes maak. Hulle is die algemeenste prooispesie in die Krugerwildtuin.',
    fact:'Rooibokke kan 3 meter hoog en 10 meter horisontaal spring om roofdiere te ontsnap.'},
-  {id:'giraffe',  label:'Kameelperd',    icon:'🦒', color:'#bfdbfe', tcolor:'#86efac', trophic:'Primêre verbruiker (2de)',
+  {id:'giraffe',  label:'Kameelperd',    icon:'', color:'#bfdbfe', tcolor:'#86efac', trophic:'Primêre verbruiker (2de)',
    diet:['acacia'], eatenBy:['lion'],
    info:'Kameelperde is die langste diere op Aarde en kan blare van die boonste takke van akasiabome eet wat ander herbivore nie kan bereik nie. Hul lang nekke laat hulle hierdie unieke voedselnis benut.',
    fact:'\'n Kameelperd se hart is 60 cm lank en pomp bloed 2 meter op na die brein.'},
-  {id:'cheetah',  label:'Jagluiperd',    icon:'🐆', color:'#fed7aa', tcolor:'#fb923c', trophic:'Sekondêre verbruiker (3de)',
+  {id:'cheetah',  label:'Jagluiperd',    icon:'', color:'#fed7aa', tcolor:'#fb923c', trophic:'Sekondêre verbruiker (3de)',
    diet:['impala','wildebeest'], eatenBy:['lion'],
    info:'Jagluiperds is die vinnigste landdier (tot 120 km/h) en spesialiseer in dagjagtogte. Hulle jag hoofsaaklik rooibokke en jong wildebeeste. Anders as leeus, kompeteer hulle nie goed vir karkasse nie.',
    fact:'Jagluiperds word as Kwesbaar geklassifiseer — minder as 7 000 bly in die natuur oor, met \'n klein populasie in die Krugerwildtuin.'},
-  {id:'wild_dog', label:'Wildehond',   icon:'🐕', color:'#fed7aa', tcolor:'#fb923c', trophic:'Sekondêre verbruiker (3de)',
+  {id:'wild_dog', label:'Wildehond',   icon:'', color:'#fed7aa', tcolor:'#fb923c', trophic:'Sekondêre verbruiker (3de)',
    diet:['impala','zebra'], eatenBy:['lion'],
    info:'Afrika-wildehonde is hoogs sosiale trop-jagters met \'n suksessyfer van ~80% — die hoogste van enige groot roofdier in Afrika. Hulle is Bedreig, met slegs ~6 600 wat oorbly.',
    fact:'Wildehondtroppe stem oor jag deur te nies — hoe meer niese, hoe hoër die konsensus om te beweeg.'},
-  {id:'lion',     label:'Leeu',       icon:'🦁', color:'#fecaca', tcolor:'#f87171', trophic:'Tersiêre verbruiker (4de)',
+  {id:'lion',     label:'Leeu',       icon:'', color:'#fecaca', tcolor:'#f87171', trophic:'Tersiêre verbruiker (4de)',
    diet:['zebra','wildebeest','impala','giraffe','cheetah','wild_dog'], eatenBy:['decomp'],
    info:'Leeus is toproofdiere van die Afrika-savanne. \'n Leeutrop beheer gebied en reguleer prooipopulasies, wat oorbeweiding voorkom. Leeugetalle in Suid-Afrika is ongeveer 3 000.',
    fact:'Leeus slaap tot 20 uur per dag — hulle bewaar energie omdat groot prooi \'n groot maaltyd op een slag verskaf.'},
-  {id:'decomp',   label:'Ontbinders',icon:'🍄', color:'#ddd6fe', tcolor:'#a78bfa', trophic:'Ontbinders',
+  {id:'decomp',   label:'Ontbinders',icon:'', color:'#ddd6fe', tcolor:'#a78bfa', trophic:'Ontbinders',
    diet:['lion','cheetah','wild_dog','giraffe','zebra','wildebeest','impala','grass','acacia'], eatenBy:[],
    info:'Ontbinders (bakterieë, fungi, miskruiers, aasvoëls, termiete) breek dooie organiese materiaal af en gee voedingstowwe — veral stikstof en fosfor — aan die grond terug, wat nuwe plantegroei moontlik maak.',
    fact:'Termiete is die belangrikste ontbinders in Afrika-savannes en verwerk meer plantmateriaal as al die groot herbivore saam.'},
@@ -543,7 +543,7 @@ function drawWeb(ts){
     wctx.globalAlpha = dimmed ? 0.25 : 1;
     // Glow
     if(isSelected){
-      wctx.shadowBlur = 20; wctx.shadowColor = n.tcolor;
+      wctx.shadowBlur = 0; wctx.shadowColor = n.tcolor;
     }
     // Circle
     wctx.beginPath(); wctx.arc(n.x, n.y, n.r + (isSelected?4:0), 0, Math.PI*2);
@@ -561,7 +561,7 @@ function drawWeb(ts){
     wctx.fillText(n.icon, n.x, n.y - 2);
     // Label
     wctx.fillStyle = isSelected ? '#fff' : 'rgba(210,218,245,0.7)';
-    wctx.font = `${isSelected?'bold ':''}10px "Cabinet Grotesk"`;
+    wctx.font = `${isSelected?'bold ':''}12px "Cabinet Grotesk", sans-serif`;
     wctx.textBaseline = 'alphabetic';
     wctx.fillText(n.label, n.x, n.y + n.r + 13);
     wctx.restore();
@@ -648,7 +648,7 @@ webCanvas.style.touchAction = 'none';
 
 function updateNodeInfo(n){
   const d=document.getElementById('nodeInfo');
-  if(!n){ d.innerHTML='<div style="color:var(--muted);font-size:13px;text-align:center;margin-top:30px">👆 Klik \'n organisme<br>om die besonderhede te sien</div>'; return; }
+  if(!n){ d.innerHTML='<div style="color:var(--muted);font-size:13px;text-align:center;margin-top:30px">Klik \'n organisme<br>om die besonderhede te sien</div>'; return; }
   const eats = n.diet.filter(id=>!removedIds.has(id)).map(id=>getNode(id)?.label||id);
   const eatenBy = n.eatenBy.filter(id=>!removedIds.has(id)).map(id=>getNode(id)?.label||id);
   d.innerHTML=`
@@ -680,7 +680,7 @@ function removeSelected(){
   });
 
   const msg = document.getElementById('cascadeMsg');
-  let txt = `<strong style="color:#fca5a5">⚠ ${label} verwyder.</strong>`;
+  let txt = `<strong style="color:#fca5a5">${label} verwyder.</strong>`;
   if(cascadeVictims.length){
     txt += ` Kaskade-effek: <strong>${cascadeVictims.join(', ')}</strong> het nou geen voedselbron ${cascadeVictims.length===1?'nie':'nie'} en kan ineenstort.`;
   } else {

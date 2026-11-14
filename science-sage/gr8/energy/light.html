@@ -291,18 +291,18 @@
 </div>
 
 <div id="tab-explore" class="tab-panel">
-  <div class="ml-predict" style="margin:0 0 16px;padding:10px 14px;border-radius:10px;background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.22);font-size:13px;line-height:1.6;color:rgba(226,232,240,.88)"><strong style="color:#fde68a">Predict first:</strong> When white light passes through a prism, which colour bends the most? <strong style="color:#fde68a">Then test it:</strong> Open Prism dispersion and check.</div>
+  <div class="ml-predict" style="margin:0 0 16px;padding:12px 16px;border-radius:10px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.075);border-left:2px solid #74d154;font-size:15px;line-height:1.6;color:#e3e8ef"><strong style="color:#f2f5f9">Predict first:</strong> When white light passes through a prism, which colour bends the most? <strong style="color:#f2f5f9">Then test it:</strong> Open Prism dispersion and check.</div>
   <div class="explore-wrap">
     <div class="canvas-card">
-      <canvas id="cv" width="520" height="420" role="img" aria-label="Visible Light: interactive simulation"></canvas>
+      <canvas id="cv" width="520" height="420" role="img" aria-label="Visible Light"></canvas>
     </div>
     <div class="controls">
       <div class="ctrl-card">
         <div class="ctrl-label">Demonstration</div>
-        <button class="mode-btn active" onclick="setMode('prism',this)">🔺 Prism dispersion</button>
-        <button class="mode-btn" onclick="setMode('reflection',this)">🪞 Reflection</button>
-        <button class="mode-btn" onclick="setMode('refraction',this)">💧 Refraction</button>
-        <button class="mode-btn" onclick="setMode('colour',this)">🎨 Colour &amp; absorption</button>
+        <button class="mode-btn active" onclick="setMode('prism',this)">Prism dispersion</button>
+        <button class="mode-btn" onclick="setMode('reflection',this)">Reflection</button>
+        <button class="mode-btn" onclick="setMode('refraction',this)">Refraction</button>
+        <button class="mode-btn" onclick="setMode('colour',this)">Colour &amp; absorption</button>
       </div>
       <div class="ctrl-card">
         <div class="ctrl-label">Info</div>
@@ -442,7 +442,7 @@ function drawPrism(){
   ctx.beginPath();ctx.moveTo(A.x,A.y);ctx.lineTo(B.x,B.y);ctx.lineTo(C.x,C.y);ctx.closePath();
   ctx.fillStyle='rgba(148,163,184,0.10)';ctx.fill();
   ctx.strokeStyle='rgba(148,163,184,0.55)';ctx.lineWidth=2;ctx.stroke();
-  ctx.fillStyle='rgba(148,163,184,0.55)';ctx.font='12px var(--fd)';ctx.textAlign='center';
+  ctx.fillStyle='rgba(148,163,184,0.55)';ctx.font='12px "Cabinet Grotesk", sans-serif';ctx.textAlign='center';
   ctx.fillText('Glass prism',(A.x+B.x+C.x)/3,Math.max(A.y,B.y,C.y)+22);
 
   // Normal at the entry point (dashed)
@@ -453,7 +453,7 @@ function drawPrism(){
   // Incident white beam
   ctx.strokeStyle='rgba(255,255,255,0.85)';ctx.lineWidth=3;
   ctx.beginPath();ctx.moveTo(start.x,start.y);ctx.lineTo(entry.x,entry.y);ctx.stroke();
-  ctx.fillStyle='rgba(255,255,255,0.7)';ctx.font='11px var(--fd)';ctx.textAlign='left';
+  ctx.fillStyle='rgba(255,255,255,0.7)';ctx.font='11px "Cabinet Grotesk", sans-serif';ctx.textAlign='left';
   ctx.fillText('White light',start.x,start.y-10);
 
   // Stage 1 — refraction at the entry face. Each colour's own refractive index
@@ -527,11 +527,11 @@ function drawPrism(){
     ctx.lineTo(nearB[i+1].x,nearB[i+1].y);
     ctx.closePath();
     ctx.globalAlpha=0.9;ctx.fillStyle=SPEC[i];ctx.fill();ctx.globalAlpha=1;
-    ctx.fillStyle=SPEC[i];ctx.font='10px var(--fd)';ctx.textAlign='left';
+    ctx.fillStyle=SPEC[i];ctx.font='10px "Cabinet Grotesk", sans-serif';ctx.textAlign='left';
     ctx.fillText(SPEC_NAMES[i],endPts[i].x+6,endPts[i].y+3);
   });
 
-  ctx.fillStyle='rgba(210,218,245,0.45)';ctx.font='10px var(--fd)';ctx.textAlign='center';
+  ctx.fillStyle='rgba(210,218,245,0.45)';ctx.font='10px "Cabinet Grotesk", sans-serif';ctx.textAlign='center';
   ctx.fillText('Violet refracts most, red refracts least (the split inside the glass is exaggerated to be visible)',W/2,H-10);
 }
 
@@ -542,7 +542,7 @@ function drawReflection(){
   ctx.strokeStyle='rgba(148,163,184,0.6)';ctx.lineWidth=4;
   ctx.beginPath();ctx.moveTo(60,sy);ctx.lineTo(W-60,sy);ctx.stroke();
   ctx.fillStyle='rgba(148,163,184,0.25)';ctx.fillRect(60,sy+2,W-120,18);
-  ctx.fillStyle='rgba(148,163,184,0.55)';ctx.font='11px var(--fd)';ctx.textAlign='center';
+  ctx.fillStyle='rgba(148,163,184,0.55)';ctx.font='11px "Cabinet Grotesk", sans-serif';ctx.textAlign='center';
   ctx.fillText('Mirror surface',W/2,sy+28);
 
   // Normal (vertical dashed)
@@ -550,7 +550,7 @@ function drawReflection(){
   ctx.strokeStyle='rgba(107,114,128,0.5)';ctx.lineWidth=1;
   ctx.beginPath();ctx.moveTo(cx,sy-150);ctx.lineTo(cx,sy+60);ctx.stroke();
   ctx.setLineDash([]);
-  ctx.fillStyle='rgba(107,114,128,0.55)';ctx.font='10px var(--fd)';ctx.textAlign='left';
+  ctx.fillStyle='rgba(107,114,128,0.55)';ctx.font='10px "Cabinet Grotesk", sans-serif';ctx.textAlign='left';
   ctx.fillText('Normal',cx+5,sy-130);
 
   // Incident ray: top-left → contact point
@@ -558,7 +558,7 @@ function drawReflection(){
   ctx.strokeStyle='#fde68a';ctx.lineWidth=2.5;
   ctx.beginPath();ctx.moveTo(ix1,iy1);ctx.lineTo(cx,sy);ctx.stroke();
   drawArrowHead(ix1,iy1,cx,sy,'#fde68a');
-  ctx.fillStyle='#fde68a';ctx.font='12px var(--fd)';ctx.textAlign='center';
+  ctx.fillStyle='#fde68a';ctx.font='12px "Cabinet Grotesk", sans-serif';ctx.textAlign='center';
   ctx.fillText('Incident ray',ix1+55,iy1+10);
 
   // Reflected ray: contact point → top-right (same angle, other side)
@@ -566,22 +566,22 @@ function drawReflection(){
   ctx.strokeStyle='#f87171';ctx.lineWidth=2.5;
   ctx.beginPath();ctx.moveTo(cx,sy);ctx.lineTo(rx1,ry1);ctx.stroke();
   drawArrowHead(cx,sy,rx1,ry1,'#f87171');
-  ctx.fillStyle='#f87171';ctx.font='12px var(--fd)';ctx.textAlign='center';
+  ctx.fillStyle='#f87171';ctx.font='12px "Cabinet Grotesk", sans-serif';ctx.textAlign='center';
   ctx.fillText('Reflected ray',rx1-55,ry1+10);
 
   // Angle arcs
   const ang=Math.atan2(130,160);
   ctx.strokeStyle='rgba(251,191,36,0.5)';ctx.lineWidth=1.5;
   ctx.beginPath();ctx.arc(cx,sy,55,-(Math.PI/2+ang),-Math.PI/2);ctx.stroke();
-  ctx.fillStyle='rgba(251,191,36,0.85)';ctx.font='12px var(--fd)';ctx.textAlign='center';
+  ctx.fillStyle='rgba(251,191,36,0.85)';ctx.font='12px "Cabinet Grotesk", sans-serif';ctx.textAlign='center';
   ctx.fillText('θᵢ',cx-36,sy-22);
 
   ctx.strokeStyle='rgba(248,113,113,0.5)';ctx.lineWidth=1.5;
   ctx.beginPath();ctx.arc(cx,sy,55,-Math.PI/2,-(Math.PI/2-ang));ctx.stroke();
-  ctx.fillStyle='rgba(248,113,113,0.85)';ctx.font='12px var(--fd)';
+  ctx.fillStyle='rgba(248,113,113,0.85)';ctx.font='12px "Cabinet Grotesk", sans-serif';
   ctx.fillText('θᵣ',cx+36,sy-22);
 
-  ctx.fillStyle='rgba(210,218,245,0.6)';ctx.font='13px var(--fd)';ctx.textAlign='center';
+  ctx.fillStyle='rgba(210,218,245,0.6)';ctx.font='13px "Cabinet Grotesk", sans-serif';ctx.textAlign='center';
   ctx.fillText('θᵢ = θᵣ  —  Angle of incidence = Angle of reflection',W/2,H-20);
 }
 
@@ -591,7 +591,7 @@ function drawRefraction(){
   ctx.fillRect(0,H/2,W,H/2);
   ctx.strokeStyle='rgba(59,130,246,0.4)';ctx.lineWidth=2;
   ctx.beginPath();ctx.moveTo(0,H/2);ctx.lineTo(W,H/2);ctx.stroke();
-  ctx.fillStyle='rgba(59,130,246,0.5)';ctx.font='11px var(--fd)';ctx.textAlign='right';
+  ctx.fillStyle='rgba(59,130,246,0.5)';ctx.font='11px "Cabinet Grotesk", sans-serif';ctx.textAlign='right';
   ctx.fillText('Water',W-10,H/2+20);
   ctx.fillStyle='rgba(210,218,245,0.4)';ctx.textAlign='right';
   ctx.fillText('Air',W-10,H/2-10);
@@ -606,21 +606,21 @@ function drawRefraction(){
   ctx.strokeStyle='#fde68a';ctx.lineWidth=2.5;
   ctx.beginPath();ctx.moveTo(ix-110,iy-110);ctx.lineTo(ix,iy);ctx.stroke();
   drawArrowHead(ix-110,iy-110,ix,iy,'#fde68a');
-  ctx.fillStyle='#fde68a';ctx.font='11px var(--fd)';ctx.textAlign='center';
+  ctx.fillStyle='#fde68a';ctx.font='11px "Cabinet Grotesk", sans-serif';ctx.textAlign='center';
   ctx.fillText('Incident (air)',ix-70,iy-90);
 
   // Refracted (steeper - bends toward normal)
   ctx.strokeStyle='#86efac';ctx.lineWidth=2.5;
   ctx.beginPath();ctx.moveTo(ix,iy);ctx.lineTo(ix+60,iy+130);ctx.stroke();
   drawArrowHead(ix,iy,ix+60,iy+130,'#86efac');
-  ctx.fillStyle='#86efac';ctx.font='11px var(--fd)';ctx.textAlign='left';
+  ctx.fillStyle='#86efac';ctx.font='11px "Cabinet Grotesk", sans-serif';ctx.textAlign='left';
   ctx.fillText('Refracted (water)',ix+62,iy+80);
   ctx.fillText('(bends toward normal)',ix+62,iy+96);
 
   // Angles
   ctx.strokeStyle='rgba(251,191,36,0.4)';ctx.lineWidth=1;
   ctx.beginPath();ctx.arc(ix,iy,50,-Math.PI/2,-Math.PI/4);ctx.stroke();
-  ctx.fillStyle='rgba(251,191,36,0.7)';ctx.font='10px var(--fd)';ctx.textAlign='center';
+  ctx.fillStyle='rgba(251,191,36,0.7)';ctx.font='10px "Cabinet Grotesk", sans-serif';ctx.textAlign='center';
   ctx.fillText('θ₁',ix-18,iy-30);
 
   ctx.strokeStyle='rgba(134,239,172,0.4)';ctx.lineWidth=1;
@@ -638,7 +638,7 @@ function drawColour(){
     {x:180,y:330,r:45,reflect:'#fff',name:'White object',absorbs:'none (reflects all)'},
     {x:360,y:330,r:45,reflect:'#3b82f6',name:'Blue object',absorbs:'V I G Y O R'}
   ];
-  ctx.font='bold 11px var(--fd)';
+  ctx.font='bold 11px "Cabinet Grotesk", sans-serif';
   for(const o of objs){
     ctx.beginPath();ctx.arc(o.x,o.y,o.r,0,Math.PI*2);
     ctx.fillStyle=o.reflect==='#fff'?'rgba(255,255,255,0.9)':o.reflect==='#666'?'#111':o.reflect;
@@ -646,15 +646,15 @@ function drawColour(){
     ctx.strokeStyle='rgba(255,255,255,0.2)';ctx.lineWidth=1.5;ctx.stroke();
     ctx.fillStyle='rgba(210,218,245,0.8)';ctx.textAlign='center';
     ctx.fillText(o.name,o.x,o.y+o.r+14);
-    ctx.fillStyle='rgba(210,218,245,0.45)';ctx.font='9px var(--fd)';
+    ctx.fillStyle='rgba(210,218,245,0.45)';ctx.font='9px "Cabinet Grotesk", sans-serif';
     ctx.fillText('Absorbs: '+o.absorbs,o.x,o.y+o.r+26);
-    ctx.font='bold 11px var(--fd)';
+    ctx.font='bold 11px "Cabinet Grotesk", sans-serif';
     // Sun ray in
     ctx.strokeStyle='rgba(251,191,36,0.4)';ctx.lineWidth=1.5;
     ctx.beginPath();ctx.moveTo(o.x-60,o.y-80);ctx.lineTo(o.x-o.r*0.7,o.y-o.r*0.7);ctx.stroke();
   }
-  ctx.fillStyle='#fde68a';ctx.font='bold 12px var(--fd)';ctx.textAlign='center';
-  ctx.fillText('☀ White light hits coloured surfaces',W/2,40);
+  ctx.fillStyle='#fde68a';ctx.font='bold 12px "Cabinet Grotesk", sans-serif';ctx.textAlign='center';
+  ctx.fillText('White light hits coloured surfaces',W/2,40);
 }
 
 function drawArrowHead(x1,y1,x2,y2,color){

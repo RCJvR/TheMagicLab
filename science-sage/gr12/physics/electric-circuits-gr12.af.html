@@ -144,7 +144,8 @@
 <script defer src="../../../progress.js"></script>
 <script defer src="../../../lesson-progress-observer.js"></script>
 <style id="ml-touch">@media (pointer:coarse){#tab-explore button,#tab-simulate button,#panel-explore button,#tab-explore select,#tab-simulate select,#panel-explore select{min-height:40px}#tab-explore input[type=range],#tab-simulate input[type=range],#panel-explore input[type=range]{min-height:32px}}</style>
-<style id="ml-wb-memo">.wb-memo{margin-top:12px;border-top:1px dashed rgba(255,255,255,.10);padding-top:10px}.wb-memo summary{cursor:pointer;font-size:13px;font-weight:700;color:#86efac;list-style:revert}.wb-memo-body{margin-top:8px;font-size:13.5px;line-height:1.8;color:rgba(210,218,245,.85);background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.18);border-radius:10px;padding:12px 16px}@media print{.wb-memo{display:none!important}}</style><style id="ml-exam-q">.wb-q.ml-exam-q{border-color:rgba(252,211,77,.35)}.ml-exam-q .wb-qnum{color:#fcd34d}</style></head>
+<style id="ml-wb-memo">.wb-memo{margin-top:12px;border-top:1px dashed rgba(255,255,255,.10);padding-top:10px}.wb-memo summary{cursor:pointer;font-size:13px;font-weight:700;color:#86efac;list-style:revert}.wb-memo-body{margin-top:8px;font-size:13.5px;line-height:1.8;color:rgba(210,218,245,.85);background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.18);border-radius:10px;padding:12px 16px}@media print{.wb-memo{display:none!important}}</style><style id="ml-exam-q">.wb-q.ml-exam-q{border-color:rgba(252,211,77,.35)}.ml-exam-q .wb-qnum{color:#fcd34d}</style><link rel="stylesheet" href="/assets/explore-kit.css">
+</head>
 <body>
   <a class="ml-skip" href="#ml-main">Skip to content</a>
 <nav data-ml-bar="science-sage" data-ml-home="/science-sage/index.html">
@@ -277,44 +278,10 @@
 
 <!-- EXPLORE TAB -->
 <div class="tab-panel" id="tab-explore">
-  <div class="ml-predict" style="margin:0 0 16px;padding:10px 14px;border-radius:10px;background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.22);font-size:13px;line-height:1.6;color:rgba(226,232,240,.88)"><strong style="color:#fde68a">Voorspel eers:</strong> As die eksterne weerstand baie klein gemaak word, wat gebeur met die stroom en met die terminaalspanning? <strong style="color:#fde68a">Toets dit dan:</strong> Verlaag R en kyk na die berekende waardes.</div>
-  <div class="sim-outer">
-    <div class="sim-canvas-wrap">
-      <h3>Interne-Weerstand-Stroombaansimulator</h3>
-      <canvas id="circCanvas" height="300" role="img" aria-label="Interne-Weerstand-Stroombaansimulator: interaktiewe simulasie"></canvas>
-    </div>
-    <div class="sim-controls-row">
-      <div class="ctrl-card">
-        <div class="ctrl-label">Battery en Las</div>
-        <div class="slider-row">
-          <label for="sl-emf">EMK ε (V)</label>
-          <input type="range" min="1" max="24" value="12" id="sl-emf" oninput="updateCirc()">
-          <span class="slider-val" id="sv-emf">12 V</span>
-        </div>
-        <div class="slider-row">
-          <label for="sl-r">Interne r (Ω)</label>
-          <input type="range" min="0" max="5" step="0.1" value="1" id="sl-r" oninput="updateCirc()">
-          <span class="slider-val" id="sv-r">1.0 Ω</span>
-        </div>
-        <div class="slider-row">
-          <label for="sl-R">Eksterne R (Ω)</label>
-          <input type="range" min="1" max="20" value="5" id="sl-R" oninput="updateCirc()">
-          <span class="slider-val" id="sv-R">5 Ω</span>
-        </div>
-      </div>
-      <div class="ctrl-card">
-        <div class="ctrl-label">Berekende Waardes</div>
-        <div class="readout-grid" style="margin-top:0">
-          <div class="readout"><div class="readout-label">Stroom I</div><div class="readout-val" id="ro-I">—<span>A</span></div></div>
-          <div class="readout"><div class="readout-label">V terminaal</div><div class="readout-val" id="ro-Vt">—<span>V</span></div></div>
-          <div class="readout"><div class="readout-label">V verlore (Ir)</div><div class="readout-val" id="ro-Vl">—<span>V</span></div></div>
-          <div class="readout"><div class="readout-label">P ekstern</div><div class="readout-val" id="ro-Pext">—<span>W</span></div></div>
-          <div class="readout"><div class="readout-label">P intern</div><div class="readout-val" id="ro-Pint">—<span>W</span></div></div>
-          <div class="readout"><div class="readout-label">Doeltreffendheid</div><div class="readout-val" id="ro-eff">—<span>%</span></div></div>
-        </div>
-      </div>
-    </div>
-  </div>
+  <div class="ml-predict" style="margin:0 0 16px;padding:12px 16px;border-radius:10px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.075);border-left:2px solid #74d154;font-size:15px;line-height:1.6;color:#e3e8ef"><strong style="color:#f2f5f9">Voorspel eers:</strong> As die eksterne weerstand baie klein gemaak word, wat gebeur met die stroom en met die terminaalspanning? <strong style="color:#f2f5f9">Toets dit dan:</strong> Verlaag R en kyk na die berekende waardes.</div>
+  <div id="mlx-root" data-circuit="gr12"></div>
+  <script src="/assets/explore-kit.js"></script>
+  <script src="/assets/explore/dc-circuit.js"></script>
 </div>
 
 <!-- PRACTICE TAB -->
@@ -502,101 +469,7 @@
     if(!id.startsWith('I')){scoreCount+=result==='correct'?1:0;answered++;if(answered>=8){document.getElementById('score-big').textContent=scoreCount+'/8';document.getElementById('score-banner').classList.add('show');}}
   }
 
-  let circInited=false;
-  function initCirc(){if(!circInited){circInited=true;updateCirc();}}
-
-  function updateCirc(){
-    const emf=+document.getElementById('sl-emf').value;
-    const r=+document.getElementById('sl-r').value;
-    const R=+document.getElementById('sl-R').value;
-    document.getElementById('sv-emf').textContent=emf+' V';
-    document.getElementById('sv-r').textContent=r.toFixed(1)+' Ω';
-    document.getElementById('sv-R').textContent=R+' Ω';
-    const I=emf/(R+r);
-    const Vt=I*R;
-    const Vl=I*r;
-    const Pext=I*I*R;
-    const Pint=I*I*r;
-    const eff=(Pext/(Pext+Pint)*100);
-    document.getElementById('ro-I').innerHTML=I.toFixed(2)+'<span>A</span>';
-    document.getElementById('ro-Vt').innerHTML=Vt.toFixed(2)+'<span>V</span>';
-    document.getElementById('ro-Vl').innerHTML=Vl.toFixed(2)+'<span>V</span>';
-    document.getElementById('ro-Pext').innerHTML=Pext.toFixed(1)+'<span>W</span>';
-    document.getElementById('ro-Pint').innerHTML=Pint.toFixed(1)+'<span>W</span>';
-    document.getElementById('ro-eff').innerHTML=eff.toFixed(0)+'<span>%</span>';
-    if(circInited) drawCirc(emf,r,R,I,Vt,Vl);
-  }
-
-  function drawCirc(emf,r,R,I,Vt,Vl){
-    const canvas=document.getElementById('circCanvas');
-    const dpr=window.devicePixelRatio||1;
-    const W=canvas.clientWidth||800,H=300;
-    canvas.width=W*dpr;canvas.height=H*dpr;
-    canvas.style.height=H+'px';
-    const ctx=canvas.getContext('2d');
-    ctx.setTransform(1,0,0,1,0,0);
-    ctx.scale(dpr,dpr);
-    ctx.clearRect(0,0,W,H);
-
-    // Draw a simple circuit diagram
-    const mx=W/2,my=H/2;
-    const hw=Math.min(220,W*0.38),hh=90;
-
-    // Wires
-    ctx.strokeStyle='rgba(96,165,250,0.5)';ctx.lineWidth=2.5;
-    ctx.strokeRect(mx-hw,my-hh,hw*2,hh*2);
-
-    // Battery (left side)
-    const bx=mx-hw,by1=my-30,by2=my+30;
-    ctx.strokeStyle='rgba(255,255,255,0.15)';ctx.lineWidth=1;
-    ctx.beginPath();ctx.moveTo(bx,my-hh);ctx.lineTo(bx,by1);ctx.stroke();
-    ctx.beginPath();ctx.moveTo(bx,by2);ctx.lineTo(bx,my+hh);ctx.stroke();
-    // Battery symbol
-    for(let i=0;i<3;i++){
-      const y=by1+(by2-by1)*i/2;
-      const isLong=i%2===0;
-      const hw2=isLong?18:10;
-      ctx.strokeStyle=isLong?'rgba(96,165,250,0.7)':'rgba(96,165,250,0.4)';
-      ctx.lineWidth=isLong?2:1.5;
-      ctx.beginPath();ctx.moveTo(bx-hw2,y);ctx.lineTo(bx+hw2,y);ctx.stroke();
-    }
-    ctx.fillStyle='rgba(255,255,255,0.4)';ctx.font='bold 9px JetBrains Mono';ctx.textAlign='center';
-    ctx.fillText('ε='+emf+'V',bx,by1-8);
-    ctx.fillText('r='+r+'Ω',bx,by2+14);
-
-    // Internal resistance box
-    const rx1=mx-hw+40,ry=my-hh,rw=60,rh=16;
-    ctx.fillStyle='rgba(239,68,68,0.15)';
-    ctx.fillRect(rx1,ry-rh/2,rw,rh);
-    ctx.strokeStyle='rgba(239,68,68,0.5)';ctx.lineWidth=1.5;
-    ctx.strokeRect(rx1,ry-rh/2,rw,rh);
-    ctx.fillStyle='rgba(239,68,68,0.8)';ctx.font='9px JetBrains Mono';ctx.textAlign='center';
-    ctx.fillText('r='+r+'Ω',rx1+rw/2,ry+3);
-
-    // External resistor (right side)
-    const ex=mx+hw,ey1=my-40,ey2=my+40,ew=20;
-    ctx.fillStyle='rgba(96,165,250,0.15)';
-    ctx.fillRect(ex-ew/2,ey1,ew,ey2-ey1);
-    ctx.strokeStyle='rgba(96,165,250,0.6)';ctx.lineWidth=1.5;
-    ctx.strokeRect(ex-ew/2,ey1,ew,ey2-ey1);
-    ctx.fillStyle='rgba(96,165,250,0.9)';ctx.font='bold 9px JetBrains Mono';ctx.textAlign='center';
-    ctx.fillText('R='+R+'Ω',ex,my+3);
-
-    // Current arrow (top wire)
-    const arX=mx,arY=my-hh;
-    ctx.strokeStyle='rgba(134,239,172,0.6)';ctx.lineWidth=1.5;ctx.fillStyle='rgba(134,239,172,0.6)';
-    ctx.beginPath();ctx.moveTo(arX-20,arY);ctx.lineTo(arX+20,arY);ctx.stroke();
-    ctx.beginPath();ctx.moveTo(arX+20,arY);ctx.lineTo(arX+12,arY-5);ctx.lineTo(arX+12,arY+5);ctx.closePath();ctx.fill();
-    ctx.fillStyle='rgba(134,239,172,0.7)';ctx.font='9px JetBrains Mono';ctx.textAlign='center';
-    ctx.fillText('I='+I.toFixed(2)+'A',arX,arY-10);
-
-    // Labels
-    ctx.fillStyle='rgba(255,255,255,0.3)';ctx.font='9px JetBrains Mono';ctx.textAlign='center';
-    ctx.fillText('V_terminaal = '+Vt.toFixed(2)+'V',mx,my+hh+18);
-    ctx.fillText('V_lost = '+Vl.toFixed(2)+'V',mx,my-hh-22);
-  }
-
-  window.addEventListener('resize',()=>{if(circInited)updateCirc();});
+  function initCirc(){} // the simulation is assets/explore/dc-circuit.js
 </script>
   <script>
 (function(){

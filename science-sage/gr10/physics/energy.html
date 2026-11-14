@@ -290,11 +290,11 @@ input[type=range]{flex:1;accent-color:#60a5fa;cursor:pointer}
 
 <!-- SIMULATE TAB -->
 <div class="tab-panel" id="tab-explore">
-  <div class="ml-predict" style="margin:0 0 16px;padding:10px 14px;border-radius:10px;background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.22);font-size:13px;line-height:1.6;color:rgba(226,232,240,.88)"><strong style="color:#fde68a">Predict first:</strong> With no friction, can the ball ever rise higher than its starting height? <strong style="color:#fde68a">Then test it:</strong> Play with friction OFF, then ON, and watch the energy readouts.</div>
+  <div class="ml-predict" style="margin:0 0 16px;padding:12px 16px;border-radius:10px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.075);border-left:2px solid #74d154;font-size:15px;line-height:1.6;color:#e3e8ef"><strong style="color:#f2f5f9">Predict first:</strong> With no friction, can the ball ever rise higher than its starting height? <strong style="color:#f2f5f9">Then test it:</strong> Play with friction OFF, then ON, and watch the energy readouts.</div>
   <div class="sim-outer">
     <div class="sim-canvas-wrap">
       <h3>Energy Conservation Visualiser — Ball on Curved Track</h3>
-      <canvas id="energyCanvas" height="360" role="img" aria-label="Energy Conservation Visualiser — Ball on Curved Track: interactive simulation"></canvas>
+      <canvas id="energyCanvas" height="360" role="img" aria-label="Energy Conservation Visualiser — Ball on Curved Track"></canvas>
     </div>
     <div class="sim-controls-row">
       <div class="ctrl-card">
@@ -311,8 +311,8 @@ input[type=range]{flex:1;accent-color:#60a5fa;cursor:pointer}
         </div>
         <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap">
           <button class="mode-btn active" id="btnFric" onclick="toggleFriction()">Friction: OFF</button>
-          <button class="mode-btn active" id="btnPlayE" onclick="togglePlayE()">▶ Play</button>
-          <button class="mode-btn" onclick="resetEnergy()">↺ Reset</button>
+          <button class="mode-btn active" id="btnPlayE" onclick="togglePlayE()">Play</button>
+          <button class="mode-btn" onclick="resetEnergy()">Reset</button>
         </div>
       </div>
       <div class="ctrl-card">
@@ -412,17 +412,17 @@ function toggleFriction(){
 function togglePlayE(){
   if(ePlaying){
     ePlaying=false;if(eAnimId){cancelAnimationFrame(eAnimId);eAnimId=null;}
-    document.getElementById('btnPlayE').textContent='▶ Play';
+    document.getElementById('btnPlayE').textContent='Play';
   } else {
     if(ePhase>=1) resetEnergy();
-    ePlaying=true;document.getElementById('btnPlayE').textContent='⏸ Pause';
+    ePlaying=true;document.getElementById('btnPlayE').textContent='Pause';
     let last=null;
     function step(ts){
       if(!ePlaying) return;
       if(last===null) last=ts;
       const dt=Math.min((ts-last)/1000,0.05);last=ts;
       ePhase+=dt*0.35;
-      if(ePhase>=1){ePhase=1;ePlaying=false;document.getElementById('btnPlayE').textContent='▶ Play';}
+      if(ePhase>=1){ePhase=1;ePlaying=false;document.getElementById('btnPlayE').textContent='Play';}
       drawEnergy();
       if(ePlaying) eAnimId=requestAnimationFrame(step);
     }
@@ -432,7 +432,7 @@ function togglePlayE(){
 function resetEnergy(){
   if(eAnimId){cancelAnimationFrame(eAnimId);eAnimId=null;}
   ePlaying=false;ePhase=0;heatLost=0;
-  document.getElementById('btnPlayE').textContent='▶ Play';
+  document.getElementById('btnPlayE').textContent='Play';
   const m=parseFloat(document.getElementById('slMass').value);
   const h=parseFloat(document.getElementById('slH').value);
   document.getElementById('valMass').textContent=m+' kg';
@@ -472,7 +472,7 @@ function drawEnergy(){
   const trackTopY=40;
   const trackBotY=220;
   const trackRightY=trackTopY+0.4*(trackBotY-trackTopY);
-  const BARX=W-90,BARY=40,BARW=30,BARH=trackBotY-40;
+  const BARX=W-118,BARY=40,BARW=24,BARGAP=8,BARH=trackBotY-40;
 
   // track path
   const pts=[];
@@ -514,7 +514,7 @@ function drawEnergy(){
     ke=Math.max(0,ME0-gpe-heatLost);
     gpe=Math.max(0,ME0-ke-heatLost);
   }
-  const me=ke+gpe+heatLost;
+  const me=ke+gpe; // mechanical energy = KE + GPE; it falls by the energy converted to heat
 
   document.getElementById('ro-ke').innerHTML=ke.toFixed(1)+'<span>J</span>';
   document.getElementById('ro-gpe').innerHTML=gpe.toFixed(1)+'<span>J</span>';
@@ -523,15 +523,16 @@ function drawEnergy(){
 
   // ── Energy bar chart on right ──
   ctx.fillStyle='rgba(255,255,255,.06)';
-  ctx.fillRect(BARX-5,BARY-10,BARW+10,BARH+14);
+  const BOXW=BARW*3+BARGAP*2+10;
+  ctx.fillRect(BARX-5,BARY-10,BOXW,BARH+14);
   ctx.strokeStyle='rgba(255,255,255,.10)';ctx.lineWidth=1;
-  ctx.strokeRect(BARX-5,BARY-10,BARW+10,BARH+14);
+  ctx.strokeRect(BARX-5,BARY-10,BOXW,BARH+14);
 
   const drawBar=(x,yBot,val,maxVal,color,label)=>{
     const bh=Math.max(0,(val/maxVal)*BARH);
     ctx.fillStyle=color;
     ctx.fillRect(x,yBot-bh,BARW,bh);
-    ctx.fillStyle='rgba(210,218,245,.6)';ctx.font='8px JetBrains Mono';ctx.textAlign='center';
+    ctx.fillStyle='rgba(210,218,245,.6)';ctx.font='12px JetBrains Mono';ctx.textAlign='center';
     ctx.fillText(label,x+BARW/2,yBot+12);
     ctx.fillText(val.toFixed(0)+'J',x+BARW/2,Math.max(BARY+4,yBot-bh-4));
   };
@@ -539,22 +540,16 @@ function drawEnergy(){
   const colW=BARW;const gap=2;
   drawBar(BARX, trackBotY, ke, ME0, '#3b82f6','KE');
 
-  // Heat + GPE stacked in one bar
-  ctx.fillStyle='#4ade80';
-  const gpeH=(gpe/ME0)*BARH;
-  const heatH=(heatLost/ME0)*BARH;
-  ctx.fillRect(BARX,trackBotY-gpeH,BARW,gpeH);
-  ctx.fillStyle='#f87171';
-  ctx.fillRect(BARX,trackBotY-gpeH-heatH,BARW,heatH);
-  ctx.fillStyle='rgba(210,218,245,.6)';ctx.font='8px JetBrains Mono';ctx.textAlign='center';
-  ctx.fillText('GPE',BARX+BARW/2+2,trackBotY+12);
+  // GPE and heat each get their own bar beside KE
+  drawBar(BARX+BARW+BARGAP, trackBotY, gpe, ME0, '#4ade80','GPE');
+  drawBar(BARX+2*(BARW+BARGAP), trackBotY, heatLost, ME0, '#f87171', document.documentElement.lang==='af'?'Hitte':'Heat');
 
   // total ME line
   ctx.strokeStyle='rgba(248,250,252,.4)';ctx.lineWidth=1;ctx.setLineDash([3,3]);
-  ctx.beginPath();ctx.moveTo(BARX-10,BARY);ctx.lineTo(BARX+BARW+10,BARY);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(BARX-5,BARY);ctx.lineTo(BARX-5+BOXW,BARY);ctx.stroke();
   ctx.setLineDash([]);
-  ctx.fillStyle='rgba(248,250,252,.5)';ctx.font='8px JetBrains Mono';ctx.textAlign='center';
-  ctx.fillText('ME₀='+ME0.toFixed(0)+'J',BARX+BARW/2,BARY-4);
+  ctx.fillStyle='rgba(248,250,252,.5)';ctx.font='12px JetBrains Mono';ctx.textAlign='center';
+  ctx.fillText('ME₀='+ME0.toFixed(0)+'J',BARX-5+BOXW/2,BARY-4);
 
   // ball
   const ballR=12;
@@ -567,16 +562,16 @@ function drawEnergy(){
     ctx.strokeStyle='rgba(74,222,128,.4)';ctx.lineWidth=1;ctx.setLineDash([3,4]);
     ctx.beginPath();ctx.moveTo(bx-20,by-15);ctx.lineTo(bx-20,trackBotY);ctx.stroke();
     ctx.setLineDash([]);
-    ctx.fillStyle='#4ade80';ctx.font='10px JetBrains Mono';ctx.textAlign='right';
+    ctx.fillStyle='#4ade80';ctx.font='12px JetBrains Mono';ctx.textAlign='right';
     ctx.fillText('h='+curH.toFixed(1)+'m',bx-24,(by+trackBotY)/2);
   }
 
   // labels
-  ctx.fillStyle='rgba(210,218,245,.4)';ctx.font='10px JetBrains Mono';ctx.textAlign='left';
+  ctx.fillStyle='rgba(210,218,245,.4)';ctx.font='12px JetBrains Mono';ctx.textAlign='left';
   ctx.fillText('Reference (h = 0)',40,trackBotY+18);
   if(eFriction){
-    ctx.fillStyle='rgba(248,113,113,.7)';ctx.font='bold 11px Cabinet Grotesk';
-    ctx.fillText('⚠ Friction ON — ME decreasing',40,trackBotY+36);
+    ctx.fillStyle='rgba(248,113,113,.7)';ctx.font='bold 12px Cabinet Grotesk';
+    ctx.fillText('Friction ON — ME decreasing',40,trackBotY+36);
   }
 }
 

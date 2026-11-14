@@ -191,7 +191,10 @@
     // Sort an allele pair the way it is written: dominant first; X before Y; I^A/I^B before i.
     function sortPair(a, b) {
       const rank = (x) => x === 'Y' && st.cross.type === 'sex' ? 3 : x.startsWith('X^') ? (x[2] === x[2].toUpperCase() ? 0 : 1) : x.startsWith('I^') ? 0 : x === 'i' ? 2 : (x === x.toUpperCase() ? 0 : 1);
-      return rank(a) <= rank(b) ? [a, b] : [b, a];
+      // Equal rank (e.g. R and W in incomplete dominance): use a fixed order, so RW and WR count as one genotype
+      const ra = rank(a), rb = rank(b);
+      if (ra === rb) return a <= b ? [a, b] : [b, a];
+      return ra < rb ? [a, b] : [b, a];
     }
     function phenotype(pairs) {
       const c = st.cross, t = T();

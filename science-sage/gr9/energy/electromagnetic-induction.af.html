@@ -280,9 +280,9 @@
 
 <!-- EXPLORE -->
 <div class="tab-panel" id="tab-explore">
-  <h2 style="font-size:18px;font-weight:800;color:#fff;margin-bottom:6px">Generator- en transformatorsimulator</h2>
-  <p style="font-size:13px;color:var(--muted);margin-bottom:20px">Skakel tussen Generator-modus (draaiende spoel-animasie met geïnduseerde sinusgolf) en Transformator-modus (lewendige spanningsberekening vanaf draaiverhouding).</p>
-  <div class="ml-predict" style="margin:0 0 16px;padding:10px 14px;border-radius:10px;background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.22);font-size:13px;line-height:1.6;color:rgba(226,232,240,.88)"><strong style="color:#fde68a">Voorspel eers:</strong> 'n Transformator het 100 primêre en 500 sekondêre windings. Sal die uitsetspanning hoër of laer as die insetspanning wees? <strong style="color:#fde68a">Toets dit dan:</strong> Stel daardie windings in die transformator-modus en kontroleer.</div>
+  <h2 style="font-size:20px;font-weight:800;color:#f2f5f9;margin-bottom:6px">Generator- en transformatorsimulator</h2>
+  <p style="font-size:15px;line-height:1.6;color:rgba(226,232,240,.72);margin-bottom:16px;max-width:68ch">Skakel tussen Generator-modus (draaiende spoel-animasie met geïnduseerde sinusgolf) en Transformator-modus (lewendige spanningsberekening vanaf draaiverhouding).</p>
+  <div class="ml-predict" style="margin:0 0 16px;padding:12px 16px;border-radius:10px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.075);border-left:2px solid #74d154;font-size:15px;line-height:1.6;color:#e3e8ef"><strong style="color:#f2f5f9">Voorspel eers:</strong> 'n Transformator het 100 primêre en 500 sekondêre windings. Sal die uitsetspanning hoër of laer as die insetspanning wees? <strong style="color:#f2f5f9">Toets dit dan:</strong> Stel daardie windings in die transformator-modus en kontroleer.</div>
   <div class="sim-outer">
     <div style="display:flex;gap:8px;margin-bottom:4px">
       <button class="mode-btn active" id="btnGen" onclick="setSimMode('gen')">Generator</button>
@@ -290,7 +290,7 @@
     </div>
     <div class="sim-canvas-wrap">
       <h3 id="simTitle">WS-generator</h3>
-      <canvas id="simCanvas" height="300" role="img" aria-label="Generator- en transformatorsimulator: interaktiewe simulasie"></canvas>
+      <canvas id="simCanvas" height="300" role="img" aria-label="Generator- en transformatorsimulator. Skakel tussen Generator-modus (draaiende spoel-animasie met geïnduseerde sinusgolf) en Transformator-modus (lewendige spanningsberekening vanaf draaiverhouding)."></canvas>
     </div>
 
     <!-- Generator controls -->
@@ -520,7 +520,7 @@ function drawGeneratorFrame(ctx, W, H) {
   ctx.strokeStyle = '#fbbf24';
   ctx.lineWidth = 3;
   ctx.shadowColor = '#fbbf24';
-  ctx.shadowBlur = 8;
+  ctx.shadowBlur = 0;
   ctx.beginPath();
   ctx.ellipse(0, 0, coilW, coilH, 0, 0, Math.PI * 2);
   ctx.stroke();
@@ -554,8 +554,10 @@ function drawGeneratorFrame(ctx, W, H) {
   const sineLeft = gLeft + 20;
   const sineW = W - sineLeft - 20;
   const sineCY = cy;
-  const sineAmp = Math.min(peakV * 35, H * 0.38);
-  const sinePeriodPx = sineW * 0.5;
+  // Peak emf is proportional to the rotation speed (amplitude scales linearly up to the slider maximum of 4)
+  const sineAmp = H * 0.38 * (peakV / 4);
+  // The trace is a fixed 2-second time window, newest at the right: faster turning shows MORE cycles in it
+  const windowS = 2;
 
   // Axis
   ctx.strokeStyle = 'rgba(255,255,255,0.15)';
@@ -568,30 +570,25 @@ function drawGeneratorFrame(ctx, W, H) {
   ctx.fillStyle = 'rgba(210,218,245,0.35)';
   ctx.textAlign = 'left';
   ctx.fillText('V', sineLeft + 4, sineCY - sineAmp - 8);
-  ctx.fillText('t', sineLeft + sineW - 10, sineCY - 6);
+  ctx.textAlign = 'right'; ctx.fillText('t (laaste 2 s)', sineLeft + sineW - 8, sineCY + 14); ctx.textAlign = 'left';
   ctx.fillText('+Vpiek', sineLeft + 4, sineCY - sineAmp + 4);
   ctx.fillText('–Vpiek', sineLeft + 4, sineCY + sineAmp + 14);
 
-  // Sine wave (scrolling)
+  // emf = Vpeak · sin(coil angle): one full AC cycle for every turn of the coil
   ctx.beginPath();
   for (let px = 0; px <= sineW; px++) {
-    const t = px / sinePeriodPx - animT * speed * 0.5;
-    const vy = sineCY - Math.sin(t * Math.PI * 2) * sineAmp;
+    const tt = animT - (1 - px / sineW) * windowS;
+    const vy = sineCY - Math.sin(tt * speed * Math.PI * 2) * sineAmp;
     if (px === 0) ctx.moveTo(sineLeft + px, vy); else ctx.lineTo(sineLeft + px, vy);
   }
-  const grad = ctx.createLinearGradient(sineLeft, 0, sineLeft + sineW, 0);
-  grad.addColorStop(0, 'rgba(251,191,36,0.2)');
-  grad.addColorStop(0.5, '#fbbf24');
-  grad.addColorStop(1, 'rgba(251,191,36,0.3)');
-  ctx.strokeStyle = grad;
+  ctx.strokeStyle = '#fbbf24';
   ctx.lineWidth = 2.5;
   ctx.stroke();
 
   // Current dot on sine wave
-  const dotT = -animT * speed * 0.5;
-  const dotY = sineCY - Math.sin(dotT * Math.PI * 2) * sineAmp;
+  const dotY = sineCY - Math.sin(angle) * sineAmp;
   ctx.beginPath();
-  ctx.arc(sineLeft + 2, dotY, 5, 0, Math.PI * 2);
+  ctx.arc(sineLeft + sineW, dotY, 5, 0, Math.PI * 2);
   ctx.fillStyle = '#fbbf24';
   ctx.fill();
 
@@ -644,7 +641,7 @@ function drawTransformerFrame(ctx, W, H) {
   ctx.strokeStyle = '#fbbf24';
   ctx.lineWidth = 2.5;
   ctx.shadowColor = '#fbbf24';
-  ctx.shadowBlur = 6;
+  ctx.shadowBlur = 0;
   for (let i = 0; i < numPrimTurns; i++) {
     const ty = coilTop + i * turnSpacing + turnSpacing / 2;
     ctx.beginPath();
@@ -683,7 +680,7 @@ function drawTransformerFrame(ctx, W, H) {
   ctx.strokeStyle = '#22d3ee';
   ctx.lineWidth = 2.5;
   ctx.shadowColor = '#22d3ee';
-  ctx.shadowBlur = 6;
+  ctx.shadowBlur = 0;
   for (let i = 0; i < numSecTurns; i++) {
     const ty = coilTop + i * sTurnSpacing + sTurnSpacing / 2;
     ctx.beginPath();
