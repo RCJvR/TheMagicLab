@@ -561,4 +561,9 @@
   // ── 13. Public API ────────────────────────────────────────
   window.MagicLabModal = { open: openModal, close: closeModal };
 
+  // Loaded after sign-in had already finished (the toolbar adds this script to
+  // pages whose header had no account button): draw the current state now,
+  // because the "auth ready" event has already been and gone.
+  if (window.MagicLabAuth) _renderNavAuth(window.MagicLabAuth.getProfile());
+
 })();

@@ -195,6 +195,26 @@
     var th = bar.querySelector('.ml-theme-toggle');
     if (th) end.appendChild(th);
     if (auth) end.appendChild(auth);
+    // Pages that sign people in but whose header has no account button (all the
+    // Science Sage lessons, for example) get one here, so the button never
+    // disappears when someone moves from a tool's home page into a lesson.
+    var hasAuth = [].some.call(document.scripts, function (s) { return /(^|\/)auth\.js(\?|$)/.test(s.getAttribute('src') || ''); });
+    if (!auth && hasAuth) {
+      auth = el('button', { type: 'button', class: 'nav-back', 'data-ml-auth': '' },
+        '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-2px"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> ' + (lang() === 'af' ? 'Teken in' : 'Sign in'));
+      auth.addEventListener('click', function () {
+        if (!auth.classList.contains('ml-user-chip-wrap') && window.MagicLabModal) window.MagicLabModal.open();
+      });
+      end.appendChild(auth);
+      // The account button and sign-in window come from auth-modal.js.
+      if (![].some.call(document.scripts, function (s) { return /auth-modal\.js/.test(s.getAttribute('src') || ''); })) {
+        if (!document.querySelector('link[href*="auth-modal.css"]')) document.head.appendChild(el('link', { rel: 'stylesheet', href: '/auth-modal.css' }));
+        var am = document.createElement('script'); am.src = '/auth-modal.js'; document.body.appendChild(am);
+      } else if (window.MagicLabAuth && window.MagicLabModal) {
+        // auth-modal.js already drew the header before this button existed: redraw it now.
+        document.dispatchEvent(new CustomEvent('magiclab:auth:change', { detail: { profile: window.MagicLabAuth.getProfile() } }));
+      }
+    }
     sortEnd(end);
     // The auth and theme scripts add or swap their controls later: keep the order.
     if (window.MutationObserver) new MutationObserver(function () { sortEnd(end); }).observe(end, { childList: true });
