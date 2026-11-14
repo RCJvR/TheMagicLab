@@ -64,6 +64,13 @@
   place();
   update();
   window.addEventListener('scroll', queue, { passive: true });
+  // Some mobile browsers (iOS WebKit among them) do not always send a scroll event
+  // during touch or momentum scrolling, so the bar also checks its position a few
+  // times a second. It does nothing while the page is hidden.
+  document.addEventListener('touchmove', queue, { passive: true });
+  document.addEventListener('touchend', queue, { passive: true });
+  setInterval(function () { if (!document.hidden) queue(); }, 200);
   window.addEventListener('resize', function () { place(); queue(); });
+  window.addEventListener('orientationchange', function () { place(); queue(); });
   window.addEventListener('load', function () { place(); queue(); });
 })();
