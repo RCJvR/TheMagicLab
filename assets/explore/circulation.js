@@ -67,6 +67,11 @@
     el('path', { d: 'M300,116 L300,262', stroke: 'rgba(4,7,16,.9)', 'stroke-width': 5 }, heart);   // septum
     // valves
     el('path', { d: 'M246,174 L262,180 M286,174 L270,180 M314,174 L330,180 M354,174 L338,180', stroke: '#fde68a', 'stroke-width': 2.4, 'stroke-linecap': 'round' }, heart);
+    // Front view: the pulmonary artery leaves the RIGHT VENTRICLE and the aorta the LEFT VENTRICLE, passing in front of
+    // the atria. Drawn on top, with a dark edge, so they clearly rise out of the ventricles (not the atria).
+    const front = (d, col) => { el('path', { d: d, fill: 'none', stroke: '#040710', 'stroke-width': 13, 'stroke-linecap': 'round' }, svg); el('path', { d: d, fill: 'none', stroke: col, 'stroke-width': 8, 'stroke-linecap': 'round', 'stroke-opacity': 0.95 }, svg); };
+    front('M282,226 L288,100', BLUE);   // pulmonary trunk from the right ventricle
+    front('M318,230 L312,100', RED);    // aorta from the left ventricle
     el('path', { d: 'M283,104 L288,110 L293,104 M307,104 L312,110 L317,104', fill: 'none', stroke: '#fde68a', 'stroke-width': 2, 'stroke-linecap': 'round' }, svg);
 
     // labels with leader lines
@@ -88,7 +93,7 @@
     lab(120, 230, 104, 230, L('vena cava', 'vena cava'), 'end');
     txt(301, 92, '', {});
     const note = document.createElement('div');
-    note.style.cssText = 'margin-top:8px;font-size:12px;color:rgba(210,218,245,.7)';
+    note.style.cssText = 'margin-top:8px;font-size:13px;color:inherit;opacity:.78'; // inherit: readable in light and dark themes
     note.textContent = L('Front view: the heart’s right side is on your left. The right side pumps blood to the lungs (pulmonary circuit); the left side pumps it to the body (systemic circuit).',
       'Vooraansig: die hart se regterkant is aan jou linkerkant. Die regterkant pomp bloed na die longe (pulmonale kringloop); die linkerkant pomp dit na die liggaam (sistemiese kringloop).');
     host.appendChild(note);

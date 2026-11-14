@@ -175,7 +175,8 @@
 <script defer src="../../../progress.js"></script>
 <script defer src="../../../lesson-progress-observer.js"></script>
 <style id="ml-touch">@media (pointer:coarse){#tab-explore button,#tab-simulate button,#panel-explore button,#tab-explore select,#tab-simulate select,#panel-explore select{min-height:40px}#tab-explore input[type=range],#tab-simulate input[type=range],#panel-explore input[type=range]{min-height:32px}}</style>
-<style id="ml-wb-memo">.wb-memo{margin-top:12px;border-top:1px dashed rgba(255,255,255,.10);padding-top:10px}.wb-memo summary{cursor:pointer;font-size:13px;font-weight:700;color:#86efac;list-style:revert}.wb-memo-body{margin-top:8px;font-size:13.5px;line-height:1.8;color:rgba(210,218,245,.85);background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.18);border-radius:10px;padding:12px 16px}@media print{.wb-memo{display:none!important}}</style><style id="ml-exam-q">.wb-q.ml-exam-q{border-color:rgba(252,211,77,.35)}.ml-exam-q .wb-qnum{color:#fcd34d}</style></head>
+<style id="ml-wb-memo">.wb-memo{margin-top:12px;border-top:1px dashed rgba(255,255,255,.10);padding-top:10px}.wb-memo summary{cursor:pointer;font-size:13px;font-weight:700;color:#86efac;list-style:revert}.wb-memo-body{margin-top:8px;font-size:13.5px;line-height:1.8;color:rgba(210,218,245,.85);background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.18);border-radius:10px;padding:12px 16px}@media print{.wb-memo{display:none!important}}</style><style id="ml-exam-q">.wb-q.ml-exam-q{border-color:rgba(252,211,77,.35)}.ml-exam-q .wb-qnum{color:#fcd34d}</style><link rel="stylesheet" href="/assets/explore-kit.css">
+</head>
 <body>
   <a class="ml-skip" href="#ml-main">Skip to content</a>
 <nav data-ml-bar="science-sage" data-ml-home="/science-sage/index.html">
@@ -264,30 +265,9 @@
   <h2 style="font-size:20px;font-weight:800;color:#f2f5f9;margin-bottom:6px">Ensiemwerking-laboratorium</h2>
   <p style="font-size:15px;line-height:1.6;color:rgba(226,232,240,.72);margin-bottom:16px;max-width:68ch">Verstel temperatuur en pH en kyk hoe dit hierdie ensiem se vorm en reaksietempo beïnvloed. Vind die optimum toestande waar die ensiem vinnigste werk.</p>
   <div class="ml-predict" style="margin:0 0 16px;padding:12px 16px;border-radius:10px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.075);border-left:2px solid #74d154;font-size:15px;line-height:1.6;color:#e3e8ef"><strong style="color:#f2f5f9">Voorspel eers:</strong> By watter temperatuur werk hierdie menslike ensiem die vinnigste? Wat gebeur ver bo daardie temperatuur? <strong style="color:#f2f5f9">Toets dit dan:</strong> Verhoog die temperatuur verby die optimum en kyk na die ensiem se vorm en tempo; verander dan die pH.</div>
-  <div class="sim-outer">
-    <div class="sim-canvas-wrap">
-      <h3>Slot-en-sleutel-model</h3>
-      <canvas id="enzCanvas" height="280" role="img" aria-label="Ensiemwerking-laboratorium. Verstel temperatuur en pH en kyk hoe dit hierdie ensiem se vorm en reaksietempo beïnvloed. Vind die optimum toestande waar die ensiem vinnigste werk."></canvas>
-    </div>
-    <div class="sim-controls-row">
-      <div class="ctrl-card">
-        <div id="lbl-tempSlider" class="ctrl-label">Temperatuur <span class="val" id="tempVal">37°C</span></div>
-        <input aria-labelledby="lbl-tempSlider" type="range" id="tempSlider" min="0" max="90" value="37">
-      </div>
-      <div class="ctrl-card">
-        <div id="lbl-phSlider" class="ctrl-label">pH <span class="val" id="phVal">7.0</span></div>
-        <input aria-labelledby="lbl-phSlider" type="range" id="phSlider" min="0" max="140" value="70">
-      </div>
-    </div>
-    <div style="margin:12px 0"><button type="button" id="enzReset" class="mode-btn" style="min-height:40px;padding:8px 16px;border-radius:8px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.04);color:inherit;font:600 14px/1.2 inherit;cursor:pointer">Gebruik 'n vars ensiem</button></div>
-    <div class="rate-readout">
-      <div class="rate-num" id="rateNum">100%</div>
-      <div class="rate-bar-wrap">
-        <div class="rate-bar-track"><div class="rate-bar-fill" id="rateBar" style="width:100%;background:#22c55e"></div></div>
-        <div class="rate-status" id="rateStatus">Optimale toestande — die ensiem se aktiewe setel pas perfek by die substraat.</div>
-      </div>
-    </div>
-  </div>
+  <div id="mlx-root"></div>
+  <script src="/assets/explore-kit.js"></script>
+  <script src="/assets/explore/enzymes.js"></script>
 </div>
 
 <!-- PRACTICE -->
@@ -341,152 +321,7 @@ function switchTab(id,btn){
   if(id==='explore' && typeof resizeCanvas==='function') resizeCanvas();
 }
 
-/* ═══════════════════════════════════════════════
-   ENZYME ACTION LAB
-═══════════════════════════════════════════════ */
-const canvas = document.getElementById('enzCanvas');
-const ctx = canvas.getContext('2d');
-let W, H;
-let t = 0;
-let temp = 37, ph = 7.0;
-let heatDenatured = false; // once heated past ~50 °C the enzyme stays denatured (permanent)
-
-function resizeCanvas(){
-  W = canvas.offsetWidth || 600;
-  H = 280;
-  canvas.width = W * devicePixelRatio;
-  canvas.height = H * devicePixelRatio;
-  ctx.scale(devicePixelRatio, devicePixelRatio);
-}
-
-function tempFactor(T){
-  // Below the optimum the rate roughly doubles for every 10 °C rise (it is slow, not zero, at 0 °C);
-  // above 37 °C the enzyme starts to denature and the rate falls steeply.
-  const opt = 37;
-  if (T <= opt) return Math.pow(2, (T - opt) / 10);
-  return Math.exp(-Math.pow((T-opt)/7, 2));
-}
-function phFactor(pH){
-  return Math.exp(-Math.pow((pH-7)/2.2, 2));
-}
-function computeRate(){
-  if (isDenatured()) return 0;
-  return Math.max(0, Math.min(1, tempFactor(temp) * phFactor(ph)));
-}
-function isDenatured(){
-  return heatDenatured || ph < 3 || ph > 11;
-}
-
-function updateReadout(){
-  const rate = computeRate();
-  const pct = Math.round(rate*100);
-  document.getElementById('rateNum').textContent = pct+'%';
-  document.getElementById('rateNum').style.color = pct>=70?'#22c55e':pct>=35?'#fbbf24':'#ef4444';
-  const bar = document.getElementById('rateBar');
-  bar.style.width = pct+'%';
-  bar.style.background = pct>=70?'#22c55e':pct>=35?'#fbbf24':'#ef4444';
-  let status;
-  if (heatDenatured && temp <= 50) status = "Steeds gedenatureer: denaturering deur hitte is permanent, dus herstel afkoeling nie die aktiewe setel nie. Gebruik 'n vars ensiem om weer te probeer.";
-  else if (!heatDenatured && isDenatured()) status = "Gedenatureer deur die uiterste pH: die aktiewe setel het van vorm verander. (Sommige ensieme herstel as die pH normaal word, maar hitteskade is permanent.)";
-  else if (isDenatured()) status = "Gedenatureer! Die ensiem se aktiewe setel het van vorm verander en pas nie meer by die substraat nie — die reaksie het gestop.";
-  else if (pct >= 85) status = "Optimale toestande — die ensiem se aktiewe setel pas perfek by die substraat.";
-  else if (temp < 20) status = "Te koud — molekules beweeg stadig, sodat botsings tussen ensiem en substraat skaars is.";
-  else if (pct < 40) status = "Toestande beweeg weg van die optimum — die ensiem werk, maar stadig.";
-  else status = "Goeie toestande, maar nie heeltemal optimaal nie.";
-  document.getElementById('rateStatus').textContent = status;
-}
-
-function drawScene(){
-  ctx.clearRect(0,0,W,H);
-  t += 0.03;
-  const rate = computeRate();
-  const denatured = isDenatured();
-  const cx = W*0.32, cy = H*0.52;
-  const pulse = 1 + 0.04*Math.sin(t*4)*rate;
-
-  // Enzyme body (blob) — jagged & red if denatured, smooth & green if healthy
-  ctx.save();
-  ctx.beginPath();
-  const baseR = Math.min(W,H)*0.20;
-  const points = 10;
-  for(let i=0;i<=points;i++){
-    const a = (i/points)*Math.PI*2;
-    let r = baseR*pulse;
-    if (denatured) r += Math.sin(a*5 + t*2)*baseR*0.28;
-    else r += Math.sin(a*3)*baseR*0.06;
-    const px = cx + r*Math.cos(a), py = cy + r*Math.sin(a);
-    if(i===0) ctx.moveTo(px,py); else ctx.lineTo(px,py);
-  }
-  ctx.closePath();
-  const color = denatured ? '#ef4444' : rate>0.6 ? '#22c55e' : '#fbbf24';
-  ctx.fillStyle = color+'33';
-  ctx.fill();
-  ctx.strokeStyle = color;
-  ctx.lineWidth = 2.5;
-  ctx.stroke();
-  ctx.restore();
-
-  // Active site notch label
-  ctx.fillStyle = 'rgba(255,255,255,0.55)';
-  ctx.font = '11px "JetBrains Mono",monospace';
-  ctx.textAlign = 'center';
-  ctx.fillText('ENSIEM', cx, cy + baseR + 22);
-
-  // Substrate molecule — orbits toward active site, "docks" and disappears if rate is high
-  const orbitR = baseR*1.9;
-  const speed = 0.5 + rate*1.5;
-  const sAngle = (t*speed) % (Math.PI*2);
-  const dockPhase = denatured ? 0 : Math.max(0, Math.sin(t*speed*0.6));
-  const sx = cx + Math.cos(sAngle)*orbitR*(1-dockPhase*0.55);
-  const sy = cy + Math.sin(sAngle)*orbitR*(1-dockPhase*0.55);
-  ctx.save();
-  ctx.beginPath();
-  ctx.arc(sx, sy, 10, 0, Math.PI*2);
-  ctx.fillStyle = 'rgba(96,165,250,0.85)';
-  ctx.fill();
-  ctx.restore();
-  ctx.fillStyle = 'rgba(255,255,255,0.45)';
-  ctx.font = '10px "JetBrains Mono",monospace';
-  ctx.fillText('substraat', sx, sy - 16);
-
-  // Rate meter bar on canvas (right side)
-  const bx = W*0.72, by = H*0.20, bw = 26, bh = H*0.60;
-  ctx.strokeStyle = 'rgba(255,255,255,0.15)';
-  ctx.lineWidth = 1;
-  ctx.strokeRect(bx, by, bw, bh);
-  const fillH = bh*rate;
-  ctx.fillStyle = color;
-  ctx.fillRect(bx, by+bh-fillH, bw, fillH);
-  ctx.fillStyle = 'rgba(255,255,255,0.55)';
-  ctx.font = '10px "JetBrains Mono",monospace';
-  ctx.textAlign = 'center';
-  ctx.fillText('TEMPO', bx+bw/2, by-8);
-
-  requestAnimationFrame(drawScene);
-}
-
-document.getElementById('tempSlider').addEventListener('input', e=>{
-  temp = parseInt(e.target.value);
-  if (temp > 50) heatDenatured = true;
-  document.getElementById('tempVal').textContent = temp+'°C';
-  updateReadout();
-});
-document.getElementById('enzReset').addEventListener('click', ()=>{
-  heatDenatured = false; temp = 37; ph = 7.0;
-  document.getElementById('tempSlider').value = 37; document.getElementById('phSlider').value = 70;
-  document.getElementById('tempVal').textContent = '37°C'; document.getElementById('phVal').textContent = '7.0';
-  updateReadout();
-});
-document.getElementById('phSlider').addEventListener('input', e=>{
-  ph = parseInt(e.target.value)/10;
-  document.getElementById('phVal').textContent = ph.toFixed(1);
-  updateReadout();
-});
-
-window.addEventListener('resize', resizeCanvas);
-resizeCanvas();
-updateReadout();
-drawScene();
+function computeRate(){} function drawScene(){} function isDenatured(){} function phFactor(){} function resizeCanvas(){} function tempFactor(){} function updateReadout(){} // the simulation is assets/explore/enzymes.js
 
 /* ═══════════════════════════════════════════════
    PRACTICE
