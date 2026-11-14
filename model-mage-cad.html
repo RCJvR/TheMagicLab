@@ -262,7 +262,7 @@
     #len-popup input:focus{border-color:rgba(217,119,6,0.8);}
     #len-popup .lp-unit{font-size:0.70rem;color:var(--text2);}
 
-    .right-panel{width:300px;flex-shrink:0;display:flex;flex-direction:column;
+    .right-panel{width:var(--rp-w,420px);flex-shrink:0;display:flex;flex-direction:column;
                  border-left:1px solid var(--border);background:var(--bg2);}
 
     .ext-panel{padding:13px 14px;border-bottom:1px solid var(--border);flex-shrink:0;}
@@ -306,7 +306,18 @@
     .cst-del{background:none;border:none;color:var(--text2);cursor:pointer;font-size:0.9rem;line-height:1;padding:0 4px;border-radius:3px;}
     .cst-del:hover{color:var(--red);background:rgba(248,113,113,0.12);}
 
-    #vp3d{flex:1;position:relative;background:#08090b;overflow:hidden;}
+    #vp3d{flex:1;position:relative;background:#08090b;overflow:hidden;min-height:180px;}
+    /* Resizable layout: drag bars between the panels */
+    .rp-top{flex:0 0 var(--rp-top,auto);max-height:var(--rp-top-max,60%);overflow-y:auto;display:flex;flex-direction:column;}
+    .rp-top > *{flex-shrink:0;}
+    .split-v{width:6px;flex-shrink:0;cursor:col-resize;background:transparent;position:relative;z-index:5;margin:0 -3px;}
+    .split-h{height:6px;flex-shrink:0;cursor:row-resize;background:transparent;position:relative;z-index:5;margin:-3px 0;}
+    .split-v::after{content:"";position:absolute;top:0;bottom:0;left:2px;width:2px;background:var(--border);transition:background 120ms;}
+    .split-h::after{content:"";position:absolute;left:0;right:0;top:2px;height:2px;background:var(--border);transition:background 120ms;}
+    .split-v:hover::after,.split-v.dragging::after,.split-h:hover::after,.split-h.dragging::after{background:var(--accent2,#f5b23d);}
+    .main.mode-3d #split-main{display:none;}
+    body.resizing, body.resizing *{user-select:none!important;}
+    @media (max-width: 768px){ .split-v,.split-h{display:none;} .right-panel{width:100%;} .rp-top{flex-basis:auto;max-height:none;} }
     .vp-placeholder{position:absolute;inset:0;display:flex;flex-direction:column;
                     align-items:center;justify-content:center;gap:8px;pointer-events:none;}
     .vp-ph-icon{font-size:2.2rem;opacity:0.5;}
@@ -324,7 +335,7 @@
     .edge-mode-btn{height:22px;padding:0 8px;border:none;background:none;
       color:var(--text2);font-size:0.70rem;font-weight:600;cursor:pointer;font-family:inherit;}
     .edge-mode-btn.active{background:rgba(23,196,192,0.2);color:var(--accent2);}
-    .feat-panel{width:200px;flex-shrink:0;border-right:1px solid var(--border);
+    .feat-panel{width:var(--tree-w,200px);flex-shrink:0;border-right:1px solid var(--border);
       background:var(--bg2);display:flex;flex-direction:column;overflow:hidden;}
     .feat-panel-title{font-size:0.68rem;font-weight:700;color:var(--text2);
       letter-spacing:.09em;text-transform:uppercase;padding:10px 12px 6px;
@@ -564,6 +575,7 @@
     <button class="feat-add-sketch" id="btn-add-sketch">+ Sketch</button>
   </div>
 
+  <div class="split-v" id="split-tree" role="separator" aria-orientation="vertical" aria-label="Resize the feature tree" title="Drag to resize"></div>
   <div class="sketch-panel">
     <canvas id="sk"></canvas>
     <div class="sk-overlay">Sketch · XY Plane</div>
@@ -579,7 +591,12 @@
         <span class="ext-prompt-unit">mm</span>
       </div>
       <label class="ext-prompt-thru" id="ext-prompt-thru-row" hidden>
-        <input type="checkbox" id="ext-prompt-thru"> Hole goes right through
+        <span>Hole depth</span>
+        <select id="ext-prompt-holemode" class="ext-prompt-input" style="flex:1;width:auto">
+          <option value="wall">Through this wall</option>
+          <option value="all">Through everything</option>
+          <option value="depth">Use the depth above</option>
+        </select>
       </label>
       <div class="ext-prompt-actions">
         <button class="ext-btn ext-btn-go" id="ext-prompt-yes" title="Pad: add material — the shape grows out of the part">⬆ Pad</button>
@@ -602,7 +619,9 @@
     </div>
   </div>
 
+  <div class="split-v" id="split-main" role="separator" aria-orientation="vertical" aria-label="Resize the 3D panel" title="Drag to resize"></div>
   <div class="right-panel">
+    <div class="rp-top" id="rp-top">
 
     <div class="ext-panel">
       <div class="panel-title">Extrude</div>
@@ -650,6 +669,8 @@
 
     <div class="f3-msg" id="f3-msg" role="status" hidden></div>
     <div class="feat-props" id="feat-props" hidden></div>
+    </div>
+    <div class="split-h" id="split-rp" role="separator" aria-orientation="horizontal" aria-label="Resize the 3D preview" title="Drag to resize"></div>
 
     <div id="vp3d">
       <div class="vp-placeholder" id="vp-ph">
@@ -713,21 +734,28 @@ self.onmessage = async ({ data }) => {
             filletR:data.filletR||0, chamferR:data.chamferR||0, planeName:'XY', planeOffset:0 }];
     let solid = null;
     const warnings = [];
+    const combine = (s, item) => {
+      if (!solid || item.operation === 'new') return solid ? solid.fuse(s) : s;
+      if (item.operation === 'cut') return solid.cut(s);
+      return solid.fuse(s);
+    };
     for (const item of profileList) {
       try {
-        let s = makeTool(item);
-        s = applyPatterns(s, item.patterns || []);
-        if (!solid || item.operation === 'new') {
-          solid = solid ? solid.fuse(s) : s;
-        } else if (item.operation === 'cut') {
-          solid = solid.cut(s);
-        } else {
-          solid = solid.fuse(s);
-        }
+        solid = combine(applyPatterns(makeTool(item), item.patterns || []), item);
       } catch(opErr) {
-        const m = (opErr && (opErr.message || opErr.toString && opErr.toString())) || 'error';
-        warnings.push((item.kind === 'revolve' ? 'revolve' : 'extrude') + ' (' + m + ')');
-        console.warn('[ModelMage] skipping op', item.kind, item.operation, m);
+        // OpenCascade often fails when a face of the tool lies exactly on a
+        // face of the part. Try once more with the tool nudged 0.05 mm: it
+        // starts just outside the face and reaches just past its depth.
+        let ok = false;
+        if (item.kind !== 'revolve') {
+          try { solid = combine(applyPatterns(makeTool({ ...item, nudge: 0.05 }), item.patterns || []), item); ok = true; }
+          catch(_) {}
+        }
+        if (!ok) {
+          const m = (opErr && (opErr.message || opErr.toString && opErr.toString())) || 'error';
+          warnings.push((item.name || (item.kind === 'revolve' ? 'A revolve' : 'A feature')) + ' could not be combined with the part');
+          console.warn('[ModelMage] skipping op', item.name, item.kind, item.operation, m);
+        }
       }
     }
     if (!solid) throw new Error(warnings[0] || 'Nothing to build');
@@ -815,6 +843,12 @@ function makeTool(item) {
   else if (item.operation === 'fuse') h = ns * pf * Math.abs(item.height);
   else h = item.height;
   let solid = onPlane(drawing).extrude(h);
+  if (item.nudge) {
+    // Retry geometry: a little longer, and moved back so it starts outside the face
+    const N = pd ? pd.normal : (PLANES[planeName] || PLANES.XY).n;
+    const sg = Math.sign(h) || 1, e = item.nudge;
+    solid = onPlane(makeDrawing(item.profile)).extrude(h + sg * 2 * e).translate(N.map(v => -sg * e * v));
+  }
   // A pocket drawn on a base plane (not on a face) cuts both ways, so it
   // reaches the part whichever side of the plane the part is on.
   if (item.operation === 'cut' && item.both) {
@@ -873,7 +907,7 @@ worker.onmessage = ({ data }) => {
   } else if (data.type === 'mesh') {
     applyMesh(data.v, data.n, data.t);
     setRebuildStatus('done');
-    if (data.warnings && data.warnings.length) f3Msg('Some features could not be built: ' + data.warnings.join(' · '), true);
+    if (data.warnings && data.warnings.length) f3Msg(data.warnings.join(' · ') + '. Try changing its depth or size slightly, or double-click it in the tree to edit it.', true);
   } else if (data.type === 'err') {
     console.warn('[ModelMage]', data.msg);
     setRebuildStatus('error', data.msg);
@@ -3474,6 +3508,7 @@ function f3PadPocket(kind) {
   nodes.forEach((n, j) => {
     n.operation = kind === 'pocket' ? 'cut' : (hadSolid || j > 0 ? 'fuse' : 'new');
     n.name = nextName(kind === 'pocket' ? 'Pocket' : 'Pad');
+    if (kind === 'pocket' && sk.datumId) applyHoleMode(n, sk, 'wall');
   });
   if (nodes[0]) selectFeatureNode(nodes[0]);
   renderFeatureTree(); scheduleExtrude();
@@ -3864,6 +3899,115 @@ function restorePreTutorial() {
 }
 
 // ════════════════════════════════════════════════════════════════════
+// RESIZABLE PANELS — drag bars between tree, sketch, settings and 3D preview
+// ════════════════════════════════════════════════════════════════════
+function wireSplitters() {
+  const root = document.documentElement;
+  const main = document.querySelector('.main');
+  const load = (k, d) => { try { const v = parseFloat(localStorage.getItem(k)); return isFinite(v) ? v : d; } catch (e) { return d; } };
+  const save = (k, v) => { try { localStorage.setItem(k, String(Math.round(v))); } catch (e) {} };
+  const apply = () => {
+    root.style.setProperty('--tree-w', load('mm-tree-w', 200) + 'px');
+    root.style.setProperty('--rp-w', load('mm-rp-w', 420) + 'px');
+    const top = load('mm-rp-top', NaN);
+    if (isFinite(top)) { root.style.setProperty('--rp-top', top + 'px'); root.style.setProperty('--rp-top-max', 'none'); }
+  };
+  apply();
+  const drag = (id, onMove, onEnd) => {
+    const bar = document.getElementById(id); if (!bar) return;
+    bar.addEventListener('pointerdown', e => {
+      e.preventDefault();
+      try { bar.setPointerCapture(e.pointerId); } catch (_) {}
+      bar.classList.add('dragging'); document.body.classList.add('resizing');
+      const move = ev => onMove(ev);
+      const up = () => {
+        bar.classList.remove('dragging'); document.body.classList.remove('resizing');
+        bar.removeEventListener('pointermove', move); bar.removeEventListener('pointerup', up); bar.removeEventListener('pointercancel', up);
+        onEnd && onEnd();
+        resize();
+      };
+      bar.addEventListener('pointermove', move); bar.addEventListener('pointerup', up); bar.addEventListener('pointercancel', up);
+    });
+    // Double-click a bar to go back to the standard size
+    bar.addEventListener('dblclick', () => {
+      try { localStorage.removeItem(id === 'split-tree' ? 'mm-tree-w' : id === 'split-main' ? 'mm-rp-w' : 'mm-rp-top'); } catch (e) {}
+      if (id === 'split-rp') { root.style.removeProperty('--rp-top'); root.style.removeProperty('--rp-top-max'); }
+      apply(); resize();
+    });
+  };
+  drag('split-tree', ev => {
+    const left = main.getBoundingClientRect().left;
+    const w = Math.max(140, Math.min(420, ev.clientX - left));
+    root.style.setProperty('--tree-w', w + 'px'); save('mm-tree-w', w);
+  });
+  drag('split-main', ev => {
+    const r = main.getBoundingClientRect();
+    const w = Math.max(280, Math.min(r.width - 320, r.right - ev.clientX));
+    root.style.setProperty('--rp-w', w + 'px'); save('mm-rp-w', w);
+  });
+  drag('split-rp', ev => {
+    const panel = document.querySelector('.right-panel').getBoundingClientRect();
+    const h = Math.max(60, Math.min(panel.height - 180, ev.clientY - panel.top));
+    root.style.setProperty('--rp-top', h + 'px'); root.style.setProperty('--rp-top-max', 'none'); save('mm-rp-top', h);
+  });
+}
+
+// ════════════════════════════════════════════════════════════════════
+// HOLE DEPTH — "through this wall": measure the material behind a face sketch
+// ════════════════════════════════════════════════════════════════════
+// Cast a ray from the middle of the shape straight into the part and see where
+// it comes out again. That distance is how deep a hole must go to pass through
+// this wall without cutting walls further behind.
+function measureWall(sk, idx) {
+  if (!modelMesh || !sk || typeof sk.plane !== 'object') return null;
+  const prof = getAllProfiles(sk)[idx]; if (!prof) return null;
+  const p = prof.profile;
+  // Sample points spread over the shape: its middle plus points near its edge.
+  // Walls are not always the same thickness, so the deepest reading wins.
+  let pts = [];
+  if (p.type === 'circle') {
+    pts.push([p.cx, p.cy]);
+    for (let i = 0; i < 12; i++) { const a = i/12*2*Math.PI; pts.push([p.cx + 0.9*p.r*Math.cos(a), p.cy + 0.9*p.r*Math.sin(a)]); }
+  } else {
+    let outline = p.type === 'rect' ? [[p.x,p.y],[p.x+p.w,p.y],[p.x+p.w,p.y+p.h],[p.x,p.y+p.h]]
+      : p.type === 'arc' ? arcSamples(p, 12) : (p.type === 'spline' ? catmullRomExpand(p.points) : (p.points || []));
+    if (!outline.length) return null;
+    const cx = outline.reduce((t,q)=>t+q[0],0)/outline.length, cy = outline.reduce((t,q)=>t+q[1],0)/outline.length;
+    pts.push([cx, cy]);
+    const step = Math.max(1, Math.floor(outline.length / 16));
+    for (let i = 0; i < outline.length; i += step) pts.push([cx + 0.9*(outline[i][0]-cx), cy + 0.9*(outline[i][1]-cy)]);
+  }
+  const B = planeBasis(sk.plane);
+  const ns = sk.plane.normalSign ?? 1;
+  const out = B.n.map(v => v * ns);                       // outward normal, model coords
+  modelGroup.updateMatrixWorld(true);
+  const dir = new THREE.Vector3(...out.map(v => -v)).transformDirection(modelGroup.matrixWorld).normalize();
+  const side = modelMesh.material.side;
+  modelMesh.material.side = THREE.DoubleSide;             // so the exit (a back face) is found too
+  let best = null;
+  for (const c of pts) {
+    const P = [0,1,2].map(i => B.o[i] + c[0]*B.x[i] + c[1]*B.y[i]);
+    const start = new THREE.Vector3(...P.map((v,i) => v + out[i]*0.5)).applyMatrix4(modelGroup.matrixWorld);
+    const hits = new THREE.Raycaster(start, dir).intersectObject(modelMesh, false);
+    const d = [];
+    for (const h of hits) if (!d.length || h.distance - d[d.length-1] > 1e-3) d.push(h.distance);
+    if (d.length < 2 || d[0] > 0.6) continue;             // this point is not on the face itself
+    const depth = d[1] - 0.5;                             // face → where the ray leaves the wall
+    if (depth > 0.05 && (best === null || depth > best)) best = depth;
+  }
+  modelMesh.material.side = side;
+  return best === null ? null : Math.round((best + 0.05) * 100) / 100;   // a hair past, so the hole opens cleanly
+}
+function applyHoleMode(node, sk, mode) {
+  node.holeMode = mode;
+  if (mode === 'wall') {
+    const t = measureWall(sk, node.profileIdx);
+    if (t) node.height = t;
+    else node.holeMode = 'depth';
+  }
+}
+
+// ════════════════════════════════════════════════════════════════════
 // CLOSE DETECTION
 // ════════════════════════════════════════════════════════════════════
 
@@ -4078,11 +4222,11 @@ function collectExtrudePayload() {
     if (node.type === 'extrude') {
       // "Through" holes cut far past any part a learner will make
       const h = (node.thru && node.operation === 'cut') ? 2000 : node.height;
-      items.push({ id:node.id, kind:'extrude', profile:entry.profile, height:h, operation:node.operation,
+      items.push({ id:node.id, name:node.name, kind:'extrude', profile:entry.profile, height:h, operation:node.operation,
                    filletR:node.filletR, chamferR:node.chamferR, planeName, planeOffset, planeDef, normalSign,
                    both: typeof sk.plane === 'string', patterns:[] });
     } else {
-      items.push({ id:node.id, kind:'revolve', profile:entry.profile, axis:node.axis, angle:node.angle,
+      items.push({ id:node.id, name:node.name, kind:'revolve', profile:entry.profile, axis:node.axis, angle:node.angle,
                    operation:node.operation, planeName, planeOffset, planeDef, patterns:[] });
     }
   }
@@ -4188,6 +4332,10 @@ function refreshExtrudePrompt() {
     const canHole = featureTree.some(f => f.type === 'extrude' || f.type === 'revolve');
     document.getElementById('ext-prompt-pocket').hidden = !canHole;
     document.getElementById('ext-prompt-thru-row').hidden = !canHole;
+    // Default: on a face of the part, a hole goes through that wall only
+    const hm = document.getElementById('ext-prompt-holemode');
+    const _hs = activeSketch();
+    if (hm && box.hidden) hm.value = (_hs && _hs.datumId) ? 'wall' : 'all';
     document.getElementById('ext-prompt-hlabel').textContent = canHole ? 'Height / depth' : 'Height';
     const h = document.getElementById('ext-prompt-height');
     const sk = activeSketch();
@@ -4227,7 +4375,8 @@ function answerExtrude(choice) {
   }
   const h = parseFloat((document.getElementById('ext-prompt-height') || {}).value);
   if (isFinite(h) && h > 0) { sk.extrudeHeight = h; extH = h; }
-  const thru = choice === 'pocket' && !!document.getElementById('ext-prompt-thru')?.checked;
+  const holeMode = choice === 'pocket' ? (document.getElementById('ext-prompt-holemode')?.value || 'depth') : 'depth';
+  const thru = holeMode === 'all';
   const hadSolid = featureTree.some(f => f.type === 'extrude' || f.type === 'revolve');
   pend.forEach(i => { sk.extrudeChoice[i] = 'extrude'; });
   syncExtrudeNodes();
@@ -4235,6 +4384,7 @@ function answerExtrude(choice) {
   nodes.forEach((n, j) => {
     n.operation = choice === 'pocket' ? 'cut' : (hadSolid || j > 0 ? 'fuse' : 'new');
     n.thru = thru;
+    if (choice === 'pocket') applyHoleMode(n, sk, holeMode);
     const prefix = choice === 'pocket' ? 'Pocket' : 'Pad';
     n.name = `${prefix} ${featureTree.filter(f => (f.name || '').startsWith(prefix)).length + 1}`;
   });
@@ -5597,7 +5747,7 @@ function renderFeatureTree() {
     const subSpan = t => `<span style="font-size:0.62rem;color:var(--text2);display:block">${t}</span>`;
     if (node.type==='extrude') {
       const hLabel = node.operation==='cut' ? 'depth' : 'h';
-      sub=subSpan((node.thru && node.operation==='cut' ? 'through all' : `${hLabel}${node.height}mm`)+(node.filletR?` · f${node.filletR}`:'')+(node.chamferR?` · c${node.chamferR}`:''));
+      sub=subSpan((node.thru && node.operation==='cut' ? 'through all' : node.holeMode==='wall' && node.operation==='cut' ? `through wall · ${node.height}mm` : `${hLabel}${node.height}mm`)+(node.filletR?` · f${node.filletR}`:'')+(node.chamferR?` · c${node.chamferR}`:''));
       badge=`<span class="feat-node-op op-${node.operation}">${node.operation==='cut'?'POCKET':node.operation==='new'?'PAD':'PAD+'}</span>`;
     } else if (node.type==='revolve') {
       sub=subSpan(`${node.angle}° about sketch ${node.axis==='H'?'X':'Y'} axis`);
@@ -5873,6 +6023,7 @@ document.getElementById('btn-clear-stl').addEventListener('click', () => {
 // ════════════════════════════════════════════════════════════════════
 // INIT
 wireWorkbenchUI();
+wireSplitters();
 document.getElementById('btn-tutorials')?.addEventListener('click', openTutorialPicker);
 // ════════════════════════════════════════════════════════════════════
 
