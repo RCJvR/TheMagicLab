@@ -174,7 +174,7 @@
         st.stages.forEach(s => {
           const dt = Math.max(0, num(s.dt, 0)), a = num(s.a, 0);
           if (dt <= 0) return;
-          out.push({ t0: t, t1: t + dt, x0: x, v0: v, a });
+          out.push({ t0: t, t1: t + dt, x0: x, v0: v, a, note: String(s.note || '').trim() });
           x += v * dt + 0.5 * a * dt * dt; v += a * dt; t += dt;
         });
         return { segs: out, jumps: false };
@@ -219,7 +219,12 @@
       const t = T(), { segs, jumps } = segments();
       const title = String(st.title || '').trim();
       const graphs = [['x', st.gx, t.xlab], ['v', st.gv, t.vlab], ['a', st.ga, t.alab]].filter(g => g[1]);
-      if (!segs.length || !graphs.length) { $('plot').innerHTML = ''; $('summary').innerHTML = ''; return; }
+      if (!segs.length || !graphs.length) {
+        $('plot').innerHTML = '';
+        // e.g. a ball thrown downwards from height 0 never leaves the ground: say so instead of a blank stage
+        $('summary').innerHTML = st.mode === 'proj' ? `<div>${lang === 'af' ? 'Niks om te teken nie: verhoog die beginhoogte, of gooi die bal opwaarts.' : 'Nothing to draw: raise the starting height, or throw the ball upwards.'}</div>` : '';
+        return;
+      }
       const T1 = segs[segs.length - 1].t1;
       const panelH = 210, gap = 34, top = title ? 56 : 20, left = 96, right = W - 30;
       const H = top + graphs.length * (panelH + gap) + 30;
@@ -277,6 +282,8 @@
             if (kind === 'v' && sg.a !== 0) { const tv = sg.t0 - sg.v0 / sg.a; if (tv > sg.t0 + 1e-6 && tv < sg.t1 - 1e-6) keys += `<circle cx="${X(tv)}" cy="${zeroY}" r="3.8" fill="${COL}"/><text x="${X(tv)}" y="${zeroY - 8}" text-anchor="middle" font-size="12.5" fill="${INK}" stroke="#fff" stroke-width="3" paint-order="stroke">${fmt(tv)}</text>`; }
           });
         }
+        // stage notes, written once above the top graph, centred on their stage
+        if (gi === 0) segs.forEach(sg => { if (sg.note) keys += `<text x="${(X(sg.t0) + X(sg.t1)) / 2}" y="${y0 - 10}" text-anchor="middle" font-size="13" fill="${SUB}">${esc(sg.note)}</text>`; });
         s += g + path + keys;
       });
       $('plot').innerHTML = s + '</svg>';

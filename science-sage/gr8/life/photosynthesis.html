@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
 <script src="/assets/theme.js"></script>
 <script defer src="/assets/lesson-toc.js"></script>
+<link rel="stylesheet" href="/assets/lesson-progress.css">
+<script defer src="/assets/lesson-progress.js"></script>
 <link rel="stylesheet" href="/assets/focus-reading.css">
 <script defer src="/assets/focus-reading.js"></script>
 <script src="/assets/sim-fit.js"></script>
@@ -281,33 +283,33 @@
 
 <!-- EXPLORE -->
 <div class="tab-panel" id="tab-explore">
-  <h2 style="font-size:18px;font-weight:800;color:#fff;margin-bottom:6px">Photosynthesis Rate Simulator</h2>
-  <p style="font-size:13px;color:var(--muted);margin-bottom:20px">Adjust the sliders to see how each factor affects the rate of photosynthesis. Toggle to see cellular respiration.</p>
-  <div class="ml-predict" style="margin:0 0 16px;padding:10px 14px;border-radius:10px;background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.22);font-size:13px;line-height:1.6;color:rgba(226,232,240,.88)"><strong style="color:#fde68a">Predict first:</strong> What happens to the rate if the light stays bright but the CO₂ is lowered? <strong style="color:#fde68a">Then test it:</strong> Keep the light high and lower the CO₂ slider.</div>
+  <h2 style="font-size:20px;font-weight:800;color:#f2f5f9;margin-bottom:6px">Photosynthesis Rate Simulator</h2>
+  <p style="font-size:15px;line-height:1.6;color:rgba(226,232,240,.72);margin-bottom:16px;max-width:68ch">Adjust the sliders to see how each factor affects the rate of photosynthesis. Toggle to see cellular respiration.</p>
+  <div class="ml-predict" style="margin:0 0 16px;padding:12px 16px;border-radius:10px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.075);border-left:2px solid #74d154;font-size:15px;line-height:1.6;color:#e3e8ef"><strong style="color:#f2f5f9">Predict first:</strong> What happens to the rate if the light stays bright but the CO₂ is lowered? <strong style="color:#f2f5f9">Then test it:</strong> Keep the light high and lower the CO₂ slider.</div>
   <div class="explore-wrap">
     <div class="canvas-card">
-      <canvas id="simCanvas" height="420" role="img" aria-label="Photosynthesis Rate Simulator: interactive simulation"></canvas>
+      <canvas id="simCanvas" height="420" role="img" aria-label="Photosynthesis Rate Simulator. Adjust the sliders to see how each factor affects the rate of photosynthesis. Toggle to see cellular respiration."></canvas>
     </div>
     <div class="controls">
       <div class="ctrl-card">
         <div class="ctrl-label">Mode</div>
         <div class="mode-row">
-          <button class="mode-btn active" id="btnPhoto" onclick="setMode('photo')">☀️ Photo-synthesis</button>
-          <button class="mode-btn" id="btnResp" onclick="setMode('resp')">🔥 Respiration</button>
+          <button class="mode-btn active" id="btnPhoto" onclick="setMode('photo')">Photo-synthesis</button>
+          <button class="mode-btn" id="btnResp" onclick="setMode('resp')">Respiration</button>
         </div>
       </div>
       <div class="ctrl-card" id="sliderPanel">
         <div class="ctrl-label">Environmental Factors</div>
         <div class="slider-row">
-          <label for="slLight"><span>💡 Light intensity</span><span id="lblLight">70%</span></label>
+          <label for="slLight"><span>Light intensity</span><span id="lblLight">70%</span></label>
           <input type="range" id="slLight" min="0" max="100" value="70" oninput="updateSim()">
         </div>
         <div class="slider-row">
-          <label for="slCO2"><span>🌫️ CO₂ concentration</span><span id="lblCO2">0.04%</span></label>
-          <input type="range" id="slCO2" min="4" max="500" value="40" oninput="updateSim()">
+          <label for="slCO2"><span>CO₂ concentration</span><span id="lblCO2">0.04%</span></label>
+          <input type="range" id="slCO2" min="1" max="100" value="4" oninput="updateSim()">
         </div>
         <div class="slider-row">
-          <label for="slTemp"><span>🌡️ Temperature</span><span id="lblTemp">25°C</span></label>
+          <label for="slTemp"><span>Temperature</span><span id="lblTemp">25°C</span></label>
           <input type="range" id="slTemp" min="0" max="45" value="25" oninput="updateSim()">
         </div>
       </div>
@@ -398,10 +400,15 @@ function calcRate(){
   const light = parseInt(document.getElementById('slLight').value);
   const co2Raw = parseInt(document.getElementById('slCO2').value);
   const temp = parseInt(document.getElementById('slTemp').value);
-  // Normalize CO2 to 0-100 scale (4=0.04%, 500=5%)
-  const co2 = Math.min(100, (co2Raw - 4) / 4.96 * 100);
-  // Temperature factor: bell curve peaking at 25°C
-  const tempFactor = Math.max(0, 1 - Math.pow((temp - 25) / 22, 2));
+  // CO₂: slider value ÷ 100 = percent (1 → 0.01%; 4 → 0.04%, normal air; 100 → 1%).
+  // Rate rises steeply above normal air and levels off by about 0.1–0.2% (saturating curve).
+  const pct = co2Raw / 100;
+  const co2 = 100 * pct / (pct + 0.03);
+  // Temperature: enzyme-controlled, so the rate roughly doubles every 10 °C up to an optimum near 35 °C,
+  // then falls steeply as the enzymes denature (normalised so the optimum = 1).
+  const g = T => Math.pow(2, (T - 25) / 10) / (1 + Math.exp((T - 40) / 2.5));
+  let gMax = 0; for (let T = 0; T <= 50; T += 0.5) gMax = Math.max(gMax, g(T));
+  const tempFactor = g(temp) / gMax;
   // Limiting factor is the minimum
   const lf = Math.min(light/100, co2/100, tempFactor);
   return { rate: lf, light: light/100, co2: co2/100, tempFactor, temp, co2Raw };
@@ -416,7 +423,7 @@ function getLimitingFactor(r){
 function updateSim(){
   if(simMode !== 'photo') return;
   const co2Raw = parseInt(document.getElementById('slCO2').value);
-  const co2Pct = (co2Raw/10000).toFixed(4);
+  const co2Pct = (co2Raw/100).toFixed(2);
   const temp = document.getElementById('slTemp').value;
   document.getElementById('lblLight').textContent = document.getElementById('slLight').value + '%';
   document.getElementById('lblCO2').textContent = parseFloat(co2Pct).toFixed(2) + '%';
@@ -563,7 +570,7 @@ function drawPhoto(ts){
     ctx.globalAlpha = Math.min(1,(temp-38)/7 * 0.95);
     ctx.fillStyle='#fca5a5'; ctx.font='bold 13px "Cabinet Grotesk"';
     ctx.textAlign='center';
-    ctx.fillText('⚠ Enzymes denaturing — rate dropping!', W/2, H*0.06);
+    ctx.fillText('Enzymes denaturing — rate dropping!', W/2, H*0.06);
     ctx.restore();
   }
 }

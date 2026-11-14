@@ -3,6 +3,8 @@
 <head>
 <script src="/assets/theme.js"></script>
 <script defer src="/assets/lesson-toc.js"></script>
+<link rel="stylesheet" href="/assets/lesson-progress.css">
+<script defer src="/assets/lesson-progress.js"></script>
 <link rel="stylesheet" href="/assets/focus-reading.css">
 <script defer src="/assets/focus-reading.js"></script>
 <script src="/assets/sim-fit.js"></script>
@@ -272,11 +274,11 @@ input[type=range]{flex:1;accent-color:#60a5fa;cursor:pointer}
 
 <!-- SIMULATE TAB -->
 <div class="tab-panel" id="tab-explore">
-  <div class="ml-predict" style="margin:0 0 16px;padding:10px 14px;border-radius:10px;background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.22);font-size:13px;line-height:1.6;color:rgba(226,232,240,.88)"><strong style="color:#fde68a">Predict first:</strong> Two 5 N forces act at 90° to each other. Is the resultant 10 N, about 7 N, or 0 N? <strong style="color:#fde68a">Then test it:</strong> Set both vectors to 5 at angles 90° apart and read the resultant.</div>
+  <div class="ml-predict" style="margin:0 0 16px;padding:12px 16px;border-radius:10px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.075);border-left:2px solid #74d154;font-size:15px;line-height:1.6;color:#e3e8ef"><strong style="color:#f2f5f9">Predict first:</strong> Two 5 N forces act at 90° to each other. Is the resultant 10 N, about 7 N, or 0 N? <strong style="color:#f2f5f9">Then test it:</strong> Set both vectors to 5 at angles 90° apart and read the resultant.</div>
   <div class="sim-outer">
     <div class="sim-canvas-wrap">
       <h3>Vector Addition Sandbox</h3>
-      <canvas id="vecCanvas" height="340" role="img" aria-label="Vector Addition Sandbox: interactive simulation"></canvas>
+      <canvas id="vecCanvas" height="340" role="img" aria-label="Vector Addition Sandbox"></canvas>
     </div>
     <div class="sim-controls-row">
       <div class="ctrl-card">
@@ -396,8 +398,15 @@ function setMode(m){
   simMode=m;
   document.getElementById('mode1d').classList.toggle('active',m==='1d');
   document.getElementById('mode2d').classList.toggle('active',m==='2d');
-  document.getElementById('rowAngA').style.display=m==='2d'?'flex':'none';
-  document.getElementById('rowAngB').style.display=m==='2d'?'flex':'none';
+  // In 1D each vector points either along + (0°) or − (180°): keep the direction sliders visible but snap them
+  // to those two values, so the learner can always see and change each vector's direction.
+  ['angA','angB'].forEach(id=>{
+    const s=document.getElementById(id);
+    if(m==='1d'){ const a=+s.value; s.max=180; s.step=180; s.value=(a>90&&a<270)?180:0; }
+    else { s.max=359; s.step=1; }
+  });
+  document.getElementById('rowAngA').style.display='flex';
+  document.getElementById('rowAngB').style.display='flex';
   updateSim();
 }
 
@@ -470,13 +479,13 @@ function draw1D(ctx,W,H,magA,magB,angA,angB){
     ctx.strokeStyle='rgba(255,255,255,.12)';ctx.lineWidth=1;
     ctx.beginPath();ctx.moveTo(x,cy-5);ctx.lineTo(x,cy+5);ctx.stroke();
     if(i!==0){
-      ctx.fillStyle='rgba(210,218,245,.4)';ctx.font='9px JetBrains Mono';ctx.textAlign='center';
+      ctx.fillStyle='rgba(210,218,245,.4)';ctx.font='12px JetBrains Mono';ctx.textAlign='center';
       ctx.fillText(i,x,cy+16);
     }
   }
-  ctx.fillStyle='rgba(210,218,245,.4)';ctx.font='9px JetBrains Mono';ctx.textAlign='center';
+  ctx.fillStyle='rgba(210,218,245,.4)';ctx.font='12px JetBrains Mono';ctx.textAlign='center';
   ctx.fillText(0,cx,cy+16);
-  ctx.fillStyle='rgba(210,218,245,.5)';ctx.font='11px JetBrains Mono';ctx.textAlign='left';
+  ctx.fillStyle='rgba(210,218,245,.5)';ctx.font='12px JetBrains Mono';ctx.textAlign='left';
   ctx.fillText('+',W-36,cy+4);ctx.textAlign='right';ctx.fillText('−',44,cy+4);
 
   // direction-aware sign
@@ -522,7 +531,7 @@ function draw2D(ctx,W,H,magA,magB,angA,angB){
   ctx.strokeStyle='rgba(255,255,255,.2)';ctx.lineWidth=1.5;
   ctx.beginPath();ctx.moveTo(40,cy);ctx.lineTo(W-20,cy);ctx.stroke();
   ctx.beginPath();ctx.moveTo(cx,H-20);ctx.lineTo(cx,20);ctx.stroke();
-  ctx.fillStyle='rgba(210,218,245,.4)';ctx.font='10px JetBrains Mono';
+  ctx.fillStyle='rgba(210,218,245,.4)';ctx.font='12px JetBrains Mono';
   ctx.textAlign='left';ctx.fillText('+x',W-32,cy-6);
   ctx.textAlign='center';ctx.fillText('+y',cx+10,28);
 

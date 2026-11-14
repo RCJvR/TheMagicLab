@@ -153,7 +153,7 @@ MLX.ready(function () {
     } else if (e.id === 'mix' || e.id === 'fes') {
       ctx.strokeStyle = 'rgba(203,213,225,0.7)'; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(cx - 18, base - 120); ctx.lineTo(cx - 18, base - 14); ctx.arc(cx, base - 14, 18, Math.PI, 0, true); ctx.lineTo(cx + 18, base - 120); ctx.stroke();
       if (e.id === 'mix') { const g = ctx.createLinearGradient(cx - 16, 0, cx + 16, 0); g.addColorStop(0, '#78716c'); g.addColorStop(t < 0.5 ? 0.5 : 0.5, t > 0.5 ? '#a3a061' : '#78716c'); g.addColorStop(1, t > 0.5 ? '#a3a061' : '#facc15'); ctx.fillStyle = t > 0.5 ? '#9a9466' : g; }
-      else { const glow = t > 0.15 && t < 0.95 ? 1 : 0; ctx.fillStyle = t < 0.5 ? '#9a9466' : '#1f2937'; if (glow) { ctx.shadowColor = '#f97316'; ctx.shadowBlur = 20; ctx.fillStyle = '#ea580c'; } }
+      else { const glow = t > 0.15 && t < 0.95 ? 1 : 0; ctx.fillStyle = t < 0.5 ? '#9a9466' : '#1f2937'; if (glow) { ctx.shadowColor = '#f97316'; ctx.shadowBlur = 0; ctx.fillStyle = '#ea580c'; } }
       ctx.beginPath(); ctx.moveTo(cx - 16, base - 50); ctx.lineTo(cx - 16, base - 14); ctx.arc(cx, base - 14, 16, Math.PI, 0, true); ctx.lineTo(cx + 16, base - 50); ctx.closePath(); ctx.fill(); ctx.shadowBlur = 0;
       if (e.id === 'fes') flame(dir > 0 && prog > 0 && prog < 0.35 ? 1 : 0);
     } else if (e.id === 'mg') {

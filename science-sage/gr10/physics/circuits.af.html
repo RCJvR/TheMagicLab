@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
 <script src="/assets/theme.js"></script>
 <script defer src="/assets/lesson-toc.js"></script>
+<link rel="stylesheet" href="/assets/lesson-progress.css">
+<script defer src="/assets/lesson-progress.js"></script>
 <link rel="stylesheet" href="/assets/focus-reading.css">
 <script defer src="/assets/focus-reading.js"></script>
 <script src="/assets/sim-fit.js"></script>
@@ -183,7 +185,8 @@
 <script defer src="../../../progress.js"></script>
 <script defer src="../../../lesson-progress-observer.js"></script>
 <style id="ml-touch">@media (pointer:coarse){#tab-explore button,#tab-simulate button,#panel-explore button,#tab-explore select,#tab-simulate select,#panel-explore select{min-height:40px}#tab-explore input[type=range],#tab-simulate input[type=range],#panel-explore input[type=range]{min-height:32px}}</style>
-<style id="ml-wb-memo">.wb-memo{margin-top:12px;border-top:1px dashed rgba(255,255,255,.10);padding-top:10px}.wb-memo summary{cursor:pointer;font-size:13px;font-weight:700;color:#86efac;list-style:revert}.wb-memo-body{margin-top:8px;font-size:13.5px;line-height:1.8;color:rgba(210,218,245,.85);background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.18);border-radius:10px;padding:12px 16px}@media print{.wb-memo{display:none!important}}</style><style id="ml-exam-q">.wb-q.ml-exam-q{border-color:rgba(252,211,77,.35)}.ml-exam-q .wb-qnum{color:#fcd34d}</style></head>
+<style id="ml-wb-memo">.wb-memo{margin-top:12px;border-top:1px dashed rgba(255,255,255,.10);padding-top:10px}.wb-memo summary{cursor:pointer;font-size:13px;font-weight:700;color:#86efac;list-style:revert}.wb-memo-body{margin-top:8px;font-size:13.5px;line-height:1.8;color:rgba(210,218,245,.85);background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.18);border-radius:10px;padding:12px 16px}@media print{.wb-memo{display:none!important}}</style><style id="ml-exam-q">.wb-q.ml-exam-q{border-color:rgba(252,211,77,.35)}.ml-exam-q .wb-qnum{color:#fcd34d}</style><link rel="stylesheet" href="/assets/explore-kit.css">
+</head>
 <body>
   <a class="ml-skip" href="#ml-main">Skip to content</a>
 <nav data-ml-bar="science-sage" data-ml-home="/science-sage/index.html">
@@ -305,45 +308,10 @@
 
 <!-- EXPLORE TAB -->
 <div class="tab-panel" id="tab-explore">
-  <div class="ml-predict" style="margin:0 0 16px;padding:10px 14px;border-radius:10px;background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.22);font-size:13px;line-height:1.6;color:rgba(226,232,240,.88)"><strong style="color:#fde68a">Voorspel eers:</strong> As jy 'n tweede weerstand in parallel koppel, gaan die totale stroom uit die battery op of af? <strong style="color:#fde68a">Toets dit dan:</strong> Hou dieselfde waardes en skakel tussen Serie en Parallel; vergelyk die lesings.</div>
-  <div class="sim-outer">
-    <div class="sim-canvas-wrap">
-      <h3>Stroombaansimulator</h3>
-      <canvas id="circuitCanvas" height="280" role="img" aria-label="Stroombaansimulator: interaktiewe simulasie"></canvas>
-    </div>
-    <div class="sim-controls-row">
-      <div class="ctrl-card">
-        <div class="ctrl-label">Stroombaantipe</div>
-        <button class="mode-btn active" id="modeSeries" onclick="setCircuit('series')">Serie</button>
-        <button class="mode-btn" id="modeParallel" onclick="setCircuit('parallel')">Parallel</button>
-        <button class="mode-btn" id="modeMixed" onclick="setCircuit('mixed')">Gemeng</button>
-      </div>
-      <div class="ctrl-card">
-        <div class="ctrl-label">Waardes</div>
-        <div class="slider-row">
-          <label for="emfSlider">EMK (V)</label>
-          <input type="range" id="emfSlider" min="3" max="24" value="12" oninput="updateCircuit()">
-          <span class="slider-val" id="emfVal">12 V</span>
-        </div>
-        <div class="slider-row">
-          <label for="r1Slider">R₁ (Ω)</label>
-          <input type="range" id="r1Slider" min="1" max="20" value="4" oninput="updateCircuit()">
-          <span class="slider-val" id="r1Val">4 Ω</span>
-        </div>
-        <div class="slider-row">
-          <label for="r2Slider">R₂ (Ω)</label>
-          <input type="range" id="r2Slider" min="1" max="20" value="6" oninput="updateCircuit()">
-          <span class="slider-val" id="r2Val">6 Ω</span>
-        </div>
-      </div>
-    </div>
-    <div class="readout-grid" id="readoutGrid">
-      <div class="readout"><div class="readout-label">Totale R</div><div class="readout-val" id="ro-rt">— <span>Ω</span></div></div>
-      <div class="readout"><div class="readout-label">Totale I</div><div class="readout-val" id="ro-it">— <span>A</span></div></div>
-      <div class="readout"><div class="readout-label">V oor R₁</div><div class="readout-val" id="ro-v1">— <span>V</span></div></div>
-      <div class="readout"><div class="readout-label">Drywing (W)</div><div class="readout-val" id="ro-pw">— <span>W</span></div></div>
-    </div>
-  </div>
+  <div class="ml-predict" style="margin:0 0 16px;padding:12px 16px;border-radius:10px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.075);border-left:2px solid #74d154;font-size:15px;line-height:1.6;color:#e3e8ef"><strong style="color:#f2f5f9">Voorspel eers:</strong> As jy 'n tweede weerstand in parallel koppel, gaan die totale stroom uit die battery op of af? <strong style="color:#f2f5f9">Toets dit dan:</strong> Hou dieselfde waardes en skakel tussen Serie en Parallel; vergelyk die lesings.</div>
+  <div id="mlx-root" data-circuit="gr10"></div>
+  <script src="/assets/explore-kit.js"></script>
+  <script src="/assets/explore/dc-circuit.js"></script>
 </div>
 
 <!-- PRACTICE TAB -->
@@ -569,149 +537,7 @@
     if(correct&&!qid.startsWith('i')){score++;const n=Object.keys(answered).filter(k=>!k.startsWith('i')).length;if(n===8){document.getElementById('scoreBanner').classList.add('show');document.getElementById('scoreNum').textContent=score+'/8';}}
   }
 
-  // ---- CIRCUIT SIMULATION ----
-  const canvas=document.getElementById('circuitCanvas');
-  const ctx=canvas.getContext('2d');
-  let circuitMode='series';
-  let animFrame=null;
-  let dots=[];
-  let tick=0;
-
-  function setCircuit(mode){
-    circuitMode=mode;
-    ['modeSeries','modeParallel','modeMixed'].forEach(id=>document.getElementById(id).classList.remove('active'));
-    const map={series:'modeSeries',parallel:'modeParallel',mixed:'modeMixed'};
-    document.getElementById(map[mode]).classList.add('active');
-    initDots();
-    updateCircuit();
-  }
-
-  function updateCircuit(){
-    const emf=parseFloat(document.getElementById('emfSlider').value);
-    const r1=parseFloat(document.getElementById('r1Slider').value);
-    const r2=parseFloat(document.getElementById('r2Slider').value);
-    document.getElementById('emfVal').textContent=emf+' V';
-    document.getElementById('r1Val').textContent=r1+' Ω';
-    document.getElementById('r2Val').textContent=r2+' Ω';
-    let rt,it,v1,pw;
-    if(circuitMode==='series'){
-      rt=r1+r2;it=emf/rt;v1=it*r1;pw=emf*it;
-    } else if(circuitMode==='parallel'){
-      rt=1/(1/r1+1/r2);it=emf/rt;v1=emf;pw=emf*it;
-    } else {
-      // mixed: r2 in parallel with r1, in series with nothing — treat as r1 series, r2 parallel to r1
-      const rp=1/(1/r1+1/r2);rt=rp;it=emf/rt;v1=emf*(r2/(r1+r2));pw=emf*it;
-      // Actually: series R1 + parallel(R2, R3) — but we only have 2 resistors. Use: R1 series with R2
-      // For mixed: R1 in series with (R2 parallel R1) — creates interesting result. Let's just use R1 series + R2/2 as a parallel branch of R2
-      const rpar=r2/2; rt=r1+rpar; it=emf/rt; v1=it*r1; pw=emf*it;
-    }
-    document.getElementById('ro-rt').innerHTML=rt.toFixed(2)+'<span>Ω</span>';
-    document.getElementById('ro-it').innerHTML=it.toFixed(2)+'<span>A</span>';
-    document.getElementById('ro-v1').innerHTML=v1.toFixed(2)+'<span>V</span>';
-    document.getElementById('ro-pw').innerHTML=pw.toFixed(2)+'<span>W</span>';
-  }
-
-  function resizeCanvas(){
-    const dpr=window.devicePixelRatio||1;
-    const w=canvas.parentElement.clientWidth-32;
-    canvas.style.width=w+'px';canvas.style.height='280px';
-    canvas.width=w*dpr;canvas.height=280*dpr;
-    ctx.scale(dpr,dpr);
-  }
-
-  function initDots(){
-    dots=[];
-    const n=16;
-    for(let i=0;i<n;i++) dots.push({t:i/n});
-  }
-
-  function drawCircuit(){
-    const w=canvas.clientWidth,h=280;
-    ctx.clearRect(0,0,w,h);
-    const emf=parseFloat(document.getElementById('emfSlider').value);
-    const r1=parseFloat(document.getElementById('r1Slider').value);
-    const r2=parseFloat(document.getElementById('r2Slider').value);
-    // Layout
-    const L=60,R=w-60,T=50,B=h-50;
-    const mx=(L+R)/2;
-
-    function wire(x1,y1,x2,y2){
-      ctx.strokeStyle='rgba(96,165,250,0.5)';ctx.lineWidth=2;
-      ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();
-    }
-    function resistorBox(x,y,label,val){
-      ctx.fillStyle='rgba(255,255,255,0.06)';ctx.strokeStyle='rgba(96,165,250,0.6)';ctx.lineWidth=1.5;
-      ctx.beginPath();ctx.roundRect(x-28,y-12,56,24,5);ctx.fill();ctx.stroke();
-      ctx.fillStyle='#93c5fd';ctx.font='bold 11px monospace';ctx.textAlign='center';
-      ctx.fillText(label,x,y-2);
-      ctx.fillStyle='rgba(147,197,253,0.6)';ctx.font='10px monospace';
-      ctx.fillText(val+'Ω',x,y+11);
-    }
-    function battery(x,y){
-      ctx.strokeStyle='#fbbf24';ctx.lineWidth=2;
-      ctx.beginPath();ctx.moveTo(x,y-18);ctx.lineTo(x,y+18);ctx.stroke();
-      ctx.lineWidth=4;
-      ctx.beginPath();ctx.moveTo(x-10,y-8);ctx.lineTo(x+10,y-8);ctx.stroke();
-      ctx.lineWidth=2;
-      ctx.beginPath();ctx.moveTo(x-6,y+8);ctx.lineTo(x+6,y+8);ctx.stroke();
-      ctx.fillStyle='#fbbf24';ctx.font='bold 10px monospace';ctx.textAlign='center';
-      ctx.fillText('+',(x),y-24);ctx.fillText('−',x,y+28);
-      ctx.fillStyle='rgba(251,191,36,0.7)';ctx.font='10px monospace';
-      ctx.fillText(emf+'V',x+22,y+4);
-    }
-
-    if(circuitMode==='series'){
-      wire(L,T,R,T);wire(R,T,R,B);wire(R,B,L,B);wire(L,B,L,T);
-      battery(L,h/2);
-      resistorBox(mx-60,T,'R₁',r1);
-      resistorBox(mx+60,T,'R₂',r2);
-    } else if(circuitMode==='parallel'){
-      const mh=(T+B)/2;
-      wire(L,T,R,T);wire(R,T,R,B);wire(R,B,L,B);wire(L,B,L,T);
-      wire(mx,T,mx,B);
-      battery(L,mh);
-      resistorBox(mx-60,mh,'R₁',r1);
-      resistorBox(mx+60,mh,'R₂',r2);
-    } else {
-      // Mixed
-      const mh=(T+B)/2;const ph=h*0.28;
-      wire(L,T,R,T);wire(R,T,R,B);wire(R,B,L,B);wire(L,B,L,T);
-      wire(mx,T,mx,ph);wire(mx,B-20,mx,B);
-      wire(mx-50,ph,mx+50,ph);wire(mx-50,B-20,mx+50,B-20);
-      wire(mx-50,ph,mx-50,B-20);wire(mx+50,ph,mx+50,B-20);
-      battery(L,mh);
-      resistorBox(mx-110,T,'R₁',r1);
-      resistorBox(mx-50,(ph+B-20)/2,'R₂',r2);
-      resistorBox(mx+50,(ph+B-20)/2,'R₂',r2);
-      ctx.fillStyle='rgba(147,197,253,0.5)';ctx.font='10px monospace';ctx.textAlign='center';
-      ctx.fillText('(R₁ serie + R₂ parallel)',w/2,h-8);
-    }
-
-    // Animate current dots
-    tick+=0.008;
-    dots.forEach(d=>{
-      d.t=(d.t+0.004)%1;
-      let x,y;
-      const t=d.t;
-      // Trace the outer rectangle
-      const perim=2*(R-L)+2*(B-T);
-      const pos=t*perim;
-      if(pos<R-L){x=L+pos;y=T;}
-      else if(pos<R-L+B-T){x=R;y=T+(pos-(R-L));}
-      else if(pos<2*(R-L)+B-T){x=R-(pos-(R-L+B-T));y=B;}
-      else{x=L;y=B-(pos-(2*(R-L)+B-T));}
-      ctx.fillStyle='rgba(96,165,250,0.85)';
-      ctx.beginPath();ctx.arc(x,y,4,0,Math.PI*2);ctx.fill();
-    });
-  }
-
-  function animate(){
-    if(animFrame)cancelAnimationFrame(animFrame);
-    function loop(){drawCircuit();animFrame=requestAnimationFrame(loop);}
-    loop();
-  }
-  function initSim(){resizeCanvas();initDots();updateCircuit();animate();}
-  window.addEventListener('resize',()=>{if(document.getElementById('tab-explore').classList.contains('active')){resizeCanvas();}});
+  function initSim(){} // the simulation is assets/explore/dc-circuit.js
 </script>
 <script>const _st=window.switchTab;window.switchTab=function(id,btn){_st(id,btn);if(id==='explore')setTimeout(()=>window.dispatchEvent(new Event('resize')),60);}</script>
   <script>

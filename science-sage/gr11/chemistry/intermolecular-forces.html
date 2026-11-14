@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
 <script src="/assets/theme.js"></script>
 <script defer src="/assets/lesson-toc.js"></script>
+<link rel="stylesheet" href="/assets/lesson-progress.css">
+<script defer src="/assets/lesson-progress.js"></script>
 <link rel="stylesheet" href="/assets/focus-reading.css">
 <script defer src="/assets/focus-reading.js"></script>
 <script src="/assets/sim-fit.js"></script>
@@ -366,18 +368,18 @@ input[type=range]{flex:1;accent-color:#c084fc;cursor:pointer}
 
 <!-- EXPLORE TAB -->
 <div class="tab-panel" id="tab-explore">
-  <div class="ml-predict" style="margin:0 0 16px;padding:10px 14px;border-radius:10px;background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.22);font-size:13px;line-height:1.6;color:rgba(226,232,240,.88)"><strong style="color:#fde68a">Predict first:</strong> Why does water (H₂O) boil far higher than hydrogen sulfide (H₂S), even though H₂S molecules are heavier? <strong style="color:#fde68a">Then test it:</strong> Check BP Trends, then IMF Strength.</div>
+  <div class="ml-predict" style="margin:0 0 16px;padding:12px 16px;border-radius:10px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.075);border-left:2px solid #74d154;font-size:15px;line-height:1.6;color:#e3e8ef"><strong style="color:#f2f5f9">Predict first:</strong> Why does water (H₂O) boil far higher than hydrogen sulfide (H₂S), even though H₂S molecules are heavier? <strong style="color:#f2f5f9">Then test it:</strong> Check BP Trends, then IMF Strength.</div>
   <div class="sim-outer">
     <div class="sim-canvas-wrap">
       <h3 id="sim-title">BP Trends</h3>
-      <canvas id="cv" height="380" role="img" aria-label="BP Trends: interactive simulation"></canvas>
+      <canvas id="cv" height="380" role="img" aria-label="BP Trends"></canvas>
     </div>
     <div class="sim-controls-row">
       <div class="ctrl-card">
         <div class="ctrl-label">Visualisation Mode</div>
-        <button class="mode-btn active" onclick="setMode('bp',this)">📊 BP Trends</button>
-        <button class="mode-btn" onclick="setMode('imf',this)">🔗 IMF Strength</button>
-        <button class="mode-btn" onclick="setMode('water',this)">💧 Water Properties</button>
+        <button class="mode-btn active" onclick="setMode('bp',this)">BP Trends</button>
+        <button class="mode-btn" onclick="setMode('imf',this)">IMF Strength</button>
+        <button class="mode-btn" onclick="setMode('water',this)">Water Properties</button>
       </div>
       <div class="ctrl-card" id="ctrl-extra">
         <!-- dynamic controls injected by JS -->
@@ -987,8 +989,11 @@ function drawIMF() {
   // Vapour pressure gauge (arc)
   const bpVal = sub.bp;
   // VP rises from ~0 at BP-60 to 1 atm at BP, more above
-  const normalizedT = Math.max(0, Math.min(1, (T - (bpVal-80)) / 100));
-  const vpAtm = Math.pow(normalizedT, 2);
+  // Clausius–Clapeyron with Trouton's rule (ΔHvap ≈ 88 J·mol⁻¹·K⁻¹ × Tb):
+  // p/p° = exp(10.6·(1 − Tb/T)), so the vapour pressure is exactly 101.3 kPa at the boiling point.
+  const TbK = bpVal + 273, TK = T + 273;
+  const vpRatio = TK > 0 ? Math.exp(10.6 * (1 - TbK / TK)) : 0;
+  const vpAtm = Math.min(1, vpRatio); // gauge is full scale at 1 atm
 
   const gx = W - 130, gy = 60, gr = 70;
   ctx.save();
@@ -1021,7 +1026,7 @@ function drawIMF() {
   ctx.fillText('VAPOUR PRESSURE', gx, gy+gr*2+20);
   ctx.fillStyle='#fff';
   ctx.font='bold 13px "Cabinet Grotesk"';
-  ctx.fillText((vpAtm*100).toFixed(0) + ' kPa (rel.)', gx, gy+gr*2+36);
+  ctx.fillText((vpRatio >= 1 ? '≥ 101' : (vpRatio * 101.3).toFixed(vpRatio < 0.1 ? 2 : 0)) + ' kPa', gx, gy+gr*2+36);
 
   // Boiling point indicator
   ctx.fillStyle='rgba(210,218,245,0.35)';
@@ -1223,7 +1228,7 @@ function drawWater() {
   ctx.fillStyle='rgba(210,218,245,0.5)';
   ctx.font='bold 13px "Cabinet Grotesk"';
   ctx.textAlign='left';
-  ctx.fillText(waterState === 'ice' ? '❄ Ice Structure' : '💧 Liquid Water', 20, 28);
+  ctx.fillText(waterState === 'ice' ? 'Ice Structure' : 'Liquid Water', 20, 28);
 }
 
 // ─── INIT ─────────────────────────────────────────────────────────────────────

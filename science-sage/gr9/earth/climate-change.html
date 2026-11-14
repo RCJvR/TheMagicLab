@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
 <script src="/assets/theme.js"></script>
 <script defer src="/assets/lesson-toc.js"></script>
+<link rel="stylesheet" href="/assets/lesson-progress.css">
+<script defer src="/assets/lesson-progress.js"></script>
 <link rel="stylesheet" href="/assets/focus-reading.css">
 <script defer src="/assets/focus-reading.js"></script>
 <script src="/assets/sim-fit.js"></script>
@@ -277,7 +279,7 @@
 
 <!-- EXPLORE -->
 <div class="tab-panel" id="tab-explore">
-  <div class="ml-predict" style="margin:0 0 16px;padding:10px 14px;border-radius:10px;background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.22);font-size:13px;line-height:1.6;color:rgba(226,232,240,.88)"><strong style="color:#fde68a">Predict first:</strong> Since 1950, have CO₂ and global temperature risen together? <strong style="color:#fde68a">Then test it:</strong> Press Play or drag the year and compare both lines.</div>
+  <div class="ml-predict" style="margin:0 0 16px;padding:12px 16px;border-radius:10px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.075);border-left:2px solid #74d154;font-size:15px;line-height:1.6;color:#e3e8ef"><strong style="color:#f2f5f9">Predict first:</strong> Since 1950, have CO₂ and global temperature risen together? <strong style="color:#f2f5f9">Then test it:</strong> Press Play or drag the year and compare both lines.</div>
   <div class="sim-outer">
     <div style="display:flex;gap:10px;margin-bottom:4px;flex-wrap:wrap">
       <button class="mode-btn active" id="modeChart" onclick="setMode('chart')">Temperature &amp; CO₂</button>
@@ -285,7 +287,7 @@
     </div>
     <div class="sim-canvas-wrap">
       <h3 id="canvasTitle">Global CO₂ &amp; Temperature — 1900 to 2024</h3>
-      <canvas id="simCanvas" height="380" role="img" aria-label="Global CO₂ &amp; Temperature — 1900 to 2024: interactive simulation"></canvas>
+      <canvas id="simCanvas" height="380" role="img" aria-label="Global CO₂ &amp; Temperature — 1900 to 2024"></canvas>
     </div>
     <div class="sim-controls-row" id="chartControls">
       <div class="ctrl-card">
@@ -419,7 +421,7 @@ function togglePlay(){
 function startPlay(){
   if(playing) return;
   playing = true;
-  document.getElementById('playBtn').textContent = '⏸ Pause';
+  document.getElementById('playBtn').textContent = 'Pause';
   if(currentYear >= 2024) currentYear = 1900;
   playInterval = setInterval(()=>{
     currentYear++;
@@ -433,7 +435,7 @@ function startPlay(){
 function stopPlay(){
   playing = false;
   clearInterval(playInterval);
-  document.getElementById('playBtn').textContent = '▶ Play';
+  document.getElementById('playBtn').textContent = 'Play';
 }
 
 function drawChart(upToYear){
@@ -608,7 +610,7 @@ function drawChart(upToYear){
     ctx2.fillStyle = 'rgba(252,211,77,0.7)';
     ctx2.font = 'bold 10px "JetBrains Mono"';
     ctx2.textAlign = 'center';
-    ctx2.fillText('▶ ' + upToYear, W / 2, H - 6);
+    ctx2.fillText('' + upToYear, W / 2, H - 6);
   }
 }
 

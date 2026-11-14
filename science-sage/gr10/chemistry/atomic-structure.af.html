@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
 <script src="/assets/theme.js"></script>
 <script defer src="/assets/lesson-toc.js"></script>
+<link rel="stylesheet" href="/assets/lesson-progress.css">
+<script defer src="/assets/lesson-progress.js"></script>
 <link rel="stylesheet" href="/assets/focus-reading.css">
 <script defer src="/assets/focus-reading.js"></script>
 <script src="/assets/sim-fit.js"></script>
@@ -325,11 +327,11 @@
 
 <!-- EXPLORE TAB -->
 <div class="tab-panel" id="tab-explore">
-  <div class="ml-predict" style="margin:0 0 16px;padding:10px 14px;border-radius:10px;background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.22);font-size:13px;line-height:1.6;color:rgba(226,232,240,.88)"><strong style="color:#fde68a">Voorspel eers:</strong> Rutherford het alfadeeltjies op dun goudfoelie afgevuur. As Thomson se 'pruimpoeding'-model reg was, wat sou die deeltjies doen? <strong style="color:#fde68a">Toets dit dan:</strong> Stap deur die historiese modelle en vind die bewyse wat wetenskaplikes van plan laat verander het.</div>
+  <div class="ml-predict" style="margin:0 0 16px;padding:12px 16px;border-radius:10px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.075);border-left:2px solid #74d154;font-size:15px;line-height:1.6;color:#e3e8ef"><strong style="color:#f2f5f9">Voorspel eers:</strong> Rutherford het alfadeeltjies op dun goudfoelie afgevuur. As Thomson se 'pruimpoeding'-model reg was, wat sou die deeltjies doen? <strong style="color:#f2f5f9">Toets dit dan:</strong> Stap deur die historiese modelle en vind die bewyse wat wetenskaplikes van plan laat verander het.</div>
   <div class="sim-outer">
     <div class="sim-canvas-wrap">
       <h3 id="simTitle">Atoommodel-verkenner</h3>
-      <canvas id="atomCanvas" height="320" role="img" aria-label="Atoommodel-verkenner: interaktiewe simulasie"></canvas>
+      <canvas id="atomCanvas" height="320" role="img" aria-label="Atoommodel-verkenner"></canvas>
     </div>
     <div class="sim-controls-row">
       <div class="ctrl-card">
@@ -709,7 +711,7 @@
     ePlaces.forEach(([px,py])=>{
       ctx.fillStyle='#60a5fa';
       ctx.beginPath();ctx.arc(px,py,6,0,Math.PI*2);ctx.fill();
-      ctx.fillStyle='#fff';ctx.font='bold 10px sans-serif';ctx.textAlign='center';
+      ctx.fillStyle='#fff';ctx.font='bold 12px sans-serif';ctx.textAlign='center';
       ctx.fillText('−',px,py+4);
     });
     ctx.fillStyle='#e9d5ff';ctx.font='bold 14px sans-serif';ctx.textAlign='center';
@@ -726,13 +728,13 @@
     // Gold foil
     ctx.fillStyle='rgba(251,191,36,0.15)';ctx.strokeStyle='rgba(251,191,36,0.4)';ctx.lineWidth=2;
     ctx.fillRect(cx-6,80,12,H-100);ctx.strokeRect(cx-6,80,12,H-100);
-    ctx.fillStyle='rgba(251,191,36,0.5)';ctx.font='9px monospace';ctx.textAlign='center';
+    ctx.fillStyle='rgba(251,191,36,0.5)';ctx.font='12px monospace';ctx.textAlign='center';
     ctx.fillText('Au-foelie',cx+22,H/2);
     // Nucleus
     const ng=ctx.createRadialGradient(cx,cy,2,cx,cy,14);
     ng.addColorStop(0,'rgba(239,68,68,1)');ng.addColorStop(1,'rgba(239,68,68,0.2)');
     ctx.fillStyle=ng;ctx.beginPath();ctx.arc(cx,cy,12,0,Math.PI*2);ctx.fill();
-    ctx.fillStyle='#fff';ctx.font='bold 10px sans-serif';ctx.textAlign='center';
+    ctx.fillStyle='#fff';ctx.font='bold 12px sans-serif';ctx.textAlign='center';
     ctx.fillText('+',cx,cy+4);
     // Alpha particles
     const t=tick*0.012;
@@ -758,11 +760,11 @@
     // Labels
     ctx.fillStyle='#e9d5ff';ctx.font='bold 14px sans-serif';ctx.textAlign='center';
     ctx.fillText("Rutherford se Kernmodel (1911)",W/2,22);
-    ctx.fillStyle='rgba(251,191,36,0.7)';ctx.font='11px sans-serif';ctx.textAlign='left';
+    ctx.fillStyle='rgba(251,191,36,0.7)';ctx.font='12px sans-serif';ctx.textAlign='left';
     ctx.fillText('α-bron →',W*0.02,cy);
     ctx.fillStyle='rgba(239,68,68,0.7)';
     ctx.fillText('← \'n paar kaats terug',W*0.03,cy+40);
-    ctx.fillStyle='rgba(210,218,245,0.5)';ctx.font='11px sans-serif';ctx.textAlign='left';
+    ctx.fillStyle='rgba(210,218,245,0.5)';ctx.font='12px sans-serif';ctx.textAlign='left';
     ctx.fillText('Meeste α gaan deur (leë ruimte)',W*0.55,cy-30);
     ctx.fillText('Klein kern: +lading, dig',W*0.55,cy-14);
   }
@@ -788,9 +790,9 @@
         const ex=cx+r*Math.cos(angle),ey=cy+r*Math.sin(angle);
         ctx.fillStyle='#60a5fa';ctx.beginPath();ctx.arc(ex,ey,6,0,Math.PI*2);ctx.fill();
         ctx.strokeStyle='rgba(96,165,250,0.8)';ctx.lineWidth=1;ctx.beginPath();ctx.arc(ex,ey,6,0,Math.PI*2);ctx.stroke();
-        ctx.fillStyle='#fff';ctx.font='bold 9px sans-serif';ctx.textAlign='center';ctx.fillText('e⁻',ex,ey+3);
+        ctx.fillStyle='#fff';ctx.font='bold 12px sans-serif';ctx.textAlign='center';ctx.fillText('e⁻',ex,ey+3);
       }
-      ctx.fillStyle='rgba(216,180,254,0.8)';ctx.font='10px monospace';ctx.textAlign='left';ctx.textBaseline='alphabetic';
+      ctx.fillStyle='rgba(216,180,254,0.8)';ctx.font='12px monospace';ctx.textAlign='left';ctx.textBaseline='alphabetic';
       ctx.fillText('n='+(si+1),cx+r*0.71+6,cy-r*0.71-4);
     });
     // Photon emission arrow
@@ -798,12 +800,12 @@
     if(flash<0.5){
       ctx.strokeStyle=`rgba(251,191,36,${1-flash*2})`;ctx.lineWidth=2;
       ctx.beginPath();ctx.moveTo(cx+60,cy-30);ctx.lineTo(cx+110,cy-60);ctx.stroke();
-      ctx.fillStyle=`rgba(251,191,36,${1-flash*2})`;ctx.font='10px monospace';ctx.textAlign='left';
+      ctx.fillStyle=`rgba(251,191,36,${1-flash*2})`;ctx.font='12px monospace';ctx.textAlign='left';
       ctx.fillText('foton',cx+112,cy-56);
     }
     ctx.fillStyle='#e9d5ff';ctx.font='bold 14px sans-serif';ctx.textAlign='center';
     ctx.fillText("Bohr se Planetêre Model (1913) — Koolstof",W/2,22);
-    ctx.fillStyle='rgba(210,218,245,0.55)';ctx.font='11px sans-serif';
+    ctx.fillStyle='rgba(210,218,245,0.55)';ctx.font='12px sans-serif';
     ctx.fillText('Elektrone in vaste wentelbane (energievlakke)',W/2,H-28);
     ctx.fillText('Stuur fotone uit wanneer hulle na laer vlakke spring',W/2,H-14);
   }
@@ -833,7 +835,7 @@
       ctx.beginPath();ctx.arc(cx,cy,r,0,Math.PI*2);ctx.stroke();
       ctx.setLineDash([]);
       // Electron label
-      ctx.fillStyle='rgba(216,180,254,0.8)';ctx.font='10px monospace';ctx.textAlign='left';ctx.textBaseline='alphabetic';
+      ctx.fillStyle='rgba(216,180,254,0.8)';ctx.font='12px monospace';ctx.textAlign='left';ctx.textBaseline='alphabetic';
       ctx.fillText('n='+(si+1)+' ('+ne+'e⁻)',cx+r*0.71+6,cy-r*0.71-4);
       // Draw electrons
       for(let i=0;i<ne;i++){
@@ -847,7 +849,7 @@
     // Element label
     ctx.fillStyle='#e9d5ff';ctx.font='bold 15px sans-serif';ctx.textAlign='center';
     ctx.fillText(sym+' (Z='+Z+', A='+A+')',W/2,22);
-    ctx.fillStyle='rgba(134,239,172,0.7)';ctx.font='11px monospace';
+    ctx.fillStyle='rgba(134,239,172,0.7)';ctx.font='12px monospace';
     ctx.fillText('Valenselektrone: '+shells[shells.length-1]+' (groen getoon)',W/2,H-14);
   }
 

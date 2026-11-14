@@ -3,6 +3,8 @@
 <head>
 <script src="/assets/theme.js"></script>
 <script defer src="/assets/lesson-toc.js"></script>
+<link rel="stylesheet" href="/assets/lesson-progress.css">
+<script defer src="/assets/lesson-progress.js"></script>
 <link rel="stylesheet" href="/assets/focus-reading.css">
 <script defer src="/assets/focus-reading.js"></script>
 <script src="/assets/sim-fit.js"></script>
@@ -193,6 +195,7 @@
 <script defer src="../../../lesson-progress-observer.js"></script>
   <link rel="stylesheet" href="/auth-modal.css">
 <style id="ml-touch">@media (pointer:coarse){#tab-explore button,#tab-simulate button,#panel-explore button,#tab-explore select,#tab-simulate select,#panel-explore select{min-height:40px}#tab-explore input[type=range],#tab-simulate input[type=range],#panel-explore input[type=range]{min-height:32px}}</style>
+<link rel="stylesheet" href="/assets/explore-kit.css">
 </head>
 <body>
   <a class="ml-skip" href="#ml-main">Skip to content</a>
@@ -264,33 +267,12 @@
 
 <!-- EXPLORE -->
 <div class="tab-panel" id="tab-explore">
-  <h2 style="font-size:18px;font-weight:800;color:#fff;margin-bottom:6px">Selverkenner</h2>
-  <p style="font-size:13px;color:var(--muted);margin-bottom:20px">Wissel tussen plant- en dierselle. Klik op enige organel om sy funksie te leer.</p>
-  <div class="ml-predict" style="margin:0 0 16px;padding:10px 14px;border-radius:10px;background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.22);font-size:13px;line-height:1.6;color:rgba(226,232,240,.88)"><strong style="color:#fde68a">Voorspel eers:</strong> Watter dele sal jy in 'n plantsel kry maar nie in 'n diersel nie? <strong style="color:#fde68a">Toets dit dan:</strong> Skakel tussen die plant- en dierselle en vergelyk.</div>
-  <div class="explore-layout">
-    <div>
-      <div class="ctrl-card" style="margin-bottom:16px">
-        <div class="ctrl-label">Seltipe</div>
-        <div class="cell-type-row">
-          <button class="ctype-btn active" id="btnPlant" onclick="setCellType('plant')">🌿 Plantsel</button>
-          <button class="ctype-btn" id="btnAnimal" onclick="setCellType('animal')">🐾 Diersel</button>
-        </div>
-      </div>
-      <div class="cell-wrap">
-        <canvas id="cellCanvas" height="440" role="img" aria-label="Selverkenner: interaktiewe simulasie"></canvas>
-      </div>
-      <p style="font-size:11px;color:var(--muted);margin-top:8px;text-align:center">Klik op enige organel om meer daaroor te leer</p>
-    </div>
-    <div class="controls">
-      <div class="ctrl-card organelle-info" id="orgInfo">
-        <div style="color:var(--muted);font-size:13px;text-align:center;margin-top:40px">👆 Klik op 'n organel<br>om sy funksie te sien</div>
-      </div>
-      <div class="ctrl-card">
-        <div class="ctrl-label">Dele van die sel</div>
-        <div class="parts-list" id="partsList"></div>
-      </div>
-    </div>
-  </div>
+  <h2 style="font-size:20px;font-weight:800;color:#f2f5f9;margin-bottom:6px">Selverkenner</h2>
+  <p style="font-size:15px;line-height:1.6;color:rgba(226,232,240,.72);margin-bottom:16px;max-width:68ch">Wissel tussen plant- en dierselle. Klik op enige organel om sy funksie te leer.</p>
+  <div class="ml-predict" style="margin:0 0 16px;padding:12px 16px;border-radius:10px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.075);border-left:2px solid #74d154;font-size:15px;line-height:1.6;color:#e3e8ef"><strong style="color:#f2f5f9">Voorspel eers:</strong> Watter dele sal jy in 'n plantsel kry maar nie in 'n diersel nie? <strong style="color:#f2f5f9">Toets dit dan:</strong> Skakel tussen die plant- en dierselle en vergelyk.</div>
+  <div id="mlx-root"></div>
+  <script src="/assets/explore-kit.js"></script>
+  <script src="/assets/explore/cell-explorer.js"></script>
 </div>
 
 <!-- PRACTICE -->
@@ -330,241 +312,7 @@
 </div>
 
 <script>
-const canvas = document.getElementById('cellCanvas');
-const ctx = canvas.getContext('2d');
-let W, H;
-let cellType = 'plant';
-let selectedOrg = null;
-let hoverOrg = null;
-let pulseT = 0;
-
-/* ── Organelle definitions ── */
-const ORGANELLES = {
-  plant: [
-    {id:'wall',      name:'Selwand',     color:'#4ade80', alpha:0.25, also:'(rigiede buitenste laag)', found:['plant'],
-     desc:'\'n Rigiede buitenste laag van sellulose wat die selmembraan omring. Dit gee die sel \'n vaste vorm en bied strukturele ondersteuning. Diere het nie \'n selwand nie.',
-     draw:(ctx,W,H)=>{ ctx.beginPath(); roundRect(ctx,W*0.04,H*0.04,W*0.92,H*0.92,28); }},
-    {id:'membrane',  name:'Selmembraan', color:'#86efac', alpha:0.40, also:'(plasmamembraan)',  found:['plant','animal'],
-     desc:'\'n Dun, buigsame skans wat die sitoplasma omring. Dit beheer wat die sel binnegaan en verlaat — dit laat nuttige stowwe in en afval uit. Elke sel het \'n selmembraan.',
-     draw:(ctx,W,H)=>{ ctx.beginPath(); roundRect(ctx,W*0.09,H*0.09,W*0.82,H*0.82,20); }},
-    {id:'cytoplasm',  name:'Sitoplasma',    color:'#d1fae5', alpha:0.08, also:'(selvloeistof)',       found:['plant','animal'],
-     desc:'\'n Jellieagtige stof (meestal water) wat die sel vul en die organelle omring. Chemiese reaksies vind in die sitoplasma plaas.',
-     draw:(ctx,W,H)=>{ ctx.beginPath(); roundRect(ctx,W*0.09,H*0.09,W*0.82,H*0.82,20); }},
-    {id:'nucleus',   name:'Kern',       color:'#a78bfa', alpha:0.85, also:'(beheersentrum)',  found:['plant','animal'],
-     desc:'Die beheersentrum van die sel. Bevat DNS (deoksiribonukleïensuur) wat in chromosome verpak is. DNS dra die genetiese instruksies vir alle selaktiwiteite en word tydens seldeling oorgedra.',
-     draw:(ctx,W,H)=>{ ctx.beginPath(); ctx.ellipse(W*0.42,H*0.50,W*0.14,H*0.12,0,0,Math.PI*2); }},
-    {id:'vacuole',   name:'Groot Vakuool', color:'#67e8f9', alpha:0.40, also:'(waterberging)',   found:['plant'],
-     desc:'\'n Groot, vloeistofgevulde sak wat die meeste van die plantsel se volume beslaan. Dit stoor water, voedingstowwe en afvalprodukte. \'n Vol vakuool druk teen die selwand om die sel styf (turgor) te hou.',
-     draw:(ctx,W,H)=>{ ctx.beginPath(); ctx.ellipse(W*0.55,H*0.50,W*0.22,H*0.28,0.2,0,Math.PI*2); }},
-    {id:'chloroplast',name:'Chloroplas',  color:'#4ade80', alpha:0.80, also:'(fotosintese)',  found:['plant'],
-     desc:'Groen organelle wat die pigment chlorofil bevat. Hulle vang sonlig-energie en gebruik dit om glukose te maak uit koolstofdioksied en water — hierdie proses word fotosintese genoem. Slegs in plantselle (en alge) gevind.',
-     draw:(ctx,W,H)=>{
-       ctx.beginPath();
-       [[W*0.20,H*0.28],[W*0.25,H*0.70],[W*0.18,H*0.50]].forEach(([cx,cy])=>{
-         ctx.moveTo(cx+W*0.07*Math.cos(0.4), cy+W*0.04*Math.sin(0.4));
-         ctx.ellipse(cx,cy,W*0.07,W*0.04,0.4,0,Math.PI*2);
-       });
-     }},
-    {id:'mito',      name:'Mitochondrion', color:'#fb923c', alpha:0.85, also:'(kragstasie)',       found:['plant','animal'],
-     desc:'Word dikwels die "kragstasie van die sel" genoem. Mitochondria voer sellulêre respirasie uit — hulle breek glukose af om energie in die vorm van ATP vry te stel. Meer aktiewe selle (soos spierselle) het meer mitochondria.',
-     draw:(ctx,W,H)=>{
-       ctx.beginPath();
-       [[W*0.72,H*0.28],[W*0.76,H*0.72],[W*0.80,H*0.48]].forEach(([cx,cy])=>{
-         ctx.moveTo(cx+W*0.055*Math.cos(0.5), cy+W*0.030*Math.sin(0.5));
-         ctx.ellipse(cx,cy,W*0.055,W*0.030,0.5,0,Math.PI*2);
-       });
-     }},
-    {id:'ribosome',  name:'Ribosome',    color:'#fbbf24', alpha:0.90, also:'(proteïenmakers)',   found:['plant','animal'],
-     desc:'Piepklein strukture wat in die sitoplasma (en op die ruwe endoplasmiese retikulum) voorkom. Ribosome bou proteïene deur instruksies vanaf DNS te volg. Elke sel het proteïene nodig om te funksioneer.',
-     draw:(ctx,W,H)=>{
-       ctx.beginPath();
-       [[W*0.30,H*0.22],[W*0.62,H*0.25],[W*0.28,H*0.78],[W*0.65,H*0.75],[W*0.50,H*0.30]].forEach(([cx,cy])=>{
-         ctx.moveTo(cx+4,cy); ctx.arc(cx,cy,4,0,Math.PI*2);
-       });
-     }},
-  ],
-  animal: [
-    {id:'membrane',  name:'Selmembraan', color:'#93c5fd', alpha:0.45, also:'(plasmamembraan)',  found:['plant','animal'],
-     desc:'\'n Dun, buigsame skans wat die sitoplasma omring. Dit beheer wat die sel binnegaan en verlaat — dit laat nuttige stowwe in en afval uit. Elke sel het \'n selmembraan.',
-     draw:(ctx,W,H)=>{ ctx.beginPath(); ctx.ellipse(W*0.50,H*0.50,W*0.42,H*0.42,0,0,Math.PI*2); }},
-    {id:'cytoplasm',  name:'Sitoplasma',    color:'#bfdbfe', alpha:0.08, also:'(selvloeistof)',       found:['plant','animal'],
-     desc:'\'n Jellieagtige stof (meestal water) wat die sel vul en die organelle omring. Chemiese reaksies vind in die sitoplasma plaas.',
-     draw:(ctx,W,H)=>{ ctx.beginPath(); ctx.ellipse(W*0.50,H*0.50,W*0.42,H*0.42,0,0,Math.PI*2); }},
-    {id:'nucleus',   name:'Kern',       color:'#a78bfa', alpha:0.85, also:'(beheersentrum)',  found:['plant','animal'],
-     desc:'Die beheersentrum van die sel. Bevat DNS (deoksiribonukleïensuur) wat in chromosome verpak is. DNS dra die genetiese instruksies vir alle selaktiwiteite en word tydens seldeling oorgedra.',
-     draw:(ctx,W,H)=>{ ctx.beginPath(); ctx.ellipse(W*0.46,H*0.48,W*0.14,H*0.13,0,0,Math.PI*2); }},
-    {id:'mito',      name:'Mitochondrion', color:'#fb923c', alpha:0.85, also:'(kragstasie)',       found:['plant','animal'],
-     desc:'Word dikwels die "kragstasie van die sel" genoem. Mitochondria voer sellulêre respirasie uit — hulle breek glukose af om energie in die vorm van ATP vry te stel. Meer aktiewe selle (soos spierselle) het meer mitochondria.',
-     draw:(ctx,W,H)=>{
-       ctx.beginPath();
-       [[W*0.22,H*0.30],[W*0.76,H*0.34],[W*0.24,H*0.70],[W*0.74,H*0.68]].forEach(([cx,cy])=>{
-         ctx.moveTo(cx+W*0.055*Math.cos(0.4), cy+W*0.030*Math.sin(0.4));
-         ctx.ellipse(cx,cy,W*0.055,W*0.030,0.4,0,Math.PI*2);
-       });
-     }},
-    {id:'ribosome',  name:'Ribosome',    color:'#fbbf24', alpha:0.90, also:'(proteïenmakers)',   found:['plant','animal'],
-     desc:'Piepklein strukture wat in die sitoplasma voorkom. Ribosome bou proteïene deur instruksies vanaf DNS te volg. Elke sel het proteïene nodig om te funksioneer.',
-     draw:(ctx,W,H)=>{
-       ctx.beginPath();
-       [[W*0.35,H*0.24],[W*0.62,H*0.26],[W*0.30,H*0.74],[W*0.65,H*0.74],[W*0.72,H*0.52],[W*0.28,H*0.50]].forEach(([cx,cy])=>{
-         ctx.moveTo(cx+4,cy); ctx.arc(cx,cy,4,0,Math.PI*2);
-       });
-     }},
-    {id:'centriole', name:'Sentriole',   color:'#f472b6', alpha:0.85, also:'(seldeling)',    found:['animal'],
-     desc:'Klein silindriese strukture wat slegs in dierselle voorkom. Hulle speel \'n sleutelrol in seldeling — hulle help om chromosome te skei wanneer die sel deel. Plantselle bestuur seldeling sonder sentriole.',
-     draw:(ctx,W,H)=>{
-       ctx.beginPath();
-       ctx.ellipse(W*0.58,H*0.62,W*0.04,W*0.02,0.2,0,Math.PI*2);
-       ctx.moveTo(W*0.63+W*0.04*Math.cos(0.9), H*0.60+W*0.02*Math.sin(0.9));
-       ctx.ellipse(W*0.63,H*0.60,W*0.04,W*0.02,0.9,0,Math.PI*2);
-     }},
-  ],
-};
-
-function roundRect(ctx,x,y,w,h,r){
-  ctx.moveTo(x+r,y); ctx.lineTo(x+w-r,y);
-  ctx.quadraticCurveTo(x+w,y,x+w,y+r);
-  ctx.lineTo(x+w,y+h-r); ctx.quadraticCurveTo(x+w,y+h,x+w-r,y+h);
-  ctx.lineTo(x+r,y+h); ctx.quadraticCurveTo(x,y+h,x,y+h-r);
-  ctx.lineTo(x,y+r); ctx.quadraticCurveTo(x,y,x+r,y);
-  ctx.closePath();
-}
-
-function resizeCanvas(){
-  W = canvas.offsetWidth || 500;
-  H = 440;
-  canvas.width = W * devicePixelRatio;
-  canvas.height = H * devicePixelRatio;
-  ctx.scale(devicePixelRatio, devicePixelRatio);
-}
-
-function setCellType(t){
-  cellType = t;
-  selectedOrg = null;
-  document.getElementById('btnPlant').classList.toggle('active',t==='plant');
-  document.getElementById('btnAnimal').classList.toggle('active',t==='animal');
-  buildPartsList();
-  showOrganelle(null);
-}
-
-function buildPartsList(){
-  const list = document.getElementById('partsList');
-  const orgs = ORGANELLES[cellType];
-  list.innerHTML = orgs.map(o=>`
-    <div class="parts-item" id="pi_${o.id}" onclick="clickOrg('${o.id}')">
-      <span class="parts-dot" style="background:${o.color}"></span>
-      ${o.name}
-    </div>`).join('');
-}
-
-function clickOrg(id){
-  const orgs = ORGANELLES[cellType];
-  const org = orgs.find(o=>o.id===id);
-  selectedOrg = org;
-  document.querySelectorAll('.parts-item').forEach(el=>el.classList.remove('active'));
-  document.getElementById('pi_'+id)?.classList.add('active');
-  showOrganelle(org);
-}
-
-function showOrganelle(org){
-  const d = document.getElementById('orgInfo');
-  if(!org){ d.innerHTML='<div style="color:var(--muted);font-size:13px;text-align:center;margin-top:40px">👆 Klik op \'n organel<br>om sy funksie te sien</div>'; return; }
-  const badges = org.found.map(f=>`<span class="org-badge ${f}">${f==='plant'?'🌿 Plant':'🐾 Dier'}</span>`).join('');
-  d.innerHTML=`
-    <div class="org-name" style="color:${org.color}">${org.name}</div>
-    <div class="org-also">${org.also}</div>
-    <p class="org-desc">${org.desc}</p>
-    <div class="org-found">${badges}</div>`;
-}
-
-function drawCell(){
-  ctx.clearRect(0,0,W,H);
-  pulseT += 0.04;
-  const orgs = ORGANELLES[cellType];
-  const pulse = 0.85 + 0.15*Math.sin(pulseT);
-
-  orgs.forEach(org=>{
-    const isSelected = selectedOrg?.id === org.id;
-    const isHover = hoverOrg?.id === org.id;
-    ctx.save();
-    org.draw(ctx,W,H);
-    const alpha = isSelected ? Math.min(1, org.alpha*1.6*pulse) : isHover ? org.alpha*1.3 : org.alpha;
-    ctx.fillStyle = hexToRgba(org.color, alpha);
-    ctx.fill();
-    if(isSelected || isHover){
-      ctx.strokeStyle = org.color;
-      ctx.lineWidth = isSelected ? 2.5 : 1.5;
-      ctx.stroke();
-    }
-    ctx.restore();
-  });
-
-  // Draw nucleus membrane ring
-  const nOrg = orgs.find(o=>o.id==='nucleus');
-  if(nOrg){
-    ctx.save();
-    nOrg.draw(ctx,W,H);
-    ctx.strokeStyle = 'rgba(167,139,250,0.60)';
-    ctx.lineWidth = 2;
-    ctx.stroke();
-    ctx.restore();
-    // Nucleolus
-    const isPC = cellType==='plant';
-    ctx.beginPath(); ctx.arc(isPC?W*0.42:W*0.46, isPC?H*0.50:H*0.48, 8, 0, Math.PI*2);
-    ctx.fillStyle='rgba(196,181,253,0.80)'; ctx.fill();
-  }
-
-  // Labels for selected
-  if(selectedOrg){
-    orgs.forEach(org=>{
-      if(org.id!==selectedOrg.id) return;
-      ctx.save();
-      // Find center of the shape by sampling
-      const testCanvas = document.createElement('canvas');
-      testCanvas.width=W; testCanvas.height=H;
-      const tc = testCanvas.getContext('2d');
-      org.draw(tc,W,H);
-      // Just use a simple label near the shape
-      ctx.fillStyle='rgba(255,255,255,0.90)';
-      ctx.font='bold 12px "Cabinet Grotesk"';
-      ctx.textAlign='center';
-      ctx.restore();
-    });
-  }
-
-  requestAnimationFrame(drawCell);
-}
-
-function hexToRgba(hex, a){
-  const r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);
-  return `rgba(${r},${g},${b},${a})`;
-}
-
-canvas.addEventListener('click', e=>{
-  const rect=canvas.getBoundingClientRect();
-  const mx=(e.clientX-rect.left), my=(e.clientY-rect.top);
-  const orgs=[...ORGANELLES[cellType]].reverse();
-  for(const org of orgs){
-    const tc=document.createElement('canvas'); tc.width=W; tc.height=H;
-    const tctx=tc.getContext('2d'); org.draw(tctx,W,H); tctx.fill();
-    if(tctx.isPointInPath(mx,my)){ clickOrg(org.id); return; }
-  }
-  selectedOrg=null; showOrganelle(null);
-  document.querySelectorAll('.parts-item').forEach(el=>el.classList.remove('active'));
-});
-
-canvas.addEventListener('mousemove', e=>{
-  const rect=canvas.getBoundingClientRect();
-  const mx=(e.clientX-rect.left), my=(e.clientY-rect.top);
-  const orgs=[...ORGANELLES[cellType]].reverse();
-  let found=null;
-  for(const org of orgs){
-    const tc=document.createElement('canvas'); tc.width=W; tc.height=H;
-    const tctx=tc.getContext('2d'); org.draw(tctx,W,H); tctx.fill();
-    if(tctx.isPointInPath(mx,my)){ found=org; break; }
-  }
-  hoverOrg=found; canvas.style.cursor=found?'pointer':'default';
-});
+function buildPartsList(){} function clickOrg(){} function drawCell(){} function hexToRgba(){} function resizeCanvas(){} function roundRect(){} function setCellType(){} function showOrganelle(){} // the simulation is assets/explore/cell-explorer.js
 
 function switchTab(id,btn){
   document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));

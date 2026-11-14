@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
 <script src="/assets/theme.js"></script>
 <script defer src="/assets/lesson-toc.js"></script>
+<link rel="stylesheet" href="/assets/lesson-progress.css">
+<script defer src="/assets/lesson-progress.js"></script>
 <link rel="stylesheet" href="/assets/focus-reading.css">
 <script defer src="/assets/focus-reading.js"></script>
 <script src="/assets/sim-fit.js"></script>
@@ -258,13 +260,13 @@
 
 <!-- SIMULATE -->
 <div class="tab-panel" id="tab-explore">
-  <h2 style="font-size:18px;font-weight:800;color:#fff;margin-bottom:6px">Circuit Simulator</h2>
-  <p style="font-size:13px;color:var(--muted);margin-bottom:20px">Adjust voltage and resistance, toggle the switch, and switch between series and parallel. Watch how current changes and how bright the bulbs glow.</p>
-  <div class="ml-predict" style="margin:0 0 16px;padding:10px 14px;border-radius:10px;background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.22);font-size:13px;line-height:1.6;color:rgba(226,232,240,.88)"><strong style="color:#fde68a">Predict first:</strong> If you increase the resistance, will the bulbs glow brighter or dimmer? <strong style="color:#fde68a">Then test it:</strong> Increase the resistance and watch the current and the bulbs.</div>
+  <h2 style="font-size:20px;font-weight:800;color:#f2f5f9;margin-bottom:6px">Circuit Simulator</h2>
+  <p style="font-size:15px;line-height:1.6;color:rgba(226,232,240,.72);margin-bottom:16px;max-width:68ch">Adjust voltage and resistance, toggle the switch, and switch between series and parallel. Watch how current changes and how bright the bulbs glow.</p>
+  <div class="ml-predict" style="margin:0 0 16px;padding:12px 16px;border-radius:10px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.075);border-left:2px solid #74d154;font-size:15px;line-height:1.6;color:#e3e8ef"><strong style="color:#f2f5f9">Predict first:</strong> If you increase the resistance, will the bulbs glow brighter or dimmer? <strong style="color:#f2f5f9">Then test it:</strong> Increase the resistance and watch the current and the bulbs.</div>
   <div class="explore-top">
     <div class="circuit-wrap">
       <h3>Circuit Diagram</h3>
-      <canvas id="circuitCanvas" height="320" role="img" aria-label="Circuit Simulator: interactive simulation"></canvas>
+      <canvas id="circuitCanvas" height="320" role="img" aria-label="Circuit Simulator. Adjust voltage and resistance, toggle the switch, and switch between series and parallel. Watch how current changes and how bright the bulbs glow."></canvas>
     </div>
     <div class="controls">
       <div class="ctrl-card">
@@ -282,7 +284,7 @@
           <span class="slider-val" id="voltVal">6 V</span>
         </div>
         <div class="slider-row">
-          <label for="resistSlider">Resistance</label>
+          <label for="resistSlider">Resistance of each bulb</label>
           <input type="range" id="resistSlider" min="1" max="12" value="3" oninput="updateCircuit()">
           <span class="slider-val" id="resistVal">3 Ω</span>
         </div>
@@ -290,14 +292,14 @@
           <i data-lucide="toggle-right" style="width:16px;height:16px"></i>
           Switch: CLOSED
         </button>
-        <div class="bulb-status on" id="bulbStatus">💡 Bulb is ON</div>
+        <div class="bulb-status on" id="bulbStatus">Bulb is ON</div>
       </div>
       <div class="ctrl-card">
         <div class="ctrl-label">Readings</div>
         <div class="readout-grid">
           <div class="readout"><div class="readout-label">Voltage</div><div class="readout-val" id="readV">6<span>V</span></div></div>
-          <div class="readout"><div class="readout-label">Resistance</div><div class="readout-val" id="readR">3<span>Ω</span></div></div>
-          <div class="readout"><div class="readout-label">Current</div><div class="readout-val" id="readI" style="color:#fbbf24">2.00<span>A</span></div></div>
+          <div class="readout"><div class="readout-label">Each bulb</div><div class="readout-val" id="readR">3<span>Ω</span></div></div>
+          <div class="readout"><div class="readout-label">Total current</div><div class="readout-val" id="readI" style="color:#fbbf24">2.00<span>A</span></div></div>
           <div class="readout"><div class="readout-label">Power</div><div class="readout-val" id="readP" style="color:#86efac">12.0<span>W</span></div></div>
         </div>
         <div class="ohm-show" id="ohmShow">I = 6 ÷ 3 = 2.00 A</div>
@@ -382,33 +384,44 @@ function toggleSwitch(){
   updateCircuit();
 }
 
+// Two identical bulbs, each of resistance R.
+// Series: R_total = 2R, the same current I = V/2R flows through both, each bulb gets V/2.
+// Parallel: each bulb gets the full V, I_bulb = V/R, the battery supplies I_total = 2V/R.
+// Brightness follows the power in each bulb.
+function circuitValues(){
+  if(!switchClosed) return {I:0,Ib:0,Pb:0,Rt:circuitType==='series'?2*R:R/2};
+  if(circuitType==='series'){const I=V/(2*R);return {I,Ib:I,Pb:I*I*R,Rt:2*R};}
+  const Ib=V/R;return {I:2*Ib,Ib,Pb:V*Ib,Rt:R/2};
+}
 function updateCircuit(){
   V=+document.getElementById('voltageSlider').value;
   R=+document.getElementById('resistSlider').value;
   document.getElementById('voltVal').textContent=V+' V';
   document.getElementById('resistVal').textContent=R+' Ω';
-  const I=switchClosed ? V/R : 0;
+  const cv=circuitValues();
+  const I=cv.I;
   const P=V*I;
   document.getElementById('readV').innerHTML=`${V}<span>V</span>`;
   document.getElementById('readR').innerHTML=`${R}<span>Ω</span>`;
   document.getElementById('readI').innerHTML=`${I.toFixed(2)}<span>A</span>`;
   document.getElementById('readP').innerHTML=`${P.toFixed(1)}<span>W</span>`;
   document.getElementById('ohmShow').textContent = switchClosed
-    ? `I = ${V} ÷ ${R} = ${I.toFixed(2)} A`
+    ? `I = ${V} ÷ ${(+cv.Rt.toFixed(2))} = ${I.toFixed(2)} A`
     : 'Switch open — no current flows';
   const status=document.getElementById('bulbStatus');
-  if(!switchClosed){status.className='bulb-status off';status.textContent='💡 Bulb is OFF (open switch)'}
-  else if(I<0.5){status.className='bulb-status off';status.textContent='💡 Bulb very dim (low current)'}
-  else if(I<1.5){status.className='bulb-status on';status.textContent='💡 Bulb glowing dimly'}
-  else{status.className='bulb-status on';status.textContent='💡 Bulb is ON and bright!'}
+  if(!switchClosed){status.className='bulb-status off';status.textContent='Bulb is OFF (open switch)'}
+  else if(cv.Pb<2){status.className='bulb-status off';status.textContent='Bulb very dim (low current)'}
+  else if(cv.Pb<8){status.className='bulb-status on';status.textContent='Bulb glowing dimly'}
+  else{status.className='bulb-status on';status.textContent='Bulb is ON and bright!'}
 }
 
 function drawCircuit(){
   const W=canvas.offsetWidth||480, H=320;
   ctx.clearRect(0,0,W,H);
 
-  const I = switchClosed ? V/R : 0;
-  const brightness = Math.min(1, I/4);
+  const cv = circuitValues();
+  const I = cv.I;
+  const brightness = Math.min(1, cv.Pb/16);
   const wireCol = switchClosed ? `rgba(251,191,36,${0.4+brightness*0.6})` : 'rgba(255,255,255,0.15)';
   const wireW = 2.5;
 
@@ -418,8 +431,10 @@ function drawCircuit(){
 
     // Wires
     ctx.strokeStyle=wireCol; ctx.lineWidth=wireW; ctx.lineCap='round';
-    ctx.beginPath();ctx.moveTo(L,T);ctx.lineTo(mx-30,T);ctx.stroke();
-    ctx.beginPath();ctx.moveTo(mx+30,T);ctx.lineTo(R2,T);ctx.stroke();
+    const sb1=mx-70, sb2=mx+70;
+    ctx.beginPath();ctx.moveTo(L,T);ctx.lineTo(sb1-30,T);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(sb1+30,T);ctx.lineTo(sb2-30,T);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(sb2+30,T);ctx.lineTo(R2,T);ctx.stroke();
     ctx.beginPath();ctx.moveTo(R2,T);ctx.lineTo(R2,B*0.45);ctx.stroke();
     ctx.beginPath();ctx.moveTo(R2,B*0.55);ctx.lineTo(R2,B);ctx.stroke();
     ctx.beginPath();ctx.moveTo(R2,B);ctx.lineTo(L,B);ctx.stroke();
@@ -427,12 +442,13 @@ function drawCircuit(){
 
     if(switchClosed && I>0){
       flowOffset=(flowOffset+I*0.012)%1;
-      drawFlow([[L,T,mx-30,T],[mx+30,T,R2,T],[R2,T,R2,B*0.45],[R2,B*0.55,R2,B],[R2,B,L,B],[L,B,L,T]],flowOffset,wireCol);
+      drawFlow([[L,T,sb1-30,T],[sb1+30,T,sb2-30,T],[sb2+30,T,R2,T],[R2,T,R2,B*0.45],[R2,B*0.55,R2,B],[R2,B,L,B],[L,B,L,T]],flowOffset,wireCol);
     }
 
     const battY = T+(B-T)/2-20;
     drawBattery(L,battY,false);
-    drawBulb(mx,T,brightness);
+    drawBulb(sb1,T,brightness);
+    drawBulb(sb2,T,brightness);
     drawSwitch(R2,B*0.45,R2,B*0.55,switchClosed);
 
     // Labels — battery beside its symbol, others at natural positions
@@ -440,11 +456,12 @@ function drawCircuit(){
     ctx.textAlign='right';
     ctx.fillText('Battery',L-14,battY+18);
     ctx.textAlign='center';
-    ctx.fillText('Bulb',mx,T-16);
+    ctx.fillText('Bulb 1',sb1,T-16);
+    ctx.fillText('Bulb 2',sb2,T-16);
     ctx.textAlign='right';
     ctx.fillText('Switch',R2-6,(B*0.45+B*0.55)/2-6);
     ctx.fillStyle='rgba(251,191,36,0.70)'; ctx.font='bold 11px "JetBrains Mono"'; ctx.textAlign='center';
-    ctx.fillText(`${I.toFixed(1)} A`,mx,B-8);
+    ctx.fillText(`I = ${I.toFixed(2)} A`,mx,B-8);
 
   } else {
     const L=85,R2=W-60,T=70,B=H-60;
@@ -488,7 +505,7 @@ function drawCircuit(){
     ctx.fillText('Bulb 2',bx2,T-16);
     ctx.fillText('Switch',(swX1+swX2)/2,T-10);
     ctx.fillStyle='rgba(251,191,36,0.70)'; ctx.font='bold 11px "JetBrains Mono"';
-    ctx.fillText(`Each: ${I.toFixed(1)} A`,(bx1+bx2)/2,B-8);
+    ctx.fillText(`Each: ${cv.Ib.toFixed(2)} A · total: ${I.toFixed(2)} A`,(bx1+bx2)/2,B-8);
   }
 }
 

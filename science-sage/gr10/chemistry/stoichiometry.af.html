@@ -3,6 +3,8 @@
 <head>
 <script src="/assets/theme.js"></script>
 <script defer src="/assets/lesson-toc.js"></script>
+<link rel="stylesheet" href="/assets/lesson-progress.css">
+<script defer src="/assets/lesson-progress.js"></script>
 <link rel="stylesheet" href="/assets/focus-reading.css">
 <script defer src="/assets/focus-reading.js"></script>
 <script src="/assets/sim-fit.js"></script>
@@ -327,11 +329,11 @@ select option{background:#1a1f35}
 
 <!-- ===== EXPLORE TAB ===== -->
 <div class="tab-panel" id="tab-explore">
-  <div class="ml-predict" style="margin:0 0 16px;padding:10px 14px;border-radius:10px;background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.22);font-size:13px;line-height:1.6;color:rgba(226,232,240,.88)"><strong style="color:#fde68a">Voorspel eers:</strong> Hoeveel mol is daar in 36 g water (M = 18 g·mol⁻¹)? Werk dit eers uit. <strong style="color:#fde68a">Toets dit dan:</strong> Kontroleer met die molrekenaar en probeer dan die beperkende-reagens-modus.</div>
+  <div class="ml-predict" style="margin:0 0 16px;padding:12px 16px;border-radius:10px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.075);border-left:2px solid #74d154;font-size:15px;line-height:1.6;color:#e3e8ef"><strong style="color:#f2f5f9">Voorspel eers:</strong> Hoeveel mol is daar in 36 g water (M = 18 g·mol⁻¹)? Werk dit eers uit. <strong style="color:#f2f5f9">Toets dit dan:</strong> Kontroleer met die molrekenaar en probeer dan die beperkende-reagens-modus.</div>
   <div class="sim-outer">
     <div class="sim-canvas-wrap">
       <h3 id="stoicTitle">Molberekenaar</h3>
-      <canvas id="stoicCanvas" height="300" role="img" aria-label="Molberekenaar: interaktiewe simulasie"></canvas>
+      <canvas id="stoicCanvas" height="300" role="img" aria-label="Molberekenaar"></canvas>
     </div>
     <div class="sim-controls-row">
       <div class="ctrl-card">
@@ -755,11 +757,13 @@ function updateMole(){
   document.getElementById('massVal').textContent = mass + ' g';
   const n = mass / M;
   const N = n * 6.022e23;
-  const V = n * 22.4;
+  // Molar volume (22.4 dm³·mol⁻¹ at STP) applies to gases only; CO₂ (M = 44) is the only gas in the list
+  const isGas = M === 44;
+  const V = isGas ? n * 22.4 : null;
   document.getElementById('ro-mm').innerHTML = M + '<span>g·mol⁻¹</span>';
   document.getElementById('ro-n').innerHTML = n.toFixed(3) + '<span>mol</span>';
   document.getElementById('ro-N').innerHTML = formatSci(N) + '<span>deeltjies</span>';
-  document.getElementById('ro-v').innerHTML = V.toFixed(2) + '<span>L</span>';
+  document.getElementById('ro-v').innerHTML = isGas ? V.toFixed(2) + '<span>L</span>' : '<span style="font-size:12px">' + (/\.af\.html$/i.test(location.pathname) ? 'Nie \'n gas nie' : 'Not a gas') + '</span>';
   simState = {mode:'mole', M, mass, n, N, V};
   drawSim();
 }
@@ -890,13 +894,14 @@ function drawMoleVis(W, H){
   ctx.stroke();
 
   // Beam — tilts based on mass vs M
-  const tilt = Math.min(25, Math.max(-25, (mass - M) / (M + 1) * 20));
+  const tilt = Math.min(15, Math.max(-15, (mass - M) / (M + 1) * 20));
   const armLen = Math.min(W * 0.3, 160);
   const beamY = poleH + 10;
   const leftX = cx - armLen;
   const rightX = cx + armLen;
-  const leftY = beamY - Math.sin(tilt * Math.PI / 180) * armLen;
-  const rightY = beamY + Math.sin(tilt * Math.PI / 180) * armLen;
+  // The heavier pan goes DOWN (canvas y grows downwards)
+  const leftY = beamY + Math.sin(tilt * Math.PI / 180) * armLen;
+  const rightY = beamY - Math.sin(tilt * Math.PI / 180) * armLen;
 
   ctx.strokeStyle = 'rgba(255,255,255,0.3)';
   ctx.lineWidth = 2;

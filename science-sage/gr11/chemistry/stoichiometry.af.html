@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
 <script src="/assets/theme.js"></script>
 <script defer src="/assets/lesson-toc.js"></script>
+<link rel="stylesheet" href="/assets/lesson-progress.css">
+<script defer src="/assets/lesson-progress.js"></script>
 <link rel="stylesheet" href="/assets/focus-reading.css">
 <script defer src="/assets/focus-reading.js"></script>
 <script src="/assets/sim-fit.js"></script>
@@ -425,7 +427,7 @@ input[type=range]{flex:1;accent-color:#c084fc;cursor:pointer}
      EXPLORE TAB
 ════════════════════════════════════════════════════════ -->
 <div id="tab-explore" class="tab-panel">
-  <div class="ml-predict" style="margin:0 0 16px;padding:10px 14px;border-radius:10px;background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.22);font-size:13px;line-height:1.6;color:rgba(226,232,240,.88)"><strong style="color:#fde68a">Voorspel eers:</strong> Waar sal die pH tydens die titrasie die vinnigste verander: aan die begin, naby die ekwivalensiepunt, of aan die einde? <strong style="color:#fde68a">Toets dit dan:</strong> Voeg NaOH in klein hoeveelhede by en hou die pH dop.</div>
+  <div class="ml-predict" style="margin:0 0 16px;padding:12px 16px;border-radius:10px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.075);border-left:2px solid #74d154;font-size:15px;line-height:1.6;color:#e3e8ef"><strong style="color:#f2f5f9">Voorspel eers:</strong> Waar sal die pH tydens die titrasie die vinnigste verander: aan die begin, naby die ekwivalensiepunt, of aan die einde? <strong style="color:#f2f5f9">Toets dit dan:</strong> Voeg NaOH in klein hoeveelhede by en hou die pH dop.</div>
   <div class="sim-outer">
 
     <!-- Mode buttons -->
@@ -438,7 +440,7 @@ input[type=range]{flex:1;accent-color:#c084fc;cursor:pointer}
     <div id="simMode1">
       <div class="sim-canvas-wrap">
         <h3>Virtuele Titrasie — HCl(aq) teenoor NaOH(aq)</h3>
-        <canvas id="titrationCanvas" role="img" aria-label="Virtuele Titrasie — HCl(aq) teenoor NaOH(aq): interaktiewe simulasie"></canvas>
+        <canvas id="titrationCanvas" role="img" aria-label="Virtuele Titrasie — HCl(aq) teenoor NaOH(aq). Laat een veld leeg — die sakrekenaar sal dit vir jou bereken. Voer P in kPa, V in liter, T in °C in."></canvas>
       </div>
 
       <div class="sim-controls-row">
@@ -789,14 +791,8 @@ function calcPH(vNaOHmL) {
 function flaskColor(pH) {
   if (currentIndicator === 'phenolphthalein') {
     // colourless below ~8.2, pink above
-    if (pH < 7) {
-      const t = Math.min(1, (7 - pH) / 6);
-      // red-orange for acidic
-      const r = Math.round(200 + 40 * t);
-      const g = Math.round(60 - 40 * t);
-      const b = 60;
-      return `rgba(${r},${g},${b},0.55)`;
-    } else if (pH < 8.2) {
+    if (pH < 8.2) {
+      // colourless in acid and neutral solution
       return 'rgba(180,200,210,0.35)';
     } else {
       // pink/magenta

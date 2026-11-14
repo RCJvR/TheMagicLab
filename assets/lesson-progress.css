@@ -1,0 +1,28 @@
+/* The Magic Lab — reading progress for lessons. See assets/lesson-progress.js. */
+
+.ml-progress {
+  position: -webkit-sticky; position: sticky; top: 0; z-index: 25;
+  height: 4px; margin: 0 auto 18px;
+  /* The same width and centre as the lesson text, so the bar never runs under the "On this page" list. */
+  max-width: 760px; width: 100%;
+  background: rgba(127, 127, 127, 0.18);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.ml-progress i {
+  position: absolute; left: 0; top: 0; bottom: 0; width: 0;
+  background: var(--fam-computing, #60a5fa);
+  transition: width 0.15s linear;
+}
+/* Ticks mark where each section starts; they are gaps in the track, in the page ground colour. */
+.ml-progress b {
+  position: absolute; top: 0; bottom: 0; width: 2px;
+  background: var(--bg, #08090b);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ml-progress i { transition: none; }
+}
+@media print {
+  .ml-progress { display: none; }
+}

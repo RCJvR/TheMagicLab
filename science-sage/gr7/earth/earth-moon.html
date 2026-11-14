@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
 <script src="/assets/theme.js"></script>
 <script defer src="/assets/lesson-toc.js"></script>
+<link rel="stylesheet" href="/assets/lesson-progress.css">
+<script defer src="/assets/lesson-progress.js"></script>
 <link rel="stylesheet" href="/assets/focus-reading.css">
 <script defer src="/assets/focus-reading.js"></script>
 <script src="/assets/sim-fit.js"></script>
@@ -166,6 +168,7 @@
 <script defer src="../../../progress.js"></script>
 <script defer src="../../../lesson-progress-observer.js"></script>
 <style id="ml-touch">@media (pointer:coarse){#tab-explore button,#tab-simulate button,#panel-explore button,#tab-explore select,#tab-simulate select,#panel-explore select{min-height:40px}#tab-explore input[type=range],#tab-simulate input[type=range],#panel-explore input[type=range]{min-height:32px}}</style>
+<link rel="stylesheet" href="/assets/explore-kit.css">
 </head>
 <body>
   <a class="ml-skip" href="#ml-main">Skip to content</a>
@@ -252,40 +255,12 @@
 
 <!-- EXPLORE -->
 <div class="tab-panel" id="tab-explore">
-  <h2 style="font-size:18px;font-weight:800;color:#fff;margin-bottom:6px">Moon Phase &amp; Tides Simulator</h2>
-  <p style="font-size:13px;color:var(--muted);margin-bottom:20px">Watch the Moon orbit Earth. The right panel shows the current phase. Toggle to Tides view to see spring and neap tides.</p>
-  <div class="ml-predict" style="margin:0 0 16px;padding:10px 14px;border-radius:10px;background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.22);font-size:13px;line-height:1.6;color:rgba(226,232,240,.88)"><strong style="color:#fde68a">Predict first:</strong> How many days does the Moon take to go from new moon to full moon? <strong style="color:#fde68a">Then test it:</strong> Watch the phases change, then switch to the Tides view.</div>
-  <div class="explore-layout">
-    <div class="solar-wrap">
-      <canvas id="moonCanvas" height="460" role="img" aria-label="Moon Phase &amp; Tides Simulator: interactive simulation"></canvas>
-    </div>
-    <div class="controls">
-      <div class="ctrl-card">
-        <div class="ctrl-label">Orbit Speed</div>
-        <div class="slider-row">
-          <label for="speedSlider">Speed</label>
-          <input type="range" id="speedSlider" min="0.5" max="4" step="0.1" value="1" oninput="updateSpeed()">
-          <span class="slider-val" id="speedVal">1×</span>
-        </div>
-      </div>
-      <button class="toggle-btn" id="viewToggle" onclick="toggleView()">
-        <i data-lucide="waves" style="width:14px;height:14px"></i> Switch to Tides View
-      </button>
-      <div class="ctrl-card" id="phaseCard">
-        <div class="ctrl-label">Current Phase</div>
-        <div class="phase-label" id="phaseName">New Moon</div>
-        <div class="phase-sub" id="phaseSub">Moon between Earth and Sun. The lit side faces away from us.</div>
-        <div style="margin-top:12px">
-          <canvas id="phaseDisp" width="80" height="80" style="display:block;margin:0 auto" role="img" aria-label="Moon Phase &amp; Tides Simulator: interactive simulation"></canvas>
-        </div>
-      </div>
-      <div class="ctrl-card" id="tideCard" style="display:none">
-        <div class="ctrl-label">Tide Type</div>
-        <div class="phase-label" id="tideName">Spring Tide</div>
-        <div class="phase-sub" id="tideSub">Sun, Earth and Moon aligned — tidal forces combine for maximum range.</div>
-      </div>
-    </div>
-  </div>
+  <h2 style="font-size:20px;font-weight:800;color:#f2f5f9;margin-bottom:6px">Phases of the Moon and tides</h2>
+  <p style="font-size:15px;line-height:1.6;color:rgba(226,232,240,.72);margin-bottom:16px;max-width:68ch">Watch the Moon orbit Earth. The right panel shows the current phase. Toggle to Tides view to see spring and neap tides.</p>
+  <div class="ml-predict" style="margin:0 0 16px;padding:12px 16px;border-radius:10px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.075);border-left:2px solid #74d154;font-size:15px;line-height:1.6;color:#e3e8ef"><strong style="color:#f2f5f9">Predict first:</strong> How many days does the Moon take to go from new moon to full moon? <strong style="color:#f2f5f9">Then test it:</strong> Watch the phases change, then switch to the Tides view.</div>
+  <div id="mlx-root"></div>
+  <script src="/assets/explore-kit.js"></script>
+  <script src="/assets/explore/earth-moon.js"></script>
 </div>
 
 <!-- PRACTICE -->
@@ -336,277 +311,7 @@ function switchTab(id,btn){
   if(id==='explore') startCanvas();
 }
 
-// ── Moon Canvas ────────────────────────────────────────────────
-const PHASE_DATA = [
-  {name:'New Moon',         sub:'Moon between Earth and Sun. The lit side faces away from us.',       start:0,   end:22.5},
-  {name:'Waxing Crescent',  sub:'A thin sliver of the right side becomes visible.',                   start:22.5,end:67.5},
-  {name:'First Quarter',    sub:'The right half of the Moon is lit. Half of the visible face glows.', start:67.5,end:112.5},
-  {name:'Waxing Gibbous',   sub:'More than half lit — light is growing toward full.',                  start:112.5,end:157.5},
-  {name:'Full Moon',        sub:'Earth is between the Sun and Moon. The entire face is lit.',          start:157.5,end:202.5},
-  {name:'Waning Gibbous',   sub:'Still more than half lit — light is now decreasing.',                 start:202.5,end:247.5},
-  {name:'Last Quarter',     sub:'The left half of the Moon is lit.',                                   start:247.5,end:292.5},
-  {name:'Waning Crescent',  sub:'A thin sliver on the left — nearly back to new moon.',                start:292.5,end:337.5},
-  // wraps back
-  {name:'New Moon',         sub:'Moon between Earth and Sun. The lit side faces away from us.',       start:337.5,end:360},
-];
-
-let moonAngle = 0;
-let moonSpeed = 1;
-let tidesView = false;
-let animId = null;
-let canvasStarted = false;
-
-const moonCanvas = document.getElementById('moonCanvas');
-const ctx = moonCanvas.getContext('2d');
-const phaseDisp = document.getElementById('phaseDisp');
-const pCtx = phaseDisp.getContext('2d');
-
-function resizeMoonCanvas(){
-  const W = moonCanvas.offsetWidth || 560;
-  const H = 460;
-  moonCanvas.width = W * devicePixelRatio;
-  moonCanvas.height = H * devicePixelRatio;
-  ctx.scale(devicePixelRatio, devicePixelRatio);
-}
-
-function updateSpeed(){
-  moonSpeed = +document.getElementById('speedSlider').value;
-  document.getElementById('speedVal').textContent = moonSpeed.toFixed(1)+'×';
-}
-
-function toggleView(){
-  tidesView = !tidesView;
-  const btn = document.getElementById('viewToggle');
-  if(tidesView){
-    btn.innerHTML = '<i data-lucide="moon" style="width:14px;height:14px"></i> Switch to Phase View';
-    document.getElementById('phaseCard').style.display = 'none';
-    document.getElementById('tideCard').style.display = 'block';
-  } else {
-    btn.innerHTML = '<i data-lucide="waves" style="width:14px;height:14px"></i> Switch to Tides View';
-    document.getElementById('phaseCard').style.display = 'block';
-    document.getElementById('tideCard').style.display = 'none';
-  }
-  lucide.createIcons();
-}
-
-function getPhaseInfo(angleDeg){
-  const a = ((angleDeg % 360) + 360) % 360;
-  for(const pd of PHASE_DATA){
-    if(a >= pd.start && a < pd.end) return pd;
-  }
-  return PHASE_DATA[0];
-}
-
-// Shared illumination renderer — draws the Moon disc with the correct lit
-// crescent/gibbous shape for a given orbit angle. Used by both the orbit view
-// and the mini phase-chart so the two stay visually consistent.
-function drawMoonDisc(context, cx, cy, r, angleDeg){
-  const a = ((angleDeg % 360) + 360) % 360;
-  context.beginPath(); context.arc(cx,cy,r,0,Math.PI*2);
-  context.fillStyle='#2a2a3a'; context.fill();
-  context.save();
-  context.beginPath(); context.arc(cx,cy,r,0,Math.PI*2); context.clip();
-  context.fillStyle='#e8d5a3';
-  context.beginPath();
-  if(a <= 180){
-    // Waxing: right half lit; terminator shifts from right (new) through centre (quarter) to left (full)
-    const termX = r * Math.cos(a * Math.PI / 180);
-    context.arc(cx,cy,r,-Math.PI/2,Math.PI/2,false); // CW right arc top→bottom
-    for(let t=Math.PI/2;t>-Math.PI/2-0.01;t-=0.04){
-      context.lineTo(cx + termX * Math.cos(t), cy + r * Math.sin(t));
-    }
-  } else {
-    // Waning: left half lit; terminator shifts from left (full) through centre (last quarter) to right (new)
-    const termX = -r * Math.cos(a * Math.PI / 180);
-    context.arc(cx,cy,r,-Math.PI/2,Math.PI/2,true); // CCW left arc top→bottom
-    for(let t=Math.PI/2;t>-Math.PI/2-0.01;t-=0.04){
-      context.lineTo(cx + termX * Math.cos(t), cy + r * Math.sin(t));
-    }
-  }
-  context.closePath();
-  context.fill();
-  context.restore();
-  context.beginPath(); context.arc(cx,cy,r,0,Math.PI*2);
-  context.strokeStyle='rgba(255,255,255,0.15)'; context.lineWidth=1; context.stroke();
-}
-
-function drawPhaseDisp(angleDeg){
-  pCtx.clearRect(0,0,80,80);
-  drawMoonDisc(pCtx, 40, 40, 36, angleDeg);
-}
-
-function drawStars(ctx, W, H, stars){
-  stars.forEach(([sx,sy,sr])=>{
-    ctx.beginPath(); ctx.arc(sx,sy,sr,0,Math.PI*2);
-    ctx.fillStyle='rgba(255,255,255,0.5)'; ctx.fill();
-  });
-}
-
-let stars = [];
-function ensureStars(W,H){
-  if(stars.length===0){
-    for(let i=0;i<120;i++) stars.push([Math.random()*W, Math.random()*H, Math.random()*1.2+0.2]);
-  }
-}
-
-function drawMoonPhaseView(W,H){
-  const cx = W/2, cy = H/2;
-  const orbitR = Math.min(W,H)*0.35;
-  const mAngleRad = moonAngle * Math.PI / 180;
-  const mx = cx + orbitR * Math.cos(mAngleRad);
-  const my = cy + orbitR * Math.sin(mAngleRad);
-
-  ctx.clearRect(0,0,W,H);
-  ensureStars(W,H);
-  drawStars(ctx,W,H,stars);
-
-  // Orbit ring
-  ctx.beginPath(); ctx.arc(cx,cy,orbitR,0,Math.PI*2);
-  ctx.strokeStyle='rgba(255,255,255,0.07)'; ctx.lineWidth=1; ctx.stroke();
-
-  // Earth
-  const earthR = 28;
-  const eg = ctx.createRadialGradient(cx-8,cy-8,2,cx,cy,earthR);
-  eg.addColorStop(0,'#6dd5fa'); eg.addColorStop(0.5,'#3a7bd5'); eg.addColorStop(1,'#1a3a6e');
-  ctx.beginPath(); ctx.arc(cx,cy,earthR,0,Math.PI*2);
-  ctx.fillStyle=eg; ctx.fill();
-  // Earth label
-  ctx.fillStyle='rgba(210,218,245,0.7)'; ctx.font='bold 11px "Cabinet Grotesk"'; ctx.textAlign='center';
-  ctx.fillText('Earth',cx,cy+earthR+14);
-
-  // Sun direction arrow (far right)
-  const sunX = W - 30, sunY = cy;
-  ctx.fillStyle='rgba(255,220,50,0.5)'; ctx.font='bold 10px "Cabinet Grotesk"'; ctx.textAlign='center';
-  ctx.fillText('☀ Sun →',sunX-20,sunY-8);
-
-  // Draw Moon — shares the same illumination renderer as the mini phase chart
-  const moonR = 16;
-  drawMoonDisc(ctx, mx, my, moonR, moonAngle);
-  // Moon label
-  ctx.fillStyle='rgba(210,218,245,0.7)'; ctx.font='bold 10px "Cabinet Grotesk"'; ctx.textAlign='center';
-  ctx.fillText('Moon',mx,my+moonR+12);
-
-  // Phase label on canvas
-  const pi = getPhaseInfo(moonAngle);
-  ctx.fillStyle='rgba(251,146,60,0.9)'; ctx.font='bold 12px "Cabinet Grotesk"'; ctx.textAlign='left';
-  ctx.fillText(pi.name, 16, H-16);
-
-  // Update side panel
-  document.getElementById('phaseName').textContent = pi.name;
-  document.getElementById('phaseSub').textContent = pi.sub;
-  drawPhaseDisp(moonAngle);
-}
-
-function drawTidesView(W,H){
-  ctx.clearRect(0,0,W,H);
-  ensureStars(W,H);
-  drawStars(ctx,W,H,stars);
-
-  const cx = W/2, cy = H/2;
-  const mAngleRad = moonAngle * Math.PI / 180;
-  const orbitR = Math.min(W,H)*0.30;
-  const mx = cx + orbitR * Math.cos(mAngleRad);
-  const my = cy + orbitR * Math.sin(mAngleRad);
-
-  // Sun (far left)
-  const sunX = 50, sunY = cy;
-  const sg = ctx.createRadialGradient(sunX,sunY,0,sunX,sunY,35);
-  sg.addColorStop(0,'#fff7a0'); sg.addColorStop(0.5,'#ffd700'); sg.addColorStop(1,'rgba(255,140,0,0)');
-  ctx.beginPath(); ctx.arc(sunX,sunY,30,0,Math.PI*2); ctx.fillStyle=sg; ctx.fill();
-  ctx.fillStyle='rgba(255,220,100,0.7)'; ctx.font='bold 10px "Cabinet Grotesk"'; ctx.textAlign='center';
-  ctx.fillText('Sun',sunX,sunY+38);
-
-  // Earth with tidal bulges
-  const earthR = 26;
-  const eg = ctx.createRadialGradient(cx-8,cy-8,2,cx,cy,earthR);
-  eg.addColorStop(0,'#6dd5fa'); eg.addColorStop(0.5,'#3a7bd5'); eg.addColorStop(1,'#1a3a6e');
-  ctx.beginPath(); ctx.arc(cx,cy,earthR,0,Math.PI*2); ctx.fillStyle=eg; ctx.fill();
-
-  // Tidal bulges (in direction of Moon and opposite)
-  const bulgeAngle = mAngleRad;
-  const bulgeR = 10;
-  const b1x = cx + (earthR+bulgeR*0.5) * Math.cos(bulgeAngle);
-  const b1y = cy + (earthR+bulgeR*0.5) * Math.sin(bulgeAngle);
-  const b2x = cx - (earthR+bulgeR*0.5) * Math.cos(bulgeAngle);
-  const b2y = cy - (earthR+bulgeR*0.5) * Math.sin(bulgeAngle);
-
-  ctx.save();
-  ctx.globalAlpha = 0.75;
-  // Bulge toward moon
-  const bulgeGrad1 = ctx.createRadialGradient(b1x,b1y,0,b1x,b1y,bulgeR+4);
-  bulgeGrad1.addColorStop(0,'rgba(96,165,250,0.9)'); bulgeGrad1.addColorStop(1,'rgba(96,165,250,0)');
-  ctx.beginPath(); ctx.arc(b1x,b1y,bulgeR+4,0,Math.PI*2); ctx.fillStyle=bulgeGrad1; ctx.fill();
-  // Bulge opposite
-  const bulgeGrad2 = ctx.createRadialGradient(b2x,b2y,0,b2x,b2y,bulgeR+4);
-  bulgeGrad2.addColorStop(0,'rgba(96,165,250,0.9)'); bulgeGrad2.addColorStop(1,'rgba(96,165,250,0)');
-  ctx.beginPath(); ctx.arc(b2x,b2y,bulgeR+4,0,Math.PI*2); ctx.fillStyle=bulgeGrad2; ctx.fill();
-  ctx.restore();
-
-  // Labels for bulges
-  const labelDist = earthR + bulgeR + 18;
-  const la1x = cx + labelDist * Math.cos(bulgeAngle);
-  const la1y = cy + labelDist * Math.sin(bulgeAngle);
-  const la2x = cx - labelDist * Math.cos(bulgeAngle);
-  const la2y = cy - labelDist * Math.sin(bulgeAngle);
-  ctx.fillStyle='rgba(96,165,250,0.85)'; ctx.font='bold 9px "JetBrains Mono"'; ctx.textAlign='center';
-  ctx.fillText('HIGH TIDE',la1x,la1y);
-  ctx.fillText('HIGH TIDE',la2x,la2y);
-
-  // Moon
-  const moonR = 14;
-  ctx.beginPath(); ctx.arc(mx,my,moonR,0,Math.PI*2); ctx.fillStyle='#c8c8c8'; ctx.fill();
-  ctx.beginPath(); ctx.arc(mx,my,moonR,0,Math.PI*2); ctx.strokeStyle='rgba(255,255,255,0.2)'; ctx.lineWidth=1; ctx.stroke();
-  ctx.fillStyle='rgba(210,218,245,0.7)'; ctx.font='bold 10px "Cabinet Grotesk"'; ctx.textAlign='center';
-  ctx.fillText('Moon',mx,my+moonR+12);
-
-  // Determine tide type
-  // Sun angle = 0 (left, i.e. from cx to sunX direction = angle 180)
-  const sunAngle = Math.PI; // sun is to the left
-  const moonAngleRad2 = mAngleRad;
-  let angleDiff = Math.abs(((moonAngleRad2 - sunAngle + Math.PI*3) % (Math.PI*2)) - Math.PI);
-  // angleDiff near 0 or π = spring; near π/2 = neap
-  const isSping = angleDiff < Math.PI/4 || angleDiff > 3*Math.PI/4;
-  const tName = isSping ? 'Spring Tide' : 'Neap Tide';
-  const tSub = isSping
-    ? 'Sun, Earth and Moon aligned — tidal forces combine for maximum range.'
-    : 'Sun and Moon at right angles — tidal forces partially cancel, smaller range.';
-  document.getElementById('tideName').textContent = tName;
-  document.getElementById('tideSub').textContent = tSub;
-
-  // Tide type label on canvas
-  ctx.fillStyle='rgba(251,146,60,0.9)'; ctx.font='bold 12px "Cabinet Grotesk"'; ctx.textAlign='left';
-  ctx.fillText(tName, 16, H-16);
-
-  // Draw line Sun → Earth for alignment check
-  ctx.beginPath(); ctx.moveTo(sunX+30,sunY); ctx.lineTo(cx-earthR,cy);
-  ctx.strokeStyle='rgba(255,220,50,0.12)'; ctx.lineWidth=1; ctx.setLineDash([4,4]); ctx.stroke(); ctx.setLineDash([]);
-}
-
-let lastTs = 0;
-function loop(ts){
-  const dt = Math.min((ts - lastTs)/16.67, 3); lastTs = ts;
-  moonAngle = (moonAngle + moonSpeed * 0.4 * dt) % 360;
-  const W = moonCanvas.offsetWidth || 560;
-  const H = 460;
-  if(tidesView) drawTidesView(W,H);
-  else drawMoonPhaseView(W,H);
-  animId = requestAnimationFrame(loop);
-}
-
-function startCanvas(){
-  if(canvasStarted) return;
-  canvasStarted = true;
-  resizeMoonCanvas();
-  requestAnimationFrame(loop);
-  // Watches the canvas's own rendered size (not just window resize) so the
-  // pixel buffer can't drift out of sync with its CSS size — e.g. when a
-  // scrollbar toggles because sidebar text wraps differently between phases.
-  if('ResizeObserver' in window){
-    new ResizeObserver(()=>{ if(canvasStarted) resizeMoonCanvas(); }).observe(moonCanvas);
-  }
-}
-
-window.addEventListener('resize',()=>{ if(canvasStarted) resizeMoonCanvas(); });
+function drawMoonDisc(){} function drawMoonOrbit(){} function drawMoonPhaseView(){} function drawPhaseDisp(){} function drawStars(){} function drawTidesView(){} function ensureStars(){} function getPhaseInfo(){} function loop(){} function resizeMoonCanvas(){} function startCanvas(){} function toggleView(){} function updateSpeed(){} // the simulation is assets/explore/earth-moon.js
 
 // ── Practice ────────────────────────────────────────────────────
 const QUESTIONS=[

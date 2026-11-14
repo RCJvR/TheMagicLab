@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
 <script src="/assets/theme.js"></script>
 <script defer src="/assets/lesson-toc.js"></script>
+<link rel="stylesheet" href="/assets/lesson-progress.css">
+<script defer src="/assets/lesson-progress.js"></script>
 <link rel="stylesheet" href="/assets/focus-reading.css">
 <script defer src="/assets/focus-reading.js"></script>
 <script src="/assets/sim-fit.js"></script>
@@ -257,17 +259,17 @@
 </div>
 
 <div id="tab-explore" class="tab-panel">
-  <div class="ml-predict" style="margin:0 0 16px;padding:10px 14px;border-radius:10px;background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.22);font-size:13px;line-height:1.6;color:rgba(226,232,240,.88)"><strong style="color:#fde68a">Voorspel eers:</strong> Voorspel elke sterrebeeld se vorm en hoeveel helder sterre dit het voordat jy dit oopmaak. <strong style="color:#fde68a">Toets dit dan:</strong> Maak die Suiderkruis-, Skerpioen- en Orion-aansigte oop en vergelyk.</div>
+  <div class="ml-predict" style="margin:0 0 16px;padding:12px 16px;border-radius:10px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.075);border-left:2px solid #74d154;font-size:15px;line-height:1.6;color:#e3e8ef"><strong style="color:#f2f5f9">Voorspel eers:</strong> Voorspel elke sterrebeeld se vorm en hoeveel helder sterre dit het voordat jy dit oopmaak. <strong style="color:#f2f5f9">Toets dit dan:</strong> Maak die Suiderkruis-, Skerpioen- en Orion-aansigte oop en vergelyk.</div>
   <div class="explore-wrap">
     <div class="canvas-card">
-      <canvas id="cv" width="520" height="420" role="img" aria-label="Teleskope &amp; Sterrebeelde: interaktiewe simulasie"></canvas>
+      <canvas id="cv" width="520" height="420" role="img" aria-label="Teleskope &amp; Sterrebeelde"></canvas>
     </div>
     <div class="controls">
       <div class="ctrl-card">
         <div class="ctrl-label">Aansig</div>
-        <button class="mode-btn active" onclick="setMode('crux',this)">✦ Suiderkruis</button>
-        <button class="mode-btn" onclick="setMode('scorpius',this)">🦂 Scorpius</button>
-        <button class="mode-btn" onclick="setMode('orion',this)">⚔ Orion</button>
+        <button class="mode-btn active" onclick="setMode('crux',this)">Suiderkruis</button>
+        <button class="mode-btn" onclick="setMode('scorpius',this)">Scorpius</button>
+        <button class="mode-btn" onclick="setMode('orion',this)">Orion</button>
       </div>
       <div class="ctrl-card">
         <div class="ctrl-label">Teleskope op 'n oogopslag</div>
@@ -419,17 +421,17 @@ function loop(){
     ctx.fillStyle=g;ctx.beginPath();ctx.arc(s.x,s.y,s.r*3,0,Math.PI*2);ctx.fill();
     ctx.beginPath();ctx.arc(s.x,s.y,s.r*tw,0,Math.PI*2);
     ctx.fillStyle=s.color;ctx.fill();
-    ctx.fillStyle='rgba(210,218,245,0.6)';ctx.font='9px var(--fd)';ctx.textAlign='left';
+    ctx.fillStyle='rgba(210,218,245,0.6)';ctx.font='9px "Cabinet Grotesk", sans-serif';ctx.textAlign='left';
     ctx.fillText(s.name,s.x+s.r*3+3,s.y+3);
   }
 
   // Constellation name
-  ctx.fillStyle='#fdba74';ctx.font='bold 13px var(--fd)';ctx.textAlign='center';
+  ctx.fillStyle='#fdba74';ctx.font='bold 13px "Cabinet Grotesk", sans-serif';ctx.textAlign='center';
   ctx.fillText(c.name,W/2,22);
 
   // Description
   const words=c.desc.split(' ');let line='',lines=[],maxW=W-40;
-  ctx.font='10px var(--fd)';
+  ctx.font='10px "Cabinet Grotesk", sans-serif';
   for(const w of words){
     const test=line+w+' ';
     if(ctx.measureText(test).width>maxW&&line){lines.push(line.trim());line=w+' ';}

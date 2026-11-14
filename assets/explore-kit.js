@@ -58,15 +58,24 @@
   }
 
   let uid = 0;
+  // Slider: label + mono value (with unit) on one line, track beneath, optional min/max captions under the ends.
+  // o.fmt(v) formats the shown value; o.speak(v) (optional) gives the screen-reader text (aria-valuetext).
   function slider(parent, o) {
     const id = 'mlx-s' + (++uid);
     const out = h('output', { for: id });
     const input = h('input', { type: 'range', id, min: o.min, max: o.max, step: o.step || 1, value: o.value });
-    const field = h('div', { class: 'mlx-field' }, [
-      h('div', { class: 'mlx-field-head' }, [h('label', { for: id, text: L(o.label) }), out]),
-      input,
-    ]);
-    const show = () => { out.textContent = o.fmt ? o.fmt(+input.value) : input.value; };
+    const kids = [h('div', { class: 'mlx-field-head' }, [h('label', { for: id, text: L(o.label) }), out]), input];
+    if (o.ends !== false && (o.minLabel || o.maxLabel || o.fmt)) {
+      kids.push(h('div', { class: 'mlx-ends', 'aria-hidden': 'true' }, [
+        h('span', { text: L(o.minLabel) || (o.fmt ? o.fmt(+o.min) : o.min) }),
+        h('span', { text: L(o.maxLabel) || (o.fmt ? o.fmt(+o.max) : o.max) }),
+      ]));
+    }
+    const field = h('div', { class: 'mlx-field' }, kids);
+    const show = () => {
+      out.textContent = o.fmt ? o.fmt(+input.value) : input.value;
+      input.setAttribute('aria-valuetext', o.speak ? o.speak(+input.value) : out.textContent);
+    };
     input.addEventListener('input', () => { show(); o.onInput && o.onInput(+input.value); });
     show();
     parent.appendChild(field);
@@ -187,5 +196,88 @@
   // Run init once the Explore panel exists.
   function ready(fn) { if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', fn); else fn(); }
 
-  window.MLX = { af, L, num, big, h, accent, layout, card, slider, seg, check, button, readout, canvas, loop, text, wrap, roundRect, ready };
+  // ── Shared design standard additions (see docs/science-sage-sim-audit.md) ──────────────────
+
+  const reducedMotion = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+
+  // Colours for drawing, from the site tokens (assets/magic-lab.css), for the current light/dark theme.
+  // Canvas cannot read CSS variables, so sims call MLX.colors() each frame and redraw on theme change.
+  function colors() {
+    const light = document.documentElement.getAttribute('data-theme') === 'light';
+    // One accent per view: the page's own accent (its lesson tag colour), the same one the controls use
+    const acc = accent();
+    const c = light ? {
+      light: true, ground: '#f5f5f3', stage: '#ffffff', ink: '#16181d', text: '#2b2f36', text2: 'rgba(22,24,29,0.70)',
+      text3: 'rgba(22,24,29,0.56)', line: 'rgba(22,24,29,0.12)', lineSoft: 'rgba(22,24,29,0.07)', lineHard: 'rgba(22,24,29,0.32)',
+      accent: '#1f8a3e', accentSoft: 'rgba(31,138,62,0.14)', water: 'rgba(53,166,240,0.14)', glass: 'rgba(22,24,29,0.45)', warn: '#a86a00',
+    } : {
+      light: false, ground: '#08090b', stage: '#0c0e11', ink: '#f2f5f9', text: '#e3e8ef', text2: 'rgba(226,232,240,0.72)',
+      text3: 'rgba(226,232,240,0.56)', line: 'rgba(255,255,255,0.075)', lineSoft: 'rgba(255,255,255,0.045)', lineHard: 'rgba(255,255,255,0.22)',
+      accent: '#4acf6b', accentSoft: 'rgba(74,207,107,0.16)', water: 'rgba(53,166,240,0.12)', glass: 'rgba(226,232,240,0.55)', warn: '#f5b23d',
+    };
+    if (acc && !light) c.accent = acc;
+    if (acc && light) c.accent = acc; // theme.js already darkens the lesson tag colour in light mode
+    return c;
+  }
+  // Call fn whenever the site theme changes (light / dark / prism)
+  function onTheme(fn) {
+    new MutationObserver(fn).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+  }
+
+  // "Nice" tick values for an axis from lo to hi (about n ticks)
+  function ticks(lo, hi, n) {
+    const span = Math.max(1e-9, hi - lo), raw = span / (n || 5);
+    const mag = Math.pow(10, Math.floor(Math.log10(raw)));
+    const step = [1, 2, 2.5, 5, 10].map(m => m * mag).find(s => s >= raw) || raw;
+    const out = [];
+    for (let v = Math.ceil(lo / step - 1e-9) * step; v <= hi + 1e-9; v += step) out.push(+v.toFixed(10));
+    return { step, values: out };
+  }
+
+  // Graph axes with numbered ticks and titled axes (units in brackets). Returns {X, Y, box} mappers.
+  // o: {x0,y0,w,h, xMin,xMax,yMin,yMax, xTitle,yTitle, xTicks,yTicks, fmtX,fmtY}
+  function axes(ctx, o) {
+    const c = colors();
+    const box = { x0: o.x0 + 44, y0: o.y0 + 10, x1: o.x0 + o.w - 10, y1: o.y0 + o.h - 38 };
+    const X = v => box.x0 + (v - o.xMin) / (o.xMax - o.xMin) * (box.x1 - box.x0);
+    const Y = v => box.y1 - (v - o.yMin) / (o.yMax - o.yMin) * (box.y1 - box.y0);
+    const xt = ticks(o.xMin, o.xMax, o.xTicks || 5), yt = ticks(o.yMin, o.yMax, o.yTicks || 4);
+    ctx.lineWidth = 1; ctx.strokeStyle = c.lineSoft;
+    yt.values.forEach(v => { ctx.beginPath(); ctx.moveTo(box.x0, Y(v)); ctx.lineTo(box.x1, Y(v)); ctx.stroke(); });
+    xt.values.forEach(v => { ctx.beginPath(); ctx.moveTo(X(v), box.y0); ctx.lineTo(X(v), box.y1); ctx.stroke(); });
+    ctx.strokeStyle = c.lineHard;
+    ctx.beginPath(); ctx.moveTo(box.x0, box.y0); ctx.lineTo(box.x0, box.y1); ctx.lineTo(box.x1, box.y1); ctx.stroke();
+    // default tick labels show a decimal when the tick step is not a whole number (2.5, 7.5 …)
+    const dx = xt.step % 1 ? (xt.step * 10 % 1 ? 2 : 1) : 0, dy = yt.step % 1 ? (yt.step * 10 % 1 ? 2 : 1) : 0;
+    yt.values.forEach(v => text(ctx, o.fmtY ? o.fmtY(v) : num(v, dy), box.x0 - 6, Y(v) + 4, { size: 12, mono: true, align: 'right', color: c.text3 }));
+    xt.values.forEach(v => text(ctx, o.fmtX ? o.fmtX(v) : num(v, dx), X(v), box.y1 + 16, { size: 12, mono: true, align: 'center', color: c.text3 }));
+    text(ctx, o.xTitle, (box.x0 + box.x1) / 2, box.y1 + 33, { size: 12, align: 'center', color: c.text2 });
+    ctx.save(); ctx.translate(o.x0 + 10, (box.y0 + box.y1) / 2); ctx.rotate(-Math.PI / 2);
+    text(ctx, o.yTitle, 0, 0, { size: 12, align: 'center', color: c.text2 }); ctx.restore();
+    return { X, Y, box };
+  }
+
+  // The one number that matters: big mono value + unit, announced politely to screen readers
+  function primary(parent, o) {
+    const val = h('span', { class: 'mlx-primary-val' });
+    const unit = h('span', { class: 'mlx-primary-unit', text: L(o.unit) });
+    const el = h('div', { class: 'mlx-primary', 'aria-live': 'polite', 'aria-atomic': 'true' }, [
+      h('div', { class: 'mlx-card-title', text: L(o.label) }), h('div', { class: 'mlx-primary-line' }, [val, unit]),
+    ]);
+    parent.appendChild(el);
+    return { el, set(v) { val.textContent = v; } };
+  }
+
+  // Neutral "predict, then test" box (replaces the inline amber boxes)
+  function predict(parent, o) {
+    const el = h('div', { class: 'mlx-predict' }, [
+      h('strong', { text: L(o.predictLabel || { en: 'Predict first', af: 'Voorspel eers' }) + ': ' }), document.createTextNode(L(o.predict) + ' '),
+      h('strong', { text: L(o.testLabel || { en: 'Then test it', af: 'Toets dit dan' }) + ': ' }), document.createTextNode(L(o.test)),
+    ]);
+    parent.insertBefore(el, parent.firstChild);
+    return el;
+  }
+
+  window.MLX = { af, L, num, big, h, accent, layout, card, slider, seg, check, button, readout, canvas, loop, text, wrap, roundRect, ready,
+    reducedMotion, colors, onTheme, ticks, axes, primary, predict };
 })();

@@ -23,7 +23,7 @@ MLX.ready(function () {
   const T = {
     aria: { en: 'Chart of hominin species: when they lived and their brain size', af: 'Grafiek van hominienspesies: wanneer hulle geleef het en hul breingrootte' },
     ctrl: { en: 'Explore', af: 'Verken' }, time: { en: 'Time', af: 'Tyd' }, mya: { en: 'million years ago', af: 'miljoen jaar gelede' },
-    show: { en: 'Species shown', af: 'Spesies gewys' }, core: { en: 'The four in the lesson', af: 'Die vier in die les' }, all: { en: 'All ten', af: 'Al tien' },
+    show: { en: 'Species shown', af: 'Spesies gewys' }, core: { en: 'Key species in the lesson (Australopithecus, H. habilis, H. erectus, H. sapiens)', af: 'Sleutelspesies in die les (Australopithecus, H. habilis, H. erectus, H. sapiens)' }, all: { en: 'All ten', af: 'Al tien' },
     join: { en: 'Join the species in time order', af: 'Verbind die spesies in tydsvolgorde' },
     alive: { en: 'Alive at this time', af: 'Lewend op hierdie tyd' }, none: { en: 'no hominins found from this time', af: 'geen hominiene van hierdie tyd gevind nie' },
     brain: { en: 'Brain volume (cm³)', af: 'Breinvolume (cm³)' }, chimp: { en: 'chimpanzee ~400', af: 'sjimpansee ~400' }, now: { en: 'now', af: 'nou' },

@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
 <script src="/assets/theme.js"></script>
 <script defer src="/assets/lesson-toc.js"></script>
+<link rel="stylesheet" href="/assets/lesson-progress.css">
+<script defer src="/assets/lesson-progress.js"></script>
 <link rel="stylesheet" href="/assets/focus-reading.css">
 <script defer src="/assets/focus-reading.js"></script>
 <script src="/assets/sim-fit.js"></script>
@@ -245,20 +247,20 @@
 
 <!-- EXPLORE -->
 <div class="tab-panel" id="tab-explore">
-  <h2 style="font-size:18px;font-weight:800;color:#fff;margin-bottom:6px">Meiosis Stage Viewer</h2>
-  <p style="font-size:13px;color:var(--muted);margin-bottom:20px">Scrub through Meiosis I and Meiosis II to see how homologous pairs and then sister chromatids separate, or press Play to animate it.</p>
-  <div class="ml-predict" style="margin:0 0 16px;padding:10px 14px;border-radius:10px;background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.22);font-size:13px;line-height:1.6;color:rgba(226,232,240,.88)"><strong style="color:#fde68a">Predict first:</strong> In which division do the homologous chromosomes separate: Meiosis I or Meiosis II? <strong style="color:#fde68a">Then test it:</strong> Scrub through both divisions and watch the pairs.</div>
+  <h2 style="font-size:20px;font-weight:800;color:#f2f5f9;margin-bottom:6px">Meiosis Stage Viewer</h2>
+  <p style="font-size:15px;line-height:1.6;color:rgba(226,232,240,.72);margin-bottom:16px;max-width:68ch">Scrub through Meiosis I and Meiosis II to see how homologous pairs and then sister chromatids separate, or press Play to animate it.</p>
+  <div class="ml-predict" style="margin:0 0 16px;padding:12px 16px;border-radius:10px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.075);border-left:2px solid #74d154;font-size:15px;line-height:1.6;color:#e3e8ef"><strong style="color:#f2f5f9">Predict first:</strong> In which division do the homologous chromosomes separate: Meiosis I or Meiosis II? <strong style="color:#f2f5f9">Then test it:</strong> Scrub through both divisions and watch the pairs.</div>
   <div class="sim-outer">
     <div class="sim-canvas-wrap">
       <h3>One diploid cell (2n=4) undergoing meiosis</h3>
-      <canvas id="meioCanvas" height="300" role="img" aria-label="Meiosis Stage Viewer: interactive simulation"></canvas>
+      <canvas id="meioCanvas" height="300" role="img" aria-label="Meiosis Stage Viewer. Scrub through Meiosis I and Meiosis II to see how homologous pairs and then sister chromatids separate, or press Play to animate it."></canvas>
       <div class="phase-label">
         <div class="phase-name" id="phaseName">Interphase</div>
         <div class="phase-desc" id="phaseDesc">Chromosomes are copied, ready for two rounds of division.</div>
       </div>
     </div>
     <div class="playbar">
-      <button class="play-btn" id="playBtn" onclick="togglePlay()">▶ Play</button>
+      <button class="play-btn" id="playBtn" onclick="togglePlay()">Play</button>
       <input aria-label="Animation position" type="range" id="scrub" min="0" max="1000" value="0">
       <span class="stage-pill" id="stagePill">SETUP</span>
     </div>
@@ -319,15 +321,17 @@ let W, H;
 let playing = false;
 let progress = 0; // 0-1000
 
+const STAGE_LABEL = {m1:'MEIOSIS I', m2:'MEIOSIS II', setup:'SETUP'};
 const PHASES = [
-  {name:'Interphase',       from:0,   to:120, stage:'setup', desc:'Chromosomes are copied, each now made of two sister chromatids, ready for two rounds of division.'},
-  {name:'Prophase I',       from:120, to:260, stage:'m1',    desc:'Homologous chromosomes pair up (synapsis) and exchange segments of DNA — crossing over — creating new allele combinations.'},
-  {name:'Metaphase I',      from:260, to:400, stage:'m1',    desc:'Homologous pairs line up along the equator, oriented independently — the start of independent assortment.'},
-  {name:'Anaphase I',       from:400, to:540, stage:'m1',    desc:'Homologous chromosomes (each still two sister chromatids) separate and move to opposite poles.'},
-  {name:'Telophase I',      from:540, to:640, stage:'m1',    desc:'Two haploid cells form, each with half the chromosome number — but each chromosome still has two chromatids.'},
-  {name:'Metaphase II',     from:640, to:780, stage:'m2',    desc:'In each haploid cell, chromosomes (still paired chromatids) line up along the equator — much like mitosis.'},
-  {name:'Anaphase II',      from:780, to:900, stage:'m2',    desc:'Sister chromatids finally separate and move to opposite poles in each cell.'},
-  {name:'Telophase II',     from:900, to:1000,stage:'m2',    desc:'Four genetically different haploid daughter cells are produced in total.'},
+  {key:'inter', name:'Interphase', from:0, to:100, stage:'setup', desc:"The DNA is copied, so each chromosome is now two identical sister chromatids. It is still uncoiled chromatin, not yet visible as separate chromosomes."},
+  {key:'pro1', name:'Prophase I', from:100, to:240, stage:'m1', desc:"Chromosomes condense and homologous chromosomes pair up (synapsis). Non-sister chromatids exchange segments at a chiasma: crossing over creates new combinations of alleles."},
+  {key:'meta1', name:'Metaphase I', from:240, to:350, stage:'m1', desc:"Homologous pairs line up on the equator. Each pair faces the poles independently of the others (independent assortment)."},
+  {key:'ana1', name:'Anaphase I', from:350, to:460, stage:'m1', desc:"Homologous chromosomes separate and move to opposite poles. Each chromosome still has two chromatids."},
+  {key:'telo1', name:'Telophase I', from:460, to:560, stage:'m1', desc:"Two haploid cells form, each with one chromosome from every pair (half the chromosome number)."},
+  {key:'pro2', name:'Prophase II', from:560, to:640, stage:'m2', desc:"In each haploid cell the nuclear membrane breaks down again and a new spindle forms. There is no pairing and no crossing over."},
+  {key:'meta2', name:'Metaphase II', from:640, to:750, stage:'m2', desc:"Chromosomes line up singly on the equator of each cell, as in mitosis."},
+  {key:'ana2', name:'Anaphase II', from:750, to:870, stage:'m2', desc:"Sister chromatids separate and move to opposite poles of each cell."},
+  {key:'telo2', name:'Telophase II', from:870, to:1000, stage:'m2', desc:"Four haploid cells form. Because of crossing over and independent assortment, no two are genetically the same."},
 ];
 
 function resizeCanvas(){
@@ -347,58 +351,64 @@ function localT(phase){
 
 function togglePlay(){
   playing = !playing;
-  document.getElementById('playBtn').textContent = playing ? '⏸ Pause' : '▶ Play';
+  document.getElementById('playBtn').textContent = playing ? 'Pause' : 'Play';
 }
 document.getElementById('scrub').addEventListener('input', e=>{
   progress = parseInt(e.target.value);
   playing = false;
-  document.getElementById('playBtn').textContent = '▶ Play';
+  document.getElementById('playBtn').textContent = 'Play';
 });
 
-// two homologous pairs, distinguished by colour (maternal/paternal)
-const PAIRS = [
-  {colorA:'#86efac', colorB:'#60a5fa', angle:0.3},
-  {colorA:'#fde047', colorB:'#f472b6', angle:2.6},
-];
-
-function drawBivalent(cx, cy, colorA, colorB, spread){
-  // two homologous chromosomes (each an X of sister chromatids) close together, spread apart as crossing-over/alignment proceeds
-  [-1,1].forEach((dir,idx)=>{
-    const color = idx===0?colorA:colorB;
-    const ox = cx + dir*spread;
-    ctx.save();
-    ctx.strokeStyle = color; ctx.lineWidth = 2.6;
-    ctx.beginPath();
-    ctx.moveTo(ox-6,cy-9); ctx.lineTo(ox,cy); ctx.lineTo(ox-6,cy+9);
-    ctx.moveTo(ox+6,cy-9); ctx.lineTo(ox,cy); ctx.lineTo(ox+6,cy+9);
-    ctx.stroke();
-    ctx.restore();
-  });
+// Two homologous pairs (a long pair and a short pair). Maternal = A/C colours, paternal = B/D.
+// Every chromosome is two sister chromatids; each chromatid has a top arm and a bottom arm so that
+// crossing over (an exchange of arms between NON-sister chromatids) is visible as a change of colour.
+const COL = { A:'#86efac', B:'#60a5fa', C:'#fde047', D:'#f472b6' };
+function chromatids(pairIdx, crossed){
+  const m = pairIdx === 0 ? COL.A : COL.C, p = pairIdx === 0 ? COL.B : COL.D;
+  // inner (non-sister) chromatids swap bottom arms at the chiasma
+  return {
+    mat: [{t:m, b:m}, {t:m, b: crossed ? p : m}],
+    pat: [{t:p, b: crossed ? m : p}, {t:p, b:p}],
+    len: pairIdx === 0 ? 24 : 15
+  };
 }
-function drawSingleChromatidPair(cx,cy,color){
+
+function drawChromatid(x, y, len, c, alpha){
   ctx.save();
-  ctx.strokeStyle = color; ctx.lineWidth = 2.6;
-  ctx.beginPath();
-  ctx.moveTo(cx-6,cy-9); ctx.lineTo(cx,cy); ctx.lineTo(cx-6,cy+9);
-  ctx.moveTo(cx+6,cy-9); ctx.lineTo(cx,cy); ctx.lineTo(cx+6,cy+9);
-  ctx.stroke();
+  ctx.globalAlpha = alpha == null ? 1 : alpha;
+  ctx.lineWidth = 5; ctx.lineCap = 'round';
+  ctx.strokeStyle = c.t; ctx.beginPath(); ctx.moveTo(x, y - len); ctx.lineTo(x, y); ctx.stroke();
+  ctx.strokeStyle = c.b; ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x, y + len); ctx.stroke();
   ctx.restore();
 }
-function drawSingleChromatid(cx,cy,color){
-  ctx.save();
-  ctx.strokeStyle = color; ctx.lineWidth = 2.2;
-  ctx.beginPath();
-  ctx.moveTo(cx-5,cy-8); ctx.lineTo(cx+5,cy); ctx.lineTo(cx-5,cy+8);
-  ctx.stroke();
+// A chromosome = two sister chromatids joined at the centromere
+function drawChromosome(x, y, len, pair, alpha){
+  drawChromatid(x - 3.5, y, len, pair[0], alpha);
+  drawChromatid(x + 3.5, y, len, pair[1], alpha);
+  ctx.save(); ctx.globalAlpha = alpha == null ? 1 : alpha;
+  ctx.beginPath(); ctx.arc(x, y, 2.6, 0, Math.PI*2); ctx.fillStyle = '#e2e8f0'; ctx.fill();
   ctx.restore();
 }
 
 function drawCellOutline(cx,cy,r){
   ctx.beginPath();
   ctx.ellipse(cx,cy,r,r*0.9,0,0,Math.PI*2);
-  ctx.strokeStyle='rgba(148,163,255,0.4)';
+  ctx.strokeStyle='rgba(148,163,255,0.45)';
   ctx.lineWidth=2;
   ctx.stroke();
+}
+function drawNucleus(cx, cy, r, alpha){
+  ctx.save(); ctx.globalAlpha = alpha; ctx.setLineDash([3,2]);
+  ctx.strokeStyle = 'rgba(167,139,250,0.6)'; ctx.lineWidth = 1.5;
+  ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI*2); ctx.stroke();
+  ctx.restore();
+}
+function drawSpindle(poleL, poleR, cy, targets){
+  ctx.save(); ctx.strokeStyle = 'rgba(226,232,240,0.28)'; ctx.lineWidth = 1;
+  targets.forEach(([x, y])=>{
+    ctx.beginPath(); ctx.moveTo(x < (poleL+poleR)/2 || x === (poleL+poleR)/2 ? poleL : poleR, cy); ctx.lineTo(x, y); ctx.stroke();
+  });
+  ctx.restore();
 }
 
 function drawScene(){
@@ -408,88 +418,92 @@ function drawScene(){
   document.getElementById('phaseName').textContent = phase.name;
   document.getElementById('phaseDesc').textContent = phase.desc;
   const pill = document.getElementById('stagePill');
-  pill.textContent = phase.stage==='m1' ? 'MEIOSIS I' : phase.stage==='m2' ? 'MEIOSIS II' : 'SETUP';
+  pill.textContent = phase.stage==='m1' ? STAGE_LABEL.m1 : phase.stage==='m2' ? STAGE_LABEL.m2 : STAGE_LABEL.setup;
   pill.className = 'stage-pill ' + (phase.stage==='m1'?'m1':phase.stage==='m2'?'m2':'');
 
   const cx = W/2, cy = H/2;
-  const R = Math.min(W,H)*0.30;
+  const R = Math.min(W/4.2, H*0.42);
+  const k = phase.key;
+  const crossed = !(k === 'inter' || (k === 'pro1' && t < 0.6));
+  const P = [chromatids(0, crossed), chromatids(1, crossed)];
+  const rowY = i => cy + (i - 0.5) * R * 0.75;
 
-  if (phase.name==='Interphase'){
+  if (k === 'inter'){
+    // Interphase: DNA is uncoiled chromatin inside the nucleus (already replicated, not yet visible as chromosomes)
     drawCellOutline(cx,cy,R);
-    PAIRS.forEach((p,i)=>{
-      const yoff = (i-0.5)*R*0.5;
-      drawBivalent(cx, cy+yoff, p.colorA, p.colorB, 8);
+    drawNucleus(cx, cy, R*0.55, 1);
+    ctx.save(); ctx.globalAlpha = 0.55; ctx.lineWidth = 1.2;
+    [COL.A, COL.B, COL.C, COL.D].forEach((c, i)=>{
+      ctx.strokeStyle = c; ctx.beginPath();
+      for (let s = 0; s <= 24; s++){
+        const a = i*1.6 + s*0.5, r = R*0.12 + (s/24)*R*0.3;
+        const x = cx + Math.cos(a)*r, y = cy + Math.sin(a*1.3)*r*0.8;
+        s ? ctx.lineTo(x, y) : ctx.moveTo(x, y);
+      }
+      ctx.stroke();
     });
-  } else if (phase.name==='Prophase I'){
+    ctx.restore();
+  } else if (k === 'pro1'){
+    // Homologues condense and pair up (synapsis); crossing over swaps arms between non-sister chromatids
     drawCellOutline(cx,cy,R);
-    PAIRS.forEach((p,i)=>{
-      const yoff = (i-0.5)*R*0.5;
-      const spread = 8 + t*6; // pairs draw close together (synapsis) then start to show crossing over
-      drawBivalent(cx, cy+yoff, p.colorA, p.colorB, spread);
+    drawNucleus(cx, cy, R*0.6, Math.max(0, 1 - t*1.2));
+    const gap = 7 + Math.max(0, 1 - t*2) * 34;
+    P.forEach((pr, i)=>{
+      drawChromosome(cx - gap, rowY(i), pr.len, pr.mat, Math.min(1, 0.4 + t*2));
+      drawChromosome(cx + gap, rowY(i), pr.len, pr.pat, Math.min(1, 0.4 + t*2));
+      if (crossed){ // chiasma marker where the arms crossed
+        ctx.save(); ctx.strokeStyle = 'rgba(226,232,240,0.7)'; ctx.lineWidth = 1;
+        const y = rowY(i) + pr.len*0.5;
+        ctx.beginPath(); ctx.moveTo(cx-4, y-4); ctx.lineTo(cx+4, y+4); ctx.moveTo(cx+4, y-4); ctx.lineTo(cx-4, y+4); ctx.stroke();
+        ctx.restore();
+      }
     });
-  } else if (phase.name==='Metaphase I'){
+  } else if (k === 'meta1' || k === 'ana1'){
+    // Bivalents line up across the equator. Each pair orients independently:
+    // pair 1 has its maternal chromosome on the left, pair 2 its paternal one (independent assortment).
     drawCellOutline(cx,cy,R);
-    PAIRS.forEach((p,i)=>{
-      const yoff = (i-0.5)*R*0.6;
-      drawBivalent(cx, cy+yoff, p.colorA, p.colorB, 14);
+    const sep = k === 'meta1' ? 9 : 9 + t*R*0.62;
+    const left = [P[0].mat, P[1].pat], right = [P[0].pat, P[1].mat];
+    drawSpindle(cx - R*0.9, cx + R*0.9, cy, P.flatMap((pr,i)=>[[cx-sep, rowY(i)], [cx+sep, rowY(i)]]));
+    P.forEach((pr, i)=>{
+      drawChromosome(cx - sep, rowY(i), pr.len, left[i]);
+      drawChromosome(cx + sep, rowY(i), pr.len, right[i]);
     });
-    ctx.save(); ctx.strokeStyle='rgba(255,255,255,0.18)'; ctx.setLineDash([4,3]); ctx.lineWidth=1;
-    ctx.beginPath(); ctx.moveTo(cx,cy-R*0.8); ctx.lineTo(cx,cy+R*0.8); ctx.stroke();
-    ctx.setLineDash([]); ctx.restore();
-  } else if (phase.name==='Anaphase I'){
-    drawCellOutline(cx,cy,R);
-    const sep = t * R*0.55;
-    PAIRS.forEach((p,i)=>{
-      const yoff = (i-0.5)*R*0.6;
-      drawSingleChromatidPair(cx-sep, cy+yoff, p.colorA);
-      drawSingleChromatidPair(cx+sep, cy+yoff, p.colorB);
+    if (k === 'meta1'){
+      ctx.save(); ctx.strokeStyle='rgba(255,255,255,0.16)'; ctx.setLineDash([4,3]); ctx.lineWidth=1;
+      ctx.beginPath(); ctx.moveTo(cx,cy-R*0.8); ctx.lineTo(cx,cy+R*0.8); ctx.stroke(); ctx.restore();
+    }
+  } else if (k === 'telo1' || k === 'pro2' || k === 'meta2' || k === 'ana2'){
+    // Two haploid cells: each has ONE chromosome of each pair, still made of two chromatids
+    const cells = [{x: cx - R*1.05, chroms:[P[0].mat, P[1].pat]}, {x: cx + R*1.05, chroms:[P[0].pat, P[1].mat]}];
+    cells.forEach(cell=>{
+      drawCellOutline(cell.x, cy, R*0.72);
+      if (k === 'telo1') drawNucleus(cell.x, cy, R*0.45, Math.min(1, t*1.5));
+      if (k === 'pro2') drawNucleus(cell.x, cy, R*0.45, Math.max(0, 1 - t*1.3));
+      const lens = [P[0].len, P[1].len];
+      if (k === 'ana2'){
+        // Sister chromatids separate and move to opposite poles
+        const s = 3 + t*R*0.4;
+        drawSpindle(cell.x - R*0.62, cell.x + R*0.62, cy, cell.chroms.flatMap((c,i)=>[[cell.x - s, rowY(i)], [cell.x + s, rowY(i)]]));
+        cell.chroms.forEach((c, i)=>{ drawChromatid(cell.x - s, rowY(i), lens[i], c[0]); drawChromatid(cell.x + s, rowY(i), lens[i], c[1]); });
+      } else {
+        if (k === 'meta2') drawSpindle(cell.x - R*0.62, cell.x + R*0.62, cy, cell.chroms.flatMap((c,i)=>[[cell.x-3, rowY(i)], [cell.x+3, rowY(i)]]));
+        cell.chroms.forEach((c, i)=> drawChromosome(cell.x + (k === 'telo1' || k === 'pro2' ? (i ? 10 : -10) : 0), rowY(i), lens[i], c));
+      }
     });
-  } else if (phase.name==='Telophase I'){
-    const sep = R*0.62;
-    [-1,1].forEach(dir=>{
-      drawCellOutline(cx+dir*sep*0.6, cy, R*0.6);
-      PAIRS.forEach((p,i)=>{
-        const yoff = (i-0.5)*R*0.4;
-        const color = dir<0 ? p.colorA : p.colorB;
-        drawSingleChromatidPair(cx+dir*sep*0.6, cy+yoff, color);
-      });
-    });
-  } else if (phase.name==='Metaphase II'){
-    const sep = R*0.62;
-    [-1,1].forEach(dir=>{
-      drawCellOutline(cx+dir*sep*0.6, cy, R*0.6);
-      PAIRS.forEach((p,i)=>{
-        const yoff = (i-0.5)*R*0.4;
-        const color = dir<0 ? p.colorA : p.colorB;
-        drawSingleChromatidPair(cx+dir*sep*0.6, cy+yoff, color);
-      });
-      ctx.save(); ctx.strokeStyle='rgba(255,255,255,0.14)'; ctx.setLineDash([3,3]); ctx.lineWidth=1;
-      ctx.beginPath(); ctx.moveTo(cx+dir*sep*0.6,cy-R*0.5); ctx.lineTo(cx+dir*sep*0.6,cy+R*0.5); ctx.stroke();
-      ctx.setLineDash([]); ctx.restore();
-    });
-  } else if (phase.name==='Anaphase II'){
-    const sep = R*0.62;
-    const split = t*R*0.3;
-    [-1,1].forEach(dir=>{
-      drawCellOutline(cx+dir*sep*0.6, cy, R*0.6);
-      PAIRS.forEach((p,i)=>{
-        const yoff = (i-0.5)*R*0.4;
-        const color = dir<0 ? p.colorA : p.colorB;
-        drawSingleChromatid(cx+dir*sep*0.6-split, cy+yoff, color);
-        drawSingleChromatid(cx+dir*sep*0.6+split, cy+yoff, color);
-      });
-    });
-  } else if (phase.name==='Telophase II'){
-    const positions = [-1.4,-0.5,0.5,1.4];
-    positions.forEach((px,idx)=>{
-      const gx = cx + px*R*0.6;
-      drawCellOutline(gx, cy, R*0.42);
-      const pairIdx = idx % 2;
-      const colorSet = idx<2 ? PAIRS.map(p=>p.colorA) : PAIRS.map(p=>p.colorB);
-      colorSet.forEach((color,i)=>{
-        const yoff = (i-0.5)*R*0.3;
-        drawSingleChromatid(gx, cy+yoff, color);
-      });
+  } else if (k === 'telo2'){
+    // Four haploid cells, each with one chromatid of each pair: no two are genetically the same
+    const lens = [P[0].len, P[1].len];
+    const gametes = [
+      [P[0].mat[0], P[1].pat[0]], [P[0].mat[1], P[1].pat[1]],
+      [P[0].pat[0], P[1].mat[0]], [P[0].pat[1], P[1].mat[1]]
+    ];
+    const step = R*1.0;
+    gametes.forEach((g, idx)=>{
+      const gx = cx + (idx - 1.5) * step;
+      drawCellOutline(gx, cy, R*0.44);
+      drawNucleus(gx, cy, R*0.3, Math.min(1, t*1.5));
+      g.forEach((c, i)=> drawChromatid(gx + (i ? 6 : -6), cy + (i - 0.5)*R*0.3, lens[i]*0.85, c));
     });
   }
 }

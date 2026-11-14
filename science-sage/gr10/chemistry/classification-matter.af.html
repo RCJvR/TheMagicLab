@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
 <script src="/assets/theme.js"></script>
 <script defer src="/assets/lesson-toc.js"></script>
+<link rel="stylesheet" href="/assets/lesson-progress.css">
+<script defer src="/assets/lesson-progress.js"></script>
 <link rel="stylesheet" href="/assets/focus-reading.css">
 <script defer src="/assets/focus-reading.js"></script>
 <script src="/assets/sim-fit.js"></script>
@@ -302,11 +304,11 @@
 
 <!-- EXPLORE TAB -->
 <div class="tab-panel" id="tab-explore">
-  <div class="ml-predict" style="margin:0 0 16px;padding:10px 14px;border-radius:10px;background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.22);font-size:13px;line-height:1.6;color:rgba(226,232,240,.88)"><strong style="color:#fde68a">Voorspel eers:</strong> Is seewater 'n suiwer stof of 'n mengsel? As dit 'n mengsel is, watter metode sal die sout uithaal? <strong style="color:#fde68a">Toets dit dan:</strong> Volg die vloeidiagram vir seewater en kyk dan na die Skeidingsmetodes-aansig.</div>
+  <div class="ml-predict" style="margin:0 0 16px;padding:12px 16px;border-radius:10px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.075);border-left:2px solid #74d154;font-size:15px;line-height:1.6;color:#e3e8ef"><strong style="color:#f2f5f9">Voorspel eers:</strong> Is seewater 'n suiwer stof of 'n mengsel? As dit 'n mengsel is, watter metode sal die sout uithaal? <strong style="color:#f2f5f9">Toets dit dan:</strong> Volg die vloeidiagram vir seewater en kyk dan na die Skeidingsmetodes-aansig.</div>
   <div class="sim-outer">
     <div class="sim-canvas-wrap">
       <h3 id="sim-title">Materieklassifikasie- en Skeidingsinteraktief</h3>
-      <canvas id="matterCanvas" height="320" role="img" aria-label="Materieklassifikasie- en Skeidingsinteraktief: interaktiewe simulasie"></canvas>
+      <canvas id="matterCanvas" height="320" role="img" aria-label="Materieklassifikasie- en Skeidingsinteraktief. Die vloeidiagram wys hoe om enige monster materie te klassifiseer. Volg die besluitpad van bo na onder. Klik op &#x27;n nodus om sy pad uit te lig."></canvas>
     </div>
     <div class="sim-controls-row">
       <div class="ctrl-card">
@@ -588,7 +590,7 @@
     ctx.beginPath();ctx.roundRect(x-w/2,y-h/2,w,h,r);ctx.fill();ctx.stroke();
     ctx.fillStyle=active?'#fff':col+'cc';ctx.font='bold 12px sans-serif';ctx.textAlign='center';
     ctx.fillText(label,x,y+(sub?-4:4));
-    if(sub){ctx.fillStyle='rgba(210,218,245,0.5)';ctx.font='10px monospace';ctx.fillText(sub,x,y+12);}
+    if(sub){ctx.fillStyle='rgba(210,218,245,0.5)';ctx.font='12px monospace';ctx.fillText(sub,x,y+12);}
   }
   function arrow(x1,y1,x2,y2,label){
     ctx.strokeStyle='rgba(192,132,252,0.35)';ctx.lineWidth=1.5;
@@ -597,7 +599,7 @@
     const ux=dx/len,uy=dy/len;
     ctx.fillStyle='rgba(192,132,252,0.5)';
     ctx.beginPath();ctx.moveTo(x2,y2);ctx.lineTo(x2-ux*8+uy*4,y2-uy*8-ux*4);ctx.lineTo(x2-ux*8-uy*4,y2-uy*8+ux*4);ctx.closePath();ctx.fill();
-    if(label){ctx.fillStyle='rgba(210,218,245,0.5)';ctx.font='9px monospace';ctx.textAlign='center';ctx.fillText(label,(x1+x2)/2-6,(y1+y2)/2-6);}
+    if(label){ctx.fillStyle='rgba(210,218,245,0.5)';ctx.font='12px monospace';ctx.textAlign='center';ctx.fillText(label,(x1+x2)/2-6,(y1+y2)/2-6);}
   }
 
   function drawClassify(){
@@ -625,13 +627,13 @@
     arrow(cx+W*0.22,114,cx+W*0.35,162,'nie-eenvormig');
     // Examples
     const exStyle='rgba(210,218,245,0.45)';
-    ctx.fillStyle=exStyle;ctx.font='10px sans-serif';ctx.textAlign='center';
+    ctx.fillStyle=exStyle;ctx.font='12px sans-serif';ctx.textAlign='center';
     ctx.fillText('bv. Fe, O₂, Cu',cx-W*0.35,225);
     ctx.fillText('bv. H₂O, NaCl',cx-W*0.09,225);
     ctx.fillText('bv. soutwater, lug',cx+W*0.09,225);
     ctx.fillText('bv. sand+water',cx+W*0.35,225);
     // Decision labels
-    ctx.fillStyle='rgba(192,132,252,0.5)';ctx.font='bold 9px monospace';ctx.textAlign='center';
+    ctx.fillStyle='rgba(192,132,252,0.5)';ctx.font='bold 12px monospace';ctx.textAlign='center';
     ctx.fillText('Suiwer Stof',cx-W*0.15,72);
     ctx.fillText('Mengsel',cx+W*0.12,72);
     ctx.fillText('Titel: Is dit eenvormig?',cx+W*0.22,135);
@@ -655,7 +657,7 @@
     // Filter paper
     ctx.strokeStyle='#e9d5ff';ctx.lineWidth=1.5;ctx.fillStyle='rgba(233,213,255,0.08)';
     ctx.beginPath();ctx.moveTo(cx-65,cy-28);ctx.lineTo(cx+65,cy-28);ctx.lineTo(cx+18,cy+45);ctx.lineTo(cx-18,cy+45);ctx.closePath();ctx.fill();ctx.stroke();
-    ctx.fillStyle='rgba(233,213,255,0.5)';ctx.font='10px monospace';ctx.textAlign='center';ctx.fillText('filtreerpapier',cx,cy+10);
+    ctx.fillStyle='rgba(233,213,255,0.5)';ctx.font='12px monospace';ctx.textAlign='center';ctx.fillText('filtreerpapier',cx,cy+10);
     // Sand particles on filter
     for(let i=0;i<18;i++){
       const px=cx-50+i*6+Math.sin(i)*3;
@@ -676,16 +678,16 @@
     ctx.fillStyle='rgba(96,165,250,0.18)';ctx.fillRect(cx-38,cy+182-level,76,level);
     ctx.strokeStyle='rgba(96,165,250,0.4)';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(cx-38,cy+182-level);ctx.lineTo(cx+38,cy+182-level);ctx.stroke();
     // Labels
-    ctx.fillStyle='rgba(233,213,255,0.7)';ctx.font='bold 11px sans-serif';ctx.textAlign='left';
+    ctx.fillStyle='rgba(233,213,255,0.7)';ctx.font='bold 12px sans-serif';ctx.textAlign='left';
     ctx.fillText('FILTRASIE',W*0.65,50);
-    ctx.fillStyle='rgba(210,218,245,0.55)';ctx.font='11px sans-serif';
+    ctx.fillStyle='rgba(210,218,245,0.55)';ctx.font='12px sans-serif';
     ctx.fillText('• Skei onoplosbare',W*0.65,70);
     ctx.fillText('  vaste stof van vloeistof',W*0.65,83);
     ctx.fillText('• Vaste stof: residu op',W*0.65,100);
     ctx.fillText('  filtreerpapier',W*0.65,113);
     ctx.fillText('• Vloeistof: filtraat',W*0.65,130);
     ctx.fillText('  versamel onder',W*0.65,143);
-    ctx.fillStyle='#fbbf24';ctx.font='9px monospace';
+    ctx.fillStyle='#fbbf24';ctx.font='12px monospace';
     ctx.fillText('Voorbeeld: sand uit water',W*0.65,165);
   }
 
@@ -721,18 +723,18 @@
     const lvl=Math.min(25,Math.floor(tick/60)*3);
     ctx.fillStyle='rgba(134,239,172,0.3)';ctx.beginPath();ctx.arc(W*0.7,fy+105,28,0,Math.PI);ctx.fill();
     // Labels
-    ctx.fillStyle='rgba(233,213,255,0.7)';ctx.font='bold 11px sans-serif';ctx.textAlign='left';
+    ctx.fillStyle='rgba(233,213,255,0.7)';ctx.font='bold 12px sans-serif';ctx.textAlign='left';
     ctx.fillText('DISTILLASIE',W*0.75,50);
-    ctx.fillStyle='rgba(210,218,245,0.55)';ctx.font='11px sans-serif';
+    ctx.fillStyle='rgba(210,218,245,0.55)';ctx.font='12px sans-serif';
     ctx.fillText('• Skei vloeistowwe',W*0.75,70);
     ctx.fillText('  volgens kookpunt',W*0.75,83);
     ctx.fillText('• Laer kookpunt verdamp',W*0.75,100);
     ctx.fillText('  eerste, kondenseer',W*0.75,113);
     ctx.fillText('• Kondensator koel',W*0.75,130);
     ctx.fillText('  damp → vloeistof',W*0.75,143);
-    ctx.fillStyle='#fbbf24';ctx.font='9px monospace';
+    ctx.fillStyle='#fbbf24';ctx.font='12px monospace';
     ctx.fillText('Voorbeeld: alkohol uit water',W*0.75,165);
-    ctx.fillStyle='rgba(147,197,253,0.6)';ctx.font='9px monospace';ctx.textAlign='center';
+    ctx.fillStyle='rgba(147,197,253,0.6)';ctx.font='12px monospace';ctx.textAlign='center';
     ctx.fillText('kondensator',W*0.55,fy-20);
     ctx.fillStyle='rgba(134,239,172,0.7)';
     ctx.fillText('distillaat',W*0.7,fy+150);
@@ -765,25 +767,25 @@
     ctx.strokeStyle='rgba(255,255,255,0.2)';ctx.lineWidth=1;ctx.setLineDash([2,2]);
     ctx.beginPath();ctx.moveTo(cx-paperW/2,startY);ctx.lineTo(cx+paperW/2,startY);ctx.stroke();
     ctx.setLineDash([]);
-    ctx.fillStyle='rgba(210,218,245,0.4)';ctx.font='9px monospace';ctx.textAlign='center';
+    ctx.fillStyle='rgba(210,218,245,0.4)';ctx.font='12px monospace';ctx.textAlign='center';
     ctx.fillText('oorsprong',cx-paperW/2-30,startY+4);
     ctx.fillText('oplosmiddelfront',cx+paperW/2+50,frontY+4);
     // Solvent trough
     ctx.fillStyle='rgba(96,165,250,0.15)';ctx.strokeStyle='rgba(96,165,250,0.4)';ctx.lineWidth=1.5;
     ctx.beginPath();ctx.rect(cx-paperW/2-10,bottom,paperW+20,20);ctx.fill();ctx.stroke();
-    ctx.fillStyle='rgba(96,165,250,0.6)';ctx.font='9px monospace';ctx.textAlign='center';
+    ctx.fillStyle='rgba(96,165,250,0.6)';ctx.font='12px monospace';ctx.textAlign='center';
     ctx.fillText('mobiele fase (oplosmiddel)',cx,bottom+13);
     // Labels right
-    ctx.fillStyle='rgba(233,213,255,0.7)';ctx.font='bold 11px sans-serif';ctx.textAlign='left';
+    ctx.fillStyle='rgba(233,213,255,0.7)';ctx.font='bold 12px sans-serif';ctx.textAlign='left';
     ctx.fillText('CHROMATOGRAFIE',W*0.62,50);
-    ctx.fillStyle='rgba(210,218,245,0.55)';ctx.font='11px sans-serif';
+    ctx.fillStyle='rgba(210,218,245,0.55)';ctx.font='12px sans-serif';
     ctx.fillText('• Skei opgeloste',W*0.62,70);
     ctx.fillText('  komponente',W*0.62,83);
     ctx.fillText('• Mobiele fase dra',W*0.62,100);
     ctx.fillText('  komponente op papier',W*0.62,113);
     ctx.fillText('• Hoër affiniteit vir',W*0.62,130);
     ctx.fillText('  stasionêr = laer Rf',W*0.62,143);
-    ctx.fillStyle='#fbbf24';ctx.font='9px monospace';
+    ctx.fillStyle='#fbbf24';ctx.font='12px monospace';
     ctx.fillText('Voorbeeld: skeiding van inkkleurstowwe',W*0.62,165);
   }
 

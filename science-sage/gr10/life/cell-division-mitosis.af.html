@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
 <script src="/assets/theme.js"></script>
 <script defer src="/assets/lesson-toc.js"></script>
+<link rel="stylesheet" href="/assets/lesson-progress.css">
+<script defer src="/assets/lesson-progress.js"></script>
 <link rel="stylesheet" href="/assets/focus-reading.css">
 <script defer src="/assets/focus-reading.js"></script>
 <script src="/assets/sim-fit.js"></script>
@@ -258,24 +260,24 @@
 
 <!-- EXPLORE -->
 <div class="tab-panel" id="tab-explore">
-  <h2 style="font-size:18px;font-weight:800;color:#fff;margin-bottom:6px">Mitose-fasebekyker</h2>
-  <p style="font-size:13px;color:var(--muted);margin-bottom:20px">Skuif deur die selsiklus om te sien hoe chromosome in elke fase gedra, of druk Speel om dit te animeer.</p>
-  <div class="ml-predict" style="margin:0 0 16px;padding:10px 14px;border-radius:10px;background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.22);font-size:13px;line-height:1.6;color:rgba(226,232,240,.88)"><strong style="color:#fde68a">Voorspel eers:</strong> In watter fase staan die chromosome in 'n ry oor die middel van die sel? <strong style="color:#fde68a">Toets dit dan:</strong> Skuif deur die selsiklus, of druk Speel, en vind daardie fase.</div>
+  <h2 style="font-size:20px;font-weight:800;color:#f2f5f9;margin-bottom:6px">Mitose-fasebekyker</h2>
+  <p style="font-size:15px;line-height:1.6;color:rgba(226,232,240,.72);margin-bottom:16px;max-width:68ch">Skuif deur die selsiklus om te sien hoe chromosome in elke fase gedra, of druk Speel om dit te animeer.</p>
+  <div class="ml-predict" style="margin:0 0 16px;padding:12px 16px;border-radius:10px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.075);border-left:2px solid #74d154;font-size:15px;line-height:1.6;color:#e3e8ef"><strong style="color:#f2f5f9">Voorspel eers:</strong> In watter fase staan die chromosome in 'n ry oor die middel van die sel? <strong style="color:#f2f5f9">Toets dit dan:</strong> Skuif deur die selsiklus, of druk Speel, en vind daardie fase.</div>
   <div class="sim-outer">
     <div class="sim-canvas-wrap">
       <h3>Selsiklus</h3>
-      <canvas id="mitoCanvas" height="300" role="img" aria-label="Mitose-fasebekyker: interaktiewe simulasie"></canvas>
+      <canvas id="mitoCanvas" height="300" role="img" aria-label="Mitose-fasebekyker. Skuif deur die selsiklus om te sien hoe chromosome in elke fase gedra, of druk Speel om dit te animeer."></canvas>
       <div class="phase-label">
         <div class="phase-name" id="phaseName">Interfase</div>
         <div class="phase-desc" id="phaseDesc">Die sel groei en kopieer sy DNS, en berei voor om te deel.</div>
       </div>
     </div>
     <div class="playbar">
-      <button class="play-btn" id="playBtn" onclick="togglePlay()">▶ Speel</button>
+      <button class="play-btn" id="playBtn" onclick="togglePlay()">Speel</button>
       <input aria-label="Animasieposisie" type="range" id="scrub" min="0" max="1000" value="0">
       <div class="mode-row">
-        <button class="mode-btn active" id="btnPlant" onclick="setCellType('plant')">🌿 Plant</button>
-        <button class="mode-btn" id="btnAnimal" onclick="setCellType('animal')">🐾 Dier</button>
+        <button class="mode-btn active" id="btnPlant" onclick="setCellType('plant')">Plant</button>
+        <button class="mode-btn" id="btnAnimal" onclick="setCellType('animal')">Dier</button>
       </div>
     </div>
   </div>
@@ -375,38 +377,74 @@ function setCellType(t){
 
 function togglePlay(){
   playing = !playing;
-  document.getElementById('playBtn').textContent = playing ? '⏸ Wag' : '▶ Speel';
+  document.getElementById('playBtn').textContent = playing ? 'Wag' : 'Speel';
 }
 
 document.getElementById('scrub').addEventListener('input', e=>{
   progress = parseInt(e.target.value);
   playing = false;
-  document.getElementById('playBtn').textContent = '▶ Speel';
+  document.getElementById('playBtn').textContent = 'Speel';
 });
 
 // 4 chromosomes, each with a base angle around the cell centre used for interphase/prophase scatter
 const CHROMS = [0,1,2,3].map(i => ({ angle: (i/4)*Math.PI*2 + 0.4, side: i<2?-1:1 }));
 
 function drawChromosome(cx, cy, splitDist, condensed, alpha){
-  // draws a chromatid pair (X-shape) or, post-anaphase, a single chromatid, centred at cx,cy
+  // splitDist 0: a duplicated chromosome (two sister chromatids joined at the centromere, X shape).
+  // splitDist > 0 (anaphase): the sisters have separated; each is now a single chromatid pulled
+  // towards its pole CENTROMERE FIRST, so the arms trail behind (< on the left, > on the right).
+  // splitDist < 0: a single chromatid in a daughter cell (telophase/cytokinesis), uncoiling.
   ctx.save();
   ctx.globalAlpha = alpha;
   ctx.strokeStyle = '#86efac';
-  ctx.lineWidth = condensed ? 3 : 1.4;
-  if (splitDist <= 0.01){
-    // X shape: two chromatids joined at centromere
+  ctx.lineWidth = condensed ? 3 : 1.6;
+  ctx.lineCap = 'round';
+  if (splitDist < 0){
+    ctx.beginPath(); ctx.moveTo(cx, cy-9); ctx.lineTo(cx, cy+9); ctx.stroke();
+    ctx.beginPath(); ctx.arc(cx, cy, 1.8, 0, Math.PI*2); ctx.fillStyle='#fde047'; ctx.fill();
+  } else if (splitDist <= 0.01){
     ctx.beginPath();
     ctx.moveTo(cx-7,cy-9); ctx.lineTo(cx,cy); ctx.lineTo(cx-7,cy+9);
     ctx.moveTo(cx+7,cy-9); ctx.lineTo(cx,cy); ctx.lineTo(cx+7,cy+9);
     ctx.stroke();
     ctx.beginPath(); ctx.arc(cx,cy,2.2,0,Math.PI*2); ctx.fillStyle='#fde047'; ctx.fill();
   } else {
-    // separated single chromatids, moving apart by splitDist
     [-1,1].forEach(dir=>{
       const ox = cx + dir*splitDist;
       ctx.beginPath();
-      ctx.moveTo(ox-5, cy-8); ctx.lineTo(ox+5, cy); ctx.lineTo(ox-5, cy+8);
+      ctx.moveTo(ox - dir*6, cy-8); ctx.lineTo(ox, cy); ctx.lineTo(ox - dir*6, cy+8);
       ctx.stroke();
+      ctx.beginPath(); ctx.arc(ox, cy, 1.8, 0, Math.PI*2); ctx.fillStyle='#fde047'; ctx.fill();
+    });
+  }
+  ctx.restore();
+}
+
+// Rounded rectangle path (plant cells keep a rigid, box-shaped cell wall)
+function wallPath(x, y, w, h, r){
+  ctx.beginPath();
+  ctx.moveTo(x+r, y); ctx.lineTo(x+w-r, y); ctx.quadraticCurveTo(x+w, y, x+w, y+r);
+  ctx.lineTo(x+w, y+h-r); ctx.quadraticCurveTo(x+w, y+h, x+w-r, y+h);
+  ctx.lineTo(x+r, y+h); ctx.quadraticCurveTo(x, y+h, x, y+h-r);
+  ctx.lineTo(x, y+r); ctx.quadraticCurveTo(x, y, x+r, y);
+}
+
+// Spindle fibres from the two poles to each chromosome's centromere
+function drawSpindle(cx, cy, R, targets, alpha){
+  const pL = cx - R*0.88, pR = cx + R*0.88;
+  ctx.save();
+  ctx.globalAlpha = alpha;
+  ctx.strokeStyle = 'rgba(226,232,240,0.35)';
+  ctx.lineWidth = 1;
+  targets.forEach(([xl, xr, y])=>{
+    ctx.beginPath(); ctx.moveTo(pL, cy); ctx.lineTo(xl, y); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(pR, cy); ctx.lineTo(xr, y); ctx.stroke();
+  });
+  // Animal cells organise the spindle from a pair of centrioles at each pole; plant cells have none
+  if (cellType !== 'plant'){
+    [pL, pR].forEach(px=>{
+      ctx.fillStyle = 'rgba(253,224,71,0.85)';
+      ctx.fillRect(px-4, cy-3, 3, 6); ctx.fillRect(px+1, cy-3, 3, 6);
     });
   }
   ctx.restore();
@@ -421,56 +459,57 @@ function drawScene(){
 
   const cx = W/2, cy = H/2;
   const R = Math.min(W,H)*0.32;
+  const plant = cellType === 'plant';
+  const lineCol = plant ? 'rgba(74,222,128,0.55)' : 'rgba(96,165,250,0.55)';
 
   // ── Cell outline ──
   ctx.save();
-  if (phase.name === 'Sitokinese'){
-    const pinch = t; // 0 -> 1 splitting into two cells
-    const sep = pinch * R * 1.15;
-    [-1,1].forEach(dir=>{
-      ctx.beginPath();
-      ctx.ellipse(cx + dir*sep*0.55, cy, R*0.75, R*0.85, 0, 0, Math.PI*2);
-      ctx.strokeStyle = cellType==='plant' ? 'rgba(74,222,128,0.55)' : 'rgba(96,165,250,0.55)';
-      ctx.lineWidth = cellType==='plant'?3:2;
-      ctx.stroke();
-      if (cellType==='plant'){ ctx.fillStyle='rgba(74,222,128,0.05)'; ctx.fill(); }
-    });
-    if (cellType==='plant' && pinch>0.05){
-      // cell plate line growing from centre outward
-      ctx.strokeStyle = 'rgba(253,224,71,0.75)';
-      ctx.lineWidth = 2;
-      const plateLen = R*1.5*Math.min(1,pinch*2);
-      ctx.beginPath(); ctx.moveTo(cx,cy-plateLen/2); ctx.lineTo(cx,cy+plateLen/2); ctx.stroke();
+  if (plant){
+    // The cell wall never pinches: the cell keeps its box shape and a cell plate grows across the middle
+    wallPath(cx - R*1.05, cy - R*0.92, R*2.1, R*1.84, 10);
+    ctx.strokeStyle = lineCol; ctx.lineWidth = 3; ctx.stroke();
+    ctx.fillStyle = 'rgba(74,222,128,0.04)'; ctx.fill();
+    if (phase.name === 'Sitokinese'){
+      ctx.strokeStyle = 'rgba(253,224,71,0.8)'; ctx.lineWidth = 2.5;
+      const half = R*0.92*Math.min(1, t*1.4);
+      ctx.beginPath(); ctx.moveTo(cx, cy-half); ctx.lineTo(cx, cy+half); ctx.stroke();
     }
   } else {
+    // Animal cell: the membrane pinches inwards at a cleavage furrow during cytokinesis
+    const p = phase.name === 'Sitokinese' ? Math.min(1, t*1.1) : 0;
+    const Rh = R*0.92, waist = Rh*(1 - 0.98*p), Rw = R*(1 + 0.12*p);
     ctx.beginPath();
-    ctx.ellipse(cx, cy, R, R*0.92, 0, 0, Math.PI*2);
-    ctx.strokeStyle = cellType==='plant' ? 'rgba(74,222,128,0.45)' : 'rgba(96,165,250,0.45)';
-    ctx.lineWidth = cellType==='plant'?3:2;
-    ctx.stroke();
-    if (cellType==='plant'){ ctx.fillStyle='rgba(74,222,128,0.04)'; ctx.fill(); }
+    ctx.moveTo(cx, cy - waist);
+    ctx.bezierCurveTo(cx + Rw*0.35, cy - Rh, cx + Rw, cy - Rh, cx + Rw, cy);
+    ctx.bezierCurveTo(cx + Rw, cy + Rh, cx + Rw*0.35, cy + Rh, cx, cy + waist);
+    ctx.bezierCurveTo(cx - Rw*0.35, cy + Rh, cx - Rw, cy + Rh, cx - Rw, cy);
+    ctx.bezierCurveTo(cx - Rw, cy - Rh, cx - Rw*0.35, cy - Rh, cx, cy - waist);
+    ctx.strokeStyle = lineCol; ctx.lineWidth = 2; ctx.stroke();
   }
   ctx.restore();
 
-  // ── Nuclear membrane (present in interphase, reforming in telophase) ──
-  if (phase.name==='Interfase' || phase.name==='Telofase'){
+  // ── Nuclear membrane: present in interphase, breaks down during prophase, reforms in telophase ──
+  if (phase.name==='Interfase' || phase.name==='Profase' || phase.name==='Telofase' || phase.name==='Sitokinese'){
     ctx.save();
     ctx.strokeStyle = 'rgba(167,139,250,0.55)';
     ctx.lineWidth = 1.5;
     ctx.setLineDash([3,2]);
-    if (phase.name==='Interfase'){
+    if (phase.name==='Interfase' || phase.name==='Profase'){
+      ctx.globalAlpha = phase.name==='Profase' ? Math.max(0, 1 - t*1.3) : 1;
       ctx.beginPath(); ctx.arc(cx,cy,R*0.55,0,Math.PI*2); ctx.stroke();
     } else {
+      ctx.globalAlpha = phase.name==='Telofase' ? Math.min(1, t*1.5) : 1;
       const sep = R*0.62;
-      [-1,1].forEach(dir=>{ ctx.beginPath(); ctx.arc(cx+dir*sep,cy,R*0.42,0,Math.PI*2); ctx.stroke(); });
+      [-1,1].forEach(dir=>{ ctx.beginPath(); ctx.arc(cx+dir*sep,cy,R*0.36,0,Math.PI*2); ctx.stroke(); });
     }
     ctx.setLineDash([]);
     ctx.restore();
   }
 
   // ── Chromosomes ──
+  const rowY = i => cy - R*0.55 + (i/(CHROMS.length-1))*R*1.1;
   if (phase.name==='Interfase'){
-    // faint chromatin dots inside nucleus
+    // DNA as uncoiled chromatin (not yet visible as separate chromosomes)
     ctx.save();
     ctx.globalAlpha = 0.5;
     CHROMS.forEach(c=>{
@@ -486,34 +525,20 @@ function drawScene(){
       drawChromosome(x,y,0,true,1);
     });
   } else if (phase.name==='Metafase'){
-    CHROMS.forEach((c,i)=>{
-      const y = cy - R*0.55 + (i/(CHROMS.length-1))*R*1.1;
-      drawChromosome(cx, y, 0, true, 1);
-    });
-    ctx.save();
-    ctx.strokeStyle='rgba(255,255,255,0.18)'; ctx.setLineDash([4,3]); ctx.lineWidth=1;
-    ctx.beginPath(); ctx.moveTo(cx,cy-R*0.8); ctx.lineTo(cx,cy+R*0.8); ctx.stroke();
-    ctx.setLineDash([]); ctx.restore();
+    drawSpindle(cx, cy, R, CHROMS.map((c,i)=>[cx, cx, rowY(i)]), 1);
+    CHROMS.forEach((c,i)=> drawChromosome(cx, rowY(i), 0, true, 1));
   } else if (phase.name==='Anafase'){
-    CHROMS.forEach((c,i)=>{
-      const y = cy - R*0.55 + (i/(CHROMS.length-1))*R*1.1;
-      const splitDist = t * R*0.55;
-      drawChromosome(cx, y, splitDist, true, 1);
-    });
-  } else if (phase.name==='Telofase'){
+    const splitDist = t * R*0.55;
+    drawSpindle(cx, cy, R, CHROMS.map((c,i)=>[cx - splitDist, cx + splitDist, rowY(i)]), 1 - t*0.3);
+    CHROMS.forEach((c,i)=> drawChromosome(cx, rowY(i), splitDist, true, 1));
+  } else if (phase.name==='Telofase' || phase.name==='Sitokinese'){
+    // Each daughter nucleus receives ONE chromatid of every chromosome (same number as the parent cell: 4)
     const sep = R*0.62;
     [-1,1].forEach(dir=>{
       CHROMS.forEach((c,i)=>{
-        const y = cy - R*0.32 + (i/(CHROMS.length-1))*R*0.64;
-        drawChromosome(cx+dir*sep, y, 0, false, 0.9);
-      });
-    });
-  } else if (phase.name==='Sitokinese'){
-    const sep = R*1.15*t*0.55;
-    [-1,1].forEach(dir=>{
-      CHROMS.forEach((c,i)=>{
-        const y = cy - R*0.32 + (i/(CHROMS.length-1))*R*0.64;
-        drawChromosome(cx+dir*sep, y, 0, false, 0.6);
+        const y = cy - R*0.24 + (i/(CHROMS.length-1))*R*0.48;
+        const x = cx + dir*sep + (i%2 ? 6 : -6);
+        drawChromosome(x, y, -1, false, phase.name==='Telofase' ? 0.9 : 0.55);
       });
     });
   }

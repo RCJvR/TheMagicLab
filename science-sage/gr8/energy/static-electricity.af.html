@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
 <script src="/assets/theme.js"></script>
 <script defer src="/assets/lesson-toc.js"></script>
+<link rel="stylesheet" href="/assets/lesson-progress.css">
+<script defer src="/assets/lesson-progress.js"></script>
 <link rel="stylesheet" href="/assets/focus-reading.css">
 <script defer src="/assets/focus-reading.js"></script>
 <script src="/assets/sim-fit.js"></script>
@@ -234,17 +236,17 @@
 </div>
 
 <div id="tab-explore" class="tab-panel">
-  <div class="ml-predict" style="margin:0 0 16px;padding:10px 14px;border-radius:10px;background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.22);font-size:13px;line-height:1.6;color:rgba(226,232,240,.88)"><strong style="color:#fde68a">Voorspel eers:</strong> Sal die gelaaide kam ná vryf klein stukkies papier aantrek of afstoot? <strong style="color:#fde68a">Toets dit dan:</strong> Vryf en laai, en probeer dan om papier aan te trek.</div>
+  <div class="ml-predict" style="margin:0 0 16px;padding:12px 16px;border-radius:10px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.075);border-left:2px solid #74d154;font-size:15px;line-height:1.6;color:#e3e8ef"><strong style="color:#f2f5f9">Voorspel eers:</strong> Sal die gelaaide kam ná vryf klein stukkies papier aantrek of afstoot? <strong style="color:#f2f5f9">Toets dit dan:</strong> Vryf en laai, en probeer dan om papier aan te trek.</div>
   <div class="explore-wrap">
     <div class="canvas-card" title="Klik om te vryf!">
-      <canvas id="cv" width="520" height="400" role="img" aria-label="Statiese Elektrisiteit: interaktiewe simulasie"></canvas>
+      <canvas id="cv" width="520" height="400" role="img" aria-label="Statiese Elektrisiteit"></canvas>
     </div>
     <div class="controls">
       <div class="ctrl-card">
         <div class="ctrl-label">Eksperiment</div>
-        <button class="mode-btn active" onclick="setMode('rub',this)">🪮 Vryf en laai</button>
-        <button class="mode-btn" onclick="setMode('attract',this)">📄 Trek papier aan</button>
-        <button class="mode-btn" onclick="setMode('lightning',this)">⚡ Weerlig</button>
+        <button class="mode-btn active" onclick="setMode('rub',this)">Vryf en laai</button>
+        <button class="mode-btn" onclick="setMode('attract',this)">Trek papier aan</button>
+        <button class="mode-btn" onclick="setMode('lightning',this)">Weerlig</button>
       </div>
       <div class="ctrl-card">
         <div class="ctrl-label">Ladingstoestand</div>
@@ -405,7 +407,7 @@ function drawRub(){
     ctx.fillStyle='#fbbf24';
     ctx.beginPath();ctx.arc(e.x,e.y,3,0,Math.PI*2);ctx.fill();
     ctx.fillStyle='#fff';
-    ctx.font='9px var(--fm)';ctx.textAlign='center';
+    ctx.font='9px "JetBrains Mono", monospace';ctx.textAlign='center';
     ctx.fillText('e⁻',e.x,e.y+3);
     ctx.globalAlpha=1;
   }
@@ -420,7 +422,7 @@ function drawRub(){
     for(let i=0;i<Math.min(charge*2,14);i++){
       const ex=rx+20+i*(rw-40)/13;
       ctx.fillStyle='#fbbf24';
-      ctx.font='bold 11px sans-serif';ctx.textAlign='center';
+      ctx.font='bold 12px sans-serif';ctx.textAlign='center';
       ctx.fillText('−',ex,ry+6);
     }
   }
@@ -477,7 +479,7 @@ function drawAttract(){
     ctx.restore();
     // Induced charge on paper when near ruler
     if(charged && Math.abs(p.y-rulerCY)<120){
-      ctx.fillStyle='rgba(251,191,36,0.7)';ctx.font='9px sans-serif';ctx.textAlign='center';
+      ctx.fillStyle='rgba(251,191,36,0.7)';ctx.font='12px sans-serif';ctx.textAlign='center';
       ctx.fillText('+',p.x,p.y-p.h/2-2);
     }
   }
@@ -520,7 +522,7 @@ function drawLightning(){
   grd.addColorStop(0,'#374151');grd.addColorStop(1,'#1f2937');
   ctx.fillStyle=grd; ctx.fillRect(0,gndY,W,H-gndY);
   ctx.fillStyle='#4b5563'; ctx.fillRect(0,gndY,W,3);
-  ctx.fillStyle='rgba(107,114,128,0.4)';ctx.font='11px sans-serif';ctx.textAlign='center';
+  ctx.fillStyle='rgba(107,114,128,0.4)';ctx.font='12px sans-serif';ctx.textAlign='center';
   ctx.fillText('G R O N D',W/2,gndY+22);
 
   // Negative charges in cloud (building up)
@@ -546,7 +548,7 @@ function drawLightning(){
   const barGrad=ctx.createLinearGradient(0,barY+barH-fillH,0,barY+barH);
   barGrad.addColorStop(0,'#fbbf24');barGrad.addColorStop(1,'#ef4444');
   ctx.fillStyle=barGrad; ctx.beginPath();ctx.roundRect(barX,barY+barH-fillH,barW,fillH,5);ctx.fill();
-  ctx.fillStyle='rgba(210,218,245,0.5)';ctx.font='9px sans-serif';ctx.textAlign='center';
+  ctx.fillStyle='rgba(210,218,245,0.5)';ctx.font='12px sans-serif';ctx.textAlign='center';
   ctx.fillText('LADING',barX+barW/2,barY-8);
   ctx.fillText(charge.toFixed(1),barX+barW/2,barY+barH+14);
 

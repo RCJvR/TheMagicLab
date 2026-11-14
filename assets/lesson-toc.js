@@ -107,9 +107,21 @@
     top = Math.min(top, r.bottom - h);
     toc.style.left = left + 'px';
     toc.style.top = top + 'px';
-    // current section: the last heading that has scrolled past the top band
+    // current section: the last heading that has scrolled past the top band.
+    // Within the last screen of the page the band slides down to the bottom
+    // edge, because short final sections can never scroll up to the top: at
+    // the very bottom, the last heading on screen is the current one.
+    var vh = window.innerHeight;
+    var remaining = Math.max(0, document.documentElement.scrollHeight - vh - window.pageYOffset);
+    var endBlend = Math.max(0, Math.min(1, 1 - remaining / vh));
+    var band = (TOP + 40) + (vh - (TOP + 40)) * endBlend;
     var cur = 0;
-    for (var i = 0; i < heads.length; i++) if (heads[i].getBoundingClientRect().top < TOP + 40) cur = i;
+    for (var i = 0; i < heads.length; i++) {
+      var hr = heads[i].getBoundingClientRect();
+      // a hidden heading (a locked preview section) reports top 0: skip it
+      if (hr.height === 0 && hr.width === 0) continue;
+      if (hr.top < band) cur = i;
+    }
     setActive(cur);
   }
 

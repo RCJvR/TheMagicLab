@@ -118,6 +118,50 @@
     .f3-msg.editing span{flex:1;min-width:0;}
     .f3-msg.editing button{flex-shrink:0;border:1px solid rgba(217,119,6,0.6);background:rgba(217,119,6,0.18);color:var(--accent2);font:inherit;font-size:0.72rem;font-weight:700;padding:4px 10px;border-radius:5px;cursor:pointer;}
     .feat-node.rolled{opacity:0.4;}
+    /* Tutorials */
+    .tut-glow{outline:2px solid #f5b23d!important;outline-offset:2px;border-radius:6px;animation:tutPulse 1.3s ease-in-out infinite;}
+    @keyframes tutPulse{0%,100%{box-shadow:0 0 0 0 rgba(245,178,61,0.55);}50%{box-shadow:0 0 0 6px rgba(245,178,61,0);}}
+    @media (prefers-reduced-motion: reduce){.tut-glow{animation:none;}}
+    .tut-panel{position:fixed;left:212px;bottom:36px;z-index:60;width:min(360px,calc(100vw - 32px));background:#0f1216;border:1px solid rgba(245,178,61,0.45);border-radius:12px;padding:12px 14px 12px;box-shadow:0 18px 40px rgba(0,0,0,0.55);color:var(--text);display:flex;flex-direction:column;gap:8px;}
+    .tut-head{display:flex;align-items:center;gap:8px;}
+    .tut-name{font-weight:800;font-size:0.82rem;}
+    .tut-count{font-size:0.68rem;color:var(--text2);margin-left:auto;font-family:'JetBrains Mono',monospace;}
+    .tut-x{border:0;background:none;color:var(--text2);font-size:1.1rem;line-height:1;cursor:pointer;padding:0 4px;border-radius:4px;}
+    .tut-x:hover{color:var(--text);background:rgba(255,255,255,0.06);}
+    .tut-bar{height:3px;border-radius:2px;background:rgba(255,255,255,0.08);overflow:hidden;}
+    .tut-bar i{display:block;height:100%;background:#f5b23d;transition:width 300ms;}
+    .tut-title{font-size:0.92rem;font-weight:800;margin:2px 0 0;display:flex;align-items:center;gap:8px;}
+    .tut-tick{display:none;color:var(--green);font-size:0.9rem;}
+    .tut-panel.done .tut-tick{display:inline;}
+    .tut-panel.done{border-color:rgba(74,207,127,0.6);}
+    .tut-text{font-size:0.78rem;line-height:1.55;color:var(--text2);}
+    .tut-text b{color:var(--text);}
+    .tut-hint{font-size:0.72rem;color:var(--text2);}
+    .tut-hint summary{cursor:pointer;color:#f5b23d;}
+    .tut-hint div{margin-top:4px;line-height:1.5;}
+    .tut-actions{display:flex;gap:6px;justify-content:flex-end;align-items:center;margin-top:2px;}
+    .tut-actions button{border:1px solid var(--border);background:none;color:var(--text2);font:inherit;font-size:0.74rem;font-weight:700;padding:5px 12px;border-radius:6px;cursor:pointer;}
+    .tut-actions button:hover:not(:disabled){color:var(--text);border-color:var(--text-3,#666);}
+    .tut-actions button:disabled{opacity:0.4;cursor:default;}
+    .tut-actions button.primary{background:#f2f5f9;border-color:#f2f5f9;color:#08090b;}
+    .tut-actions button.primary:disabled{background:none;color:var(--text2);border-color:var(--border);}
+    .tut-actions button.link{border:0;padding:5px 6px;font-weight:600;text-decoration:underline;margin-right:auto;}
+    .tut-overlay{position:fixed;inset:0;z-index:80;background:rgba(4,6,10,0.72);display:flex;align-items:center;justify-content:center;padding:16px;}
+    .tut-picker{width:min(860px,100%);max-height:90vh;overflow:auto;background:#0f1216;border:1px solid var(--border);border-radius:14px;padding:20px 22px;color:var(--text);}
+    .tut-picker-head{display:flex;align-items:center;justify-content:space-between;}
+    .tut-picker-head h2{margin:0;font-size:1.25rem;font-weight:800;}
+    .tut-picker-sub{margin:6px 0 16px;font-size:0.82rem;color:var(--text2);}
+    .tut-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px;}
+    .tut-card{border:1px solid var(--border);border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:8px;}
+    .tut-card-top{display:flex;align-items:baseline;justify-content:space-between;gap:8px;}
+    .tut-card h3{margin:0;font-size:1rem;font-weight:800;}
+    .tut-card-top span{font-size:0.7rem;color:var(--text2);font-family:'JetBrains Mono',monospace;}
+    .tut-card p{margin:0;font-size:0.78rem;line-height:1.5;color:var(--text2);flex:1;}
+    .tut-chips{display:flex;flex-wrap:wrap;gap:4px;}
+    .tut-chips span{font-size:0.66rem;font-weight:700;padding:2px 8px;border-radius:99px;border:1px solid rgba(245,178,61,0.4);color:#f5b23d;}
+    .tut-start{align-self:flex-start;border:0;background:#f2f5f9;color:#08090b;font:inherit;font-size:0.78rem;font-weight:800;padding:6px 16px;border-radius:6px;cursor:pointer;}
+    .tut-start:focus-visible,.tut-actions button:focus-visible{outline:2px solid #f5b23d;outline-offset:2px;}
+    @media (max-width: 768px){ .tut-panel{left:16px;bottom:16px;} }
     .feat-node.editing{outline:1px solid rgba(217,119,6,0.9);outline-offset:-1px;background:rgba(217,119,6,0.10);}
     .feat-props{padding:10px 14px;border-bottom:1px solid var(--border);flex-shrink:0;display:flex;flex-direction:column;gap:8px;}
     .fp-row{display:flex;align-items:center;gap:8px;font-size:0.74rem;color:var(--text2);}
@@ -218,7 +262,7 @@
     #len-popup input:focus{border-color:rgba(217,119,6,0.8);}
     #len-popup .lp-unit{font-size:0.70rem;color:var(--text2);}
 
-    .right-panel{width:300px;flex-shrink:0;display:flex;flex-direction:column;
+    .right-panel{width:var(--rp-w,420px);flex-shrink:0;display:flex;flex-direction:column;
                  border-left:1px solid var(--border);background:var(--bg2);}
 
     .ext-panel{padding:13px 14px;border-bottom:1px solid var(--border);flex-shrink:0;}
@@ -262,7 +306,18 @@
     .cst-del{background:none;border:none;color:var(--text2);cursor:pointer;font-size:0.9rem;line-height:1;padding:0 4px;border-radius:3px;}
     .cst-del:hover{color:var(--red);background:rgba(248,113,113,0.12);}
 
-    #vp3d{flex:1;position:relative;background:#08090b;overflow:hidden;}
+    #vp3d{flex:1;position:relative;background:#08090b;overflow:hidden;min-height:180px;}
+    /* Resizable layout: drag bars between the panels */
+    .rp-top{flex:0 0 var(--rp-top,auto);max-height:var(--rp-top-max,60%);overflow-y:auto;display:flex;flex-direction:column;}
+    .rp-top > *{flex-shrink:0;}
+    .split-v{width:6px;flex-shrink:0;cursor:col-resize;background:transparent;position:relative;z-index:5;margin:0 -3px;}
+    .split-h{height:6px;flex-shrink:0;cursor:row-resize;background:transparent;position:relative;z-index:5;margin:-3px 0;}
+    .split-v::after{content:"";position:absolute;top:0;bottom:0;left:2px;width:2px;background:var(--border);transition:background 120ms;}
+    .split-h::after{content:"";position:absolute;left:0;right:0;top:2px;height:2px;background:var(--border);transition:background 120ms;}
+    .split-v:hover::after,.split-v.dragging::after,.split-h:hover::after,.split-h.dragging::after{background:var(--accent2,#f5b23d);}
+    .main.mode-3d #split-main{display:none;}
+    body.resizing, body.resizing *{user-select:none!important;}
+    @media (max-width: 768px){ .split-v,.split-h{display:none;} .right-panel{width:100%;} .rp-top{flex-basis:auto;max-height:none;} }
     .vp-placeholder{position:absolute;inset:0;display:flex;flex-direction:column;
                     align-items:center;justify-content:center;gap:8px;pointer-events:none;}
     .vp-ph-icon{font-size:2.2rem;opacity:0.5;}
@@ -280,7 +335,7 @@
     .edge-mode-btn{height:22px;padding:0 8px;border:none;background:none;
       color:var(--text2);font-size:0.70rem;font-weight:600;cursor:pointer;font-family:inherit;}
     .edge-mode-btn.active{background:rgba(23,196,192,0.2);color:var(--accent2);}
-    .feat-panel{width:200px;flex-shrink:0;border-right:1px solid var(--border);
+    .feat-panel{width:var(--tree-w,200px);flex-shrink:0;border-right:1px solid var(--border);
       background:var(--bg2);display:flex;flex-direction:column;overflow:hidden;}
     .feat-panel-title{font-size:0.68rem;font-weight:700;color:var(--text2);
       letter-spacing:.09em;text-transform:uppercase;padding:10px 12px 6px;
@@ -498,6 +553,7 @@
   <button class="tb-btn wb-2d" id="btn-clear" title="Clear sketch">✕ Clear</button>
   <div class="tb-sep"></div>
   <div style="margin-left:auto"></div>
+  <button class="tb-btn" id="btn-tutorials" type="button" title="Step-by-step guided builds">🎓 Tutorials</button>
   <button class="tb-btn" id="btn-mode-3d" title="Switch to 3D view">⬡ View 3D</button>
   <div class="tb-sep"></div>
   <span id="lbl-snap-sel" class="tb-label wb-2d">Grid snap</span>
@@ -519,6 +575,7 @@
     <button class="feat-add-sketch" id="btn-add-sketch">+ Sketch</button>
   </div>
 
+  <div class="split-v" id="split-tree" role="separator" aria-orientation="vertical" aria-label="Resize the feature tree" title="Drag to resize"></div>
   <div class="sketch-panel">
     <canvas id="sk"></canvas>
     <div class="sk-overlay">Sketch · XY Plane</div>
@@ -534,7 +591,12 @@
         <span class="ext-prompt-unit">mm</span>
       </div>
       <label class="ext-prompt-thru" id="ext-prompt-thru-row" hidden>
-        <input type="checkbox" id="ext-prompt-thru"> Hole goes right through
+        <span>Hole depth</span>
+        <select id="ext-prompt-holemode" class="ext-prompt-input" style="flex:1;width:auto">
+          <option value="wall">Through this wall</option>
+          <option value="all">Through everything</option>
+          <option value="depth">Use the depth above</option>
+        </select>
       </label>
       <div class="ext-prompt-actions">
         <button class="ext-btn ext-btn-go" id="ext-prompt-yes" title="Pad: add material — the shape grows out of the part">⬆ Pad</button>
@@ -557,7 +619,9 @@
     </div>
   </div>
 
+  <div class="split-v" id="split-main" role="separator" aria-orientation="vertical" aria-label="Resize the 3D panel" title="Drag to resize"></div>
   <div class="right-panel">
+    <div class="rp-top" id="rp-top">
 
     <div class="ext-panel">
       <div class="panel-title">Extrude</div>
@@ -605,6 +669,8 @@
 
     <div class="f3-msg" id="f3-msg" role="status" hidden></div>
     <div class="feat-props" id="feat-props" hidden></div>
+    </div>
+    <div class="split-h" id="split-rp" role="separator" aria-orientation="horizontal" aria-label="Resize the 3D preview" title="Drag to resize"></div>
 
     <div id="vp3d">
       <div class="vp-placeholder" id="vp-ph">
@@ -612,7 +678,7 @@
         <div class="vp-ph-text">Draw a closed profile<br>to auto-extrude</div>
       </div>
       <div class="vp-badge" id="vp-badge" style="display:none">replicad · OpenCascade WASM</div>
-      <div class="vp-hint">Left: orbit · Right: pan · Scroll: zoom · 1/3/7: views · F: focus</div>
+      <div class="vp-hint">Left: rotate freely · Right: pan · Scroll: zoom · 1/3/7: views · 0: reset · F: focus</div>
       <div style="position:absolute;bottom:8px;right:8px;display:flex;gap:5px;">
         <button class="btn-stl" id="btn-face-sketch" style="position:static">✏ Sketch Face</button>
         <button class="btn-stl" id="btn-stl" style="position:static">↓ Export STL</button>
@@ -636,7 +702,6 @@
 
 <script type="module">
 import * as THREE from 'three';
-import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { STLExporter }   from 'three/addons/exporters/STLExporter.js';
 
 // ════════════════════════════════════════════════════════════════════
@@ -645,7 +710,7 @@ import { STLExporter }   from 'three/addons/exporters/STLExporter.js';
 
 const _wSrc = `
 import Module from '${location.origin}/assets/vendor/replicad-opencascadejs-0.23.0/replicad_single.js';
-import { setOC, draw, drawRectangle, drawCircle } from '${location.origin}/assets/vendor/replicad-0.23.1/replicad.js';
+import { setOC, draw, drawRectangle, drawCircle, Plane } from '${location.origin}/assets/vendor/replicad-0.23.1/replicad.js';
 const OC_BASE = '${location.origin}/assets/vendor/replicad-opencascadejs-0.23.0/';
 let ready = false;
 const boot = (async () => {
@@ -669,21 +734,28 @@ self.onmessage = async ({ data }) => {
             filletR:data.filletR||0, chamferR:data.chamferR||0, planeName:'XY', planeOffset:0 }];
     let solid = null;
     const warnings = [];
+    const combine = (s, item) => {
+      if (!solid || item.operation === 'new') return solid ? solid.fuse(s) : s;
+      if (item.operation === 'cut') return solid.cut(s);
+      return solid.fuse(s);
+    };
     for (const item of profileList) {
       try {
-        let s = makeTool(item);
-        s = applyPatterns(s, item.patterns || []);
-        if (!solid || item.operation === 'new') {
-          solid = solid ? solid.fuse(s) : s;
-        } else if (item.operation === 'cut') {
-          solid = solid.cut(s);
-        } else {
-          solid = solid.fuse(s);
-        }
+        solid = combine(applyPatterns(makeTool(item), item.patterns || []), item);
       } catch(opErr) {
-        const m = (opErr && (opErr.message || opErr.toString && opErr.toString())) || 'error';
-        warnings.push((item.kind === 'revolve' ? 'revolve' : 'extrude') + ' (' + m + ')');
-        console.warn('[ModelMage] skipping op', item.kind, item.operation, m);
+        // OpenCascade often fails when a face of the tool lies exactly on a
+        // face of the part. Try once more with the tool nudged 0.05 mm: it
+        // starts just outside the face and reaches just past its depth.
+        let ok = false;
+        if (item.kind !== 'revolve') {
+          try { solid = combine(applyPatterns(makeTool({ ...item, nudge: 0.05 }), item.patterns || []), item); ok = true; }
+          catch(_) {}
+        }
+        if (!ok) {
+          const m = (opErr && (opErr.message || opErr.toString && opErr.toString())) || 'error';
+          warnings.push((item.name || (item.kind === 'revolve' ? 'A revolve' : 'A feature')) + ' could not be combined with the part');
+          console.warn('[ModelMage] skipping op', item.name, item.kind, item.operation, m);
+        }
       }
     }
     if (!solid) throw new Error(warnings[0] || 'Nothing to build');
@@ -747,12 +819,21 @@ function makeDrawing(p) {
 // The solid for one feature (before it is added to or cut from the part)
 function makeTool(item) {
   const planeName = item.planeName || 'XY', off = item.planeOffset || 0;
+  const pd = item.planeDef;
+  // Sketch a drawing onto the feature's plane (named, or a face at any angle)
+  const onPlane = d => pd ? d.sketchOnPlane(new Plane(pd.origin, pd.xDir, pd.normal)) : d.sketchOnPlane(planeName, off);
   const drawing = makeDrawing(item.profile);
   if (item.kind === 'revolve') {
-    const P = PLANES[planeName] || PLANES.XY;
-    const dir = item.axis === 'H' ? P.x : P.y;
-    const origin = P.n.map(v => v * off);
-    return drawing.sketchOnPlane(planeName, off).revolve(dir, { origin, angle: Math.max(1, Math.min(360, item.angle || 360)) });
+    let dir, origin;
+    if (pd) {
+      const n = pd.normal, x = pd.xDir;
+      const y = [n[1]*x[2]-n[2]*x[1], n[2]*x[0]-n[0]*x[2], n[0]*x[1]-n[1]*x[0]];
+      dir = item.axis === 'H' ? x : y; origin = pd.origin;
+    } else {
+      const P = PLANES[planeName] || PLANES.XY;
+      dir = item.axis === 'H' ? P.x : P.y; origin = P.n.map(v => v * off);
+    }
+    return onPlane(drawing).revolve(dir, { origin, angle: Math.max(1, Math.min(360, item.angle || 360)) });
   }
   const ns = item.normalSign ?? 1;
   // Replicad's XZ plane has normal = -Y (opposite convention to XY and YZ planes).
@@ -761,11 +842,22 @@ function makeTool(item) {
   if (item.operation === 'cut') h = -ns * pf * Math.abs(item.height);
   else if (item.operation === 'fuse') h = ns * pf * Math.abs(item.height);
   else h = item.height;
-  let solid = drawing.sketchOnPlane(planeName, off).extrude(h);
+  // A feature sketched on a face of the part starts 0.02 mm behind that face
+  // (outside it for a pocket, inside it for a pad) and still ends at the same
+  // depth. The stored face plane is only as exact as the screen mesh it came
+  // from, so starting exactly on it can leave a hair-thin skin over a hole or
+  // make OpenCascade fail. A retry ("nudge") also reaches a little past the end.
+  const N = pd ? pd.normal : (PLANES[planeName] || PLANES.XY).n;
+  const sg = Math.sign(h) || 1;
+  const back = (item.face && item.operation !== 'new' ? 0.02 : 0) + (item.nudge || 0);
+  const longer = back + (item.nudge || 0);
+  let solid = back
+    ? onPlane(drawing).extrude(h + sg * longer).translate(N.map(v => -sg * back * v))
+    : onPlane(drawing).extrude(h);
   // A pocket drawn on a base plane (not on a face) cuts both ways, so it
   // reaches the part whichever side of the plane the part is on.
   if (item.operation === 'cut' && item.both) {
-    const other = makeDrawing(item.profile).sketchOnPlane(planeName, off).extrude(-h);
+    const other = onPlane(makeDrawing(item.profile)).extrude(-h);
     solid = solid.fuse(other);
   }
   const filletR = item.filletR || 0, chamferR = item.chamferR || 0;
@@ -820,7 +912,7 @@ worker.onmessage = ({ data }) => {
   } else if (data.type === 'mesh') {
     applyMesh(data.v, data.n, data.t);
     setRebuildStatus('done');
-    if (data.warnings && data.warnings.length) f3Msg('Some features could not be built: ' + data.warnings.join(' · '), true);
+    if (data.warnings && data.warnings.length) f3Msg(data.warnings.join(' · ') + '. Try changing its depth or size slightly, or double-click it in the tree to edit it.', true);
   } else if (data.type === 'err') {
     console.warn('[ModelMage]', data.msg);
     setRebuildStatus('error', data.msg);
@@ -3421,6 +3513,7 @@ function f3PadPocket(kind) {
   nodes.forEach((n, j) => {
     n.operation = kind === 'pocket' ? 'cut' : (hadSolid || j > 0 ? 'fuse' : 'new');
     n.name = nextName(kind === 'pocket' ? 'Pocket' : 'Pad');
+    if (kind === 'pocket' && sk.datumId) applyHoleMode(n, sk, 'wall');
   });
   if (nodes[0]) selectFeatureNode(nodes[0]);
   renderFeatureTree(); scheduleExtrude();
@@ -3548,6 +3641,375 @@ function wireWorkbenchUI() {
   });
   buildConstraintToolbar();
   showWorkbench('sketch');
+}
+
+// ════════════════════════════════════════════════════════════════════
+// TUTORIALS — guided builds that check the learner's model as they go
+// ════════════════════════════════════════════════════════════════════
+
+var tutorialActive = null;      // { def, step, done:Set, stash }
+let _tutTimer = null, _tutAdvanceTimer = null, _tutGlowEl = null;
+
+// ── Checks the steps use ─────────────────────────────────────────────
+const TQ = {
+  near: (a, b, t = 0.05) => Math.abs(Math.abs(+a) - b) <= t,
+  rectLike: () => ents().some(e => e.type === 'rect' || (e.type === 'polyline' && e.closed && e.points.length === 4)),
+  circle: () => ents().some(e => e.type === 'circle'),
+  has: (type, pred = () => true) => sketchConstraints().some(c => c.type === type && pred(c)),
+  len: v => TQ.has('length', c => TQ.near(c.value, v)) || TQ.has('distance', c => TQ.near(c.value, v)),
+  toOrigin: () => TQ.has('coincident', c => c.a.u === REF_O || (c.b && c.b.u === REF_O)),
+  centreToOrigin: () => TQ.has('coincident', c => (c.a.u === REF_O && c.b && c.b.k === 'c') || (c.b && c.b.u === REF_O && c.a.k === 'c')),
+  onXAxis: () => TQ.has('pointOnLine', c => c.b && c.b.u === REF_AX),
+  hdist: v => TQ.has('hdist', c => TQ.near(c.value, v)),
+  vdist: v => TQ.has('vdist', c => TQ.near(c.value, v)),
+  radius: v => TQ.has('radius', c => TQ.near(c.value, v)),
+  dof0: () => { const d = analyseSketch(); return !!d && !d.empty && !d.conflicting && d.dof === 0; },
+  wb: w => wbActive === w,
+  is3d: () => document.querySelector('.main').classList.contains('mode-3d'),
+  feat: pred => featureTree.some(pred),
+  pad: () => featureTree.some(f => f.type === 'extrude' && f.operation !== 'cut'),
+  padH: h => featureTree.some(f => f.type === 'extrude' && f.operation !== 'cut' && TQ.near(f.height, h, 0.01)),
+  pockets: () => featureTree.filter(f => f.type === 'extrude' && f.operation === 'cut').length,
+  onFace: () => !!(activeSketch() && activeSketch().datumId),
+  faceSketches: () => featureTree.filter(f => f.type === 'sketch' && f.datumId).length,
+};
+
+// ── The tutorials ────────────────────────────────────────────────────
+const TUTORIALS = [
+ {
+  id: 'keytag', title: 'Key tag', time: '15 min',
+  learn: ['Draw', 'Constrain', 'Pad', 'Pocket', 'Fillet'],
+  blurb: 'A 60 × 30 × 5 mm key tag with a hole and rounded edges.',
+  steps: [
+   { t: 'What you will make', x: 'A key tag, <b>60 × 30 × 5 mm</b>, with a hole for the key ring and rounded edges. You will <b>draw</b> it, <b>constrain</b> it so its size is exact, <b>pad</b> it into a solid, <b>pocket</b> a hole and <b>fillet</b> the edges.' },
+   { t: 'Draw the outline', x: 'Pick <b>Rect</b> (or press R). Click once on the <b>origin</b> — where the dashed axes cross — then click again up and to the right. The size does not matter yet.', hl: '#tool-rect', ok: () => TQ.rectLike() },
+   { t: 'Open the Constraints workbench', x: 'A drawing is not finished until it is <b>constrained</b>: every size and position decided. Click the <b>⚓ Constraints</b> tab.', hl: '#wb-constraints', ok: () => TQ.wb('constraints') },
+   { t: 'Pin it to the origin', x: 'Pick <b>Coincident</b> (●). Click the rectangle\'s <b>bottom-left corner</b>, then click the <b>origin</b>.', hint: 'If the corner already sits on the origin, click the corner and then click the same spot again.', hl: '#cst-coincident', ok: () => TQ.toOrigin() },
+   { t: 'Set the length', x: 'Pick <b>Distance</b> (↔). Click the <b>bottom edge</b>, type <b>60</b> and press Enter.', hl: '#cst-distance', ok: () => TQ.len(60) },
+   { t: 'Set the width', x: 'Still using Distance, click a <b>side edge</b>, type <b>30</b> and press Enter.', hl: '#cst-distance', ok: () => TQ.len(30) },
+   { t: 'Fully constrained', x: 'The chip at the top right of the sketch should now say <b>Fully constrained</b>, and the lines turn <b>green</b>. 0 degrees of freedom means nothing can move or change by accident — that is what makes a part reliable.', hint: 'Still showing DOF? Check the list on the right: you need the corner on the origin, a 60 and a 30.', hl: '#dof-chip', ok: () => TQ.dof0() },
+   { t: 'Go to 3D', x: 'Click <b>View 3D</b>.', hl: '#btn-mode-3d', ok: () => TQ.is3d() },
+   { t: 'Pad it', x: 'Click <b>Pad</b>. The outline is pushed up into a solid block.', hl: '#f3-pad', ok: () => TQ.pad() },
+   { t: 'Make it 5 mm thick', x: 'In the Extrude panel on the right, set <b>Height</b> to <b>5</b> and press Enter.', hl: '#v-h', ok: () => TQ.padH(5) },
+   { t: 'Sketch on the top face', x: 'Move the mouse over the <b>top face</b> of the block — it lights up — and click it. A new sketch opens on that face.', hint: 'Turn the view with the left mouse button if you cannot see the top. Pressing 0 gives a corner view.', hl: '#vp3d', ok: () => TQ.onFace() },
+   { t: 'Draw the hole', x: 'Pick <b>Circle</b> (C). Click near the <b>left end</b> of the tag for the centre, then click again for the size.', hl: '#tool-circle', ok: () => TQ.onFace() && TQ.circle() },
+   { t: 'Constrain the hole', x: 'On the <b>Constraints</b> tab:<br>• <b>Radius</b> → click the circle → <b>3</b><br>• <b>H distance</b> → click the origin, then the circle\'s centre → <b>8</b><br>• <b>V distance</b> → origin, then centre → <b>15</b>', hint: 'The hole is then fully constrained: 8 mm in from the end and in the middle of the 30 mm width.', hl: '#wb-constraints', ok: () => TQ.onFace() && TQ.radius(3) && TQ.hdist(8) && TQ.vdist(15) && TQ.dof0() },
+   { t: 'Pocket the hole', x: 'Click <b>View 3D</b>, then <b>Pocket</b>. The pocket cuts 5 mm down — right through the tag.', hl: '#f3-pocket', hl2: '#btn-mode-3d', ok: () => TQ.pockets() >= 1 },
+   { t: 'Round the edges', x: 'In the feature tree, click <b>Pad 1</b>. Then in the panel on the right make sure <b>Fillet</b> is chosen and set it to <b>1.5</b>.', hl: '#v-edge', ok: () => TQ.feat(f => f.type === 'extrude' && f.operation !== 'cut' && f.filletR > 0) },
+   { t: 'Finished!', x: 'Your key tag is done. Try this: <b>double-click Pad 1</b> in the tree and change the height — the hole and the rounded edges follow, because the design is parametric.' },
+  ],
+ },
+ {
+  id: 'wheel', title: 'Wheel', time: '10 min',
+  learn: ['Draw', 'Constrain to axes', 'Revolve'],
+  blurb: 'A 50 mm wheel with a hole, made by spinning a rectangle around an axis.',
+  steps: [
+   { t: 'What you will make', x: 'A wheel <b>50 mm across</b> and <b>10 mm thick</b> with a <b>10 mm hole</b>. Instead of padding, you will <b>revolve</b> (spin) a rectangle around the vertical axis.' },
+   { t: 'Draw the profile', x: 'Pick <b>Rect</b>. Draw a rectangle to the <b>right of the vertical axis</b>, a little away from it, sitting on the horizontal axis.', hint: 'Only the cross-section is drawn — half of a slice through the wheel.', hl: '#tool-rect', ok: () => TQ.rectLike() },
+   { t: 'Open the Constraints workbench', x: 'Click the <b>⚓ Constraints</b> tab.', hl: '#wb-constraints', ok: () => TQ.wb('constraints') },
+   { t: 'Sit it on the X axis', x: 'Pick <b>On object</b> (⋯). Click the rectangle\'s <b>bottom-left corner</b>, then click the <b>horizontal (X) axis</b> line.', hl: '#cst-pointOn', ok: () => TQ.onXAxis() },
+   { t: 'Distance from the axis', x: 'Pick <b>H distance</b> (⟷). Click the <b>origin</b>, then the <b>bottom-left corner</b>, type <b>5</b>. This gap becomes the radius of the hole.', hl: '#cst-hdist', ok: () => TQ.hdist(5) },
+   { t: 'Width and height', x: 'Pick <b>Distance</b>. Bottom edge → <b>20</b>. Side edge → <b>10</b>.', hl: '#cst-distance', ok: () => TQ.len(20) && TQ.len(10) },
+   { t: 'Fully constrained', x: 'The chip should say <b>Fully constrained</b>. The profile is pinned to the axes and every size is set.', hl: '#dof-chip', ok: () => TQ.dof0() },
+   { t: 'Go to 3D', x: 'Click <b>View 3D</b>.', hl: '#btn-mode-3d', ok: () => TQ.is3d() },
+   { t: 'Revolve', x: 'Click <b>Revolve</b>. The rectangle spins all the way around the sketch\'s vertical axis and becomes a wheel: 5 + 20 = 25 mm radius, so 50 mm across.', hl: '#f3-revolve', ok: () => TQ.feat(f => f.type === 'revolve') },
+   { t: 'Look inside', x: 'In the panel on the right, change <b>Angle</b> to <b>270</b> and press Enter: a slice is cut away so you can see the profile. Then set it back to <b>360</b>.', hl: '#fp-angle',
+     state: () => ({ seen: false }),
+     ok: s => { const r = featureTree.find(f => f.type === 'revolve'); if (!r) return false; if (+r.angle < 360) s.seen = true; return s.seen && +r.angle === 360; } },
+   { t: 'Finished!', x: 'Your wheel is done. Try this: <b>double-click Sketch 1</b>, change the H distance from 5 to 10, then go back to 3D — the hole gets bigger.' },
+  ],
+ },
+ {
+  id: 'fan', title: 'Fan cover', time: '20 min',
+  learn: ['Pad', 'Pocket', 'Polar pattern', 'Linear pattern'],
+  blurb: 'An 80 mm round plate with 6 bolt holes in a circle and a row of 3 small holes.',
+  steps: [
+   { t: 'What you will make', x: 'A round fan cover: an <b>80 mm plate</b>, <b>6 bolt holes</b> spaced evenly around the edge (a <b>polar pattern</b>) and a <b>row of 3 small holes</b> across the middle (a <b>linear pattern</b>). You draw each hole once and the pattern makes the copies.' },
+   { t: 'Draw the plate', x: 'Pick <b>Circle</b> (C). Click the <b>origin</b> for the centre, then click again for the size.', hl: '#tool-circle', ok: () => TQ.circle() },
+   { t: 'Open the Constraints workbench', x: 'Click the <b>⚓ Constraints</b> tab.', hl: '#wb-constraints', ok: () => TQ.wb('constraints') },
+   { t: 'Centre on the origin', x: 'Pick <b>Coincident</b>. Click the circle\'s <b>centre</b>, then the <b>origin</b>.', hint: 'If the centre is already on the origin, click it and then click the same spot again.', hl: '#cst-coincident', ok: () => TQ.centreToOrigin() },
+   { t: 'Radius 40', x: 'Pick <b>Radius</b>. Click the circle, type <b>40</b>.', hl: '#cst-radius', ok: () => TQ.radius(40) },
+   { t: 'Fully constrained', x: 'A circle has 3 degrees of freedom (centre x, centre y and radius). You fixed all three, so the chip says <b>Fully constrained</b>.', hl: '#dof-chip', ok: () => TQ.dof0() },
+   { t: 'Pad it 5 mm', x: 'Click <b>View 3D</b>, then <b>Pad</b>, and set <b>Height</b> to <b>5</b>.', hl: '#f3-pad', hl2: '#btn-mode-3d', ok: () => TQ.padH(5) },
+   { t: 'Sketch on the top face', x: 'Click the <b>top face</b> of the plate to start a sketch on it.', hl: '#vp3d', ok: () => TQ.onFace() },
+   { t: 'Draw one bolt hole', x: 'Pick <b>Circle</b>. Draw a small circle on the <b>right</b>, near the edge of the plate.', hl: '#tool-circle', ok: () => TQ.onFace() && TQ.circle() },
+   { t: 'Constrain the bolt hole', x: 'Constraints tab:<br>• <b>Radius</b> → circle → <b>4</b><br>• <b>On object</b> → the circle\'s centre, then the X axis<br>• <b>H distance</b> → origin, then centre → <b>30</b>', hl: '#wb-constraints', ok: () => TQ.onFace() && TQ.radius(4) && TQ.onXAxis() && TQ.hdist(30) && TQ.dof0() },
+   { t: 'Pocket it', x: 'Click <b>View 3D</b>, then <b>Pocket</b>.', hl: '#f3-pocket', hl2: '#btn-mode-3d', ok: () => TQ.pockets() >= 1 },
+   { t: 'Polar pattern', x: 'Click <b>Polar pattern</b>. In the panel on the right set <b>Copies</b> to <b>6</b> and press Enter. The hole is copied around the Z axis every 60°.', hl: '#f3-polpat', ok: () => TQ.feat(f => f.type === 'pattern' && f.kind === 'polar' && +f.count === 6) },
+   { t: 'Another sketch on the face', x: 'Click the <b>top face</b> again to start a second sketch for the small holes.', hl: '#vp3d', ok: () => TQ.onFace() && TQ.faceSketches() >= 2 },
+   { t: 'Draw one small hole', x: 'Pick <b>Circle</b>. Draw a small circle a little to the <b>left of the centre</b>.', hl: '#tool-circle', ok: () => TQ.onFace() && TQ.faceSketches() >= 2 && TQ.circle() },
+   { t: 'Constrain the small hole', x: 'Constraints tab:<br>• <b>Radius</b> → <b>2</b><br>• <b>On object</b> → centre, then the X axis<br>• <b>H distance</b> → origin, then centre → <b>10</b>', hl: '#wb-constraints', ok: () => TQ.onFace() && TQ.radius(2) && TQ.onXAxis() && TQ.hdist(10) && TQ.dof0() },
+   { t: 'Pocket it', x: 'Click <b>View 3D</b>, then <b>Pocket</b>.', hl: '#f3-pocket', hl2: '#btn-mode-3d', ok: () => TQ.pockets() >= 2 },
+   { t: 'Linear pattern', x: 'Click <b>Linear pattern</b>. Set <b>Copies</b> to <b>3</b> and <b>Spacing</b> to <b>10</b> (Direction X). The holes land at −10, 0 and +10 mm.', hint: 'If the row runs into a bolt hole, you drew the small hole on the right: set Direction to −X.', hl: '#f3-linpat', ok: () => TQ.feat(f => f.type === 'pattern' && f.kind === 'linear' && +f.count === 3 && TQ.near(f.spacing, 10)) },
+   { t: 'Finished!', x: 'Your fan cover is done. Try this: click <b>Polar pattern 1</b> in the tree and change Copies to 8 — the holes respace themselves.' },
+  ],
+ },
+];
+
+// ── Starting, stepping and finishing ─────────────────────────────────
+function openTutorialPicker() {
+  closeTutorialPicker();
+  const ov = document.createElement('div');
+  ov.className = 'tut-overlay'; ov.id = 'tut-overlay';
+  ov.innerHTML = `<div class="tut-picker" role="dialog" aria-modal="true" aria-labelledby="tut-picker-h">
+    <div class="tut-picker-head"><h2 id="tut-picker-h">Tutorials</h2><button type="button" class="tut-x" aria-label="Close">×</button></div>
+    <p class="tut-picker-sub">Build a real object step by step. Each step checks your model and moves on when it is done.</p>
+    <div class="tut-cards">${TUTORIALS.map(t => `
+      <div class="tut-card">
+        <div class="tut-card-top"><h3>${t.title}</h3><span>${t.time}</span></div>
+        <p>${t.blurb}</p>
+        <div class="tut-chips">${t.learn.map(l => `<span>${l}</span>`).join('')}</div>
+        <button type="button" class="tut-start" data-id="${t.id}">Start</button>
+      </div>`).join('')}</div>
+  </div>`;
+  document.body.appendChild(ov);
+  ov.addEventListener('click', e => { if (e.target === ov || e.target.closest('.tut-x')) closeTutorialPicker(); });
+  ov.querySelectorAll('.tut-start').forEach(b => b.addEventListener('click', () => { closeTutorialPicker(); startTutorial(b.dataset.id); }));
+  ov.querySelector('.tut-start')?.focus();
+}
+function closeTutorialPicker() { document.getElementById('tut-overlay')?.remove(); }
+
+function modelHasWork() {
+  return featureTree.some(f => (f.type === 'sketch' && f.entities && f.entities.length) || f.type !== 'sketch');
+}
+function freshModel() {
+  initFeatureTree();
+  selItems = []; rollbackId = null; selectedFeatureId = null;
+  linePoints=[]; rectStart=null; circleCenter=null; arcPts=[]; polyCenter=null; splinePts=[];
+  clearSolid();
+  setMode3d(false);
+  showWorkbench('sketch');
+  setTool('edit');
+  document.querySelector('.sk-overlay').textContent = 'Sketch 1 · XY Plane';
+  renderFeatureTree(); scheduleRender(); scheduleExtrude();
+}
+
+function startTutorial(id) {
+  const def = TUTORIALS.find(t => t.id === id); if (!def) return;
+  stopTutorial(true);
+  let stash = null;
+  if (modelHasWork()) {
+    stash = snapshotState();
+    try { localStorage.setItem('mm-cad-pre-tutorial', stash); } catch (e) {}
+  }
+  freshModel();
+  tutorialActive = { def, step: 0, stash, state: {} };
+  renderTutorialPanel();
+  _tutTimer = setInterval(tutorialTick, 400);
+}
+function stopTutorial(silent) {
+  clearInterval(_tutTimer); _tutTimer = null;
+  clearTimeout(_tutAdvanceTimer);
+  setTutGlow(null);
+  document.getElementById('tut-panel')?.remove();
+  tutorialActive = null;
+  if (!silent) refreshExtrudePrompt();
+}
+function tutorialStep() { return tutorialActive ? tutorialActive.def.steps[tutorialActive.step] : null; }
+function stepState() {
+  const s = tutorialStep(), k = tutorialActive.step;
+  if (!s.state) return null;
+  if (!tutorialActive.state[k]) tutorialActive.state[k] = s.state();
+  return tutorialActive.state[k];
+}
+function stepDone() {
+  const s = tutorialStep(); if (!s || !s.ok) return false;
+  try { return !!s.ok(stepState()); } catch (e) { return false; }
+}
+function gotoTutorialStep(i) {
+  if (!tutorialActive) return;
+  clearTimeout(_tutAdvanceTimer);
+  tutorialActive.step = Math.max(0, Math.min(tutorialActive.def.steps.length - 1, i));
+  renderTutorialPanel();
+}
+function tutorialTick() {
+  if (!tutorialActive) return;
+  const s = tutorialStep();
+  const panel = document.getElementById('tut-panel'); if (!panel) return;
+  const done = !!s.ok && stepDone();
+  panel.classList.toggle('done', done);
+  const next = document.getElementById('tut-next');
+  if (next && s.ok) next.disabled = !done;
+  // keep the highlight on whichever target is visible (e.g. Pocket only shows in 3D)
+  const target = [s.hl, s.hl2].map(q => q && document.querySelector(q)).find(el => el && el.offsetParent !== null);
+  setTutGlow(target || null);
+  if (done && !_tutAdvanceTimer && tutorialActive.step < tutorialActive.def.steps.length - 1) {
+    const at = tutorialActive.step;
+    _tutAdvanceTimer = setTimeout(() => { _tutAdvanceTimer = null; if (tutorialActive && tutorialActive.step === at) gotoTutorialStep(at + 1); }, 1100);
+  }
+}
+function setTutGlow(el) {
+  if (_tutGlowEl === el) return;
+  if (_tutGlowEl) _tutGlowEl.classList.remove('tut-glow');
+  _tutGlowEl = el;
+  if (el) el.classList.add('tut-glow');
+}
+
+function renderTutorialPanel() {
+  const T = tutorialActive; if (!T) return;
+  const s = tutorialStep(), n = T.def.steps.length, i = T.step, last = i === n - 1;
+  let p = document.getElementById('tut-panel');
+  if (!p) { p = document.createElement('div'); p.id = 'tut-panel'; p.className = 'tut-panel'; p.setAttribute('role', 'region'); p.setAttribute('aria-label', 'Tutorial'); document.body.appendChild(p); }
+  p.classList.remove('done', 'leaving');
+  p.innerHTML = `
+    <div class="tut-head">
+      <span class="tut-name">🎓 ${T.def.title}</span>
+      <span class="tut-count">Step ${i + 1} of ${n}</span>
+      <button type="button" class="tut-x" id="tut-close" aria-label="Leave the tutorial">×</button>
+    </div>
+    <div class="tut-bar"><i style="width:${Math.round((i) / (n - 1) * 100)}%"></i></div>
+    <h3 class="tut-title">${s.t}<span class="tut-tick" aria-hidden="true">✓</span></h3>
+    <div class="tut-text">${s.x}</div>
+    ${s.hint ? `<details class="tut-hint"><summary>Need a hint?</summary><div>${s.hint}</div></details>` : ''}
+    <div class="tut-actions">
+      <button type="button" id="tut-back" ${i === 0 ? 'disabled' : ''}>Back</button>
+      ${last
+        ? `${T.stash ? '<button type="button" id="tut-restore">Bring back my drawing</button>' : ''}<button type="button" id="tut-finish" class="primary">Finish</button>`
+        : `${s.ok ? '<button type="button" id="tut-skip" class="link">Skip step</button>' : ''}<button type="button" id="tut-next" class="primary" ${s.ok ? 'disabled' : ''}>${i === 0 ? 'Start' : 'Next'}</button>`}
+    </div>`;
+  p.querySelector('#tut-close').addEventListener('click', confirmLeaveTutorial);
+  p.querySelector('#tut-back')?.addEventListener('click', () => gotoTutorialStep(i - 1));
+  p.querySelector('#tut-next')?.addEventListener('click', () => gotoTutorialStep(i + 1));
+  p.querySelector('#tut-skip')?.addEventListener('click', () => gotoTutorialStep(i + 1));
+  p.querySelector('#tut-finish')?.addEventListener('click', () => stopTutorial(false));
+  p.querySelector('#tut-restore')?.addEventListener('click', restorePreTutorial);
+  tutorialTick();
+}
+
+function confirmLeaveTutorial() {
+  const T = tutorialActive; if (!T) return;
+  const p = document.getElementById('tut-panel'); if (!p) return;
+  p.classList.add('leaving');
+  p.innerHTML = `
+    <div class="tut-head"><span class="tut-name">Leave the tutorial?</span></div>
+    <div class="tut-text">Your tutorial model stays on screen.${T.stash ? ' You can also bring back the drawing you had before.' : ''}</div>
+    <div class="tut-actions">
+      <button type="button" id="tut-stay">Stay</button>
+      ${T.stash ? '<button type="button" id="tut-restore">Bring back my drawing</button>' : ''}
+      <button type="button" id="tut-leave" class="primary">Leave</button>
+    </div>`;
+  p.querySelector('#tut-stay').addEventListener('click', renderTutorialPanel);
+  p.querySelector('#tut-leave').addEventListener('click', () => stopTutorial(false));
+  p.querySelector('#tut-restore')?.addEventListener('click', restorePreTutorial);
+}
+function restorePreTutorial() {
+  const T = tutorialActive; if (!T || !T.stash) return;
+  const json = T.stash;
+  stopTutorial(true);
+  restoreState(json);
+  commitHistory();
+  scheduleAutosave();
+  try { localStorage.removeItem('mm-cad-pre-tutorial'); } catch (e) {}
+  refreshExtrudePrompt();
+}
+
+// ════════════════════════════════════════════════════════════════════
+// RESIZABLE PANELS — drag bars between tree, sketch, settings and 3D preview
+// ════════════════════════════════════════════════════════════════════
+function wireSplitters() {
+  const root = document.documentElement;
+  const main = document.querySelector('.main');
+  const load = (k, d) => { try { const v = parseFloat(localStorage.getItem(k)); return isFinite(v) ? v : d; } catch (e) { return d; } };
+  const save = (k, v) => { try { localStorage.setItem(k, String(Math.round(v))); } catch (e) {} };
+  const apply = () => {
+    root.style.setProperty('--tree-w', load('mm-tree-w', 200) + 'px');
+    root.style.setProperty('--rp-w', load('mm-rp-w', 420) + 'px');
+    const top = load('mm-rp-top', NaN);
+    if (isFinite(top)) { root.style.setProperty('--rp-top', top + 'px'); root.style.setProperty('--rp-top-max', 'none'); }
+  };
+  apply();
+  const drag = (id, onMove, onEnd) => {
+    const bar = document.getElementById(id); if (!bar) return;
+    bar.addEventListener('pointerdown', e => {
+      e.preventDefault();
+      try { bar.setPointerCapture(e.pointerId); } catch (_) {}
+      bar.classList.add('dragging'); document.body.classList.add('resizing');
+      const move = ev => onMove(ev);
+      const up = () => {
+        bar.classList.remove('dragging'); document.body.classList.remove('resizing');
+        bar.removeEventListener('pointermove', move); bar.removeEventListener('pointerup', up); bar.removeEventListener('pointercancel', up);
+        onEnd && onEnd();
+        resize();
+      };
+      bar.addEventListener('pointermove', move); bar.addEventListener('pointerup', up); bar.addEventListener('pointercancel', up);
+    });
+    // Double-click a bar to go back to the standard size
+    bar.addEventListener('dblclick', () => {
+      try { localStorage.removeItem(id === 'split-tree' ? 'mm-tree-w' : id === 'split-main' ? 'mm-rp-w' : 'mm-rp-top'); } catch (e) {}
+      if (id === 'split-rp') { root.style.removeProperty('--rp-top'); root.style.removeProperty('--rp-top-max'); }
+      apply(); resize();
+    });
+  };
+  drag('split-tree', ev => {
+    const left = main.getBoundingClientRect().left;
+    const w = Math.max(140, Math.min(420, ev.clientX - left));
+    root.style.setProperty('--tree-w', w + 'px'); save('mm-tree-w', w);
+  });
+  drag('split-main', ev => {
+    const r = main.getBoundingClientRect();
+    const w = Math.max(280, Math.min(r.width - 320, r.right - ev.clientX));
+    root.style.setProperty('--rp-w', w + 'px'); save('mm-rp-w', w);
+  });
+  drag('split-rp', ev => {
+    const panel = document.querySelector('.right-panel').getBoundingClientRect();
+    const h = Math.max(60, Math.min(panel.height - 180, ev.clientY - panel.top));
+    root.style.setProperty('--rp-top', h + 'px'); root.style.setProperty('--rp-top-max', 'none'); save('mm-rp-top', h);
+  });
+}
+
+// ════════════════════════════════════════════════════════════════════
+// HOLE DEPTH — "through this wall": measure the material behind a face sketch
+// ════════════════════════════════════════════════════════════════════
+// Cast a ray from the middle of the shape straight into the part and see where
+// it comes out again. That distance is how deep a hole must go to pass through
+// this wall without cutting walls further behind.
+function measureWall(sk, idx) {
+  if (!modelMesh || !sk || typeof sk.plane !== 'object') return null;
+  const prof = getAllProfiles(sk)[idx]; if (!prof) return null;
+  const p = prof.profile;
+  // Sample points spread over the shape: its middle plus points near its edge.
+  // Walls are not always the same thickness, so the deepest reading wins.
+  let pts = [];
+  if (p.type === 'circle') {
+    pts.push([p.cx, p.cy]);
+    for (let i = 0; i < 12; i++) { const a = i/12*2*Math.PI; pts.push([p.cx + 0.9*p.r*Math.cos(a), p.cy + 0.9*p.r*Math.sin(a)]); }
+  } else {
+    let outline = p.type === 'rect' ? [[p.x,p.y],[p.x+p.w,p.y],[p.x+p.w,p.y+p.h],[p.x,p.y+p.h]]
+      : p.type === 'arc' ? arcSamples(p, 12) : (p.type === 'spline' ? catmullRomExpand(p.points) : (p.points || []));
+    if (!outline.length) return null;
+    const cx = outline.reduce((t,q)=>t+q[0],0)/outline.length, cy = outline.reduce((t,q)=>t+q[1],0)/outline.length;
+    pts.push([cx, cy]);
+    const step = Math.max(1, Math.floor(outline.length / 16));
+    for (let i = 0; i < outline.length; i += step) pts.push([cx + 0.9*(outline[i][0]-cx), cy + 0.9*(outline[i][1]-cy)]);
+  }
+  const B = planeBasis(sk.plane);
+  const ns = sk.plane.normalSign ?? 1;
+  const out = B.n.map(v => v * ns);                       // outward normal, model coords
+  modelGroup.updateMatrixWorld(true);
+  const dir = new THREE.Vector3(...out.map(v => -v)).transformDirection(modelGroup.matrixWorld).normalize();
+  const side = modelMesh.material.side;
+  modelMesh.material.side = THREE.DoubleSide;             // so the exit (a back face) is found too
+  let best = null;
+  for (const c of pts) {
+    const P = [0,1,2].map(i => B.o[i] + c[0]*B.x[i] + c[1]*B.y[i]);
+    const start = new THREE.Vector3(...P.map((v,i) => v + out[i]*0.5)).applyMatrix4(modelGroup.matrixWorld);
+    const hits = new THREE.Raycaster(start, dir).intersectObject(modelMesh, false);
+    const d = [];
+    for (const h of hits) if (!d.length || h.distance - d[d.length-1] > 1e-3) d.push(h.distance);
+    if (d.length < 2 || d[0] > 0.6) continue;             // this point is not on the face itself
+    const depth = d[1] - 0.5;                             // face → where the ray leaves the wall
+    if (depth > 0.05 && (best === null || depth > best)) best = depth;
+  }
+  modelMesh.material.side = side;
+  return best === null ? null : Math.round((best + 0.05) * 100) / 100;   // a hair past, so the hole opens cleanly
+}
+function applyHoleMode(node, sk, mode) {
+  node.holeMode = mode;
+  if (mode === 'wall') {
+    const t = measureWall(sk, node.profileIdx);
+    if (t) node.height = t;
+    else node.holeMode = 'depth';
+  }
 }
 
 // ════════════════════════════════════════════════════════════════════
@@ -3692,8 +4154,29 @@ function getProfile() {
 function planeFromSketch(sketch) {
   if (!sketch || typeof sketch.plane==='string')
     return {planeName: sketch?.plane||'XY', planeOffset:0};
+  const pl = sketch.plane;
+  // A face at any angle: send the plane itself (origin, x direction, normal)
+  if (pl.axis === 'N') return {planeName:'custom', planeOffset:0, planeDef:{ origin:pl.origin, xDir:pl.xDir, normal:pl.normal }};
   const map={Z:'XY',Y:'XZ',X:'YZ'};
-  return {planeName:map[sketch.plane.axis]||'XY', planeOffset:sketch.plane.offset};
+  // Replicad places a named plane at normal × offset. The XZ plane's normal is
+  // −Y, so a face at y = +30 needs offset −30 or it lands on the wrong side.
+  return {planeName:map[pl.axis]||'XY', planeOffset: pl.axis==='Y' ? -pl.offset : pl.offset};
+}
+
+// Origin, x/y directions and normal of a face plane, in model (replicad) coordinates
+function planeBasis(pl) {
+  if (pl.axis === 'N') {
+    const n = pl.normal, x = pl.xDir;
+    const y = [n[1]*x[2]-n[2]*x[1], n[2]*x[0]-n[0]*x[2], n[0]*x[1]-n[1]*x[0]];
+    return { n, d:pl.offset, o:pl.origin, x, y };
+  }
+  if (pl.axis === 'X') return { n:[1,0,0], d:pl.offset, o:[pl.offset,0,0], x:[0,1,0], y:[0,0,1] };
+  if (pl.axis === 'Y') return { n:[0,1,0], d:pl.offset, o:[0,pl.offset,0], x:[1,0,0], y:[0,0,1] };
+  return { n:[0,0,1], d:pl.offset, o:[0,0,pl.offset], x:[1,0,0], y:[0,1,0] };
+}
+function planeLabel(pl) {
+  if (typeof pl === 'string') return pl;
+  return pl.axis === 'N' ? 'Angled face' : `${pl.axis}+${pl.offset.toFixed(1)}`;
 }
 
 function syncExtrudeNodes() {
@@ -3713,7 +4196,8 @@ function syncExtrudeNodes() {
       name: i===0?'Extrude 1':`Extrude ${i+1}`,
       sketchId:activeSketchId, profileIdx:i,
       operation: i===0 ? (sk.datumId ? 'cut' : 'new') : (sk.datumId ? 'cut' : 'fuse'),
-      height: (sk.extrudeHeight != null ? sk.extrudeHeight : extH), filletR, chamferR
+      // New features start with sharp edges; fillet/chamfer are set per feature afterwards
+      height: (sk.extrudeHeight != null ? sk.extrudeHeight : extH), filletR: 0, chamferR: 0
     });
   }
   if (existing.length > profs.length) {
@@ -3738,17 +4222,17 @@ function collectExtrudePayload() {
     if (!sk) continue;
     const entry = getAllProfiles(sk)[node.profileIdx];
     if (!entry) continue;
-    const { planeName, planeOffset } = planeFromSketch(sk);
+    const { planeName, planeOffset, planeDef } = planeFromSketch(sk);
     const normalSign = (typeof sk.plane === 'object' ? sk.plane.normalSign : null) ?? 1;
     if (node.type === 'extrude') {
       // "Through" holes cut far past any part a learner will make
       const h = (node.thru && node.operation === 'cut') ? 2000 : node.height;
-      items.push({ id:node.id, kind:'extrude', profile:entry.profile, height:h, operation:node.operation,
-                   filletR:node.filletR, chamferR:node.chamferR, planeName, planeOffset, normalSign,
-                   both: typeof sk.plane === 'string', patterns:[] });
+      items.push({ id:node.id, name:node.name, kind:'extrude', profile:entry.profile, height:h, operation:node.operation,
+                   filletR:node.filletR, chamferR:node.chamferR, planeName, planeOffset, planeDef, normalSign,
+                   both: typeof sk.plane === 'string', face: typeof sk.plane === 'object', patterns:[] });
     } else {
-      items.push({ id:node.id, kind:'revolve', profile:entry.profile, axis:node.axis, angle:node.angle,
-                   operation:node.operation, planeName, planeOffset, patterns:[] });
+      items.push({ id:node.id, name:node.name, kind:'revolve', profile:entry.profile, axis:node.axis, angle:node.angle,
+                   operation:node.operation, planeName, planeOffset, planeDef, patterns:[] });
     }
   }
   for (const node of featureTree) {
@@ -3845,7 +4329,7 @@ function refreshExtrudePrompt() {
   if (!box) return;
   const pend = pendingProfiles();
   const is3d = document.querySelector('.main') && document.querySelector('.main').classList.contains('mode-3d');
-  if (pend.length && !is3d) {
+  if (pend.length && !is3d && !tutorialActive) {
     const n = pend.length;
     document.getElementById('ext-prompt-title').textContent =
       n === 1 ? 'Make this shape 3D?' : `Make ${n} new shapes 3D?`;
@@ -3853,6 +4337,10 @@ function refreshExtrudePrompt() {
     const canHole = featureTree.some(f => f.type === 'extrude' || f.type === 'revolve');
     document.getElementById('ext-prompt-pocket').hidden = !canHole;
     document.getElementById('ext-prompt-thru-row').hidden = !canHole;
+    // Default: on a face of the part, a hole goes through that wall only
+    const hm = document.getElementById('ext-prompt-holemode');
+    const _hs = activeSketch();
+    if (hm && box.hidden) hm.value = (_hs && _hs.datumId) ? 'wall' : 'all';
     document.getElementById('ext-prompt-hlabel').textContent = canHole ? 'Height / depth' : 'Height';
     const h = document.getElementById('ext-prompt-height');
     const sk = activeSketch();
@@ -3872,7 +4360,7 @@ function refreshExtrudePrompt() {
   }
   if (chip) {
     const f = flatProfileCount();
-    chip.hidden = !(f > 0) || is3d;
+    chip.hidden = !(f > 0) || is3d || !!tutorialActive;
     if (f > 0) chip.textContent = f === 1 ? '1 profile kept flat · Extrude it' : `${f} profiles kept flat · Extrude them`;
   }
 }
@@ -3892,7 +4380,8 @@ function answerExtrude(choice) {
   }
   const h = parseFloat((document.getElementById('ext-prompt-height') || {}).value);
   if (isFinite(h) && h > 0) { sk.extrudeHeight = h; extH = h; }
-  const thru = choice === 'pocket' && !!document.getElementById('ext-prompt-thru')?.checked;
+  const holeMode = choice === 'pocket' ? (document.getElementById('ext-prompt-holemode')?.value || 'depth') : 'depth';
+  const thru = holeMode === 'all';
   const hadSolid = featureTree.some(f => f.type === 'extrude' || f.type === 'revolve');
   pend.forEach(i => { sk.extrudeChoice[i] = 'extrude'; });
   syncExtrudeNodes();
@@ -3900,6 +4389,7 @@ function answerExtrude(choice) {
   nodes.forEach((n, j) => {
     n.operation = choice === 'pocket' ? 'cut' : (hadSolid || j > 0 ? 'fuse' : 'new');
     n.thru = thru;
+    if (choice === 'pocket') applyHoleMode(n, sk, holeMode);
     const prefix = choice === 'pocket' ? 'Pocket' : 'Pad';
     n.name = `${prefix} ${featureTree.filter(f => (f.name || '').startsWith(prefix)).length + 1}`;
   });
@@ -4126,6 +4616,15 @@ document.getElementById('s-h').addEventListener('input', function() {
 
 let edgeMode = 'fillet'; // 'fillet' | 'chamfer'
 
+// Fillet/chamfer go to the Pad or Pocket selected in the feature tree (or, if
+// none is selected, to every extrude of the active sketch).
+function edgeTargets() {
+  const ep = document.querySelector('.ext-panel');
+  const node = featureTree.find(f => f.id === ep.dataset.activeExtrudeId && f.type === 'extrude');
+  if (node) return [node];
+  return featureTree.filter(f => f.type === 'extrude' && f.sketchId === activeSketchId);
+}
+
 document.getElementById('btn-fillet-mode').addEventListener('click', () => {
   edgeMode = 'fillet';
   document.getElementById('btn-fillet-mode').classList.add('active');
@@ -4133,7 +4632,7 @@ document.getElementById('btn-fillet-mode').addEventListener('click', () => {
   document.getElementById('s-edge').max = 50;
   filletR = +document.getElementById('s-edge').value;
   chamferR = 0;
-  featureTree.filter(f=>f.type==='extrude'&&f.sketchId===activeSketchId)
+  edgeTargets()
     .forEach(n=>{n.filletR=filletR;n.chamferR=0;});
   renderFeatureTree();
   scheduleExtrude();
@@ -4145,7 +4644,7 @@ document.getElementById('btn-chamfer-mode').addEventListener('click', () => {
   document.getElementById('s-edge').max = 20;
   chamferR = +document.getElementById('s-edge').value;
   filletR = 0;
-  featureTree.filter(f=>f.type==='extrude'&&f.sketchId===activeSketchId)
+  edgeTargets()
     .forEach(n=>{n.filletR=0;n.chamferR=chamferR;});
   renderFeatureTree();
   scheduleExtrude();
@@ -4156,7 +4655,7 @@ document.getElementById('s-edge').addEventListener('input', function() {
   if (edgeMode === 'fillet') { filletR = v; chamferR = 0; }
   else { chamferR = v; filletR = 0; }
   // Write back to all extrude nodes for the active sketch so sliders always take effect
-  featureTree.filter(f=>f.type==='extrude'&&f.sketchId===activeSketchId)
+  edgeTargets()
     .forEach(n=>{n.filletR=filletR;n.chamferR=chamferR;});
   renderFeatureTree();
   scheduleExtrude();
@@ -4272,7 +4771,8 @@ sk.addEventListener('mousedown', e => {
   dragStarted = false;
   // Select tool: remember what was pressed; it becomes a drag if the mouse moves
   if (tool === 'cst') {
-    if (hitLabel(x, y) < 0) cstToolClick(x, y, e.shiftKey);
+    // Constraint tools pick geometry; the length labels next to edges must not get in the way
+    cstToolClick(x, y, e.shiftKey);
     dragStarted = true;
     e.preventDefault();
     return;
@@ -4291,7 +4791,9 @@ sk.addEventListener('mousedown', e => {
     e.preventDefault();
     return;
   }
-  if (tool === 'edit' && hitLabel(x, y) < 0) {
+  // A point or edge under the mouse wins over a nearby length label
+  const _geomHit = tool === 'edit' ? hitTestSketch(x, y) : null;
+  if (tool === 'edit' && (hitLabel(x, y) < 0 || (_geomHit && _geomHit.kind !== 'body'))) {
     const hit = hitTestSketch(x, y);
     pendingDrag = { hit, sx:x, sy:y, w0: ctow(x, y), shift: e.shiftKey };
     e.preventDefault();
@@ -4558,6 +5060,7 @@ window.addEventListener('keydown', e => {
       return;
     }
     if (e.key==='Enter' && cstToolEnter()) { e.preventDefault(); return; }
+    if (e.key==='Escape' && document.getElementById('tut-overlay')) { closeTutorialPicker(); return; }
     if (e.key==='Escape' && rollbackId) { finishEdit(false); return; }
     if (e.key==='Escape' && tool === 'cst') { selItems = []; setTool('edit'); return; }
     if (e.key==='Escape') {
@@ -4624,20 +5127,105 @@ const scene=new THREE.Scene();
 const camera=new THREE.PerspectiveCamera(42,1,0.1,5000);
 camera.position.set(160,120,160);
 
-const controls=new OrbitControls(camera,renderer.domElement);
-controls.enableDamping=true;
-controls.dampingFactor=0.08;
-controls.screenSpacePanning=true;
-controls.panSpeed=1.5;
-controls.zoomSpeed=1.2;
-controls.minDistance=5;
-controls.maxDistance=2000;
+// Free rotation: unlike OrbitControls, "up" is not locked, so the model can
+// be turned over the top and underneath. Left drag rotates (around the view's
+// own axes), right drag (or Shift + left) pans, wheel / middle drag zooms,
+// two fingers pan and pinch on touch screens.
+class FreeControls {
+  constructor(camera, dom) {
+    this.camera = camera; this.dom = dom;
+    this.target = new THREE.Vector3();
+    this.minDistance = 5; this.maxDistance = 2000;
+    this.rotateSpeed = 0.0065;
+    this.enabled = true;
+    this._ptrs = new Map(); this._mode = null; this._last = null;
+    this._vel = { x:0, y:0 }; this._pinch = null;
+    dom.style.touchAction = 'none';
+    dom.addEventListener('pointerdown', e => this._down(e));
+    dom.addEventListener('pointermove', e => this._move(e));
+    dom.addEventListener('pointerup', e => this._up(e));
+    dom.addEventListener('pointercancel', e => this._up(e));
+    dom.addEventListener('wheel', e => { e.preventDefault(); this._dollyBy(e.deltaY > 0 ? 1.1 : 1/1.1); }, { passive:false });
+    dom.addEventListener('contextmenu', e => e.preventDefault());
+  }
+  _down(e) {
+    if (!this.enabled) return;
+    try { this.dom.setPointerCapture(e.pointerId); } catch (_) {}
+    this._ptrs.set(e.pointerId, { x:e.clientX, y:e.clientY });
+    if (this._ptrs.size === 1) {
+      this._mode = (e.button === 2 || e.shiftKey) ? 'pan' : e.button === 1 ? 'dolly' : 'rotate';
+      this._last = { x:e.clientX, y:e.clientY };
+      this._vel = { x:0, y:0 };
+    } else if (this._ptrs.size === 2) {
+      this._mode = 'pinch'; this._pinch = this._pinchState();
+    }
+  }
+  _move(e) {
+    if (!this._ptrs.has(e.pointerId)) return;
+    this._ptrs.set(e.pointerId, { x:e.clientX, y:e.clientY });
+    if (this._mode === 'pinch' && this._ptrs.size === 2) {
+      const st = this._pinchState();
+      if (this._pinch.dist > 0 && st.dist > 0) this._dollyBy(this._pinch.dist / st.dist);
+      this._panBy(st.cx - this._pinch.cx, st.cy - this._pinch.cy);
+      this._pinch = st; return;
+    }
+    if (!this._last) return;
+    const dx = e.clientX - this._last.x, dy = e.clientY - this._last.y;
+    this._last = { x:e.clientX, y:e.clientY };
+    if (this._mode === 'rotate') { this._rotateBy(dx, dy); this._vel = { x:dx, y:dy }; }
+    else if (this._mode === 'pan') this._panBy(dx, dy);
+    else if (this._mode === 'dolly') this._dollyBy(Math.pow(0.995, -dy));
+  }
+  _up(e) {
+    this._ptrs.delete(e.pointerId);
+    if (!this._ptrs.size) { this._mode = null; this._last = null; }
+    else if (this._ptrs.size === 1) { const q = [...this._ptrs.values()][0]; this._mode = 'rotate'; this._last = { ...q }; this._vel = { x:0, y:0 }; }
+  }
+  _pinchState() {
+    const [a, b] = [...this._ptrs.values()];
+    return { dist: Math.hypot(a.x-b.x, a.y-b.y), cx:(a.x+b.x)/2, cy:(a.y+b.y)/2 };
+  }
+  _rotateBy(dx, dy) {
+    const off = this.camera.position.clone().sub(this.target);
+    const up = this.camera.up.clone().normalize();
+    const fwd = off.clone().negate().normalize();
+    const right = new THREE.Vector3().crossVectors(fwd, up).normalize();
+    const trueUp = new THREE.Vector3().crossVectors(right, fwd).normalize();
+    const q = new THREE.Quaternion().setFromAxisAngle(trueUp, -dx * this.rotateSpeed)
+      .multiply(new THREE.Quaternion().setFromAxisAngle(right, -dy * this.rotateSpeed));
+    off.applyQuaternion(q); trueUp.applyQuaternion(q);
+    this.camera.position.copy(this.target).add(off);
+    this.camera.up.copy(trueUp);
+    this.camera.lookAt(this.target);
+  }
+  _panBy(dx, dy) {
+    const off = this.camera.position.clone().sub(this.target);
+    const dist = off.length();
+    const f = 2 * dist * Math.tan(THREE.MathUtils.degToRad(this.camera.fov) / 2) / (this.dom.clientHeight || 1);
+    const fwd = off.clone().negate().normalize();
+    const right = new THREE.Vector3().crossVectors(fwd, this.camera.up).normalize();
+    const up = new THREE.Vector3().crossVectors(right, fwd).normalize();
+    const move = right.multiplyScalar(-dx * f).add(up.multiplyScalar(dy * f));
+    this.target.add(move); this.camera.position.add(move);
+  }
+  _dollyBy(scale) {
+    const off = this.camera.position.clone().sub(this.target);
+    const len = Math.max(this.minDistance, Math.min(this.maxDistance, off.length() * scale));
+    off.setLength(len);
+    this.camera.position.copy(this.target).add(off);
+  }
+  update() {
+    // A little glide after letting go of a rotation
+    if (!this._ptrs.size && (Math.abs(this._vel.x) > 0.05 || Math.abs(this._vel.y) > 0.05)) {
+      this._rotateBy(this._vel.x, this._vel.y);
+      this._vel.x *= 0.86; this._vel.y *= 0.86;
+    }
+    this.camera.lookAt(this.target);
+  }
+}
+
+const controls = new FreeControls(camera, renderer.domElement);
 controls.target.set(0,20,0);
-controls.mouseButtons={
-  LEFT:  THREE.MOUSE.ROTATE,
-  MIDDLE:THREE.MOUSE.DOLLY,
-  RIGHT: THREE.MOUSE.PAN,
-};
 controls.update();
 
 scene.add(new THREE.AmbientLight(0xffffff,0.5));
@@ -4656,7 +5244,8 @@ modelGroup.rotation.x=-Math.PI/2;
 scene.add(modelGroup);
 
 const mat=new THREE.MeshStandardMaterial({color:0xb0c8e4,roughness:0.28,metalness:0.06});
-const wireMat=new THREE.MeshBasicMaterial({color:0x17c4c0,wireframe:true,transparent:true,opacity:0.05});
+// Outline only the real edges (corners, hole rims), not every triangle of the mesh
+const wireMat=new THREE.LineBasicMaterial({color:0x0b2a33,transparent:true,opacity:0.55});
 const _faceHlMat=new THREE.MeshBasicMaterial({color:0x17c4c0,transparent:true,opacity:0.45,side:THREE.DoubleSide,depthTest:true,polygonOffset:true,polygonOffsetFactor:-1,polygonOffsetUnits:-1});
 var modelMesh=null, wireMesh=null, lastGeo=null;
 var _faceHlMesh=null;
@@ -4670,7 +5259,8 @@ function applyMesh(verts,norms,tris) {
   geo.setIndex(new THREE.BufferAttribute(tris,1));
   lastGeo=geo;
   modelMesh=new THREE.Mesh(geo,mat); modelMesh.castShadow=true; modelGroup.add(modelMesh);
-  wireMesh=new THREE.Mesh(geo,wireMat); modelGroup.add(wireMesh);
+  if (wireMesh && wireMesh.geometry && wireMesh.geometry !== geo) wireMesh.geometry.dispose();
+  wireMesh=new THREE.LineSegments(new THREE.EdgesGeometry(geo, 25), wireMat); modelGroup.add(wireMesh);
   document.getElementById('vp-ph').style.display='none';
   document.getElementById('vp-badge').style.display='';
   document.getElementById('btn-stl').classList.add('show');
@@ -4684,6 +5274,10 @@ function applyMesh(verts,norms,tris) {
 function setView({pos,tgt}) {
   camera.position.set(...pos);
   controls.target.set(...tgt);
+  // Looking straight down needs a different "up" so the view is not undefined
+  const straightDown = Math.abs(pos[0]-tgt[0]) < 2 && Math.abs(pos[2]-tgt[2]) < 2;
+  camera.up.set(0, straightDown ? 0 : 1, straightDown ? -1 : 0);
+  controls._vel = { x:0, y:0 };
   controls.update();
 }
 
@@ -4730,7 +5324,7 @@ let _faceMDownPos = null;
 //   replicad  Y     → Three.js  -Z  (front/back faces)
 // So we check Three.js world-space normals accordingly.
 function detectAxisPlane(worldNormal, hitPoint) {
-  const TOL = Math.cos(Math.PI / 36); // 5° tolerance
+  const TOL = 0.99995; // within ~0.6° of an axis counts as an axis face; anything else is an angled face
   const invMat = new THREE.Matrix4().copy(modelGroup.matrixWorld).invert();
   const localPt = hitPoint.clone().applyMatrix4(invMat); // replicad local coords
 
@@ -4770,8 +5364,28 @@ function _raycastFace(clientX, clientY) {
   if (!hits.length) return null;
   const hit = hits[0];
   const normal = hit.face.normal.clone().transformDirection(modelGroup.matrixWorld).normalize();
-  const plane = detectAxisPlane(normal, hit.point);
-  return plane ? { plane, hit } : null;
+  // Only flat faces can hold a sketch. On a curved face the corner normals of
+  // the triangle differ; on a flat face they are all equal. Check this first:
+  // a facet of a cylinder can happen to face straight along an axis.
+  const nrm = modelMesh.geometry.attributes.normal;
+  const n = hit.face.normal.clone().normalize();          // model (replicad) coordinates
+  for (const vi of [hit.face.a, hit.face.b, hit.face.c]) {
+    const vn = new THREE.Vector3(nrm.getX(vi), nrm.getY(vi), nrm.getZ(vi)).normalize();
+    if (vn.dot(n) < 0.999995) return { curved: true, hit };   // flat faces agree to ~1e-7; this is ~0.2°
+  }
+  const axisPlane = detectAxisPlane(normal, hit.point);
+  if (axisPlane) return { plane: axisPlane, hit };
+  const invMat = new THREE.Matrix4().copy(modelGroup.matrixWorld).invert();
+  const p = hit.point.clone().applyMatrix4(invMat);
+  const offset = n.dot(p);
+  // Sketch x direction: horizontal along the face where possible (like FreeCAD)
+  let x = new THREE.Vector3(0, 0, 1).cross(n);
+  if (x.length() < 1e-6) x = new THREE.Vector3(1, 0, 0);
+  x.normalize();
+  const r3 = v => [+v.x.toFixed(10), +v.y.toFixed(10), +v.z.toFixed(10)];
+  const origin = n.clone().multiplyScalar(offset);
+  return { plane: { axis:'N', normal:r3(n), xDir:r3(x), origin:r3(origin), offset:+offset.toFixed(6),
+                    normalSign:1, seedPoint:[p.x, p.y, p.z] }, hit };
 }
 
 // Extract triangles from the model geometry that belong to the hovered face.
@@ -4795,16 +5409,16 @@ function _extractFaceTriangles(plane) {
   const TOL_NRM = 0.94; // cos(~20°) — triangle must face the right direction
   const nTris = idx.length / 3;
   const coplanar = [];
+  const B = planeBasis(plane);
+  const tolN = plane.axis === 'N' ? 0.999 : TOL_NRM;
   for (let t = 0; t < nTris; t++) {
     const i = t*3, a = idx[i]*3, b = idx[i+1]*3, c = idx[i+2]*3;
     const nx=(nor[a]+nor[b]+nor[c])/3, ny=(nor[a+1]+nor[b+1]+nor[c+1])/3, nz=(nor[a+2]+nor[b+2]+nor[c+2])/3;
     const nl=Math.sqrt(nx*nx+ny*ny+nz*nz)||1;
     const cx=(pos[a]+pos[b]+pos[c])/3, cy=(pos[a+1]+pos[b+1]+pos[c+1])/3, cz=(pos[a+2]+pos[b+2]+pos[c+2])/3;
-    let ok=false;
-    if      (plane.axis==='Z') ok = Math.abs(nz/nl)>TOL_NRM && Math.abs(cz-plane.offset)<TOL_POS;
-    else if (plane.axis==='X') ok = Math.abs(nx/nl)>TOL_NRM && Math.abs(cx-plane.offset)<TOL_POS;
-    else                       ok = Math.abs(ny/nl)>TOL_NRM && Math.abs(cy-plane.offset)<TOL_POS;
-    if (ok) coplanar.push(t);
+    const dn = (nx*B.n[0] + ny*B.n[1] + nz*B.n[2]) / nl;
+    const dist = cx*B.n[0] + cy*B.n[1] + cz*B.n[2] - B.d;
+    if (Math.abs(dn) > tolN && Math.abs(dist) < TOL_POS) coplanar.push(t);
   }
   if (!coplanar.length) return null;
 
@@ -4876,11 +5490,10 @@ function _buildSketchUnderlay(plane) {
   if (!verts) return;
 
   // Project a 3D vertex index (into the flat verts array) to 2D sketch coords
+  const B = planeBasis(plane);
   function proj(i) {
-    const x=verts[i*3], y=verts[i*3+1], z=verts[i*3+2];
-    if (plane.axis==='Z') return [x, y];
-    if (plane.axis==='X') return [y, z];
-    return [x, z]; // Y
+    const dx = verts[i*3]-B.o[0], dy = verts[i*3+1]-B.o[1], dz = verts[i*3+2]-B.o[2];
+    return [dx*B.x[0] + dy*B.x[1] + dz*B.x[2], dx*B.y[0] + dy*B.y[1] + dz*B.y[2]];
   }
 
   const n = verts.length / 3;
@@ -4947,8 +5560,8 @@ function _addSketchOnDatum(datumId, plane) {
   const n = featureTree.filter(f=>f.type==='sketch').length + 1;
   featureTree.push({ id:skId, type:'sketch', name:`Sketch ${n}`, plane, datumId, entities:[] });
   activeSketchId = skId;
-  const pl = `${plane.axis} +${plane.offset.toFixed(1)}`;
-  document.querySelector('.sk-overlay').textContent = `Sketch ${n} · ${pl} Plane`;
+  const pl = planeLabel(plane);
+  document.querySelector('.sk-overlay').textContent = `Sketch ${n} · ${pl}${pl==='Angled face'?'':' Plane'}`;
   setMode3d(false);
   renderFeatureTree();
   scheduleRender();
@@ -4959,19 +5572,28 @@ renderer.domElement.addEventListener('mousemove', e => {
   if (!document.querySelector('.main').classList.contains('mode-3d')) return;
   if (!modelMesh) return;
   const result = _raycastFace(e.clientX, e.clientY);
+  if (result && result.curved) {
+    _faceHoverPlane = null;
+    renderer.domElement.style.cursor = 'not-allowed';
+    _clearFaceHighlight();
+    document.getElementById('st-info').textContent = 'Curved face · sketches go on flat faces only';
+    renderer.render(scene, camera);
+    return;
+  }
   if (result) {
     const p = result.plane;
-    const changed = !_faceHoverPlane || _faceHoverPlane.axis !== p.axis || _faceHoverPlane.offset !== p.offset;
+    const key = q => q.axis + ':' + q.offset + ':' + (q.normal ? q.normal.join(',') : '');
+    const changed = !_faceHoverPlane || key(_faceHoverPlane) !== key(p);
     _faceHoverPlane = p;
     renderer.domElement.style.cursor = 'pointer';
     if (changed) _showFaceHighlight(p);
-    document.getElementById('st-info').textContent = `${p.axis} face · Click to sketch on it`;
+    document.getElementById('st-info').textContent = `${p.axis === 'N' ? 'Angled' : p.axis} face · Click to sketch on it`;
     renderer.render(scene, camera);
   } else {
     _faceHoverPlane = null;
     renderer.domElement.style.cursor = '';
     _clearFaceHighlight();
-    if (document.getElementById('st-info').textContent.includes('face ·'))
+    if (/face ·/.test(document.getElementById('st-info').textContent))
       document.getElementById('st-info').textContent = '';
     renderer.render(scene, camera);
   }
@@ -5114,7 +5736,7 @@ function renderFeatureTree() {
     if (node.type === 'datum') {
       const div = document.createElement('div');
       div.className = 'feat-node datum-node';
-      const pl = `${node.plane.axis}+${node.plane.offset.toFixed(1)}`;
+      const pl = planeLabel(node.plane);
       div.innerHTML = `<span style="flex-shrink:0">◇</span><span class="feat-node-name">${node.name}<span style="font-size:0.62rem;color:rgba(245,200,80,0.55);display:block">${pl} · click to add sketch</span></span>`;
       div.addEventListener('click', () => selectFeatureNode(node));
       list.appendChild(div);
@@ -5132,7 +5754,7 @@ function renderFeatureTree() {
     const subSpan = t => `<span style="font-size:0.62rem;color:var(--text2);display:block">${t}</span>`;
     if (node.type==='extrude') {
       const hLabel = node.operation==='cut' ? 'depth' : 'h';
-      sub=subSpan((node.thru && node.operation==='cut' ? 'through all' : `${hLabel}${node.height}mm`)+(node.filletR?` · f${node.filletR}`:'')+(node.chamferR?` · c${node.chamferR}`:''));
+      sub=subSpan((node.thru && node.operation==='cut' ? 'through all' : node.holeMode==='wall' && node.operation==='cut' ? `through wall · ${node.height}mm` : `${hLabel}${node.height}mm`)+(node.filletR?` · f${node.filletR}`:'')+(node.chamferR?` · c${node.chamferR}`:''));
       badge=`<span class="feat-node-op op-${node.operation}">${node.operation==='cut'?'POCKET':node.operation==='new'?'PAD':'PAD+'}</span>`;
     } else if (node.type==='revolve') {
       sub=subSpan(`${node.angle}° about sketch ${node.axis==='H'?'X':'Y'} axis`);
@@ -5141,7 +5763,7 @@ function renderFeatureTree() {
       const t = featureTree.find(f=>f.id===node.targetId);
       sub=subSpan(`${node.count}× ${node.kind==='linear' ? node.dir+' '+node.spacing+'mm' : node.angle+'° about '+node.axis} · ${t?t.name:'feature missing'}`);
     } else {
-      const pl=typeof node.plane==='string'?node.plane:`${node.plane.axis}+${node.plane.offset.toFixed(1)}`;
+      const pl=planeLabel(node.plane);
       sub=subSpan(pl);
     }
     if (node.id === selectedFeatureId) div.classList.add('selected');
@@ -5239,16 +5861,16 @@ function selectFeatureNode(node, opts = {}) {
     // Single click: make it the active sketch (for Pad/Pocket/Revolve) without leaving this view
     activeSketchId = node.id;
     selectedFeatureId = node.id;
-    const pl=typeof node.plane==='string'?node.plane:`${node.plane.axis} +${node.plane.offset.toFixed(1)}`;
-    document.querySelector('.sk-overlay').textContent=`${node.name} · ${pl} Plane`;
+    const pl=planeLabel(node.plane);
+    document.querySelector('.sk-overlay').textContent=`${node.name} · ${pl}${pl==='Angled face'?'':' Plane'}`;
     updateConstraintPanel(); scheduleRender(); renderFeatureTree();
     return;
   }
   if (node.type==='sketch') {
     activeSketchId = node.id;
     setMode3d(false);
-    const pl=typeof node.plane==='string'?node.plane:`${node.plane.axis} +${node.plane.offset.toFixed(1)}`;
-    document.querySelector('.sk-overlay').textContent=`${node.name} · ${pl} Plane`;
+    const pl=planeLabel(node.plane);
+    document.querySelector('.sk-overlay').textContent=`${node.name} · ${pl}${pl==='Angled face'?'':' Plane'}`;
     scheduleRender();
   } else if (node.type==='revolve' || node.type==='pattern') {
     renderFeatProps(node);
@@ -5408,6 +6030,8 @@ document.getElementById('btn-clear-stl').addEventListener('click', () => {
 // ════════════════════════════════════════════════════════════════════
 // INIT
 wireWorkbenchUI();
+wireSplitters();
+document.getElementById('btn-tutorials')?.addEventListener('click', openTutorialPicker);
 // ════════════════════════════════════════════════════════════════════
 
 updateHint();

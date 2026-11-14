@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
 <script src="/assets/theme.js"></script>
 <script defer src="/assets/lesson-toc.js"></script>
+<link rel="stylesheet" href="/assets/lesson-progress.css">
+<script defer src="/assets/lesson-progress.js"></script>
 <link rel="stylesheet" href="/assets/focus-reading.css">
 <script defer src="/assets/focus-reading.js"></script>
 <script src="/assets/sim-fit.js"></script>
@@ -300,11 +302,11 @@
 
 <!-- EXPLORE TAB -->
 <div class="tab-panel" id="tab-explore">
-  <div class="ml-predict" style="margin:0 0 16px;padding:10px 14px;border-radius:10px;background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.22);font-size:13px;line-height:1.6;color:rgba(226,232,240,.88)"><strong style="color:#fde68a">Predict first:</strong> As the source moves towards you, will you hear a higher or lower frequency? <strong style="color:#fde68a">Then test it:</strong> Increase the source speed and compare the frequencies in front of and behind the source.</div>
+  <div class="ml-predict" style="margin:0 0 16px;padding:12px 16px;border-radius:10px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.075);border-left:2px solid #74d154;font-size:15px;line-height:1.6;color:#e3e8ef"><strong style="color:#f2f5f9">Predict first:</strong> As the source moves towards you, will you hear a higher or lower frequency? <strong style="color:#f2f5f9">Then test it:</strong> Increase the source speed and compare the frequencies in front of and behind the source.</div>
   <div class="sim-outer">
     <div class="sim-canvas-wrap">
       <h3>Doppler Wavefront Simulator</h3>
-      <canvas id="doppCanvas" height="320" role="img" aria-label="Doppler Wavefront Simulator: interactive simulation"></canvas>
+      <canvas id="doppCanvas" height="320" role="img" aria-label="Doppler Wavefront Simulator"></canvas>
     </div>
     <div class="sim-controls-row">
       <div class="ctrl-card">
@@ -320,7 +322,7 @@
           <span class="slider-val" id="sv-fs">400 Hz</span>
         </div>
         <div style="display:flex;gap:8px;margin-top:10px">
-          <button class="mode-btn active" id="doppPlayBtn" onclick="toggleDopp()">▶ Play</button>
+          <button class="mode-btn active" id="doppPlayBtn" onclick="toggleDopp()">Play</button>
           <button class="mode-btn" onclick="resetDopp()">Reset</button>
         </div>
       </div>
@@ -563,13 +565,13 @@
   function resetDopp(){
     if(doppRaf){cancelAnimationFrame(doppRaf);doppRaf=null;}
     doppRunning=false;doppT=0;doppLastT=null;waves=[];srcX=50;
-    document.getElementById('doppPlayBtn').textContent='▶ Play';
+    document.getElementById('doppPlayBtn').textContent='Play';
     updateDopp();
   }
 
   function toggleDopp(){
-    if(doppRunning){cancelAnimationFrame(doppRaf);doppRunning=false;document.getElementById('doppPlayBtn').textContent='▶ Play';return;}
-    doppRunning=true;doppLastT=null;document.getElementById('doppPlayBtn').textContent='⏸ Pause';
+    if(doppRunning){cancelAnimationFrame(doppRaf);doppRunning=false;document.getElementById('doppPlayBtn').textContent='Play';return;}
+    doppRunning=true;doppLastT=null;document.getElementById('doppPlayBtn').textContent='Pause';
     doppRaf=requestAnimationFrame(doppStep);
   }
 
@@ -590,7 +592,9 @@
     if(srcX>W+30) srcX=0;
 
     waveTimer+=dt;
-    const period=1/fs*4;
+    // Wavefronts are drawn once per 'display period': 1 per 40 ms at 400 Hz, scaled with fs so a higher
+    // frequency visibly packs the fronts closer together (the true period is far shorter than one frame)
+    const period=Math.max(0.025, 16/fs);
     if(waveTimer>=period){
       waveTimer=0;
       waves.push({cx:srcX,cy:160,r:2,speed:vSound*displayScale*0.8});
@@ -627,7 +631,7 @@
     ctx.beginPath();ctx.arc(srcX,sy,12,0,Math.PI*2);
     ctx.fillStyle='rgba(248,113,113,0.4)';ctx.fill();
     ctx.strokeStyle='#f87171';ctx.lineWidth=2;ctx.stroke();
-    ctx.fillStyle='#fff';ctx.font='bold 9px JetBrains Mono';ctx.textAlign='center';
+    ctx.fillStyle='#fff';ctx.font='bold 12px JetBrains Mono';ctx.textAlign='center';
     ctx.fillText('SRC',srcX,sy+3);
 
     // Arrow indicating motion
@@ -643,11 +647,11 @@
     ctx.beginPath();ctx.arc(obsX,sy,8,0,Math.PI*2);
     ctx.fillStyle='rgba(134,239,172,0.4)';ctx.fill();
     ctx.strokeStyle='#86efac';ctx.lineWidth=2;ctx.stroke();
-    ctx.fillStyle='#fff';ctx.font='bold 8px JetBrains Mono';ctx.textAlign='center';
-    ctx.fillText('👂',obsX,sy+3);
+    ctx.fillStyle='#fff';ctx.font='bold 12px JetBrains Mono';ctx.textAlign='center';
+    ctx.fillText('',obsX,sy+3);
 
     // Labels
-    ctx.fillStyle='rgba(255,255,255,0.25)';ctx.font='9px JetBrains Mono';ctx.textAlign='center';
+    ctx.fillStyle='rgba(255,255,255,0.25)';ctx.font='12px JetBrains Mono';ctx.textAlign='center';
     ctx.fillText('→ direction of motion',W/2,H-10);
   }
 

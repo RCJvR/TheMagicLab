@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
 <script src="/assets/theme.js"></script>
 <script defer src="/assets/lesson-toc.js"></script>
+<link rel="stylesheet" href="/assets/lesson-progress.css">
+<script defer src="/assets/lesson-progress.js"></script>
 <link rel="stylesheet" href="/assets/focus-reading.css">
 <script defer src="/assets/focus-reading.js"></script>
 <script src="/assets/sim-fit.js"></script>
@@ -328,11 +330,11 @@
 
 <!-- EXPLORE TAB -->
 <div class="tab-panel" id="tab-explore">
-  <div class="ml-predict" style="margin:0 0 16px;padding:10px 14px;border-radius:10px;background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.22);font-size:13px;line-height:1.6;color:rgba(226,232,240,.88)"><strong style="color:#fde68a">Voorspel eers:</strong> 'n Bal wat van 20 m laat val word en een wat van 20 m afgegooi word: watter een land eerste, en versnel hulle verskillend? <strong style="color:#fde68a">Toets dit dan:</strong> Probeer Laat val en dan Gooi af van 20 m en vergelyk die tyd en trefsnelheid.</div>
+  <div class="ml-predict" style="margin:0 0 16px;padding:12px 16px;border-radius:10px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.075);border-left:2px solid #74d154;font-size:15px;line-height:1.6;color:#e3e8ef"><strong style="color:#f2f5f9">Voorspel eers:</strong> 'n Bal wat van 20 m laat val word en een wat van 20 m afgegooi word: watter een land eerste, en versnel hulle verskillend? <strong style="color:#f2f5f9">Toets dit dan:</strong> Probeer Laat val en dan Gooi af van 20 m en vergelyk die tyd en trefsnelheid.</div>
   <div class="sim-outer">
     <div class="sim-canvas-wrap">
       <h3>Vertikale Projektiel-simulator</h3>
-      <canvas id="projCanvas" height="360" role="img" aria-label="Vertikale Projektiel-simulator: interaktiewe simulasie"></canvas>
+      <canvas id="projCanvas" height="360" role="img" aria-label="Vertikale Projektiel-simulator"></canvas>
     </div>
     <div class="sim-controls-row">
       <div class="ctrl-card">
@@ -353,7 +355,7 @@
           <button class="mode-btn" id="dirDown" onclick="setDir('down')">Gooi af</button>
         </div>
         <div style="display:flex;gap:8px;margin-top:10px">
-          <button class="mode-btn active" id="playProjBtn" onclick="toggleProj()">▶ Lanseer</button>
+          <button class="mode-btn active" id="playProjBtn" onclick="toggleProj()">Lanseer</button>
           <button class="mode-btn" onclick="resetProj()">Herstel</button>
         </div>
       </div>
@@ -594,23 +596,31 @@
 
   function resetProj(){
     if(projRaf){cancelAnimationFrame(projRaf);projRaf=null;}
-    projRunning=false;projT=0;projLastT=null;vtPoints=[];
-    document.getElementById('playProjBtn').textContent='▶ Lanseer';
+    projRunning=false;projPaused=false;projT=0;projLastT=null;vtPoints=[];
+    document.getElementById('playProjBtn').textContent='Lanseer';
     document.getElementById('ro-h').innerHTML=h0().toFixed(1)+'<span>m</span>';
     document.getElementById('ro-v').innerHTML=v0().toFixed(1)+'<span>m·s⁻¹</span>';
     document.getElementById('ro-t').innerHTML='0.0<span>s</span>';
     if(projInited) drawProj(h0(),v0());
   }
 
+  var projPaused=false; // var: hoisted, resetProj may run first
   function toggleProj(){
     if(projRunning){
-      cancelAnimationFrame(projRaf);projRunning=false;
-      document.getElementById('playProjBtn').textContent='▶ Lanseer';
+      // Pause keeps the flight where it is, so it can be resumed
+      cancelAnimationFrame(projRaf);projRunning=false;projPaused=true;
+      document.getElementById('playProjBtn').textContent='Hervat';
+      return;
+    }
+    if(projPaused){
+      projPaused=false;projRunning=true;projLastT=null;
+      document.getElementById('playProjBtn').textContent='Pouseer';
+      projRaf=requestAnimationFrame(projStep);
       return;
     }
     resetProj();
     projRunning=true;projLastT=null;
-    document.getElementById('playProjBtn').textContent='⏸ Pouseer';
+    document.getElementById('playProjBtn').textContent='Pouseer';
     projRaf=requestAnimationFrame(projStep);
   }
 
@@ -633,7 +643,7 @@
       const tl=(V0+Math.sqrt(V0*V0+2*G*H0))/G, vl=V0-G*tl;
       projRunning=false;projT=tl;
       vtPoints[vtPoints.length-1]={t:tl,v:vl};
-      document.getElementById('playProjBtn').textContent='▶ Lanseer';
+      document.getElementById('playProjBtn').textContent='Lanseer';
       document.getElementById('ro-h').innerHTML='0.0<span>m</span>';
       document.getElementById('ro-v').innerHTML=vl.toFixed(1)+'<span>m·s⁻¹</span>';
       document.getElementById('ro-t').innerHTML=tl.toFixed(2)+'<span>s</span>';
@@ -678,7 +688,7 @@
       ctx.fillStyle='rgba(148,163,184,0.10)';ctx.fillRect(split*0.28,ledgeTop,split*0.2,groundY-ledgeTop);
       ctx.strokeStyle='rgba(148,163,184,0.45)';ctx.lineWidth=1.5;
       ctx.beginPath();ctx.moveTo(split*0.28,ledgeTop);ctx.lineTo(split*0.48,ledgeTop);ctx.stroke();
-      ctx.fillStyle='rgba(255,255,255,0.35)';ctx.font='9px JetBrains Mono';ctx.textAlign='left';
+      ctx.fillStyle='rgba(255,255,255,0.35)';ctx.font='12px JetBrains Mono';ctx.textAlign='left';
       ctx.fillText('begin '+H0+'m',split*0.29,ledgeTop-4);
     }
 
@@ -687,7 +697,7 @@
     const maxPxY=groundY-yMax*scaleY;
     ctx.beginPath();ctx.moveTo(split*0.7,maxPxY);ctx.lineTo(split*0.9,maxPxY);ctx.stroke();
     ctx.setLineDash([]);
-    ctx.fillStyle='rgba(255,255,255,0.30)';ctx.font='9px JetBrains Mono';ctx.textAlign='left';
+    ctx.fillStyle='rgba(255,255,255,0.30)';ctx.font='12px JetBrains Mono';ctx.textAlign='left';
     ctx.fillText(yMax.toFixed(1)+'m',split*0.72,maxPxY-3);
 
     // Ball
@@ -709,7 +719,7 @@
     }
 
     // Labels
-    ctx.fillStyle='rgba(255,255,255,0.25)';ctx.font='10px JetBrains Mono';ctx.textAlign='center';
+    ctx.fillStyle='rgba(255,255,255,0.25)';ctx.font='12px JetBrains Mono';ctx.textAlign='center';
     ctx.fillText('Bal',ballX,H-8);
     ctx.fillText('+ ↑',12,groundY-8);
 
@@ -727,7 +737,7 @@
     ctx.beginPath();ctx.moveTo(gLeft,zeroVY);ctx.lineTo(gRight,zeroVY);ctx.stroke();
 
     // Axis labels
-    ctx.fillStyle='rgba(255,255,255,0.30)';ctx.font='9px JetBrains Mono';ctx.textAlign='center';
+    ctx.fillStyle='rgba(255,255,255,0.30)';ctx.font='12px JetBrains Mono';ctx.textAlign='center';
     ctx.fillText('v-t-grafiek',gLeft+gW/2,gTop-6);
     ctx.fillText('t (s)',gRight,zeroVY+12);
     ctx.textAlign='right';

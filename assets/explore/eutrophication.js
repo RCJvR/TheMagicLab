@@ -19,7 +19,8 @@ MLX.ready(function () {
     days: { en: 'days', af: 'dae' }, farm: { en: 'Farmland', af: 'Landbougrond' }, wetland: { en: 'Wetland', af: 'Vleiland' },
     o2line: { en: 'O₂ (mg/L)', af: 'O₂ (mg/L)' }, danger: { en: 'fish die below 3 mg/L', af: 'visse vrek onder 3 mg/L' },
   };
-  const sat = (t) => 14.6 - 0.39 * t + 0.007 * t * t;
+  // Dissolved-oxygen saturation in fresh water (mg/L), standard cubic fit: keeps falling as water warms
+  const sat = (t) => 14.652 - 0.41022 * t + 0.007991 * t * t - 0.000077774 * t * t * t;
   let runoff = 60, temp = 20, wet = false, st, hist, acc = 0, now = 0;
   function reset() { st = { day: 0, N: 0.05, A: 0.2, D: 0, Dsum: 0, O: sat(temp), F: 100 }; hist = [[0, st.O, st.A, st.F]]; }
   function step() {

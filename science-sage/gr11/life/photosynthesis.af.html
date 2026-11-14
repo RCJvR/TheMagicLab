@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
 <script src="/assets/theme.js"></script>
 <script defer src="/assets/lesson-toc.js"></script>
+<link rel="stylesheet" href="/assets/lesson-progress.css">
+<script defer src="/assets/lesson-progress.js"></script>
 <link rel="stylesheet" href="/assets/focus-reading.css">
 <script defer src="/assets/focus-reading.js"></script>
 <script src="/assets/sim-fit.js"></script>
@@ -187,7 +189,8 @@
 .wb-memo summary{cursor:pointer;font-size:13px;font-weight:700;color:#86efac;list-style:revert}
 .wb-memo-body{margin-top:8px;font-size:13.5px;line-height:1.8;color:rgba(210,218,245,.85);background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.18);border-radius:10px;padding:12px 16px}
 @media print{.wb-memo{display:none!important}}
-</style><style id="ml-exam-q">.wb-q.ml-exam-q{border-color:rgba(252,211,77,.35)}.ml-exam-q .wb-qnum{color:#fcd34d}</style></head>
+</style><style id="ml-exam-q">.wb-q.ml-exam-q{border-color:rgba(252,211,77,.35)}.ml-exam-q .wb-qnum{color:#fcd34d}</style><link rel="stylesheet" href="/assets/explore-kit.css">
+</head>
 <body>
   <a class="ml-skip" href="#ml-main">Skip to content</a>
 <nav data-ml-bar="science-sage" data-ml-home="/science-sage/index.html">
@@ -243,36 +246,11 @@
 
 <!-- EXPLORE -->
 <div class="tab-panel" id="tab-explore">
-  <h2 style="font-size:18px;font-weight:800;color:#fff;margin-bottom:6px">Tempo-van-Fotosintese-Simulator</h2>
-  <p style="font-size:13px;color:var(--muted);margin-bottom:20px">Verstel ligintensiteit, CO₂-konsentrasie, en temperatuur, en kyk hoe suurstofborrels vinniger of stadiger vorm — 'n klassieke manier waarop wetenskaplikes die tempo van fotosintese met waterpes meet.</p>
-  <div class="ml-predict" style="margin:0 0 16px;padding:10px 14px;border-radius:10px;background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.22);font-size:13px;line-height:1.6;color:rgba(226,232,240,.88)"><strong style="color:#fde68a">Voorspel eers:</strong> As jy die ligintensiteit aanhou verhoog, sal die borrels vir altyd vinniger word? <strong style="color:#fde68a">Toets dit dan:</strong> Verhoog die lig stap vir stap; wanneer die tempo afplat, verhoog die CO₂.</div>
-  <div class="sim-outer">
-    <div class="sim-canvas-wrap">
-      <h3>Waterpes-suurstofborreltoets</h3>
-      <canvas id="photoCanvas" height="260" role="img" aria-label="Tempo-van-Fotosintese-Simulator: interaktiewe simulasie"></canvas>
-    </div>
-    <div class="sim-controls-row">
-      <div class="ctrl-card">
-        <div id="lbl-lightSlider" class="ctrl-label">Ligintensiteit <span class="val" id="lightVal">Matig</span></div>
-        <input aria-labelledby="lbl-lightSlider" type="range" id="lightSlider" min="0" max="100" value="50">
-      </div>
-      <div class="ctrl-card">
-        <div id="lbl-co2Slider" class="ctrl-label">CO₂-konsentrasie <span class="val" id="co2Val">Matig</span></div>
-        <input aria-labelledby="lbl-co2Slider" type="range" id="co2Slider" min="0" max="100" value="50">
-      </div>
-      <div class="ctrl-card">
-        <div id="lbl-tempSlider" class="ctrl-label">Temperatuur <span class="val" id="tempVal">25°C</span></div>
-        <input aria-labelledby="lbl-tempSlider" type="range" id="tempSlider" min="0" max="45" value="25">
-      </div>
-    </div>
-    <div class="rate-readout">
-      <div class="rate-num" id="rateNum">50%</div>
-      <div class="rate-bar-wrap">
-        <div class="rate-bar-track"><div class="rate-bar-fill" id="rateBar" style="width:50%"></div></div>
-        <div class="rate-status" id="rateStatus">Matige tempo van fotosintese.</div>
-      </div>
-    </div>
-  </div>
+  <h2 style="font-size:20px;font-weight:800;color:var(--paper,#f2f5f9);margin-bottom:6px">Tempo van fotosintese</h2>
+  <p style="font-size:15px;line-height:1.6;color:rgba(226,232,240,.72);margin-bottom:16px;max-width:68ch">Skuif die lamp, verander die CO₂-toevoer en die watertemperatuur, en tel die suurstofborrels: die waterplant-ondersoek uit jou praktiese werk.</p>
+  <div id="mlx-root"></div>
+  <script src="/assets/explore-kit.js"></script>
+  <script src="/assets/explore/photosynthesis-rate.js"></script>
 </div>
 
 <!-- PRACTICE -->
@@ -324,88 +302,6 @@ function switchTab(id,btn){
   // Re-measure now that the Explore panel is actually visible.
   if(id==='explore' && typeof resizeCanvas==='function') resizeCanvas();
 }
-
-/* ═══════════════════════════════════════════════
-   RATE OF PHOTOSYNTHESIS SIMULATOR
-═══════════════════════════════════════════════ */
-const canvas = document.getElementById('photoCanvas');
-const ctx = canvas.getContext('2d');
-let W,H;
-let light=50, co2=50, temp=25;
-let bubbles = [];
-
-function resizeCanvas(){
-  W = canvas.offsetWidth || 600; H = 260;
-  canvas.width = W*devicePixelRatio; canvas.height = H*devicePixelRatio;
-  ctx.scale(devicePixelRatio, devicePixelRatio);
-}
-
-function tempFactor(T){
-  const opt = 30;
-  if (T <= opt) return Math.max(0, T/opt);
-  return Math.exp(-Math.pow((T-opt)/14, 2));
-}
-function computeRate(){
-  const lightF = light/100;
-  const co2F = co2/100;
-  const tF = tempFactor(temp);
-  return Math.max(0.02, Math.min(1, lightF*0.4 + co2F*0.35 + tF*0.25));
-}
-function updateReadout(){
-  const rate = computeRate();
-  const pct = Math.round(rate*100);
-  document.getElementById('rateNum').textContent = pct+'%';
-  const color = pct>=65?'#22c55e':pct>=35?'#fbbf24':'#60a5fa';
-  document.getElementById('rateBar').style.width = pct+'%';
-  document.getElementById('rateBar').style.background = color;
-  document.getElementById('rateNum').style.color = color;
-  document.getElementById('rateStatus').textContent =
-    pct>=80 ? "Uitstekende toestande — helder lig, volop CO₂, en 'n goeie temperatuur gee 'n vinnige tempo." :
-    pct>=50 ? "Goeie tempo van fotosintese." :
-    pct>=25 ? "Stadige tempo — een of meer faktore beperk fotosintese." :
-    "Baie stadig — toestande is ver van ideaal (bv. te donker, te min CO₂, of te warm/koud).";
-}
-document.getElementById('lightSlider').addEventListener('input', e=>{ light=+e.target.value; document.getElementById('lightVal').textContent=light<33?'Laag':light<66?'Matig':'Hoog'; updateReadout(); });
-document.getElementById('co2Slider').addEventListener('input', e=>{ co2=+e.target.value; document.getElementById('co2Val').textContent=co2<33?'Laag':co2<66?'Matig':'Hoog'; updateReadout(); });
-document.getElementById('tempSlider').addEventListener('input', e=>{ temp=+e.target.value; document.getElementById('tempVal').textContent=temp+'°C'; updateReadout(); });
-
-function draw(){
-  ctx.clearRect(0,0,W,H);
-  const rate = computeRate();
-
-  // pondweed stem
-  const stemX = W*0.5;
-  ctx.strokeStyle = 'rgba(74,222,128,0.55)'; ctx.lineWidth = 10;
-  ctx.beginPath(); ctx.moveTo(stemX,H-10); ctx.lineTo(stemX,H*0.15); ctx.stroke();
-  // leaves
-  for(let y=H*0.25; y<H-20; y+=34){
-    ctx.beginPath(); ctx.ellipse(stemX-18,y,16,7,0.3,0,Math.PI*2);
-    ctx.fillStyle='rgba(74,222,128,0.3)'; ctx.fill();
-    ctx.beginPath(); ctx.ellipse(stemX+18,y+15,16,7,-0.3,0,Math.PI*2);
-    ctx.fillStyle='rgba(74,222,128,0.3)'; ctx.fill();
-  }
-
-  // spawn bubbles proportional to rate
-  if (Math.random() < rate*0.35){
-    bubbles.push({ x: stemX + (Math.random()-0.5)*20, y: H*0.15, r: 2+Math.random()*2 });
-  }
-  bubbles.forEach(b=>{ b.y -= 1.2 + rate*1.5; b.x += Math.sin(b.y*0.05)*0.4; });
-  bubbles = bubbles.filter(b=>b.y > -10);
-  bubbles.forEach(b=>{
-    ctx.beginPath(); ctx.arc(b.x,b.y,b.r,0,Math.PI*2);
-    ctx.strokeStyle='rgba(224,242,254,0.8)'; ctx.lineWidth=1; ctx.stroke();
-  });
-
-  ctx.fillStyle='rgba(255,255,255,0.4)'; ctx.font='10px "JetBrains Mono",monospace'; ctx.textAlign='center';
-  ctx.fillText('O₂-BORRELS STYG', stemX, H*0.08);
-
-  requestAnimationFrame(draw);
-}
-
-window.addEventListener('resize', resizeCanvas);
-resizeCanvas();
-updateReadout();
-draw();
 
 /* ═══════════════════════════════════════════════
    PRACTICE

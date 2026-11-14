@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
 <script src="/assets/theme.js"></script>
 <script defer src="/assets/lesson-toc.js"></script>
+<link rel="stylesheet" href="/assets/lesson-progress.css">
+<script defer src="/assets/lesson-progress.js"></script>
 <link rel="stylesheet" href="/assets/focus-reading.css">
 <script defer src="/assets/focus-reading.js"></script>
 <script src="/assets/sim-fit.js"></script>
@@ -315,11 +317,11 @@
 
 <!-- EXPLORE TAB -->
 <div class="tab-panel" id="tab-explore">
-  <div class="ml-predict" style="margin:0 0 16px;padding:10px 14px;border-radius:10px;background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.22);font-size:13px;line-height:1.6;color:rgba(226,232,240,.88)"><strong style="color:#fde68a">Voorspel eers:</strong> Wanneer lig van lug na glas beweeg, buig dit na die normaal toe of daarvan weg? <strong style="color:#fde68a">Toets dit dan:</strong> Maak n₂/n₁ in Snell se wet-modus groter as 1 en kyk na die gebreekte straal.</div>
+  <div class="ml-predict" style="margin:0 0 16px;padding:12px 16px;border-radius:10px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.075);border-left:2px solid #74d154;font-size:15px;line-height:1.6;color:#e3e8ef"><strong style="color:#f2f5f9">Voorspel eers:</strong> Wanneer lig van lug na glas beweeg, buig dit na die normaal toe of daarvan weg? <strong style="color:#f2f5f9">Toets dit dan:</strong> Maak n₂/n₁ in Snell se wet-modus groter as 1 en kyk na die gebreekte straal.</div>
   <div class="sim-outer">
     <div class="sim-canvas-wrap">
       <h3 id="sim-title">Golf- &amp; Optika-simulator</h3>
-      <canvas id="waveCanvas" height="260" role="img" aria-label="Golf- &amp; Optika-simulator: interaktiewe simulasie"></canvas>
+      <canvas id="waveCanvas" height="260" role="img" aria-label="Golf- &amp; Optika-simulator"></canvas>
     </div>
     <div class="sim-controls-row">
       <div class="ctrl-card">
@@ -610,7 +612,9 @@
   function updateSim(){
     const f = parseFloat(document.getElementById('freqSlider').value);
     const A = parseFloat(document.getElementById('ampSlider').value);
-    document.getElementById('freqVal').textContent = f.toFixed(1)+' Hz';
+    // Transverse = a wave on a rope (v = 2 m/s); sound uses audible frequencies (slider × 100 Hz) in air (v = 340 m/s)
+    const fShown = simMode==='longitudinal' ? f*100 : f;
+    document.getElementById('freqVal').textContent = (simMode==='longitudinal' ? fShown.toFixed(0) : fShown.toFixed(1))+' Hz';
     document.getElementById('ampVal').textContent = A.toFixed(0)+' px';
     const theta1 = parseFloat(document.getElementById('theta1Slider').value);
     const n2raw = parseFloat(document.getElementById('n2Slider').value)/10;
@@ -618,12 +622,12 @@
     document.getElementById('n2Val').textContent = n2raw.toFixed(1);
 
     if(simMode!=='snell'){
-      const v = 340; // m/s representative
-      const lambda = v/f;
+      const v = simMode==='longitudinal' ? 340 : 2;
+      const lambda = v/fShown;
       document.getElementById('ro-lambda').innerHTML = lambda.toFixed(2)+'<span>m</span>';
       document.getElementById('ro-speed').innerHTML = v+'<span>m/s</span>';
-      document.getElementById('ro-period').innerHTML = (1/f).toFixed(3)+'<span>s</span>';
-      document.getElementById('ro-freq').innerHTML = f.toFixed(1)+'<span>Hz</span>';
+      document.getElementById('ro-period').innerHTML = (1/fShown < 0.01 ? (1000/fShown).toFixed(2)+'<span>ms</span>' : (1/fShown).toFixed(3)+'<span>s</span>');
+      document.getElementById('ro-freq').innerHTML = (simMode==='longitudinal' ? fShown.toFixed(0) : fShown.toFixed(1))+'<span>Hz</span>';
     } else {
       const t1r = theta1*Math.PI/180;
       const n1=1.0;
@@ -651,7 +655,9 @@
     ctx.clearRect(0,0,w,h);
     const f = parseFloat(document.getElementById('freqSlider').value);
     const A = parseFloat(document.getElementById('ampSlider').value);
-    const lambda = w/3;
+    // Drawn wavelength follows λ = v/f (rope wave, v = 2 m/s): doubling f halves λ; the on-screen speed stays the same
+    const lambda = w*0.45*(2/f);
+    const phase = f*t*0.05;
     // Rest line
     ctx.strokeStyle='rgba(255,255,255,0.08)';ctx.lineWidth=1;
     ctx.beginPath();ctx.moveTo(0,h/2);ctx.lineTo(w,h/2);ctx.stroke();
@@ -659,7 +665,7 @@
     ctx.strokeStyle='#60a5fa';ctx.lineWidth=2.5;
     ctx.beginPath();
     for(let x=0;x<=w;x++){
-      const y = h/2 - A*Math.sin(2*Math.PI*(x/lambda - f*t*0.05));
+      const y = h/2 - A*Math.sin(2*Math.PI*(x/lambda - phase));
       x===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
     }
     ctx.stroke();
@@ -674,14 +680,17 @@
     ctx.fillStyle='#93c5fd';ctx.font='bold 12px monospace';ctx.textAlign='center';
     ctx.fillText('λ',(xA+xB)/2,h/2-A-18);
     // Amplitude arrow
-    const xM=w*0.7;
-    const yWave = h/2 - A*Math.sin(2*Math.PI*(xM/lambda - f*t*0.05));
+    // Amplitude: rest line to a crest (a crest is where x/λ − phase = ¼)
+    let xM = lambda*(0.25 + ((phase % 1) + 1) % 1);
+    while (xM < w*0.55) xM += lambda;
+    while (xM > w - 20) xM -= lambda;
+    const yWave = h/2 - A;
     ctx.strokeStyle='#86efac';ctx.lineWidth=1.5;
     ctx.beginPath();ctx.moveTo(xM,h/2);ctx.lineTo(xM,yWave);ctx.stroke();
-    ctx.fillStyle='#86efac';ctx.font='bold 11px monospace';ctx.textAlign='left';
+    ctx.fillStyle='#86efac';ctx.font='bold 12px monospace';ctx.textAlign='left';
     ctx.fillText('A',xM+5,(h/2+yWave)/2);
     // Labels
-    ctx.fillStyle='rgba(147,197,253,0.6)';ctx.font='11px monospace';ctx.textAlign='left';
+    ctx.fillStyle='rgba(147,197,253,0.6)';ctx.font='12px monospace';ctx.textAlign='left';
     ctx.fillText('Kruin',5,h/2-A-4);
     ctx.fillText('Trog',5,h/2+A+14);
   }
@@ -696,7 +705,9 @@
     // Draw dots
     for(let i=0;i<N;i++){
       const baseX = (i+0.5)*spacing;
-      const disp = A*0.3*Math.sin(2*Math.PI*(baseX/w*2 - f*t*0.05));
+      // λ = 340/(100f) m drawn to scale: 3.4 m (100 Hz) to 0.68 m (500 Hz)
+      const lamPx = w*0.26*(3.4/f);
+      const disp = A*0.3*Math.sin(2*Math.PI*(baseX/lamPx - f*t*0.05));
       const x = baseX + disp;
       const density = 1-disp/(A*0.3+1)*0.5;
       const alpha = Math.min(1,Math.max(0.2,density));
@@ -704,10 +715,9 @@
       ctx.beginPath();ctx.arc(x,h/2,4,0,Math.PI*2);ctx.fill();
     }
     // Labels
-    ctx.fillStyle='rgba(147,197,253,0.7)';ctx.font='bold 11px monospace';ctx.textAlign='center';
-    ctx.fillText('◄ verdigting',w*0.22,h/2-30);
-    ctx.fillText('verdunning ►',w*0.72,h/2+42);
-    ctx.fillStyle='rgba(210,218,245,0.4)';ctx.font='11px sans-serif';
+    ctx.fillStyle='rgba(147,197,253,0.7)';ctx.font='bold 12px monospace';ctx.textAlign='center';
+    ctx.fillText('Kolletjies naby mekaar = kompressie · ver uitmekaar = verdunning (animasie vertraag)',w/2,30);
+    ctx.fillStyle='rgba(210,218,245,0.4)';ctx.font='12px sans-serif';
     ctx.fillText('Longitudinale / klankgolf — deeltjies ossilleer langs die rigting van beweging',w/2,h-16);
   }
 
@@ -724,7 +734,7 @@
     // Media
     ctx.fillStyle='rgba(96,165,250,0.07)';ctx.fillRect(0,0,w,h/2);
     ctx.fillStyle='rgba(59,130,246,0.13)';ctx.fillRect(0,h/2,w,h/2);
-    ctx.fillStyle='rgba(147,197,253,0.35)';ctx.font='11px monospace';ctx.textAlign='left';
+    ctx.fillStyle='rgba(147,197,253,0.35)';ctx.font='12px monospace';ctx.textAlign='left';
     ctx.fillText('n₁ = 1.00 (lug)',8,20);
     ctx.fillText('n₂ = '+n2.toFixed(2)+' (glas)',8,h/2+18);
 
@@ -768,7 +778,7 @@
       ctx.fillText('θ₁='+theta1deg+'°',cx+5,h/2-35);
       ctx.fillStyle='#86efac';
       ctx.fillText('θ₂='+(theta2*180/Math.PI).toFixed(1)+'°',cx+5,h/2+50);
-      ctx.fillStyle='rgba(134,239,172,0.6)';ctx.font='11px monospace';
+      ctx.fillStyle='rgba(134,239,172,0.6)';ctx.font='12px monospace';
       ctx.fillText('Gebreekte straal',rx-80,ry-8);
     } else {
       // TIR — reflected ray
@@ -781,7 +791,7 @@
       ctx.fillText('TOTALE INTERNE WEERKAATSING',w/2,h-28);
       ctx.fillText('θ > kritieke hoek',w/2,h-12);
     }
-    ctx.fillStyle='rgba(251,191,36,0.6)';ctx.font='11px monospace';ctx.textAlign='right';
+    ctx.fillStyle='rgba(251,191,36,0.6)';ctx.font='12px monospace';ctx.textAlign='right';
     ctx.fillText('Invalstraal',ix+55,iy+15);
   }
 

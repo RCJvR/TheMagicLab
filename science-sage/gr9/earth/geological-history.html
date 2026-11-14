@@ -3,6 +3,8 @@
 <head>
 <script src="/assets/theme.js"></script>
 <script defer src="/assets/lesson-toc.js"></script>
+<link rel="stylesheet" href="/assets/lesson-progress.css">
+<script defer src="/assets/lesson-progress.js"></script>
 <link rel="stylesheet" href="/assets/focus-reading.css">
 <script defer src="/assets/focus-reading.js"></script>
 <script src="/assets/sim-fit.js"></script>
@@ -242,7 +244,7 @@
 
 <!-- EXPLORE -->
 <div class="tab-panel" id="tab-explore">
-  <div class="ml-predict" style="margin:0 0 16px;padding:10px 14px;border-radius:10px;background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.22);font-size:13px;line-height:1.6;color:rgba(226,232,240,.88)"><strong style="color:#fde68a">Predict first:</strong> Which lasted longer: the age of the dinosaurs, or the time since they died out? <strong style="color:#fde68a">Then test it:</strong> Click the eras to compare their lengths.</div>
+  <div class="ml-predict" style="margin:0 0 16px;padding:12px 16px;border-radius:10px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.075);border-left:2px solid #74d154;font-size:15px;line-height:1.6;color:#e3e8ef"><strong style="color:#f2f5f9">Predict first:</strong> Which lasted longer: the age of the dinosaurs, or the time since they died out? <strong style="color:#f2f5f9">Then test it:</strong> Click the eras to compare their lengths.</div>
   <div class="sim-outer">
     <div style="display:flex;gap:10px;margin-bottom:4px;flex-wrap:wrap">
       <button class="mode-btn active" id="modeTime" onclick="setMode('time')">Geological Time Scale</button>
@@ -250,7 +252,7 @@
     </div>
     <div class="sim-canvas-wrap">
       <h3 id="canvasTitle">Geological Time Scale — Click an Era to Explore</h3>
-      <canvas id="simCanvas" height="460" role="img" aria-label="Geological Time Scale — Click an Era to Explore: interactive simulation"></canvas>
+      <canvas id="simCanvas" height="460" role="img" aria-label="Geological Time Scale — Click an Era to Explore"></canvas>
     </div>
     <div id="timeInfo" class="era-info" style="max-width:900px">Click on any coloured era or eon on the timeline to see key life forms and events from that time period.</div>
     <div id="fossilControls" style="display:none">
@@ -388,7 +390,9 @@ function drawTimeline(){
 
   // Era bands
   ERAS.forEach((era, i) => {
-    const y0 = maToY(era.start), y1 = maToY(era.end);
+    // Youngest at the top (as in a rock column): the era's end is its top edge, its start its bottom edge
+    const yS = maToY(era.start), yE = maToY(era.end);
+    const y0 = Math.min(yS, yE), y1 = Math.max(yS, yE);
     const barH = Math.max(y1 - y0, 6);
 
     // Solid bar
@@ -417,10 +421,10 @@ function drawTimeline(){
     ctx2.font = '9px "JetBrains Mono"';
     ctx2.textAlign = 'left';
     if(barH > 18){
-      ctx2.fillText(era.start + ' Ma', PAD_LEFT + BAR_W + 6, y0 + 12);
+      ctx2.fillText(era.start + ' Ma', PAD_LEFT + BAR_W + 6, y1 - 4);
     }
     if(era.end === 0){
-      ctx2.fillText('Present', PAD_LEFT + BAR_W + 6, y1 - 4);
+      ctx2.fillText('Present', PAD_LEFT + BAR_W + 6, y0 + 12);
     }
 
     // Key life text

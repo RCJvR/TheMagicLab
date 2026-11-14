@@ -286,7 +286,9 @@
               body += `<circle cx="${X(xA)}" cy="${Y(yA)}" r="3.5" fill="${INK}"/><circle cx="${X(xB)}" cy="${Y(yB)}" r="3.5" fill="${INK}"/>`;
               body += `<text x="${(X(xA) + X(xB)) / 2}" y="${Y(yA) + (f.m >= 0 ? 20 : -8)}" text-anchor="middle" font-size="14" fill="${INK}">Δx = ${fmt(xB - xA)}</text>`;
               body += `<text x="${X(xB) + 8}" y="${(Y(yA) + Y(yB)) / 2 + 5}" font-size="14" fill="${INK}">Δy = ${fmt(yB - yA)}</text>`;
-              summary += `<div><b>${esc(t.tri)}:</b> Δy/Δx = ${fmt(yB - yA)} / ${fmt(xB - xA)} = ${fmt((yB - yA) / (xB - xA))}</div>`;
+              // Work the quotient from the SAME rounded values that are printed, so the sum checks out on paper
+              const dyR = Number((yB - yA).toPrecision(3)), dxR = Number((xB - xA).toPrecision(3));
+              summary += `<div><b>${esc(t.tri)}:</b> Δy/Δx = ${fmt(dyR)} / ${fmt(dxR)} = ${fmt(dyR / dxR)}</div>`;
             }
           }
           P.forEach(p => { body += st.kind === 'scatter' ? `<g stroke="${c}" stroke-width="2.2"><line x1="${X(p[0]) - 5}" y1="${Y(p[1]) - 5}" x2="${X(p[0]) + 5}" y2="${Y(p[1]) + 5}"/><line x1="${X(p[0]) - 5}" y1="${Y(p[1]) + 5}" x2="${X(p[0]) + 5}" y2="${Y(p[1]) - 5}"/></g>` : `<circle cx="${X(p[0])}" cy="${Y(p[1])}" r="4" fill="${c}"/>`; });

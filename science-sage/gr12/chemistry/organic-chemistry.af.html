@@ -3,6 +3,8 @@
 <head>
 <script src="/assets/theme.js"></script>
 <script defer src="/assets/lesson-toc.js"></script>
+<link rel="stylesheet" href="/assets/lesson-progress.css">
+<script defer src="/assets/lesson-progress.js"></script>
 <link rel="stylesheet" href="/assets/focus-reading.css">
 <script defer src="/assets/focus-reading.js"></script>
 <script src="/assets/sim-fit.js"></script>
@@ -272,11 +274,11 @@ canvas{display:block;border-radius:10px;background:#040710;width:100%}
 
 <!-- VERKEN-OORTJIE -->
 <div id="tab-explore" class="tab-panel">
-  <div class="ml-predict" style="margin:0 0 16px;padding:10px 14px;border-radius:10px;background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.22);font-size:13px;line-height:1.6;color:rgba(226,232,240,.88)"><strong style="color:#fde68a">Voorspel eers:</strong> Wat is die naam van 'n ketting van drie koolstowwe met 'n –OH-groep op die eindkoolstof? <strong style="color:#fde68a">Toets dit dan:</strong> Bou dit en kontroleer die IUPAC-naam.</div>
+  <div class="ml-predict" style="margin:0 0 16px;padding:12px 16px;border-radius:10px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.075);border-left:2px solid #74d154;font-size:15px;line-height:1.6;color:#e3e8ef"><strong style="color:#f2f5f9">Voorspel eers:</strong> Wat is die naam van 'n ketting van drie koolstowwe met 'n –OH-groep op die eindkoolstof? <strong style="color:#f2f5f9">Toets dit dan:</strong> Bou dit en kontroleer die IUPAC-naam.</div>
   <div class="sim-outer">
     <div class="sim-canvas-wrap">
       <h3>Molekuulbouer &mdash; Teken Struktuurformules</h3>
-      <canvas id="molCanvas" height="360" role="img" aria-label="Molekuulbouer — Teken Struktuurformules: interaktiewe simulasie"></canvas>
+      <canvas id="molCanvas" height="360" role="img" aria-label="Molekuulbouer — Teken Struktuurformules"></canvas>
     </div>
     <div class="sim-controls-row">
       <div class="ctrl-card">
@@ -430,33 +432,38 @@ function drawMolecule() {
   // Bereken naam & formule
   let name = '', formula = '', series = '';
   const carbons = fg === 'carboxylic' ? n : n;
+  // Formula with proper subscripts; a count of 1 is not written (CH₄, HCOOH)
+  const SUB = '₀₁₂₃₄₅₆₇₈₉';
+  const el = (sym, k) => k <= 0 ? '' : sym + (k === 1 ? '' : String(k).replace(/\d/g, d => SUB[d]));
   if (fg === 'alkane') {
     name = stemNames[n] + 'aan';
-    formula = 'C' + n + 'H' + (2*n+2);
+    formula = el('C', n) + el('H', 2*n+2);
     series = 'Alkaan';
   } else if (fg === 'alkene') {
-    name = n >= 3 ? stemNames[n] + '-1-een' : stemNames[n] + 'een';
-    formula = 'C' + n + 'H' + (2*n);
+    name = n < 2 ? 'Geen alkeen het 1 koolstofatoom nie (\'n C=C benodig 2)' : (n >= 4 ? stemNames[n] + '-1-een' : stemNames[n] + 'een');
+    formula = n < 2 ? '—' : el('C', n) + el('H', 2*n);
     series = 'Alkeen';
   } else if (fg === 'alcohol') {
-    name = stemNames[n] + 'an-1-ol';
-    formula = 'C' + n + 'H' + (2*n+1) + 'OH';
+    name = n >= 3 ? stemNames[n] + 'an-1-ol' : stemNames[n] + 'anol';
+    formula = el('C', n) + el('H', 2*n+1) + 'OH';
     series = 'Alkohol';
   } else if (fg === 'carboxylic') {
     name = stemNames[n] + 'aansuur';
-    formula = 'C' + n + 'H' + (2*n-1) + 'COOH';
+    formula = (n === 1 ? 'H' : el('C', n-1) + el('H', 2*n-1)) + 'COOH';
     series = 'Karboksielsuur';
   } else if (fg === 'halo') {
-    name = '1-chloor' + stemNames[n] + 'aan';
-    formula = 'C' + n + 'H' + (2*n+1) + 'Cl';
+    name = (n >= 3 ? '1-' : '') + 'chloor' + stemNames[n] + 'aan';
+    formula = el('C', n) + el('H', 2*n+1) + 'Cl';
     series = 'Haloalkaan';
   } else if (fg === 'aldehyde') {
     name = stemNames[n] + 'anal';
-    formula = 'C' + n + 'H' + (2*n) + 'O';
+    formula = el('C', n) + el('H', 2*n) + 'O';
     series = 'Aldehied';
   } else if (fg === 'ketone') {
-    name = n >= 3 ? stemNames[n] + 'an-' + Math.floor(n/2) + '-oon' : stemNames[n] + 'oon';
-    formula = 'C' + n + 'H' + (2*n) + 'O';
+    // The C=O is drawn on carbon floor((n-1)/2)+1; number from the end that gives it the lower locant
+    const p = Math.floor((n-1)/2) + 1, loc = Math.min(p, n + 1 - p);
+    name = n < 3 ? 'Geen ketoon het minder as 3 koolstofatome nie' : stemNames[n] + 'an-' + loc + '-oon';
+    formula = n < 3 ? '—' : el('C', n) + el('H', 2*n) + 'O';
     series = 'Ketoon';
   }
   document.getElementById('iupacName').textContent = name || '--';

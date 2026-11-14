@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
 <script src="/assets/theme.js"></script>
 <script defer src="/assets/lesson-toc.js"></script>
+<link rel="stylesheet" href="/assets/lesson-progress.css">
+<script defer src="/assets/lesson-progress.js"></script>
 <link rel="stylesheet" href="/assets/focus-reading.css">
 <script defer src="/assets/focus-reading.js"></script>
 <script src="/assets/sim-fit.js"></script>
@@ -241,21 +243,21 @@
 
 <!-- EXPLORE -->
 <div class="tab-panel" id="tab-explore">
-  <h2 style="font-size:18px;font-weight:800;color:#fff;margin-bottom:6px">Peperskabmot-seleksiesimulator</h2>
-  <p style="font-size:13px;color:var(--muted);margin-bottom:20px">Stel die besoedelingsvlak in, druk dan Speel. Voëls vreet verkieslik watter motkleur ook al die meeste teen die boombas uitstaan, wat die populasie se kleurverhouding oor generasies verskuif.</p>
-  <div class="ml-predict" style="margin:0 0 16px;padding:10px 14px;border-radius:10px;background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.22);font-size:13px;line-height:1.6;color:rgba(226,232,240,.88)"><strong style="color:#fde68a">Voorspel eers:</strong> As roet die bas donker maak, watter motkleur sal meer algemeen word? Verander enige mot van kleur? <strong style="color:#fde68a">Toets dit dan:</strong> Stel hoë besoedeling en laat die generasies loop; herstel dan en probeer skoon bas.</div>
+  <h2 style="font-size:20px;font-weight:800;color:#f2f5f9;margin-bottom:6px">Peperskabmot-seleksiesimulator</h2>
+  <p style="font-size:15px;line-height:1.6;color:rgba(226,232,240,.72);margin-bottom:16px;max-width:68ch">Stel die besoedelingsvlak in, druk dan Speel. Voëls vreet verkieslik watter motkleur ook al die meeste teen die boombas uitstaan, wat die populasie se kleurverhouding oor generasies verskuif.</p>
+  <div class="ml-predict" style="margin:0 0 16px;padding:12px 16px;border-radius:10px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.075);border-left:2px solid #74d154;font-size:15px;line-height:1.6;color:#e3e8ef"><strong style="color:#f2f5f9">Voorspel eers:</strong> As roet die bas donker maak, watter motkleur sal meer algemeen word? Verander enige mot van kleur? <strong style="color:#f2f5f9">Toets dit dan:</strong> Stel hoë besoedeling en laat die generasies loop; herstel dan en probeer skoon bas.</div>
   <div class="sim-outer">
     <div class="sim-canvas-wrap">
       <h3>Populasie-kleurverhouding oor generasies</h3>
-      <canvas id="mothCanvas" height="260" role="img" aria-label="Peperskabmot-seleksiesimulator: interaktiewe simulasie"></canvas>
+      <canvas id="mothCanvas" height="260" role="img" aria-label="Peperskabmot-seleksiesimulator. Stel die besoedelingsvlak in, druk dan Speel. Voëls vreet verkieslik watter motkleur ook al die meeste teen die boombas uitstaan, wat die populasie se kleurverhouding oor generasies verskuif."></canvas>
     </div>
     <div class="ctrl-card">
       <div id="lbl-pollutionSlider" class="ctrl-label">Besoedelingsvlak (bas-donkerheid) <span class="val" id="pollutionVal">50%</span></div>
       <input aria-labelledby="lbl-pollutionSlider" type="range" id="pollutionSlider" min="0" max="100" value="50">
     </div>
     <div class="playbar">
-      <button class="play-btn" id="playBtn" onclick="togglePlay()">▶ Laat generasies verloop</button>
-      <button class="play-btn" style="background:linear-gradient(135deg,#64748b,#334155)" onclick="resetSim()">↺ Herstel</button>
+      <button class="play-btn" id="playBtn" onclick="togglePlay()">Laat generasies verloop</button>
+      <button class="play-btn" style="background:linear-gradient(135deg,#64748b,#334155)" onclick="resetSim()">Herstel</button>
       <div class="phase-readout">Generasie: <span class="n" id="genLabel">0</span> · Ligte motte: <span class="n" id="lightLabel">50%</span> · Donker motte: <span class="n" id="darkLabel">50%</span></div>
     </div>
   </div>
@@ -333,12 +335,12 @@ document.getElementById('pollutionSlider').addEventListener('input', e=>{
 
 function togglePlay(){
   playing = !playing;
-  document.getElementById('playBtn').textContent = playing ? '⏸ Pouseer' : '▶ Laat generasies verloop';
+  document.getElementById('playBtn').textContent = playing ? 'Pouseer' : 'Laat generasies verloop';
 }
 function resetSim(){
   lightFreq = 0.5; gen = 0; history = [lightFreq];
   playing = false;
-  document.getElementById('playBtn').textContent = '▶ Laat generasies verloop';
+  document.getElementById('playBtn').textContent = 'Laat generasies verloop';
   updateReadout();
 }
 function updateReadout(){
@@ -391,7 +393,7 @@ function draw(){
     });
     ctx.stroke();
     // dark moth line
-    ctx.strokeStyle='#334155'; ctx.lineWidth=2.5;
+    ctx.strokeStyle='#8b93a1'; ctx.setLineDash([7,4]); ctx.lineWidth=2.5; // dashed mid-grey: visible on dark and light grounds
     ctx.beginPath();
     history.forEach((f,i)=>{
       const x = padL + (i/59)*plotW;
@@ -404,7 +406,7 @@ function draw(){
   // legend
   ctx.font='11px "Cabinet Grotesk",sans-serif'; ctx.textAlign='left';
   ctx.fillStyle='#e2e8f0'; ctx.fillRect(padL, 6, 10, 10); ctx.fillText('Ligte motte', padL+16, 15);
-  ctx.fillStyle='#334155'; ctx.fillRect(padL+110, 6, 10, 10); ctx.fillStyle='rgba(255,255,255,.7)'; ctx.fillText('Donker motte', padL+126, 15);
+  ctx.setLineDash([]); ctx.fillStyle='#8b93a1'; ctx.fillRect(padL+110, 6, 10, 10); ctx.fillStyle='rgba(255,255,255,.7)'; ctx.fillText('Donker motte', padL+126, 15);
 
   ctx.fillStyle='rgba(255,255,255,0.4)'; ctx.font='10px "JetBrains Mono",monospace'; ctx.textAlign='center';
   ctx.fillText('GENERASIES', W/2, H-8);

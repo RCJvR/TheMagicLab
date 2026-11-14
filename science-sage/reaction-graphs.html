@@ -197,6 +197,12 @@
       if (E.showAC) s += `<text x="${X(0.5)}" y="${Y(peak) - 12}" text-anchor="middle" font-size="15" fill="${INK}">${esc(t.ac)}</text>`;
       if (E.showEa) s += dimArrow(X(0.3), Y(eR), Y(peak), `E<tspan baseline-shift="sub" font-size="70%">a</tspan>${st.nums ? ' = ' + fmt(ea) : ''}`, 'left');
       if (E.showEa && Number.isFinite(peakC)) s += dimArrow(X(0.38), Y(eR), Y(peakC), '', 'left');
+      // Physical checks: the activated complex must sit above BOTH reactants and products, and a catalyst only LOWERS Ea
+      const af = lang === 'af';
+      const warn = [];
+      if (peak <= eP) warn.push(af ? 'Onmoontlik: die geaktiveerde kompleks moet hoër as die produkte lê (Ea moet groter as ΔH wees).' : 'Impossible: the activated complex must be higher than the products (Ea must be larger than ΔH).');
+      if (Number.isFinite(peakC) && eaC >= ea) warn.push(af ? "Onmoontlik: 'n katalisator verlaag die aktiveringsenergie; dit verhoog dit nooit." : 'Impossible: a catalyst lowers the activation energy; it never raises it.');
+      warn.forEach((w, i) => { s += `<text x="${box.x0 + 8}" y="${box.y0 + 22 + i * 22}" font-size="15" fill="#b91c1c" font-weight="700">${esc(w)}</text>`; });
       if (E.showDH) s += dimArrow(X(0.75), Y(eR), Y(eP), `ΔH${st.nums ? ' = ' + fmt(eP - eR) : ''}`, 'right');
       $('explain').textContent = eP < eR ? t.exo : t.endo;
       return s + '</svg>';

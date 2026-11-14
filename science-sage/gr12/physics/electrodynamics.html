@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
 <script src="/assets/theme.js"></script>
 <script defer src="/assets/lesson-toc.js"></script>
+<link rel="stylesheet" href="/assets/lesson-progress.css">
+<script defer src="/assets/lesson-progress.js"></script>
 <link rel="stylesheet" href="/assets/focus-reading.css">
 <script defer src="/assets/focus-reading.js"></script>
 <script src="/assets/sim-fit.js"></script>
@@ -179,7 +181,8 @@
 <script defer src="../../../progress.js"></script>
 <script defer src="../../../lesson-progress-observer.js"></script>
 <style id="ml-touch">@media (pointer:coarse){#tab-explore button,#tab-simulate button,#panel-explore button,#tab-explore select,#tab-simulate select,#panel-explore select{min-height:40px}#tab-explore input[type=range],#tab-simulate input[type=range],#panel-explore input[type=range]{min-height:32px}}</style>
-<style id="ml-wb-memo">.wb-memo{margin-top:12px;border-top:1px dashed rgba(255,255,255,.10);padding-top:10px}.wb-memo summary{cursor:pointer;font-size:13px;font-weight:700;color:#86efac;list-style:revert}.wb-memo-body{margin-top:8px;font-size:13.5px;line-height:1.8;color:rgba(210,218,245,.85);background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.18);border-radius:10px;padding:12px 16px}@media print{.wb-memo{display:none!important}}</style><style id="ml-exam-q">.wb-q.ml-exam-q{border-color:rgba(252,211,77,.35)}.ml-exam-q .wb-qnum{color:#fcd34d}</style></head>
+<style id="ml-wb-memo">.wb-memo{margin-top:12px;border-top:1px dashed rgba(255,255,255,.10);padding-top:10px}.wb-memo summary{cursor:pointer;font-size:13px;font-weight:700;color:#86efac;list-style:revert}.wb-memo-body{margin-top:8px;font-size:13.5px;line-height:1.8;color:rgba(210,218,245,.85);background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.18);border-radius:10px;padding:12px 16px}@media print{.wb-memo{display:none!important}}</style><style id="ml-exam-q">.wb-q.ml-exam-q{border-color:rgba(252,211,77,.35)}.ml-exam-q .wb-qnum{color:#fcd34d}</style><link rel="stylesheet" href="/assets/explore-kit.css">
+</head>
 <body>
   <a class="ml-skip" href="#ml-main">Skip to content</a>
 <nav data-ml-bar="science-sage" data-ml-home="/science-sage/index.html">
@@ -308,40 +311,10 @@
 
 <!-- EXPLORE TAB -->
 <div class="tab-panel" id="tab-explore">
-  <div class="ml-predict" style="margin:0 0 16px;padding:10px 14px;border-radius:10px;background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.22);font-size:13px;line-height:1.6;color:rgba(226,232,240,.88)"><strong style="color:#fde68a">Predict first:</strong> If you double the rotation speed, what happens to the peak emf and to the frequency? <strong style="color:#fde68a">Then test it:</strong> Change the speed and watch the waveform.</div>
-  <div class="sim-outer">
-    <div class="sim-canvas-wrap">
-      <h3>AC Generator — Rotating Coil and EMF Waveform</h3>
-      <canvas id="genCanvas" height="340" role="img" aria-label="AC Generator — Rotating Coil and EMF Waveform: interactive simulation"></canvas>
-    </div>
-    <div class="sim-controls-row">
-      <div class="ctrl-card">
-        <div class="ctrl-label">Generator Controls</div>
-        <div class="slider-row">
-          <label for="sl-omega">Speed (ω)</label>
-          <input type="range" min="1" max="10" value="3" id="sl-omega" oninput="updateGen()">
-          <span class="slider-val" id="sv-omega">3 rad·s⁻¹</span>
-        </div>
-        <div class="slider-row">
-          <label for="sl-turns">Turns (N)</label>
-          <input type="range" min="1" max="20" value="5" id="sl-turns" oninput="updateGen()">
-          <span class="slider-val" id="sv-turns">5</span>
-        </div>
-        <div style="display:flex;gap:8px;margin-top:10px">
-          <button class="mode-btn active" id="genPlayBtn" onclick="toggleGen()">▶ Start</button>
-          <button class="mode-btn" onclick="resetGen()">Reset</button>
-        </div>
-      </div>
-      <div class="ctrl-card">
-        <div class="ctrl-label">Live Values</div>
-        <div class="readout-grid" style="margin-top:0">
-          <div class="readout"><div class="readout-label">EMF (peak)</div><div class="readout-val" id="ro-emfpeak">0<span>V</span></div></div>
-          <div class="readout"><div class="readout-label">EMF (now)</div><div class="readout-val" id="ro-emfnow">0<span>V</span></div></div>
-          <div class="readout"><div class="readout-label">Angle θ</div><div class="readout-val" id="ro-angle">0<span>°</span></div></div>
-        </div>
-      </div>
-    </div>
-  </div>
+  <div class="ml-predict" style="margin:0 0 16px;padding:12px 16px;border-radius:10px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.075);border-left:2px solid #74d154;font-size:15px;line-height:1.6;color:#e3e8ef"><strong style="color:#f2f5f9">Predict first:</strong> If you double the rotation speed, what happens to the peak emf and to the frequency? <strong style="color:#f2f5f9">Then test it:</strong> Change the speed and watch the waveform.</div>
+  <div id="mlx-root" data-gen="gr12"></div>
+  <script src="/assets/explore-kit.js"></script>
+  <script src="/assets/explore/generator.js"></script>
 </div>
 
 <!-- PRACTICE TAB -->
@@ -546,141 +519,7 @@
   }
 
   // SIMULATION
-  let genRunning=false,genRaf=null,genInited=false,genTheta=0,genLastT=null;
-  let emfHistory=[];
-  const B=0.5,A=0.08;
-
-  function updateGen(){
-    const omega=+document.getElementById('sl-omega').value;
-    const N=+document.getElementById('sl-turns').value;
-    document.getElementById('sv-omega').textContent=omega+' rad·s⁻¹';
-    document.getElementById('sv-turns').textContent=N;
-    const emfPeak=N*B*A*omega;
-    document.getElementById('ro-emfpeak').innerHTML=emfPeak.toFixed(1)+'<span>V</span>';
-    if(genInited) drawGen();
-  }
-
-  function initGen(){if(!genInited){genInited=true;updateGen();}}
-
-  function resetGen(){
-    if(genRaf){cancelAnimationFrame(genRaf);genRaf=null;}
-    genRunning=false;genTheta=0;genLastT=null;emfHistory=[];
-    document.getElementById('genPlayBtn').textContent='▶ Start';
-    document.getElementById('ro-emfnow').innerHTML='0<span>V</span>';
-    document.getElementById('ro-angle').innerHTML='0<span>°</span>';
-    if(genInited) drawGen();
-  }
-
-  function toggleGen(){
-    if(genRunning){cancelAnimationFrame(genRaf);genRunning=false;document.getElementById('genPlayBtn').textContent='▶ Start';return;}
-    genRunning=true;genLastT=null;document.getElementById('genPlayBtn').textContent='⏸ Pause';
-    genRaf=requestAnimationFrame(genStep);
-  }
-
-  function genStep(ts){
-    if(!genRunning) return;
-    if(genLastT===null){genLastT=ts;genRaf=requestAnimationFrame(genStep);return;}
-    const dt=Math.min((ts-genLastT)/1000,0.05);genLastT=ts;
-    const omega=+document.getElementById('sl-omega').value;
-    const N=+document.getElementById('sl-turns').value;
-    genTheta+=omega*dt;
-    const emfNow=N*B*A*omega*Math.sin(genTheta);
-    const emfPeak=N*B*A*omega;
-    emfHistory.push(emfNow);
-    if(emfHistory.length>200) emfHistory.shift();
-    document.getElementById('ro-emfnow').innerHTML=emfNow.toFixed(1)+'<span>V</span>';
-    document.getElementById('ro-angle').innerHTML=((genTheta%(2*Math.PI))*180/Math.PI).toFixed(0)+'<span>°</span>';
-    drawGen();
-    genRaf=requestAnimationFrame(genStep);
-  }
-
-  function drawGen(){
-    const canvas=document.getElementById('genCanvas');
-    const dpr=window.devicePixelRatio||1;
-    const W=canvas.clientWidth||800,H=340;
-    canvas.width=W*dpr;canvas.height=H*dpr;
-    canvas.style.height=H+'px';
-    const ctx=canvas.getContext('2d');
-    ctx.setTransform(1,0,0,1,0,0);
-    ctx.scale(dpr,dpr);
-    ctx.clearRect(0,0,W,H);
-
-    const split=Math.floor(W*0.38);
-    const cx=split/2,cy=H/2;
-    const omega=+document.getElementById('sl-omega').value;
-    const N=+document.getElementById('sl-turns').value;
-    const emfPeak=N*B*A*omega;
-
-    // LEFT: coil diagram
-    const coilW=70,coilH=100;
-    // Magnetic field arrows (horizontal)
-    ctx.fillStyle='rgba(96,165,250,0.15)';ctx.fillRect(0,0,split,H);
-    for(let y=40;y<H;y+=50){
-      ctx.strokeStyle='rgba(96,165,250,0.25)';ctx.lineWidth=1;
-      ctx.beginPath();ctx.moveTo(10,y);ctx.lineTo(split-10,y);ctx.stroke();
-      ctx.fillStyle='rgba(96,165,250,0.25)';
-      ctx.beginPath();ctx.moveTo(split-14,y);ctx.lineTo(split-22,y-4);ctx.lineTo(split-22,y+4);ctx.closePath();ctx.fill();
-    }
-    ctx.fillStyle='rgba(96,165,250,0.35)';ctx.font='9px JetBrains Mono';ctx.textAlign='left';
-    ctx.fillText('B →',8,14);
-
-    // Coil (rectangle, rotated by theta)
-    ctx.save();
-    ctx.translate(cx,cy);
-    ctx.rotate(genTheta);
-    ctx.strokeStyle='#60a5fa';ctx.lineWidth=3;
-    ctx.strokeRect(-coilW/2,-coilH/2,coilW,coilH);
-    // Normal vector
-    ctx.strokeStyle='rgba(248,113,113,0.7)';ctx.lineWidth=1.5;
-    ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(0,-50);ctx.stroke();
-    ctx.fillStyle='rgba(248,113,113,0.7)';
-    ctx.beginPath();ctx.moveTo(0,-50);ctx.lineTo(-4,-43);ctx.lineTo(4,-43);ctx.closePath();ctx.fill();
-    ctx.restore();
-
-    ctx.fillStyle='rgba(255,255,255,0.20)';ctx.font='9px JetBrains Mono';ctx.textAlign='center';
-    ctx.fillText('Coil (N='+N+')',cx,H-8);
-
-    // Divider
-    ctx.strokeStyle='rgba(255,255,255,0.06)';ctx.lineWidth=1;
-    ctx.beginPath();ctx.moveTo(split,0);ctx.lineTo(split,H);ctx.stroke();
-
-    // RIGHT: EMF sine wave
-    const gL=split+20,gR=W-10,gT=20,gB=H-20;
-    const gW=gR-gL,gH2=gB-gT;
-    const midY=gT+gH2/2;
-
-    // Axes
-    ctx.strokeStyle='rgba(255,255,255,0.12)';ctx.lineWidth=1;
-    ctx.beginPath();ctx.moveTo(gL,gT);ctx.lineTo(gL,gB);ctx.stroke();
-    ctx.beginPath();ctx.moveTo(gL,midY);ctx.lineTo(gR,midY);ctx.stroke();
-
-    ctx.fillStyle='rgba(255,255,255,0.25)';ctx.font='9px JetBrains Mono';ctx.textAlign='center';
-    ctx.fillText('EMF vs time',gL+gW/2,gT-5);
-    ctx.textAlign='right';
-    ctx.fillText('+'+emfPeak.toFixed(1)+'V',gL-2,gT+10);
-    ctx.fillText('−'+emfPeak.toFixed(1)+'V',gL-2,gB);
-
-    // Draw EMF history
-    if(emfHistory.length>1&&emfPeak>0){
-      const scale=gH2/2/emfPeak;
-      ctx.strokeStyle='#60a5fa';ctx.lineWidth=2;
-      ctx.beginPath();
-      emfHistory.forEach((e,i)=>{
-        const px=gL+(i/200)*gW;
-        const py=midY-e*scale;
-        i===0?ctx.moveTo(px,py):ctx.lineTo(px,py);
-      });
-      ctx.stroke();
-      // Current point
-      const lastE=emfHistory[emfHistory.length-1];
-      const lx=gL+(emfHistory.length-1)/200*gW;
-      const ly=midY-lastE*(emfPeak>0?gH2/2/emfPeak:0);
-      ctx.beginPath();ctx.arc(lx,ly,4,0,Math.PI*2);
-      ctx.fillStyle='#f87171';ctx.fill();
-    }
-  }
-
-  window.addEventListener('resize',()=>{if(genInited)drawGen();});
+  function initGen(){} // the simulation is assets/explore/generator.js
 </script>
   <script>
 (function(){
