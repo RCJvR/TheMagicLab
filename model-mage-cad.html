@@ -2109,9 +2109,23 @@ function buildSystem(cs, only) {
         break;
       }
       case 'fix': {
-        const A = P(c.a);
-        add(c, A.d, X => A.f(X)[0] - c.value[0]);
-        add(c, A.d, X => A.f(X)[1] - c.value[1]);
+        // Lock: holds a point, a line or a circle/arc exactly where it was
+        const pin = (A, v) => { add(c, A.d, X => A.f(X)[0] - v[0]); add(c, A.d, X => A.f(X)[1] - v[1]); };
+        if (c.a.k !== undefined) { pin(P(c.a), c.value); break; }
+        if (c.a.s !== undefined) {
+          const s = S(c.a); if (!s || !Array.isArray(c.value[0])) break;
+          pin(s[0], c.value[0]); pin(s[1], c.value[1]);
+          break;
+        }
+        const e = entByUid(c.a.u); if (!e || !c.value) break;
+        if (e.type === 'circle') {
+          pin(P({u:e.uid, k:'c'}), c.value.c);
+          const r = Rad(e.uid); add(c, r.d, X => r.f(X) - c.value.r);
+        } else if (e.type === 'arc') {
+          pin(P({u:e.uid, k:'p1'}), c.value.p1);
+          pin(P({u:e.uid, k:'p2'}), c.value.p2);
+          const r = Rad(e.uid); add(c, r.d, X => r.f(X) - c.value.r);
+        }
         break;
       }
     }
@@ -2210,6 +2224,19 @@ function writeBackSystem(sys, X) {
     else if (e.type === 'arc') { e.p1 = g('p1'); e.pmid = g('pmid'); e.p2 = g('p2'); }
     else if (e.type === 'rect') {
       const cs = [0,1,2,3].map(g), xs = cs.map(c=>c[0]), ys = cs.map(c=>c[1]);
+      // A rectangle is stored as x, y, w, h with corner 0 bottom-left. If the
+      // solver turned it inside out (e.g. its top-right corner pinned to the
+      // origin), x/y/w/h would relabel the corners and constraints would point
+      // at the wrong ones. Keep the corners as they are instead: become a
+      // 4-point shape with the rectangle's rules as real constraints.
+      const flipped = cs[1][0] < cs[0][0] - 1e-9 || cs[3][1] < cs[0][1] - 1e-9;
+      if (flipped) {
+        delete e.x; delete e.y; delete e.w; delete e.h; delete e.cornerR;
+        e.type = 'polyline'; e.points = cs; e.closed = true;
+        sketchConstraints().push({type:'horizontal', a:{u:e.uid, s:0}}, {type:'vertical', a:{u:e.uid, s:1}},
+                                 {type:'horizontal', a:{u:e.uid, s:2}}, {type:'vertical', a:{u:e.uid, s:3}});
+        continue;
+      }
       e.x = Math.min(...xs); e.y = Math.min(...ys);
       e.w = Math.max(0.1, Math.max(...xs) - e.x); e.h = Math.max(0.1, Math.max(...ys) - e.y);
     }
@@ -2376,8 +2403,15 @@ function keysForHit(hit) {
     for (const p of entityPointList(e)) set.add(e.uid+':'+p.k);
   return [...set];
 }
+// Is this point held by a Lock (on the point itself, its line, or its circle/arc)?
 function isFixedKey(key) {
-  return sketchConstraints().some(c => c.type==='fix' && c.a.u+':'+c.a.k === key);
+  return sketchConstraints().some(c => {
+    if (c.type !== 'fix') return false;
+    if (c.a.k !== undefined) return c.a.u+':'+c.a.k === key;
+    const e = entByUid(c.a.u); if (!e) return false;
+    if (c.a.s !== undefined) { const ks = segEndKeys(e, c.a.s); return !!ks && ks.some(k => c.a.u+':'+k === key); }
+    return key.startsWith(c.a.u + ':');
+  });
 }
 
 function beginDrag(pd) {
@@ -2623,7 +2657,7 @@ const CST_TOOLS = [
   { id:'tangent', hint:'Click a line and a circle or arc to make the line touch it.' },
   { id:'equal', hint:'Click two lines (same length) or two circles/arcs (same radius).' },
   { id:'midpoint', hint:'Click a point, then the line it must sit in the middle of.' },
-  { id:'fix', label:'Lock', icon:'⚓', hint:'Click a point to lock it where it is. Click a locked point to unlock it.' },
+  { id:'fix', label:'Lock', icon:'⚓', hint:'Click a point, line, circle or arc to lock it exactly where it is (it loses all its degrees of freedom). Click it again to unlock.' },
   { id:'distance', label:'Distance', icon:'↔', dim:true, hint:'Click a line (its length) or two points (distance between them), then type the size.' },
   { id:'hdist', dim:true, hint:'Click a line, two points, or one point (distance from the origin), then type the size.' },
   { id:'vdist', dim:true, hint:'Click a line, two points, or one point (distance from the origin), then type the size.' },
@@ -2692,7 +2726,17 @@ function resolveTool(id, sel) {
       return BAD('Pick one point and one line.');
     case 'fix':
       if (n === 1 && P.length === 1 && P[0].u !== REF_O) return ready({type:'fix', a:stripRef(P[0]), value: refPoint(P[0])});
-      return BAD('Pick one point of your drawing.');
+      if (n === 1 && S.length === 1 && realSeg(S[0])) {
+        const [a, b] = curSegVec(S[0]);
+        return ready({type:'fix', a:stripRef(S[0]), value:[a.slice(), b.slice()]});
+      }
+      if (n === 1 && C.length === 1) {
+        const e = entByUid(C[0].u);
+        if (e.type === 'circle') return ready({type:'fix', a:{u:e.uid}, value:{c:[e.cx, e.cy], r:e.r}});
+        const g = arcGeom(e.p1, e.pmid, e.p2);
+        return ready({type:'fix', a:{u:e.uid}, value:{p1:e.p1.slice(), p2:e.p2.slice(), r: g ? g.r : 0}});
+      }
+      return BAD('Pick one point, line, circle or arc of your drawing.');
     case 'distance':
       if (n === 1 && S.length === 1 && realSeg(S[0])) {
         const [a, b] = curSegVec(S[0]);
@@ -2761,8 +2805,22 @@ function askValueThenAdd(c, unit, sx, sy) {
 
 let _cstLastClick = [0, 0];
 function cstToolClick(sx, sy, shift) {
-  const hit = hitTestSketch(sx, sy, { refs:true });
+  let hit = hitTestSketch(sx, sy, { refs:true });
   _cstLastClick = [sx, sy];
+  // Clicks at the origin mean the origin when that is clearly what is wanted:
+  //  · a shape corner already sits on the origin (drawn from 0,0) and a point
+  //    is already picked — the second click is "the origin", not that corner;
+  //  · the click landed on an axis or empty space right next to the origin.
+  const [ox, oy] = wtoc(0, 0);
+  const nearOrigin = Math.hypot(sx - ox, sy - oy) < 14;
+  if (nearOrigin) {
+    const ptAtOrigin = hit && hit.kind === 'pt' && !isVirtual(hit.u) && (() => { const p = refPoint(hit); return p && Math.hypot(p[0], p[1]) < 1e-6; })();
+    const pointPicked = selItems.some(s => s.kind === 'pt');
+    if (!hit || hit.kind === 'body' || (hit.kind === 'seg' && isVirtual(hit.u)) ||
+        (ptAtOrigin && (pointPicked || isSelected(hit)))) {
+      hit = { kind:'pt', u:REF_O, k:0 };
+    }
+  }
   if (!hit || hit.kind === 'body') { selItems = []; updateConstraintPanel(); scheduleRender(); return; }
   if (isSelected(hit)) selItems = selItems.filter(s => !sameItem(s, hit));
   else selItems.push(hit);
@@ -2774,8 +2832,8 @@ function applyToolIfReady(sx, sy, fromButton) {
     if (res.dim) askValueThenAdd(res.c, res.dim, sx, sy);
     else {
       if (res.c.type === 'fix') {
-        const ex = sketchConstraints().find(o => o.type === 'fix' && o.a.u === res.c.a.u && o.a.k === res.c.a.k);
-        if (ex) { removeConstraint(ex); flashCstStatus('Point unlocked', false); selItems = []; updateConstraintPanel(); scheduleRender(); return; }
+        const ex = sketchConstraints().find(o => o.type === 'fix' && sameRef(o.a, res.c.a));
+        if (ex) { removeConstraint(ex); flashCstStatus('Unlocked', false); selItems = []; updateConstraintPanel(); scheduleRender(); return; }
       }
       addConstraint(res.c);
       selItems = [];
@@ -2861,7 +2919,7 @@ function addConstraint(c) {
   const clean = { type:c.type, a:c.a };
   if (c.b) clean.b = c.b;
   if (c.side) clean.side = c.side;
-  if (c.value !== undefined) clean.value = Array.isArray(c.value) ? c.value.slice() : +c.value;
+  if (c.value !== undefined) clean.value = (typeof c.value === 'object') ? JSON.parse(JSON.stringify(c.value)) : +c.value;
   list.push(clean);
   const res = solveSketch();
   scheduleExtrude(); updateConstraintPanel(); scheduleRender();
