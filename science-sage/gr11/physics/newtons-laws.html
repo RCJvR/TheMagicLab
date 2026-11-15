@@ -185,7 +185,8 @@
 <script defer src="../../../progress.js"></script>
 <script defer src="../../../lesson-progress-observer.js"></script>
 <style id="ml-touch">@media (pointer:coarse){#tab-explore button,#tab-simulate button,#panel-explore button,#tab-explore select,#tab-simulate select,#panel-explore select{min-height:40px}#tab-explore input[type=range],#tab-simulate input[type=range],#panel-explore input[type=range]{min-height:32px}}</style>
-<style id="ml-wb-memo">.wb-memo{margin-top:12px;border-top:1px dashed rgba(255,255,255,.10);padding-top:10px}.wb-memo summary{cursor:pointer;font-size:13px;font-weight:700;color:#86efac;list-style:revert}.wb-memo-body{margin-top:8px;font-size:13.5px;line-height:1.8;color:rgba(210,218,245,.85);background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.18);border-radius:10px;padding:12px 16px}@media print{.wb-memo{display:none!important}}</style><style id="ml-ieb-relabel">.ieb-block.ml-core{display:block}</style><style id="ml-exam-q">.wb-q.ml-exam-q{border-color:rgba(252,211,77,.35)}.ml-exam-q .wb-qnum{color:#fcd34d}</style></head>
+<style id="ml-wb-memo">.wb-memo{margin-top:12px;border-top:1px dashed rgba(255,255,255,.10);padding-top:10px}.wb-memo summary{cursor:pointer;font-size:13px;font-weight:700;color:#86efac;list-style:revert}.wb-memo-body{margin-top:8px;font-size:13.5px;line-height:1.8;color:rgba(210,218,245,.85);background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.18);border-radius:10px;padding:12px 16px}@media print{.wb-memo{display:none!important}}</style><style id="ml-ieb-relabel">.ieb-block.ml-core{display:block}</style><style id="ml-exam-q">.wb-q.ml-exam-q{border-color:rgba(252,211,77,.35)}.ml-exam-q .wb-qnum{color:#fcd34d}</style><link rel="stylesheet" href="/assets/explore-kit.css">
+</head>
 <body>
   <a class="ml-skip" href="#ml-main">Skip to content</a>
 <nav data-ml-bar="science-sage" data-ml-home="/science-sage/index.html">
@@ -308,43 +309,9 @@
 <!-- EXPLORE TAB -->
 <div class="tab-panel" id="tab-explore">
   <div class="ml-predict" style="margin:0 0 16px;padding:12px 16px;border-radius:10px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.075);border-left:2px solid #74d154;font-size:15px;line-height:1.6;color:#e3e8ef"><strong style="color:#f2f5f9">Predict first:</strong> On a rough incline, does a heavier block slide down faster than a lighter one? <strong style="color:#f2f5f9">Then test it:</strong> On the inclined plane, change only the mass and compare the acceleration.</div>
-  <div class="sim-outer">
-    <div class="sim-canvas-wrap">
-      <h3>Force and Motion Simulator</h3>
-      <canvas id="nlCanvas" height="380" role="img" aria-label="Force and Motion Simulator"></canvas>
-    </div>
-    <div class="sim-controls-row">
-      <div class="ctrl-card">
-        <div class="ctrl-label">Surface Type</div>
-        <button class="mode-btn active" id="modeFlat" onclick="setSurface('flat')">Flat Surface</button>
-        <button class="mode-btn" id="modeIncline" onclick="setSurface('incline')">Inclined Plane</button>
-        <div style="margin-top:10px">
-          <button class="mode-btn active" id="frictionBtn" onclick="toggleFriction()">Friction: ON</button>
-        </div>
-        <div style="margin-top:12px">
-          <button class="mode-btn" onclick="resetBlock()" style="background:rgba(96,165,250,.12);border-color:rgba(96,165,250,.30);color:#93c5fd">Reset Block</button>
-        </div>
-      </div>
-      <div class="ctrl-card">
-        <div class="ctrl-label">Parameters</div>
-        <div class="slider-row"><label for="sl-mass">Mass (kg)</label><input type="range" min="1" max="20" value="5" id="sl-mass" oninput="updateSim()"><span class="slider-val" id="sv-mass">5 kg</span></div>
-        <div id="flat-controls">
-          <div class="slider-row"><label for="sl-F">Applied F (N)</label><input type="range" min="0" max="200" value="60" id="sl-F" oninput="updateSim()"><span class="slider-val" id="sv-F">60 N</span></div>
-          <div class="slider-row"><label for="sl-muk">μk</label><input type="range" min="0" max="100" value="20" id="sl-muk" oninput="updateSim()"><span class="slider-val" id="sv-muk">0.20</span></div>
-        </div>
-        <div id="incline-controls" style="display:none">
-          <div class="slider-row"><label for="sl-ang">Angle (°)</label><input type="range" min="0" max="45" value="30" id="sl-ang" oninput="updateSim()"><span class="slider-val" id="sv-ang">30°</span></div>
-          <div class="slider-row"><label for="sl-muki">μk</label><input type="range" min="0" max="80" value="20" id="sl-muki" oninput="updateSim()"><span class="slider-val" id="sv-muki">0.20</span></div>
-        </div>
-      </div>
-    </div>
-    <div class="readout-grid">
-      <div class="readout"><div class="readout-label">Normal N</div><div class="readout-val" id="ro-N">—<span>N</span></div></div>
-      <div class="readout"><div class="readout-label">Friction f (fs or fk)</div><div class="readout-val" id="ro-fk">—<span>N</span></div></div>
-      <div class="readout"><div class="readout-label">Fnet</div><div class="readout-val" id="ro-Fn">—<span>N</span></div></div>
-      <div class="readout"><div class="readout-label">Accel.</div><div class="readout-val" id="ro-acc">—<span>m·s⁻²</span></div></div>
-    </div>
-  </div>
+  <div id="mlx-root"></div>
+  <script src="/assets/explore-kit.js"></script>
+  <script src="/assets/explore/newtons-laws.js"></script>
 </div>
 
 <!-- PRACTICE TAB -->
@@ -543,193 +510,7 @@
     if(!id.startsWith('I')){scoreCount+=result==='correct'?1:0;answered++;if(answered>=8){document.getElementById('score-big').textContent=scoreCount+'/8';document.getElementById('score-banner').classList.add('show');}}
   }
 
-  // SIMULATION
-  let surface='flat';let frictionOn=true;
-  let blockX=80,blockVx=0;let raf=null;let lastT=null;
-  const g=9.8;
-
-  function setSurface(s){
-    surface=s;
-    document.getElementById('modeFlat').classList.toggle('active',s==='flat');
-    document.getElementById('modeIncline').classList.toggle('active',s==='incline');
-    document.getElementById('flat-controls').style.display=s==='flat'?'block':'none';
-    document.getElementById('incline-controls').style.display=s==='incline'?'block':'none';
-    resetBlock();
-  }
-  function toggleFriction(){
-    frictionOn=!frictionOn;
-    document.getElementById('frictionBtn').textContent='Friction: '+(frictionOn?'ON':'OFF');
-    document.getElementById('frictionBtn').classList.toggle('active',frictionOn);
-    updateSim();
-  }
-  function resetBlock(){blockX=80;blockVx=0;lastT=null;updateSim();}
-
-  function updateSim(){
-    document.getElementById('sv-mass').textContent=document.getElementById('sl-mass').value+' kg';
-    document.getElementById('sv-F').textContent=document.getElementById('sl-F').value+' N';
-    document.getElementById('sv-muk').textContent=(document.getElementById('sl-muk').value/100).toFixed(2);
-    document.getElementById('sv-ang').textContent=document.getElementById('sl-ang').value+'°';
-    document.getElementById('sv-muki').textContent=(document.getElementById('sl-muki').value/100).toFixed(2);
-    drawNL();
-  }
-
-  let simInited=false;
-  function initSim(){if(!simInited){simInited=true;blockX=80;blockVx=0;updateSim();lastT=null;raf=requestAnimationFrame(animate);}}
-
-  function getPhysics(){
-    const m=+document.getElementById('sl-mass').value;
-    if(surface==='flat'){
-      const F=+document.getElementById('sl-F').value;
-      const muk=document.getElementById('sl-muk').value/100;
-      const N=m*g;
-      // Static friction (μs = 1.3 μk) holds a resting block until F exceeds μs·N;
-      // once sliding, kinetic friction μk·N opposes the motion and can slow the block down.
-      const mus=muk*1.3;
-      let fk=0,isStatic=false;
-      if(frictionOn){
-        if(blockVx<=1e-6&&F<=mus*N){fk=F;isStatic=true;}
-        else fk=muk*N;
-      }
-      const Fnet=isStatic?0:F-fk;
-      const a=Fnet/m;
-      return{N,fk,Fnet,a,angle:0,m,isStatic};
-    } else {
-      const ang=+document.getElementById('sl-ang').value*Math.PI/180;
-      const muk=document.getElementById('sl-muki').value/100;
-      const N=m*g*Math.cos(ang);
-      const Wpar=m*g*Math.sin(ang);
-      const mus=muk*1.3;
-      let fk=0,isStatic=false;
-      if(frictionOn){
-        if(blockVx<=1e-6&&Wpar<=mus*N){fk=Wpar;isStatic=true;}
-        else fk=muk*N;
-      }
-      const Fnet=isStatic?0:Wpar-fk;
-      const a=Fnet/m;
-      return{N,fk,Fnet,a,angle:+document.getElementById('sl-ang').value,m,isStatic};
-    }
-  }
-
-  function animate(ts){
-    if(!simInited) return;
-    raf=requestAnimationFrame(animate);
-    if(lastT===null){lastT=ts;return;}
-    const dt=Math.min((ts-lastT)/1000,0.05);lastT=ts;
-    const ph=getPhysics();
-    blockVx+=ph.a*dt;
-    if(blockVx<0)blockVx=0; // friction can stop the block but never push it backwards
-    blockX+=blockVx*dt*30;
-    const canvas=document.getElementById('nlCanvas');
-    if(blockX>canvas.clientWidth-60){blockX=canvas.clientWidth-60;blockVx=0;}
-    if(blockX<40){blockX=40;blockVx=0;}
-    drawNL(ph);
-  }
-
-  function drawNL(ph){
-    const canvas=document.getElementById('nlCanvas');
-    const dpr=window.devicePixelRatio||1;
-    const W=canvas.clientWidth,H=380;
-    canvas.width=W*dpr;canvas.height=H*dpr;
-    canvas.style.height=H+'px';
-    const ctx=canvas.getContext('2d');
-    ctx.setTransform(1,0,0,1,0,0);
-    ctx.scale(dpr,dpr);
-    ctx.clearRect(0,0,W,H);
-
-    if(!ph) ph=getPhysics();
-
-    if(surface==='flat'){
-      // Ground
-      ctx.fillStyle='rgba(96,165,250,0.08)';
-      ctx.fillRect(0,H-60,W,60);
-      ctx.strokeStyle='rgba(96,165,250,0.3)';ctx.lineWidth=2;
-      ctx.beginPath();ctx.moveTo(0,H-60);ctx.lineTo(W,H-60);ctx.stroke();
-
-      const bx=blockX,by=H-60-44,bw=64,bh=44;
-      ctx.fillStyle='rgba(96,165,250,0.25)';ctx.strokeStyle='#60a5fa';ctx.lineWidth=2;
-      ctx.beginPath();ctx.roundRect(bx-bw/2,by,bw,bh,6);ctx.fill();ctx.stroke();
-      ctx.fillStyle='#fff';ctx.font='bold 12px Cabinet Grotesk';ctx.textAlign='center';
-      ctx.fillText(ph.m+' kg',bx,by+bh/2+5);
-
-      // Force arrows
-      const cx=bx,cy=by+bh/2;
-      // Weight down
-      drawA(ctx,cx,cy+bh/2+5,cx,cy+bh/2+5+ph.m*g*0.3,'#f87171',2,'W='+(ph.m*g).toFixed(0)+'N');
-      // Normal up
-      drawA(ctx,cx,by-5,cx,by-5-ph.N*0.3,'#4ade80',2,'N='+ph.N.toFixed(0)+'N');
-      // Applied force right
-      const F=+document.getElementById('sl-F').value;
-      drawA(ctx,bx+bw/2+5,cy,bx+bw/2+5+F*0.4,cy,'#60a5fa',2,'F='+F+'N');
-      // Friction left
-      if(frictionOn&&ph.fk>0) drawA(ctx,bx-bw/2-5,cy,bx-bw/2-5-ph.fk*0.4,cy,'#fbbf24',2,(ph.isStatic?'fs=':'fk=')+ph.fk.toFixed(1)+'N');
-
-    } else {
-      // Incline
-      const ang=ph.angle*Math.PI/180;
-      const baseX=40,baseY=H-40;
-      const len=W-80;
-      const topX=baseX+len*Math.cos(ang);
-      const topY=baseY-len*Math.sin(ang);
-
-      ctx.fillStyle='rgba(96,165,250,0.08)';
-      ctx.beginPath();ctx.moveTo(baseX,baseY);ctx.lineTo(topX,topY);ctx.lineTo(topX,baseY);ctx.closePath();ctx.fill();
-      ctx.strokeStyle='rgba(96,165,250,0.3)';ctx.lineWidth=2;
-      ctx.beginPath();ctx.moveTo(baseX,baseY);ctx.lineTo(topX,topY);ctx.stroke();
-      ctx.beginPath();ctx.moveTo(baseX,baseY);ctx.lineTo(topX,baseY);ctx.stroke();
-
-      // Angle label
-      ctx.fillStyle='rgba(255,255,255,0.4)';ctx.font='12px JetBrains Mono';ctx.textAlign='left';
-      ctx.fillText(ph.angle+'°',baseX+34,baseY-8);
-
-      // Block on slope midpoint
-      const t=0.5;
-      const bCx=baseX+t*len*Math.cos(ang);
-      const bCy=baseY-t*len*Math.sin(ang);
-      const bw=50,bh=36;
-
-      ctx.save();ctx.translate(bCx,bCy);ctx.rotate(-ang);
-      ctx.fillStyle='rgba(96,165,250,0.25)';ctx.strokeStyle='#60a5fa';ctx.lineWidth=2;
-      ctx.beginPath();ctx.roundRect(-bw/2,-bh,bw,bh,5);ctx.fill();ctx.stroke();
-      ctx.fillStyle='#fff';ctx.font='bold 12px Cabinet Grotesk';ctx.textAlign='center';
-      ctx.fillText(ph.m+' kg',0,-bh/2+4);
-
-      // FBD arrows in rotated frame
-      const sc=0.6;
-      // Normal (perpendicular to slope, up)
-      drawA(ctx,0,-bh,0,-bh-ph.N*sc,'#4ade80',2,'N');
-      // Weight parallel down slope
-      const Wp=ph.m*g*Math.sin(ang);
-      drawA(ctx,bw/2+5,-bh/2,bw/2+5+Wp*sc,-bh/2,'#f87171',1.5,'W∥');
-      // Friction up slope
-      if(frictionOn&&ph.fk>0) drawA(ctx,-bw/2-5,-bh/2,-bw/2-5-ph.fk*sc,-bh/2,'#fbbf24',1.5,ph.isStatic?'fs':'fk');
-      ctx.restore();
-    }
-
-    // Update readouts
-    document.getElementById('ro-N').innerHTML=ph.N.toFixed(1)+'<span>N</span>';
-    document.getElementById('ro-fk').innerHTML=(frictionOn?ph.fk.toFixed(1):'0.0')+'<span>N</span>';
-    document.getElementById('ro-Fn').innerHTML=ph.Fnet.toFixed(1)+'<span>N</span>';
-    document.getElementById('ro-acc').innerHTML=ph.a.toFixed(2)+'<span>m·s⁻²</span>';
-  }
-
-  function drawA(ctx,x1,y1,x2,y2,col,lw,label){
-    const dx=x2-x1,dy=y2-y1,len=Math.sqrt(dx*dx+dy*dy);
-    if(len<4) return;
-    const ang=Math.atan2(dy,dx);
-    ctx.strokeStyle=col;ctx.lineWidth=lw;ctx.fillStyle=col;
-    ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();
-    ctx.beginPath();
-    ctx.moveTo(x2,y2);
-    ctx.lineTo(x2-12*Math.cos(ang-0.4),y2-12*Math.sin(ang-0.4));
-    ctx.lineTo(x2-12*Math.cos(ang+0.4),y2-12*Math.sin(ang+0.4));
-    ctx.closePath();ctx.fill();
-    if(label){
-      ctx.fillStyle='rgba(255,255,255,0.7)';ctx.font='12px JetBrains Mono';ctx.textAlign='center';
-      ctx.fillText(label,(x1+x2)/2+Math.sin(ang)*10,(y1+y2)/2-Math.cos(ang)*10);
-    }
-  }
-
-  window.addEventListener('resize',()=>{if(simInited)drawNL();});
+  function animate(){} function drawA(){} function drawNL(){} function getPhysics(){} function initSim(){} function resetBlock(){} function setSurface(){} function toggleFriction(){} function updateSim(){} // the simulation is assets/explore/newtons-laws.js
 </script>
 <script>const _st=window.switchTab;window.switchTab=function(id,btn){_st(id,btn);if(id==='explore')setTimeout(()=>window.dispatchEvent(new Event('resize')),60);}</script>
   <script>

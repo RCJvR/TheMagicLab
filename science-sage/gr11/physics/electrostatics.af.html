@@ -151,7 +151,8 @@
 <script defer src="../../../progress.js"></script>
 <script defer src="../../../lesson-progress-observer.js"></script>
 <style id="ml-touch">@media (pointer:coarse){#tab-explore button,#tab-simulate button,#panel-explore button,#tab-explore select,#tab-simulate select,#panel-explore select{min-height:40px}#tab-explore input[type=range],#tab-simulate input[type=range],#panel-explore input[type=range]{min-height:32px}}</style>
-<style id="ml-wb-memo">.wb-memo{margin-top:12px;border-top:1px dashed rgba(255,255,255,.10);padding-top:10px}.wb-memo summary{cursor:pointer;font-size:13px;font-weight:700;color:#86efac;list-style:revert}.wb-memo-body{margin-top:8px;font-size:13.5px;line-height:1.8;color:rgba(210,218,245,.85);background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.18);border-radius:10px;padding:12px 16px}@media print{.wb-memo{display:none!important}}</style><style id="ml-exam-q">.wb-q.ml-exam-q{border-color:rgba(252,211,77,.35)}.ml-exam-q .wb-qnum{color:#fcd34d}</style></head>
+<style id="ml-wb-memo">.wb-memo{margin-top:12px;border-top:1px dashed rgba(255,255,255,.10);padding-top:10px}.wb-memo summary{cursor:pointer;font-size:13px;font-weight:700;color:#86efac;list-style:revert}.wb-memo-body{margin-top:8px;font-size:13.5px;line-height:1.8;color:rgba(210,218,245,.85);background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.18);border-radius:10px;padding:12px 16px}@media print{.wb-memo{display:none!important}}</style><style id="ml-exam-q">.wb-q.ml-exam-q{border-color:rgba(252,211,77,.35)}.ml-exam-q .wb-qnum{color:#fcd34d}</style><link rel="stylesheet" href="/assets/explore-kit.css">
+</head>
 <body>
   <a class="ml-skip" href="#ml-main">Skip to content</a>
 <nav data-ml-bar="science-sage" data-ml-home="/science-sage/index.html">
@@ -267,41 +268,10 @@
 
 <!-- EXPLORE TAB -->
 <div id="tab-explore" class="tab-panel">
-  <div class="ml-predict" style="margin:0 0 16px;padding:12px 16px;border-radius:10px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.075);border-left:2px solid #74d154;font-size:15px;line-height:1.6;color:#e3e8ef"><strong style="color:#f2f5f9">Voorspel eers:</strong> Waar tussen twee gelyke positiewe ladings sal 'n klein positiewe toetslading geen netto krag voel nie? <strong style="color:#f2f5f9">Toets dit dan:</strong> Plaas twee gelyke positiewe ladings in die veldkaart en kyk na die pyltjies tussen hulle.</div>
-  <div class="sim-outer">
-    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:4px">
-      <button class="mode-btn active" id="btn-coulomb" onclick="setSimMode('coulomb',this)">Coulomb-berekenaar</button>
-      <button class="mode-btn" id="btn-fieldmap" onclick="setSimMode('fieldmap',this)">Veldkaart</button>
-    </div>
-    <div class="sim-canvas-wrap">
-      <h3 id="sim-title">Coulomb-berekenaar — Superposisie van 3 Ladings</h3>
-      <canvas id="simCanvas" height="420" role="img" aria-label="Coulomb-berekenaar — Superposisie van 3 Ladings. Klik enige plek op die skerm om &#x27;n lading te plaas. Klik weer op dieselfde plek om te wissel: positief → negatief → verwyder. Die rooster van pyle wys die elektriese veldrigting en -grootte by elke punt."></canvas>
-    </div>
-    <div class="sim-controls-row" id="coulomb-controls">
-      <div class="ctrl-card">
-        <div class="ctrl-label">Ladingswaardes</div>
-        <div class="slider-row"><label for="q1">Q₁ (µC)</label><input type="range" id="q1" min="-10" max="10" value="4" step="0.5" oninput="updateSim()"><span class="slider-val" id="q1v">+4.0</span></div>
-        <div class="slider-row"><label for="q2">Q₂ (µC)</label><input type="range" id="q2" min="-10" max="10" value="-3" step="0.5" oninput="updateSim()"><span class="slider-val" id="q2v">-3.0</span></div>
-        <div class="slider-row"><label for="q3">Q₃ (µC)</label><input type="range" id="q3" min="-10" max="10" value="2" step="0.5" oninput="updateSim()"><span class="slider-val" id="q3v">+2.0</span></div>
-      </div>
-      <div class="ctrl-card">
-        <div class="ctrl-label">Posisies</div>
-        <div class="slider-row"><label for="r12">r₁₂ (m)</label><input type="range" id="r12" min="0.1" max="0.8" value="0.3" step="0.05" oninput="updateSim()"><span class="slider-val" id="r12v">0,30 m</span></div>
-        <div class="slider-row"><label for="r23">r₂₃ (m)</label><input type="range" id="r23" min="0.1" max="0.8" value="0.2" step="0.05" oninput="updateSim()"><span class="slider-val" id="r23v">0,20 m</span></div>
-      </div>
-    </div>
-    <div class="readout-grid" id="coulomb-readouts">
-      <div class="readout"><div class="readout-label">F op Q₂ vanaf Q₁</div><div class="readout-val" id="ro-f12">—</div></div>
-      <div class="readout"><div class="readout-label">F op Q₂ vanaf Q₃</div><div class="readout-val" id="ro-f23">—</div></div>
-      <div class="readout"><div class="readout-label">Netto Krag op Q₂</div><div class="readout-val" id="ro-fnet">—</div></div>
-    </div>
-    <div id="fieldmap-controls" style="display:none">
-      <div class="ctrl-card" style="max-width:500px">
-        <div class="ctrl-label">Veldkaart — Klik op die skerm om lading te wissel (+/−/geen)</div>
-        <p style="font-size:12px;color:var(--muted);line-height:1.7">Klik enige plek op die skerm om 'n lading te plaas. Klik weer op dieselfde plek om te wissel: positief → negatief → verwyder. Die rooster van pyle wys die elektriese veldrigting en -grootte by elke punt.</p>
-      </div>
-    </div>
-  </div>
+  <div class="ml-predict" style="margin:0 0 16px;padding:12px 16px;border-radius:10px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.075);border-left:2px solid #74d154;font-size:15px;line-height:1.6;color:#e3e8ef"><strong style="color:#f2f5f9">Voorspel eers:</strong> Waar tussen twee gelyke positiewe ladings sal 'n klein positiewe toetslading geen netto krag voel nie? <strong style="color:#f2f5f9">Toets dit dan:</strong> Stel Q₁ en Q₂ in Elektriese veld op dieselfde positiewe waarde en sleep punt P langs die lyn tussen hulle totdat E nul is.</div>
+  <div id="mlx-root"></div>
+  <script src="/assets/explore-kit.js"></script>
+  <script src="/assets/explore/coulomb-field.js"></script>
 </div>
 
 <!-- PRACTICE TAB -->
@@ -361,219 +331,7 @@ function switchTab(id, btn) {
   if (id === 'explore') { initSim(); }
 }
 
-// ── Simulation ─────────────────────────────────────────────────────
-const canvas = document.getElementById('simCanvas');
-const ctx = canvas.getContext('2d');
-let simMode = 'coulomb';
-let fieldCharges = []; // {x,y,sign}
-let raf = null;
-const k = 9e9;
-
-function setSimMode(m, btn) {
-  simMode = m;
-  document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  document.getElementById('coulomb-controls').style.display = m === 'coulomb' ? 'grid' : 'none';
-  document.getElementById('fieldmap-controls').style.display = m === 'fieldmap' ? 'block' : 'none';
-  document.getElementById('coulomb-readouts').style.display = m === 'coulomb' ? 'grid' : 'none';
-  document.getElementById('sim-title').textContent = m === 'coulomb' ? 'Coulomb-berekenaar — Superposisie van 3 Ladings' : 'Elektriese Veldkaart — Klik om Ladings te Plaas';
-  if (m === 'fieldmap') { fieldCharges = [{x: 0.3, y: 0.5, sign: 1}, {x: 0.7, y: 0.5, sign: -1}]; }
-  initSim();
-}
-
-function resizeCanvas() {
-  const W = canvas.parentElement.clientWidth - 32;
-  const H = 420;
-  const dpr = window.devicePixelRatio || 1;
-  canvas.width = W * dpr;
-  canvas.height = H * dpr;
-  canvas.style.width = W + 'px';
-  canvas.style.height = H + 'px';
-  ctx.setTransform(1, 0, 0, 1, 0, 0);
-  ctx.scale(dpr, dpr);
-  return {W, H};
-}
-
-function initSim() {
-  if (raf) cancelAnimationFrame(raf);
-  if (simMode === 'coulomb') { canvas.onclick = null; drawCoulomb(); }
-  else { drawFieldMap(); canvas.onclick = handleFieldMapClick; }
-}
-
-function drawCoulomb() {
-  const {W, H} = resizeCanvas();
-  const q1 = parseFloat(document.getElementById('q1').value) * 1e-6;
-  const q2 = parseFloat(document.getElementById('q2').value) * 1e-6;
-  const q3 = parseFloat(document.getElementById('q3').value) * 1e-6;
-  const r12 = parseFloat(document.getElementById('r12').value);
-  const r23 = parseFloat(document.getElementById('r23').value);
-
-  document.getElementById('q1v').textContent = (q1*1e6 >= 0 ? '+' : '') + (q1*1e6).toFixed(1);
-  document.getElementById('q2v').textContent = (q2*1e6 >= 0 ? '+' : '') + (q2*1e6).toFixed(1);
-  document.getElementById('q3v').textContent = (q3*1e6 >= 0 ? '+' : '') + (q3*1e6).toFixed(1);
-  document.getElementById('r12v').textContent = r12.toFixed(2) + ' m';
-  document.getElementById('r23v').textContent = r23.toFixed(2) + ' m';
-
-  // Coulomb forces on Q2
-  const F12mag = k * Math.abs(q1) * Math.abs(q2) / (r12 * r12);
-  const F23mag = k * Math.abs(q3) * Math.abs(q2) / (r23 * r23);
-
-  // Direction: if Q1 and Q2 same sign, repulsive (Q1 pushes Q2 right, +x); opposite → attractive (-x)
-  const F12x = (q1 * q2 < 0) ? -F12mag : F12mag; // attractive means toward Q1 (left = negative)
-  const F23x = (q3 * q2 < 0) ? F23mag : -F23mag;  // attractive means toward Q3 (right = positive)
-  const Fnet = F12x + F23x;
-
-  document.getElementById('ro-f12').innerHTML = fmtN(F12mag) + ' <span>' + (F12x < 0 ? '← links' : '→ regs') + '</span>';
-  document.getElementById('ro-f23').innerHTML = fmtN(F23mag) + ' <span>' + (F23x > 0 ? '→ regs' : '← links') + '</span>';
-  document.getElementById('ro-fnet').innerHTML = fmtN(Math.abs(Fnet)) + ' <span>' + (Fnet >= 0 ? '→ regs' : '← links') + '</span>';
-
-  // Draw
-  ctx.clearRect(0, 0, W, H);
-  ctx.fillStyle = '#040710'; ctx.fillRect(0, 0, W, H);
-
-  const pad = 80;
-  const lineY = H / 2;
-  const totalSpan = r12 + r23;
-  const scale = (W - 2 * pad) / totalSpan;
-
-  const x1 = pad;
-  const x2 = pad + r12 * scale;
-  const x3 = pad + (r12 + r23) * scale;
-
-  // axis line
-  ctx.strokeStyle = 'rgba(255,255,255,0.12)'; ctx.lineWidth = 2;
-  ctx.beginPath(); ctx.moveTo(pad - 20, lineY); ctx.lineTo(W - pad + 20, lineY); ctx.stroke();
-
-  // Draw charges
-  drawChargeBall(x1, lineY, q1, 'Q₁', ctx);
-  drawChargeBall(x2, lineY, q2, 'Q₂', ctx);
-  drawChargeBall(x3, lineY, q3, 'Q₃', ctx);
-
-  // Force arrows on Q2
-  const arrowScale = Math.min(120, 40 / (Math.max(Math.abs(F12x), Math.abs(F23x), 0.001)));
-  drawArrow(ctx, x2, lineY - 50, x2 + F12x * arrowScale, lineY - 50, '#60a5fa', 'F₁₂');
-  drawArrow(ctx, x2, lineY - 80, x2 + F23x * arrowScale, lineY - 80, '#a78bfa', 'F₃₂');
-  drawArrow(ctx, x2, lineY - 110, x2 + Fnet * arrowScale, lineY - 110, '#34d399', 'F_net');
-
-  // distance labels
-  ctx.fillStyle = 'rgba(210,218,245,0.45)'; ctx.font = '11px "JetBrains Mono", monospace'; ctx.textAlign = 'center';
-  ctx.fillText('r₁₂ = ' + r12.toFixed(2) + ' m', (x1 + x2) / 2, lineY + 30);
-  ctx.fillText('r₂₃ = ' + r23.toFixed(2) + ' m', (x2 + x3) / 2, lineY + 30);
-}
-
-function fmtN(v) {
-  if (v >= 1) return v.toFixed(2) + ' N';
-  if (v >= 1e-3) return (v * 1e3).toFixed(2) + ' mN';
-  return (v * 1e6).toFixed(2) + ' µN';
-}
-
-function drawChargeBall(x, y, q, label, ctx) {
-  const r = 22;
-  const col = q > 0 ? '#ef4444' : q < 0 ? '#3b82f6' : '#6b7280';
-  const grd = ctx.createRadialGradient(x - 5, y - 5, 2, x, y, r);
-  grd.addColorStop(0, col + 'cc'); grd.addColorStop(1, col + '44');
-  ctx.fillStyle = grd;
-  ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.fill();
-  ctx.strokeStyle = col + '88'; ctx.lineWidth = 1.5; ctx.stroke();
-  ctx.fillStyle = '#fff'; ctx.font = 'bold 12px "Cabinet Grotesk", sans-serif'; ctx.textAlign = 'center';
-  ctx.fillText(label, x, y + 4);
-  ctx.fillStyle = col; ctx.font = '10px "JetBrains Mono", monospace'; ctx.textAlign = 'center';
-  ctx.fillText((q >= 0 ? '+' : '') + (q * 1e6).toFixed(1) + 'µC', x, y + r + 16);
-}
-
-function drawArrow(ctx, x1, y1, x2, y2, color, label) {
-  const dx = x2 - x1, dy = y2 - y1;
-  if (Math.abs(dx) < 2) return;
-  ctx.strokeStyle = color; ctx.lineWidth = 2;
-  ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke();
-  const ang = Math.atan2(dy, dx);
-  ctx.fillStyle = color;
-  ctx.beginPath();
-  ctx.moveTo(x2, y2);
-  ctx.lineTo(x2 - 10 * Math.cos(ang - 0.4), y2 - 10 * Math.sin(ang - 0.4));
-  ctx.lineTo(x2 - 10 * Math.cos(ang + 0.4), y2 - 10 * Math.sin(ang + 0.4));
-  ctx.closePath(); ctx.fill();
-  ctx.fillStyle = color; ctx.font = 'bold 10px "JetBrains Mono", monospace'; ctx.textAlign = dx > 0 ? 'right' : 'left';
-  ctx.fillText(label, dx > 0 ? x2 + 6 : x2 - 6, y1 + 4);
-}
-
-function updateSim() { drawCoulomb(); }
-
-function drawFieldMap() {
-  const {W, H} = resizeCanvas();
-  ctx.clearRect(0, 0, W, H);
-  ctx.fillStyle = '#040710'; ctx.fillRect(0, 0, W, H);
-
-  const gridN = 18;
-  const gx = W / gridN, gy = H / gridN;
-
-  for (let i = 0; i < gridN; i++) {
-    for (let j = 0; j < gridN; j++) {
-      const px = (i + 0.5) * gx, py = (j + 0.5) * gy;
-      let Ex = 0, Ey = 0;
-      for (const ch of fieldCharges) {
-        const cx = ch.x * W, cy = ch.y * H;
-        const dx = px - cx, dy = py - cy;
-        const r2 = dx * dx + dy * dy;
-        if (r2 < 400) continue;
-        const r = Math.sqrt(r2);
-        const E = k * 1e-8 / r2; // scaled
-        Ex += ch.sign * E * dx / r;
-        Ey += ch.sign * E * dy / r;
-      }
-      const mag = Math.sqrt(Ex * Ex + Ey * Ey);
-      if (mag < 1e-10) continue;
-      const len = Math.min(gx * 0.45, mag * 3e5);
-      const ux = Ex / mag, uy = Ey / mag;
-      const alpha = Math.min(1, mag * 2e5);
-      ctx.globalAlpha = 0.3 + 0.7 * alpha;
-      ctx.strokeStyle = '#60a5fa'; ctx.lineWidth = 1;
-      ctx.beginPath();
-      ctx.moveTo(px - ux * len * 0.5, py - uy * len * 0.5);
-      ctx.lineTo(px + ux * len * 0.5, py + uy * len * 0.5);
-      ctx.stroke();
-      // arrowhead
-      const ax = px + ux * len * 0.5, ay = py + uy * len * 0.5;
-      const ang = Math.atan2(uy, ux);
-      ctx.fillStyle = '#93c5fd';
-      ctx.beginPath();
-      ctx.moveTo(ax, ay);
-      ctx.lineTo(ax - 5 * Math.cos(ang - 0.5), ay - 5 * Math.sin(ang - 0.5));
-      ctx.lineTo(ax - 5 * Math.cos(ang + 0.5), ay - 5 * Math.sin(ang + 0.5));
-      ctx.closePath(); ctx.fill();
-      ctx.globalAlpha = 1;
-    }
-  }
-
-  // Draw placed charges
-  for (const ch of fieldCharges) {
-    const cx = ch.x * W, cy = ch.y * H;
-    ctx.fillStyle = ch.sign > 0 ? '#ef4444' : '#3b82f6';
-    ctx.beginPath(); ctx.arc(cx, cy, 14, 0, Math.PI * 2); ctx.fill();
-    ctx.fillStyle = '#fff'; ctx.font = 'bold 16px sans-serif'; ctx.textAlign = 'center';
-    ctx.fillText(ch.sign > 0 ? '+' : '−', cx, cy + 6);
-  }
-}
-
-function handleFieldMapClick(e) {
-  const rect = canvas.getBoundingClientRect();
-  const x = (e.clientX - rect.left) / rect.width;
-  const y = (e.clientY - rect.top) / rect.height;
-  const W = canvas.parentElement.clientWidth - 32;
-  const H = 420;
-  // Check if near existing charge
-  for (let i = 0; i < fieldCharges.length; i++) {
-    const ch = fieldCharges[i];
-    const dx = (x - ch.x) * W, dy = (y - ch.y) * H;
-    if (Math.sqrt(dx * dx + dy * dy) < 20) {
-      if (ch.sign === 1) ch.sign = -1;
-      else fieldCharges.splice(i, 1);
-      drawFieldMap(); return;
-    }
-  }
-  if (fieldCharges.length < 4) fieldCharges.push({x, y, sign: 1});
-  drawFieldMap();
-}
+function drawArrow(){} function drawChargeBall(){} function drawCoulomb(){} function drawFieldMap(){} function fmtN(){} function handleFieldMapClick(){} function initSim(){} function resizeCanvas(){} function setSimMode(){} function updateSim(){} // the simulation is assets/explore/coulomb-field.js
 
 // ── Practice questions ─────────────────────────────────────────────
 const NSC_QS = [
@@ -642,7 +400,6 @@ function updateScore() {
 }
 
 renderPractice();
-window.addEventListener('resize', () => { if (simMode) initSim(); });
 </script>
 <script>const _st=window.switchTab;window.switchTab=function(id,btn){_st(id,btn);if(id==='explore')setTimeout(()=>window.dispatchEvent(new Event('resize')),60);}</script>
   <script>
