@@ -4,7 +4,9 @@ window.SS_LESSON_INDEX = {
   4: {
     "life/living-non-living": "Living & non-living things",
     "life/plant-animal-parts": "Structure of plants & animals",
-    "life/what-plants-need": "What plants need to grow"
+    "life/what-plants-need": "What plants need to grow",
+    "life/habitats": "Habitats of animals",
+    "structures/animal-shelters": "Structures for animal shelters"
   },
   7: {
     "life/biodiversity": "Biodiversity & classification",

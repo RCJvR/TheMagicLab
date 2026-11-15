@@ -3439,6 +3439,21 @@ window.ML_LESSON_CATALOG = {
           "value": "What plants need to grow",
           "label": "What plants need to grow",
           "ref": "ss:4:life/what-plants-need"
+        },
+        {
+          "value": "Habitats of animals",
+          "label": "Habitats of animals",
+          "ref": "ss:4:life/habitats"
+        }
+      ]
+    },
+    {
+      "group": "Grade 4 — Structures",
+      "lessons": [
+        {
+          "value": "Structures for animal shelters",
+          "label": "Structures for animal shelters",
+          "ref": "ss:4:structures/animal-shelters"
         }
       ]
     },
