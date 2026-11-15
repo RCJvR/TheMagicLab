@@ -446,5 +446,13 @@ buildPractice();
 </script>
   <script src="/contact-button.js" defer></script>
 <script src="/assets/ml-bar.js" defer></script>
+<script>
+(function () {
+  function strip(s) { return String(s == null ? '' : s).replace(/<[^>]+>/g, ''); }
+  window.ML_SECTION_CHECKS = { questions: QUESTIONS.map(function (q) { return { text: strip(q.text), opts: q.opts.map(strip), ans: q.ans, exp: strip(q.exp) }; }), sections: { 0: [0, 1], 1: [2], 2: [3], 3: [4], 4: [5], 5: [6], 6: [7] } };
+})();
+</script>
+<script defer src="/assets/section-checks.js"></script>
+<link rel="stylesheet" href="/assets/section-checks.css">
 </body>
 </html>

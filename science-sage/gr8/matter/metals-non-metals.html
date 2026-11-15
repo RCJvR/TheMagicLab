@@ -406,5 +406,13 @@ renderQ();
 <script src="/assets/explore-kit.js"></script>
 <script src="/assets/explore/property-lab.js"></script>
 <script src="/assets/ml-bar.js" defer></script>
+<script>
+(function () {
+  function strip(s) { return String(s == null ? '' : s).replace(/<[^>]+>/g, ''); }
+  window.ML_SECTION_CHECKS = { questions: QS.map(function (q) { return { text: strip(q.q), opts: q.opts.map(strip), ans: q.ans, exp: strip(q.fb) }; }), sections: { 0: [0, 1], 1: [2], 2: [3], 3: [4, 5], 4: [6], 5: [7] } };
+})();
+</script>
+<script defer src="/assets/section-checks.js"></script>
+<link rel="stylesheet" href="/assets/section-checks.css">
 </body>
 </html>

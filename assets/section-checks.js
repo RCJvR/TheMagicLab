@@ -36,7 +36,8 @@
     box.className = 'ml-check';
     box.setAttribute('data-section', String(i));
     var anchor = anchorFor(i);
-    if (anchor) lesson.insertBefore(box, anchor); else lesson.appendChild(box);
+    // The heading can sit inside a wrapper, so the check goes in the heading's own parent.
+    if (anchor) anchor.parentNode.insertBefore(box, anchor); else lesson.appendChild(box);
     show(box, qs, cfg.questions, i);
   });
 

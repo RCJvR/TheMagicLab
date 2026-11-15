@@ -481,6 +481,14 @@ buildPractice();
   })();
   </script>
 <script src="/assets/ml-bar.js" defer></script>
+<script>
+(function () {
+  function strip(s) { return String(s == null ? '' : s).replace(/<[^>]+>/g, ''); }
+  window.ML_SECTION_CHECKS = { questions: nscQs.map(function (q) { return { text: strip(q.q), opts: q.opts.map(strip), ans: q.ans, exp: strip(q.exp) }; }), sections: { 0: [0, 1], 1: [2, 3], 2: [4], 3: [5, 6], 4: [7] } };
+})();
+</script>
+<script defer src="/assets/section-checks.js"></script>
+<link rel="stylesheet" href="/assets/section-checks.css">
 </body>
 </html>
 
