@@ -172,7 +172,8 @@
 <script defer src="../../../progress.js"></script>
 <script defer src="../../../lesson-progress-observer.js"></script>
 <style id="ml-touch">@media (pointer:coarse){#tab-explore button,#tab-simulate button,#panel-explore button,#tab-explore select,#tab-simulate select,#panel-explore select{min-height:40px}#tab-explore input[type=range],#tab-simulate input[type=range],#panel-explore input[type=range]{min-height:32px}}</style>
-<style id="ml-wb-memo">.wb-memo{margin-top:12px;border-top:1px dashed rgba(255,255,255,.10);padding-top:10px}.wb-memo summary{cursor:pointer;font-size:13px;font-weight:700;color:#86efac;list-style:revert}.wb-memo-body{margin-top:8px;font-size:13.5px;line-height:1.8;color:rgba(210,218,245,.85);background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.18);border-radius:10px;padding:12px 16px}@media print{.wb-memo{display:none!important}}</style><style id="ml-exam-q">.wb-q.ml-exam-q{border-color:rgba(252,211,77,.35)}.ml-exam-q .wb-qnum{color:#fcd34d}</style></head>
+<style id="ml-wb-memo">.wb-memo{margin-top:12px;border-top:1px dashed rgba(255,255,255,.10);padding-top:10px}.wb-memo summary{cursor:pointer;font-size:13px;font-weight:700;color:#86efac;list-style:revert}.wb-memo-body{margin-top:8px;font-size:13.5px;line-height:1.8;color:rgba(210,218,245,.85);background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.18);border-radius:10px;padding:12px 16px}@media print{.wb-memo{display:none!important}}</style><style id="ml-exam-q">.wb-q.ml-exam-q{border-color:rgba(252,211,77,.35)}.ml-exam-q .wb-qnum{color:#fcd34d}</style><link rel="stylesheet" href="/assets/explore-kit.css">
+</head>
 <body>
   <a class="ml-skip" href="#ml-main">Skip to content</a>
 <nav data-ml-bar="science-sage" data-ml-home="/science-sage/index.html">
@@ -282,27 +283,9 @@
   <h2 style="font-size:20px;font-weight:800;color:#f2f5f9;margin-bottom:6px">Populasiegroei-simulator</h2>
   <p style="font-size:15px;line-height:1.6;color:rgba(226,232,240,.72);margin-bottom:16px;max-width:68ch">Pas die groeitempo en drakrag aan, en druk dan Speel om te sien hoe die populasie langs 'n logistiese (S-vormige) kromme groei.</p>
   <div class="ml-predict" style="margin:0 0 16px;padding:12px 16px;border-radius:10px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.075);border-left:2px solid #74d154;font-size:15px;line-height:1.6;color:#e3e8ef"><strong style="color:#f2f5f9">Voorspel eers:</strong> Hoe sal die bevolkingskurwe lyk wanneer dit naby die drakrag kom? <strong style="color:#f2f5f9">Toets dit dan:</strong> Druk Speel en herhaal dan met 'n laer drakrag.</div>
-  <div class="sim-outer">
-    <div class="sim-canvas-wrap">
-      <h3>Populasiegrootte oor tyd</h3>
-      <canvas id="popCanvas" height="280" role="img" aria-label="Populasiegroei-simulator. Pas die groeitempo en drakrag aan, en druk dan Speel om te sien hoe die populasie langs &#x27;n logistiese (S-vormige) kromme groei."></canvas>
-    </div>
-    <div class="sim-controls-row">
-      <div class="ctrl-card">
-        <div id="lbl-rateSlider" class="ctrl-label">Groeitempo <span class="val" id="rateVal">Matig</span></div>
-        <input aria-labelledby="lbl-rateSlider" type="range" id="rateSlider" min="1" max="10" value="4">
-      </div>
-      <div class="ctrl-card">
-        <div id="lbl-capSlider" class="ctrl-label">Drakrag <span class="val" id="capVal">500</span></div>
-        <input aria-labelledby="lbl-capSlider" type="range" id="capSlider" min="100" max="1000" value="500" step="50">
-      </div>
-    </div>
-    <div class="playbar">
-      <button class="play-btn" id="playBtn" onclick="togglePlay()">Speel</button>
-      <button class="play-btn" style="background:linear-gradient(135deg,#64748b,#334155)" onclick="resetSim()">Herstel</button>
-      <div class="phase-readout">Fase: <span class="n" id="phaseLabel">Vertraging</span> · Populasie: <span class="n" id="popLabel">10</span></div>
-    </div>
-  </div>
+  <div id="mlx-root"></div>
+  <script src="/assets/explore-kit.js"></script>
+  <script src="/assets/explore/population.js"></script>
 </div>
 
 <!-- PRACTICE -->
@@ -357,108 +340,7 @@ function switchTab(id,btn){
   if(id === 'explore' && typeof resizeCanvas === 'function') resizeCanvas();
 }
 
-/* ═══════════════════════════════════════════════
-   POPULATION GROWTH SIMULATOR (logistic growth)
-═══════════════════════════════════════════════ */
-const canvas = document.getElementById('popCanvas');
-const ctx = canvas.getContext('2d');
-let W,H;
-let rate = 4, capacity = 500;
-let history = [];
-let pop = 10;
-let playing = false;
-let t = 0;
-
-function resizeCanvas(){
-  W = canvas.offsetWidth || 600; H = 280;
-  canvas.width = W*devicePixelRatio; canvas.height = H*devicePixelRatio;
-  ctx.scale(devicePixelRatio, devicePixelRatio);
-}
-
-document.getElementById('rateSlider').addEventListener('input', e=>{
-  rate = +e.target.value;
-  document.getElementById('rateVal').textContent = rate<=3?'Stadig':rate<=6?'Matig':'Vinnig';
-});
-document.getElementById('capSlider').addEventListener('input', e=>{
-  capacity = +e.target.value;
-  document.getElementById('capVal').textContent = capacity;
-  resetSim();
-});
-function togglePlay(){
-  playing = !playing;
-  document.getElementById('playBtn').textContent = playing ? 'Pouseer' : 'Speel';
-}
-function resetSim(){
-  pop = 10; t = 0; history = [pop];
-  playing = false;
-  document.getElementById('playBtn').textContent = 'Speel';
-  updateReadout();
-}
-
-function updateReadout(){
-  document.getElementById('popLabel').textContent = Math.round(pop);
-  const pct = pop/capacity;
-  const phase = pct < 0.15 ? 'Vertraging' : pct < 0.75 ? 'Eksponensieel' : pct < 0.98 ? 'Stabiliserend' : 'By drakrag';
-  document.getElementById('phaseLabel').textContent = phase;
-}
-
-function step(){
-  // logistic growth: dP/dt = r * P * (1 - P/K)
-  const r = rate/100;
-  const growth = r * pop * (1 - pop/capacity);
-  pop = Math.max(1, pop + growth);
-  history.push(pop);
-  if (history.length > 400) history.shift();
-  updateReadout();
-}
-
-function draw(){
-  ctx.clearRect(0,0,W,H);
-  const padL=50, padR=20, padT=20, padB=30;
-  const plotW = W-padL-padR, plotH = H-padT-padB;
-  const maxY = capacity*1.15;
-
-  // axes
-  ctx.strokeStyle='rgba(255,255,255,0.15)'; ctx.lineWidth=1;
-  ctx.beginPath(); ctx.moveTo(padL,padT); ctx.lineTo(padL,H-padB); ctx.lineTo(W-padR,H-padB); ctx.stroke();
-
-  // carrying capacity line
-  const capY = padT + plotH - (capacity/maxY)*plotH;
-  ctx.strokeStyle='rgba(251,191,36,0.5)'; ctx.setLineDash([5,4]); ctx.lineWidth=1.5;
-  ctx.beginPath(); ctx.moveTo(padL,capY); ctx.lineTo(W-padR,capY); ctx.stroke();
-  ctx.setLineDash([]);
-  ctx.fillStyle='rgba(251,191,36,0.7)'; ctx.font='10px "JetBrains Mono",monospace'; ctx.textAlign='left';
-  ctx.fillText('Drakrag (K)', padL+6, capY-6);
-
-  // population curve
-  if (history.length > 1){
-    ctx.strokeStyle='#4ade80'; ctx.lineWidth=2.5;
-    ctx.beginPath();
-    history.forEach((p,i)=>{
-      const x = padL + (i/399)*plotW;
-      const y = padT + plotH - (p/maxY)*plotH;
-      i===0 ? ctx.moveTo(x,y) : ctx.lineTo(x,y);
-    });
-    ctx.stroke();
-    // current point
-    const lastX = padL + ((history.length-1)/399)*plotW;
-    const lastY = padT + plotH - (history[history.length-1]/maxY)*plotH;
-    ctx.beginPath(); ctx.arc(lastX,lastY,4,0,Math.PI*2);
-    ctx.fillStyle='#86efac'; ctx.fill();
-  }
-
-  ctx.fillStyle='rgba(255,255,255,0.4)'; ctx.font='10px "JetBrains Mono",monospace'; ctx.textAlign='center';
-  ctx.fillText('TYD', W/2, H-8);
-  ctx.save(); ctx.translate(14,H/2); ctx.rotate(-Math.PI/2); ctx.fillText('POPULASIEGROOTTE',0,0); ctx.restore();
-
-  if (playing) step();
-  requestAnimationFrame(draw);
-}
-
-window.addEventListener('resize', resizeCanvas);
-resizeCanvas();
-resetSim();
-draw();
+function draw(){} function resetSim(){} function resizeCanvas(){} function step(){} function togglePlay(){} function updateReadout(){} // the simulation is assets/explore/population.js
 
 /* ═══════════════════════════════════════════════
    PRACTICE

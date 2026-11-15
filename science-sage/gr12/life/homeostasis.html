@@ -140,7 +140,8 @@
 <script defer src="../../../progress.js"></script>
 <script defer src="../../../lesson-progress-observer.js"></script>
 <style id="ml-touch">@media (pointer:coarse){#tab-explore button,#tab-simulate button,#panel-explore button,#tab-explore select,#tab-simulate select,#panel-explore select{min-height:40px}#tab-explore input[type=range],#tab-simulate input[type=range],#panel-explore input[type=range]{min-height:32px}}</style>
-<style id="ml-wb-memo">.wb-memo{margin-top:12px;border-top:1px dashed rgba(255,255,255,.10);padding-top:10px}.wb-memo summary{cursor:pointer;font-size:13px;font-weight:700;color:#86efac;list-style:revert}.wb-memo-body{margin-top:8px;font-size:13.5px;line-height:1.8;color:rgba(210,218,245,.85);background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.18);border-radius:10px;padding:12px 16px}@media print{.wb-memo{display:none!important}}</style><style id="ml-exam-q">.wb-q.ml-exam-q{border-color:rgba(252,211,77,.35)}.ml-exam-q .wb-qnum{color:#fcd34d}</style></head>
+<style id="ml-wb-memo">.wb-memo{margin-top:12px;border-top:1px dashed rgba(255,255,255,.10);padding-top:10px}.wb-memo summary{cursor:pointer;font-size:13px;font-weight:700;color:#86efac;list-style:revert}.wb-memo-body{margin-top:8px;font-size:13.5px;line-height:1.8;color:rgba(210,218,245,.85);background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.18);border-radius:10px;padding:12px 16px}@media print{.wb-memo{display:none!important}}</style><style id="ml-exam-q">.wb-q.ml-exam-q{border-color:rgba(252,211,77,.35)}.ml-exam-q .wb-qnum{color:#fcd34d}</style><link rel="stylesheet" href="/assets/explore-kit.css">
+</head>
 <body>
   <a class="ml-skip" href="#ml-main">Skip to content</a>
 <nav data-ml-bar="science-sage" data-ml-home="/science-sage/index.html">
@@ -208,35 +209,9 @@
   <h2 style="font-size:20px;font-weight:800;color:#f2f5f9;margin-bottom:6px">Thermoregulation Simulator</h2>
   <p style="font-size:15px;line-height:1.6;color:rgba(226,232,240,.72);margin-bottom:16px;max-width:68ch">Drag the slider to raise or lower body temperature away from the 37°C set point, and see which negative feedback responses the body activates.</p>
   <div class="ml-predict" style="margin:0 0 16px;padding:12px 16px;border-radius:10px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.075);border-left:2px solid #74d154;font-size:15px;line-height:1.6;color:#e3e8ef"><strong style="color:#f2f5f9">Predict first:</strong> If body temperature rises above 37 °C, which responses switch on: sweating, shivering or vasodilation? <strong style="color:#f2f5f9">Then test it:</strong> Drag the temperature above and then below the set point.</div>
-  <div class="sim-outer">
-    <div class="sim-canvas-wrap">
-      <h3>Body temperature vs set point</h3>
-      <canvas id="tempCanvas" height="220" role="img" aria-label="Thermoregulation Simulator. Drag the slider to raise or lower body temperature away from the 37°C set point, and see which negative feedback responses the body activates."></canvas>
-    </div>
-    <div class="ctrl-card">
-      <div id="lbl-tempSlider" class="ctrl-label">Body temperature <span class="val" id="tempVal">37.0°C</span></div>
-      <input aria-labelledby="lbl-tempSlider" type="range" id="tempSlider" min="33" max="41" value="37" step="0.2">
-    </div>
-    <div class="status-line" id="statusLine">Body temperature is at the normal set point (37°C) — no correction needed.</div>
-    <div class="response-grid">
-      <div class="resp-card" id="hotCard">
-        <h4>Responses to HEAT</h4>
-        <ul>
-          <li>Sweat glands secrete more sweat (evaporative cooling)</li>
-          <li>Vasodilation — skin blood vessels widen, more heat radiates away</li>
-          <li>Hair erector muscles relax (hairs lie flat)</li>
-        </ul>
-      </div>
-      <div class="resp-card" id="coldCard">
-        <h4>Responses to COLD</h4>
-        <ul>
-          <li>Shivering — muscle contractions generate heat</li>
-          <li>Vasoconstriction — skin blood vessels narrow, less heat lost</li>
-          <li>Hair erector muscles contract (hairs stand up, trap air)</li>
-        </ul>
-      </div>
-    </div>
-  </div>
+  <div id="mlx-root"></div>
+  <script src="/assets/explore-kit.js"></script>
+  <script src="/assets/explore/thermoregulation.js"></script>
 </div>
 
 <!-- PRACTICE -->
@@ -288,89 +263,7 @@ function switchTab(id,btn){
   if(id === 'explore' && typeof resizeCanvas === 'function') resizeCanvas();
 }
 
-/* ═══════════════════════════════════════════════
-   THERMOREGULATION SIMULATOR
-═══════════════════════════════════════════════ */
-const canvas = document.getElementById('tempCanvas');
-const ctx = canvas.getContext('2d');
-let W,H;
-let temp = 37;
-
-function resizeCanvas(){
-  W = canvas.offsetWidth || 600; H = 220;
-  canvas.width = W*devicePixelRatio; canvas.height = H*devicePixelRatio;
-  ctx.scale(devicePixelRatio, devicePixelRatio);
-  draw();
-}
-
-const slider = document.getElementById('tempSlider');
-slider.addEventListener('input', e=>{
-  temp = +e.target.value;
-  document.getElementById('tempVal').textContent = temp.toFixed(1)+'°C';
-  updateStatus();
-  draw();
-});
-
-function updateStatus(){
-  const hotCard = document.getElementById('hotCard');
-  const coldCard = document.getElementById('coldCard');
-  const status = document.getElementById('statusLine');
-  hotCard.classList.remove('active');
-  coldCard.classList.remove('active');
-  if (temp > 37.3){
-    hotCard.classList.add('active');
-    status.innerHTML = `Body temperature is <span class="n">${temp.toFixed(1)}°C</span> — ABOVE the set point. Heat-loss responses are activated.`;
-  } else if (temp < 36.7){
-    coldCard.classList.add('active');
-    status.innerHTML = `Body temperature is <span class="n">${temp.toFixed(1)}°C</span> — BELOW the set point. Heat-generating/retaining responses are activated.`;
-  } else {
-    status.innerHTML = `Body temperature is at the normal set point (<span class="n">37°C</span>) — no correction needed.`;
-  }
-}
-
-function draw(){
-  ctx.clearRect(0,0,W,H);
-  const padL=50, padR=20, padT=20, padB=30;
-  const plotW = W-padL-padR, plotH = H-padT-padB;
-  const minT=33, maxT=41;
-
-  // axes
-  ctx.strokeStyle='rgba(255,255,255,0.15)'; ctx.lineWidth=1;
-  ctx.beginPath(); ctx.moveTo(padL,padT); ctx.lineTo(padL,H-padB); ctx.lineTo(W-padR,H-padB); ctx.stroke();
-
-  // set point line (37)
-  const setY = padT + plotH - ((37-minT)/(maxT-minT))*plotH;
-  ctx.strokeStyle='rgba(134,239,172,0.6)'; ctx.setLineDash([5,4]); ctx.lineWidth=1.5;
-  ctx.beginPath(); ctx.moveTo(padL,setY); ctx.lineTo(W-padR,setY); ctx.stroke();
-  ctx.setLineDash([]);
-  ctx.fillStyle='rgba(134,239,172,0.85)'; ctx.font='10px "JetBrains Mono",monospace'; ctx.textAlign='left';
-  ctx.fillText('Set point (37°C)', padL+6, setY-6);
-
-  // current temp bar
-  const tempY = padT + plotH - ((temp-minT)/(maxT-minT))*plotH;
-  const barColor = temp>37.3 ? '#f87171' : temp<36.7 ? '#60a5fa' : '#22c55e';
-  ctx.fillStyle = barColor+'33';
-  ctx.fillRect(padL, tempY, plotW, (H-padB)-tempY);
-  ctx.strokeStyle = barColor; ctx.lineWidth=2.5;
-  ctx.beginPath(); ctx.moveTo(padL,tempY); ctx.lineTo(W-padR,tempY); ctx.stroke();
-
-  ctx.beginPath(); ctx.arc(W-padR-30,tempY,5,0,Math.PI*2);
-  ctx.fillStyle=barColor; ctx.fill();
-
-  ctx.fillStyle='rgba(255,255,255,0.7)'; ctx.font='12px "JetBrains Mono",monospace'; ctx.textAlign='right';
-  ctx.fillText(temp.toFixed(1)+'°C', W-padR-42, tempY-8);
-
-  // y labels
-  ctx.fillStyle='rgba(255,255,255,0.4)'; ctx.font='9px "JetBrains Mono",monospace'; ctx.textAlign='right';
-  [33,35,37,39,41].forEach(v=>{
-    const y = padT + plotH - ((v-minT)/(maxT-minT))*plotH;
-    ctx.fillText(v+'°', padL-6, y+3);
-  });
-}
-
-window.addEventListener('resize', resizeCanvas);
-resizeCanvas();
-updateStatus();
+function draw(){} function resizeCanvas(){} function updateStatus(){} // the simulation is assets/explore/thermoregulation.js
 
 /* ═══════════════════════════════════════════════
    PRACTICE

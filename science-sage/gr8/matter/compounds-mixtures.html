@@ -6,6 +6,8 @@
 <script defer src="/assets/lesson-toc.js"></script>
 <link rel="stylesheet" href="/assets/lesson-progress.css">
 <script defer src="/assets/lesson-progress.js"></script>
+<script defer src="/assets/section-checks.js"></script>
+<link rel="stylesheet" href="/assets/section-checks.css">
 <link rel="stylesheet" href="/assets/focus-reading.css">
 <script defer src="/assets/focus-reading.js"></script>
 <script src="/assets/sim-fit.js"></script>
@@ -626,6 +628,7 @@ const QUESTIONS = [
   {text:'A beaker contains sand, salt, and water all mixed together. A student wants to recover all THREE substances separately, using only physical methods. Which sequence of steps will work?',opts:['Evaporate the whole mixture first, then try to filter what remains','Filter the mixture to remove the sand, then evaporate/distil the filtrate to separate the salt from the water','Add a magnet to remove the sand, then filter the salt out of the water','Filter the mixture twice — first for the salt, then for the water'],ans:1,exp:'Sand is insoluble, so filtering first removes it, leaving a filtrate of salt water. Evaporating (or better, distilling, to also recover the water) then separates the dissolved salt from the water. Filtration cannot remove dissolved salt because salt particles pass through the filter paper along with the water — only evaporation/distillation can separate a solution.'},
   {text:'The Law of Definite Proportions states that pure water (H₂O) always contains hydrogen and oxygen in a fixed mass ratio of 1:8. A student breaks down three unknown liquid samples and measures these hydrogen:oxygen mass ratios — Sample 1 = 1:8, Sample 2 = 1:9, Sample 3 = 2:16. Which sample(s) are consistent with being pure water?',opts:['Sample 1 only','Sample 2 only','Sample 3 only','Samples 1 and 3'],ans:3,exp:'Sample 3\'s ratio of 2:16 simplifies to 1:8 (divide both numbers by 2), matching the fixed ratio required for pure water — so Samples 1 and 3 are both consistent. Sample 2\'s ratio of 1:9 does NOT match 1:8, so it cannot be pure water; it likely contains an impurity or was measured incorrectly. This is exactly what the Law of Definite Proportions predicts: a compound always has the same ratio by mass, no matter the sample size.'},
 ];
+window.ML_SECTION_CHECKS = { questions: QUESTIONS, sections: { 1: [4], 2: [0, 7], 3: [3, 6], 4: [2, 5], 5: [1] } };
 let score=0,answered=new Array(QUESTIONS.length).fill(false);
 function buildPractice(){
   document.getElementById('questions').innerHTML=QUESTIONS.map((q,qi)=>`

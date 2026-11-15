@@ -188,7 +188,8 @@
 .wb-memo summary{cursor:pointer;font-size:13px;font-weight:700;color:#86efac;list-style:revert}
 .wb-memo-body{margin-top:8px;font-size:13.5px;line-height:1.8;color:rgba(210,218,245,.85);background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.18);border-radius:10px;padding:12px 16px}
 @media print{.wb-memo{display:none!important}}
-</style><style id="ml-exam-q">.wb-q.ml-exam-q{border-color:rgba(252,211,77,.35)}.ml-exam-q .wb-qnum{color:#fcd34d}</style></head>
+</style><style id="ml-exam-q">.wb-q.ml-exam-q{border-color:rgba(252,211,77,.35)}.ml-exam-q .wb-qnum{color:#fcd34d}</style><link rel="stylesheet" href="/assets/explore-kit.css">
+</head>
 <body>
   <a class="ml-skip" href="#ml-main">Skip to content</a>
 <nav data-ml-bar="science-sage" data-ml-home="/science-sage/index.html">
@@ -250,37 +251,9 @@
   <h2 style="font-size:20px;font-weight:800;color:#f2f5f9;margin-bottom:6px">Transpirasietempo-simulator</h2>
   <p style="font-size:15px;line-height:1.6;color:rgba(226,232,240,.72);margin-bottom:16px;max-width:68ch">Verstel die vier omgewingsfaktore en kyk hoe vinnig water deur die xileem opgetrek word en van die blaar verlore gaan.</p>
   <div class="ml-predict" style="margin:0 0 16px;padding:12px 16px;border-radius:10px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.075);border-left:2px solid #74d154;font-size:15px;line-height:1.6;color:#e3e8ef"><strong style="color:#f2f5f9">Voorspel eers:</strong> Watter een sal waterverlies uit die blaar verhoog: meer wind, hoër humiditeit, of albei? <strong style="color:#f2f5f9">Toets dit dan:</strong> Verander een faktor op 'n slag en kyk na die transpirasietempo.</div>
-  <div class="sim-outer">
-    <div class="sim-canvas-wrap">
-      <h3>Waterbeweging deur die plant</h3>
-      <canvas id="transCanvas" height="280" role="img" aria-label="Transpirasietempo-simulator. Verstel die vier omgewingsfaktore en kyk hoe vinnig water deur die xileem opgetrek word en van die blaar verlore gaan."></canvas>
-    </div>
-    <div class="sim-controls-row">
-      <div class="ctrl-card">
-        <div id="lbl-tempSlider" class="ctrl-label">Temperatuur <span class="val" id="tempVal">25°C</span></div>
-        <input aria-labelledby="lbl-tempSlider" type="range" id="tempSlider" min="5" max="45" value="25">
-      </div>
-      <div class="ctrl-card">
-        <div id="lbl-lightSlider" class="ctrl-label">Lig <span class="val" id="lightVal">Matig</span></div>
-        <input aria-labelledby="lbl-lightSlider" type="range" id="lightSlider" min="0" max="100" value="50">
-      </div>
-      <div class="ctrl-card">
-        <div id="lbl-humSlider" class="ctrl-label">Humiditeit <span class="val" id="humVal">Matig</span></div>
-        <input aria-labelledby="lbl-humSlider" type="range" id="humSlider" min="0" max="100" value="50">
-      </div>
-      <div class="ctrl-card">
-        <div id="lbl-windSlider" class="ctrl-label">Wind <span class="val" id="windVal">Geen</span></div>
-        <input aria-labelledby="lbl-windSlider" type="range" id="windSlider" min="0" max="100" value="0">
-      </div>
-    </div>
-    <div class="rate-readout">
-      <div class="rate-num" id="rateNum">50%</div>
-      <div class="rate-bar-wrap">
-        <div class="rate-bar-track"><div class="rate-bar-fill" id="rateBar" style="width:50%"></div></div>
-        <div class="rate-status" id="rateStatus">Matige transpirasietempo.</div>
-      </div>
-    </div>
-  </div>
+  <div id="mlx-root"></div>
+  <script src="/assets/explore-kit.js"></script>
+  <script src="/assets/explore/transpiration.js"></script>
 </div>
 
 <!-- PRACTICE -->
@@ -333,103 +306,7 @@ function switchTab(id,btn){
   if(id==='explore' && typeof resizeCanvas==='function') resizeCanvas();
 }
 
-/* ═══════════════════════════════════════════════
-   TRANSPIRATION SIMULATOR
-═══════════════════════════════════════════════ */
-const canvas = document.getElementById('transCanvas');
-const ctx = canvas.getContext('2d');
-let W,H;
-let temp=25, light=50, hum=50, wind=0;
-let droplets = [];
-
-function resizeCanvas(){
-  W = canvas.offsetWidth || 600; H = 280;
-  canvas.width = W*devicePixelRatio; canvas.height = H*devicePixelRatio;
-  ctx.scale(devicePixelRatio, devicePixelRatio);
-}
-
-function computeRate(){
-  // The factors MULTIPLY: water vapour only diffuses out if the stomata are open (light) AND the air is
-  // drier than the leaf (humidity). At 100% humidity there is no gradient; in the dark the stomata close.
-  const tempF = Math.max(0, Math.min(1, (temp-5)/35));
-  const stomata = 0.08 + 0.92 * (light/100);      // a little water is still lost through the cuticle
-  const gradient = 1 - hum/100;
-  const warmth = 0.35 + 0.65 * tempF;             // warm air holds more vapour, steepening the gradient
-  const windF = 0.6 + 0.4 * (wind/100);           // wind removes the humid layer next to the leaf
-  return Math.max(0, Math.min(1, stomata * gradient * warmth * windF));
-}
-
-function updateReadout(){
-  const rate = computeRate();
-  const pct = Math.round(rate*100);
-  document.getElementById('rateNum').textContent = pct+'%';
-  document.getElementById('rateBar').style.width = pct+'%';
-  const color = pct>=65?'#22c55e':pct>=35?'#fbbf24':'#60a5fa';
-  document.getElementById('rateBar').style.background = color;
-  document.getElementById('rateNum').style.color = color;
-  document.getElementById('rateStatus').textContent =
-    pct>=80 ? 'Baie hoë transpirasie — warm, helder, droë en winderige toestande trek water vinnig op.' :
-    pct>=50 ? 'Matige-tot-hoë transpirasietempo.' :
-    pct>=25 ? 'Lae transpirasie — koel, klam of stil toestande vertraag waterverlies.' :
-    'Baie lae transpirasie — die plant verloor tans skaars enige water.';
-}
-
-document.getElementById('tempSlider').addEventListener('input', e=>{ temp=+e.target.value; document.getElementById('tempVal').textContent=temp+'°C'; updateReadout(); });
-document.getElementById('lightSlider').addEventListener('input', e=>{ light=+e.target.value; document.getElementById('lightVal').textContent=light<33?'Laag':light<66?'Matig':'Hoog'; updateReadout(); });
-document.getElementById('humSlider').addEventListener('input', e=>{ hum=+e.target.value; document.getElementById('humVal').textContent=hum<33?'Laag':hum<66?'Matig':'Hoog'; updateReadout(); });
-document.getElementById('windSlider').addEventListener('input', e=>{ wind=+e.target.value; document.getElementById('windVal').textContent=wind<10?'Geen':wind<50?'Ligte briesie':'Sterk wind'; updateReadout(); });
-
-function initDroplets(){
-  droplets = [];
-  for(let i=0;i<10;i++) droplets.push({ x: W*0.5+(Math.random()-0.5)*10, y: H - Math.random()*H*0.6, phase: Math.random() });
-}
-
-function draw(){
-  ctx.clearRect(0,0,W,H);
-  const rate = computeRate();
-  const stemX = W*0.5, stemTop = H*0.28, stemBottom = H*0.95;
-
-  // ground
-  ctx.fillStyle='rgba(120,80,40,0.25)'; ctx.fillRect(0,stemBottom,W,H-stemBottom);
-  // stem/xylem tube
-  ctx.strokeStyle='rgba(96,165,250,0.35)'; ctx.lineWidth=14;
-  ctx.beginPath(); ctx.moveTo(stemX,stemBottom); ctx.lineTo(stemX,stemTop); ctx.stroke();
-  // leaf canopy
-  ctx.beginPath(); ctx.ellipse(stemX, stemTop-10, 70, 40, 0, 0, Math.PI*2);
-  ctx.fillStyle='rgba(74,222,128,0.18)'; ctx.fill();
-  ctx.strokeStyle='rgba(74,222,128,0.5)'; ctx.lineWidth=2; ctx.stroke();
-
-  // droplets moving upward at speed proportional to rate
-  droplets.forEach(d=>{
-    d.y -= 0.6 + rate*3.2;
-    if (d.y < stemTop){ d.y = stemBottom; d.x = stemX+(Math.random()-0.5)*10; }
-    ctx.beginPath(); ctx.arc(d.x, d.y, 4, 0, Math.PI*2);
-    ctx.fillStyle='rgba(96,165,250,0.85)'; ctx.fill();
-  });
-
-  // evaporation wisps from canopy, density/speed proportional to rate
-  const wispCount = Math.round(rate*8);
-  for(let i=0;i<wispCount;i++){
-    const a = (Date.now()/500 + i) % (Math.PI*2);
-    const wx = stemX + Math.cos(a)*(50+i*4);
-    const wy = stemTop-10 - Math.abs(Math.sin(a))*30 - (Date.now()/40 % 20);
-    ctx.beginPath(); ctx.arc(wx, wy, 2, 0, Math.PI*2);
-    ctx.fillStyle='rgba(224,242,254,0.5)'; ctx.fill();
-  }
-
-  // label
-  ctx.fillStyle='rgba(255,255,255,0.4)'; ctx.font='11px "JetBrains Mono",monospace'; ctx.textAlign='center';
-  ctx.fillText('WORTELS', stemX, stemBottom+18);
-  ctx.fillText('BLARE (verdamping)', stemX, stemTop-58);
-
-  requestAnimationFrame(draw);
-}
-
-window.addEventListener('resize', ()=>{ resizeCanvas(); initDroplets(); });
-resizeCanvas();
-initDroplets();
-updateReadout();
-draw();
+function computeRate(){} function draw(){} function initDroplets(){} function resizeCanvas(){} function updateReadout(){} // the simulation is assets/explore/transpiration.js
 
 /* ═══════════════════════════════════════════════
    PRACTICE

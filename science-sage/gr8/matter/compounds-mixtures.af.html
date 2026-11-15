@@ -6,6 +6,8 @@
 <script defer src="/assets/lesson-toc.js"></script>
 <link rel="stylesheet" href="/assets/lesson-progress.css">
 <script defer src="/assets/lesson-progress.js"></script>
+<script defer src="/assets/section-checks.js"></script>
+<link rel="stylesheet" href="/assets/section-checks.css">
 <link rel="stylesheet" href="/assets/focus-reading.css">
 <script defer src="/assets/focus-reading.js"></script>
 <script src="/assets/sim-fit.js"></script>
@@ -626,6 +628,7 @@ const QUESTIONS = [
   {text:'\'n Beker bevat sand, sout, en water wat almal saam gemeng is. \'n Leerder wil al DRIE stowwe apart terugkry, deur slegs fisiese metodes te gebruik. Watter reeks stappe sal werk?',opts:['Verdamp eers die hele mengsel, en probeer dan filtreer wat oorbly','Filtreer die mengsel om die sand te verwyder, verdamp/distilleer dan die filtraat om die sout van die water te skei','Voeg \'n magneet by om die sand te verwyder, filtreer dan die sout uit die water','Filtreer die mengsel twee keer — eers vir die sout, dan vir die water'],ans:1,exp:'Sand is onoplosbaar, so filtrasie verwyder dit eerste en laat \'n filtraat van soutwater agter. Verdamping (of beter, distillasie, om ook die water terug te kry) skei dan die opgeloste sout van die water. Filtrasie kan nie opgeloste sout verwyder nie, want soutdeeltjies beweeg saam met die water deur die filtreerpapier — slegs verdamping/distillasie kan \'n oplossing skei.'},
   {text:'Die Wet van Bepaalde Verhoudings stel dat suiwer water (H₂O) altyd waterstof en suurstof in \'n vaste massaverhouding van 1:8 bevat. \'n Leerder ontbind drie onbekende vloeistofmonsters en meet hierdie waterstof:suurstof-massaverhoudings — Monster 1 = 1:8, Monster 2 = 1:9, Monster 3 = 2:16. Watter monster(s) is konsekwent met suiwer water?',opts:['Slegs Monster 1','Slegs Monster 2','Slegs Monster 3','Monsters 1 en 3'],ans:3,exp:'Monster 3 se verhouding van 2:16 vereenvoudig na 1:8 (deel albei getalle deur 2), wat ooreenstem met die vaste verhouding wat vir suiwer water vereis word — dus is Monsters 1 en 3 albei konsekwent. Monster 2 se verhouding van 1:9 stem NIE ooreen met 1:8 nie, dus kan dit nie suiwer water wees nie; dit bevat waarskynlik \'n onsuiwerheid of is verkeerd gemeet. Dit is presies wat die Wet van Bepaalde Verhoudings voorspel: \'n verbinding het altyd dieselfde massaverhouding, ongeag die monstergrootte.'},
 ];
+window.ML_SECTION_CHECKS = { questions: QUESTIONS, sections: { 1: [4], 2: [0, 7], 3: [3, 6], 4: [2, 5], 5: [1] } };
 let score=0,answered=new Array(QUESTIONS.length).fill(false);
 function buildPractice(){
   document.getElementById('questions').innerHTML=QUESTIONS.map((q,qi)=>`
