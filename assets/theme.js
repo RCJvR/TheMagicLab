@@ -144,6 +144,43 @@
     return [o[0], o[1], o[2], c[3]];
   }
 
+  // Prism leaves the simulation panels alone: there colour carries meaning
+  // (red and blue blood, element groups, graph lines), and recolouring every
+  // accent to the tool's hue would make a key unreadable. Light mode still
+  // maps them, because its job there is keeping text readable on white.
+  var SIM_IDS = '#tab-explore,#tab-simulate,#panel-explore,#tab-build';
+  var SIM_NOT = ':not(:where(' + SIM_IDS + '),:where(' + SIM_IDS + ') *)'; // adds no specificity
+  // Splits a selector list on its top-level commas.
+  function splitSel(s) {
+    var out = [], depth = 0, cur = '';
+    for (var i = 0; i < s.length; i++) {
+      var ch = s[i];
+      if (ch === '(' || ch === '[') depth++;
+      else if (ch === ')' || ch === ']') depth--;
+      if (ch === ',' && depth === 0) { out.push(cur); cur = ''; } else cur += ch;
+    }
+    out.push(cur);
+    return out;
+  }
+  // The same selector, but never matching a sim panel or anything inside one.
+  // The :not() goes before any pseudo-element, where a pseudo-class must sit.
+  function outsideSims(sel) {
+    return splitSel(sel).map(function (s) {
+      s = s.trim();
+      var m = /::|:(?:before|after|first-line|first-letter)\b/i.exec(s);
+      return m ? s.slice(0, m.index) + SIM_NOT + s.slice(m.index) : s + SIM_NOT;
+    }).join(',');
+  }
+  // Custom properties set on an ancestor of a sim panel (usually :root) would
+  // still reach the panel by inheritance, so the panel gets the originals back.
+  function simAncestorMatches(sel) {
+    var panels = document.querySelectorAll(SIM_IDS);
+    for (var i = 0; i < panels.length; i++) {
+      try { if (panels[i].closest(sel)) return true; } catch (e) { return false; }
+    }
+    return false;
+  }
+
   // mode: 'fg' text/lines, 'bg' fills, 'shadow', 'keepfg' (dark text sitting on a kept accent fill)
   function mapColor(c, mode) {
     var hsl = rgb2hsl(c[0], c[1], c[2]), h = hsl[0], s = hsl[1], l = hsl[2], a = c[3];
@@ -244,7 +281,14 @@
       if (r.type === 1) { // style rule
         if (KEEP_SEL.test(r.selectorText)) continue;
         var d = declsFor(r.style);
-        if (d.length) out += r.selectorText + '{' + d.map(function (x) { return x[0] + ':' + x[1] + (x[2] ? ' !important' : ''); }).join(';') + '}\n';
+        if (!d.length) continue;
+        var decl = function (x) { return x[0] + ':' + x[1] + (x[2] ? ' !important' : ''); };
+        if (PALETTE !== 'prism') { out += r.selectorText + '{' + d.map(decl).join(';') + '}\n'; continue; }
+        out += outsideSims(r.selectorText) + '{' + d.map(decl).join(';') + '}\n';
+        var vars = d.filter(function (x) { return x[0].indexOf('--') === 0; });
+        if (vars.length && simAncestorMatches(r.selectorText)) {
+          out += SIM_IDS + '{' + vars.map(function (x) { return decl([x[0], r.style.getPropertyValue(x[0]), x[2]]); }).join(';') + '}\n';
+        }
       } else if (r.type === 4) { // @media
         if (/print/.test(r.media.mediaText)) continue;
         var inner = rulesText(r.cssRules);
@@ -287,6 +331,7 @@
   function themeEl(el) {
     if (!el.getAttribute || !el.hasAttribute('style')) return;
     if (el.closest && el.closest(KEEP_ZONE)) return;
+    if (PALETTE === 'prism' && el.closest && el.closest(SIM_IDS)) return;
     var prev = mapped.get(el) || {};
     var d = declsFor(el.style).filter(function (x) { return prev[x[0]] !== el.style.getPropertyValue(x[0]); });
     // A bright accent fill set inline (pyramid bars, chips) keeps its colour,
