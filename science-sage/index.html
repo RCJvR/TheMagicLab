@@ -431,6 +431,7 @@
       <i data-lucide="chevron-down" class="path-chevron" style="width:16px;height:16px;"></i>
     </button>
     <div class="path-menu">
+      <a class="path-item" style="--pc:#fb923c" onclick="selectPath(event,'grade4','Grade 4 · Natural Sciences &amp; Technology','sprout')"><i data-lucide="sprout" style="width:15px;height:15px;"></i><div><div class="path-item-title" data-af="Graad 4">Grade 4</div><div class="path-item-sub" data-af="Natuurwetenskappe en Tegnologie">Natural Sciences &amp; Technology</div></div></a>
       <a class="path-item" style="--pc:#4ade80" onclick="selectPath(event,'grade7','Grade 7 · Natural Sciences','flask-conical')"><i data-lucide="flask-conical" style="width:15px;height:15px;"></i><div><div class="path-item-title" data-af="Graad 7">Grade 7</div><div class="path-item-sub" data-af="Natuurwetenskappe">Natural Sciences</div></div></a>
       <a class="path-item" style="--pc:#60a5fa" onclick="selectPath(event,'grade8','Grade 8 · Natural Sciences','flask-conical')"><i data-lucide="flask-conical" style="width:15px;height:15px;"></i><div><div class="path-item-title" data-af="Graad 8">Grade 8</div><div class="path-item-sub" data-af="Natuurwetenskappe">Natural Sciences</div></div></a>
       <a class="path-item" style="--pc:#fbbf24" onclick="selectPath(event,'grade9','Grade 9 · Natural Sciences','flask-conical')"><i data-lucide="flask-conical" style="width:15px;height:15px;"></i><div><div class="path-item-title" data-af="Graad 9">Grade 9</div><div class="path-item-sub" data-af="Natuurwetenskappe">Natural Sciences</div></div></a>
@@ -442,6 +443,30 @@
       <a class="path-item" style="--pc:#4ade80" onclick="selectPath(event,'grade12-life','Grade 12 · Life Sciences','leaf')"><i data-lucide="leaf" style="width:15px;height:15px;"></i><div><div class="path-item-title" data-af="Graad 12">Grade 12</div><div class="path-item-sub" data-af="Lewenswetenskappe">Life Sciences</div></div></a>
       <a class="path-item" style="--pc:#f472b6" onclick="selectPath(event,'grade12-phys','Grade 12 · Physical Sciences','zap')"><i data-lucide="zap" style="width:15px;height:15px;"></i><div><div class="path-item-title" data-af="Graad 12">Grade 12</div><div class="path-item-sub" data-af="Fisiese Wetenskappe">Physical Sciences</div></div></a>
     </div>
+  </div>
+
+  <div class="grade-section" id="section-grade4">
+  <!-- GRADE 4 -->
+  <div class="section-row" id="grade4">
+    <span class="section-label" style="color:#fdba74;" data-af-html='Graad 4 · Natuurwetenskappe en Tegnologie'>
+      Grade 4 · Natural Sciences &amp; Technology
+    </span>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="strands">
+    <div class="strand-card strand-life">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;">
+        <div class="strand-icon"><i data-lucide="leaf" style="width:18px;height:18px"></i></div><span class="strand-tag" data-af="Lewe en Lewende Dinge · T1">Life &amp; Living · T1</span>
+      </div>
+      <div><div class="strand-title" data-af="Lewe en Lewende Dinge">Life &amp; Living</div><p class="strand-desc" data-af="Lewende en nie-lewende dinge, die dele van plante en diere, en wat plante nodig het om te groei.">Living and non-living things, the parts of plants and animals, and what plants need to grow.</p></div>
+      <div class="strand-topics">
+        <a href="gr4/life/living-non-living.html" class="strand-topic" data-af-html='<span class="strand-topic-dot"></span>Lewende &amp; nie-lewende dinge'><span class="strand-topic-dot"></span>Living &amp; non-living things</a>
+        <a href="gr4/life/plant-animal-parts.html" class="strand-topic" data-af-html='<span class="strand-topic-dot"></span>Struktuur van plante &amp; diere'><span class="strand-topic-dot"></span>Structure of plants &amp; animals</a>
+        <a href="gr4/life/what-plants-need.html" class="strand-topic" data-af-html='<span class="strand-topic-dot"></span>Wat plante nodig het om te groei'><span class="strand-topic-dot"></span>What plants need to grow</a>
+      </div>
+    </div>
+  </div>
   </div>
 
   <div class="grade-section" id="section-grade7">
@@ -1169,6 +1194,7 @@
 
     // One learning path visible at a time — the dropdown filters, it doesn't scroll.
     const PATH_META={
+      'grade4':      {label:'Grade 4 · Natural Sciences & Technology', labelAf:'Graad 4 · Natuurwetenskappe en Tegnologie', icon:'sprout', color:'#fb923c'},
       'grade7':      {label:'Grade 7 · Natural Sciences',  labelAf:'Graad 7 · Natuurwetenskappe',  icon:'flask-conical', color:'#4ade80'},
       'grade8':      {label:'Grade 8 · Natural Sciences',  labelAf:'Graad 8 · Natuurwetenskappe',  icon:'flask-conical', color:'#60a5fa'},
       'grade9':      {label:'Grade 9 · Natural Sciences',  labelAf:'Graad 9 · Natuurwetenskappe',  icon:'flask-conical', color:'#fbbf24'},
@@ -1202,7 +1228,8 @@
     document.addEventListener('magiclab:auth:ready',()=>{
       if(localStorage.getItem('scienceSagePath')) return;
       const g=parseInt(window.MagicLabAuth?.getProfile?.()?.grade,10);
-      if(g>=7&&g<=9) applyPath('grade'+g,false);
+      if(g===4) applyPath('grade4',false);
+      else if(g>=7&&g<=9) applyPath('grade'+g,false);
       else if(g>=10&&g<=12) applyPath('grade'+g+'-life',false);
     });
     document.addEventListener('click', e=>{

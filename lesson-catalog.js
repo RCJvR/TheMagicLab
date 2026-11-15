@@ -3423,6 +3423,26 @@ window.ML_LESSON_CATALOG = {
   ],
   "science-sage": [
     {
+      "group": "Grade 4 — Life & Living",
+      "lessons": [
+        {
+          "value": "Living & non-living things",
+          "label": "Living & non-living things",
+          "ref": "ss:4:life/living-non-living"
+        },
+        {
+          "value": "Structure of plants & animals",
+          "label": "Structure of plants & animals",
+          "ref": "ss:4:life/plant-animal-parts"
+        },
+        {
+          "value": "What plants need to grow",
+          "label": "What plants need to grow",
+          "ref": "ss:4:life/what-plants-need"
+        }
+      ]
+    },
+    {
       "group": "Grade 7 — Life & Living",
       "lessons": [
         {
