@@ -5,6 +5,8 @@
 <script defer src="/assets/lesson-toc.js"></script>
 <link rel="stylesheet" href="/assets/lesson-progress.css">
 <script defer src="/assets/lesson-progress.js"></script>
+<script defer src="/assets/section-checks.js"></script>
+<link rel="stylesheet" href="/assets/section-checks.css">
 <link rel="stylesheet" href="/assets/focus-reading.css">
 <script defer src="/assets/focus-reading.js"></script>
 <script>document.documentElement.style.visibility='hidden';</script>
@@ -645,6 +647,7 @@ const QUESTIONS = [
   {text:'An unknown element Q has the electron configuration 2,8,7. Based ONLY on this configuration, which conclusion is best supported?',opts:['It is in Period 2 with 8 valence electrons, making it a noble gas','It is in Period 3 with 7 valence electrons, making it a very reactive non-metal (likely a halogen)','It is in Period 3 with 2 valence electrons, making it an unreactive metal','It is in Period 7 with 3 valence electrons, making it a metalloid'],ans:1,exp:'There are 3 numbers in the configuration (2,8,7), so element Q has 3 electron shells — Period 3. The LAST number (7) is the valence electron count, giving Group 17 — the halogens. Halogens are very reactive non-metals, needing just 1 more electron to complete their outer shell. This configuration actually matches chlorine (2,8,7).'},
   {text:'Using the periodic trends described in this lesson (metal reactivity increases DOWN a group; non-metal reactivity increases UP a group), which of these four elements is the single MOST reactive overall?',opts:['Lithium (Li) — Group 1, Period 2','Francium (Fr) — Group 1, Period 7','Fluorine (F) — Group 17, Period 2','Iodine (I) — Group 17, Period 5'],ans:2,exp:'Comparing within each family first: francium is more reactive than lithium (metal reactivity increases down Group 1), and fluorine is more reactive than iodine (non-metal reactivity increases up Group 17). Comparing the two most-reactive candidates, fluorine is considered the single most reactive element of all — it reacts violently with almost everything, including glass and water.'},
 ];
+window.ML_SECTION_CHECKS = { questions: QUESTIONS, sections: { 1: [0], 2: [1, 2, 6], 3: [5], 4: [3], 5: [4, 7] } };
 let score=0, answered=new Array(QUESTIONS.length).fill(false);
 function buildPractice(){
   document.getElementById('questions').innerHTML=QUESTIONS.map((q,qi)=>`
