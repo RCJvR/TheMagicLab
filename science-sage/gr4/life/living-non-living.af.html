@@ -2,6 +2,7 @@
 <html lang="af">
 <head>
 <script src="/assets/theme.js"></script>
+<script src="/assets/stickers.js"></script>
 <script defer src="/assets/lesson-toc.js"></script>
 <link rel="stylesheet" href="/assets/lesson-progress.css">
 <script defer src="/assets/lesson-progress.js"></script>
@@ -441,7 +442,7 @@ const starStr = n => '<span style="color:#fde047;font-size:40px;letter-spacing:4
         bubble = document.getElementById('d-bubble'), countEl = document.getElementById('d-count'), verdictEl = document.getElementById('d-verdict');
   SUSPECTS.forEach((s, i) => {
     const b = document.createElement('button'); b.type = 'button'; b.id = 'd-s' + i;
-    b.innerHTML = `<span class="e" aria-hidden="true">${s.e}</span>${s.n}`;
+    b.innerHTML = `<span class="e" aria-hidden="true">${MLSticker.img(s.e)}</span>${s.n}`;
     b.addEventListener('click', () => { suspect = i; checked = new Set(); render(); bubble.textContent = `Ons ondersoek die ${s.n.toLowerCase()}. Tik op 'n letter!`; });
     pick.appendChild(b);
   });
@@ -522,7 +523,7 @@ const starStr = n => '<span style="color:#fde047;font-size:40px;letter-spacing:4
     }
     document.getElementById('s-left').textContent = `${pos + 1} van ${deck.length}`;
     const it = deck[pos];
-    card.innerHTML = `<span class="e pop-in" aria-hidden="true">${it.e}</span><span class="n">${it.n}</span>`;
+    card.innerHTML = `<span class="e pop-in" aria-hidden="true">${MLSticker.img(it.e)}</span><span class="n">${it.n}</span>`;
     bins.forEach(b => b.disabled = false);
   }
   bins.forEach(b => b.addEventListener('click', () => {
@@ -531,7 +532,7 @@ const starStr = n => '<span style="color:#fde047;font-size:40px;letter-spacing:4
     fb.className = 's-fb ' + (ok ? 'good' : 'bad');
     fb.innerHTML = ok ? `<b>Reg!</b> ${it.why}` : `<b>Nie heeltemal reg nie.</b> Dit is <b>${NAME[it.g].toLowerCase()}</b>. ${it.why}`;
     fb.hidden = false;
-    const sp = document.createElement('span'); sp.textContent = it.e; sp.title = it.n; document.getElementById('sh-' + it.g).appendChild(sp);
+    const sp = document.createElement('span'); sp.innerHTML = MLSticker.img(it.e); sp.title = it.n; document.getElementById('sh-' + it.g).appendChild(sp);
     bins.forEach(x => x.disabled = true);
     document.getElementById('s-score').textContent = `Punte: ${score}`;
     nextBtn.textContent = pos === deck.length - 1 ? 'Sien my punte' : 'Volgende';

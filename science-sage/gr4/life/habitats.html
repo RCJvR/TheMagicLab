@@ -2,6 +2,8 @@
 <html lang="en">
 <head>
 <script src="/assets/theme.js"></script>
+<script src="/assets/stickers.js"></script>
+<script>MLSticker.use({ '🌳': 'thorn-tree' });</script>
 <script defer src="/assets/lesson-toc.js"></script>
 <link rel="stylesheet" href="/assets/lesson-progress.css">
 <script defer src="/assets/lesson-progress.js"></script>
@@ -393,7 +395,7 @@ function goSim(id){ switchTab('explore'); const el=document.getElementById(id); 
 
 /* ─── Sims ─── */
 const starStr = n => '<span style="color:#fde047;font-size:40px;letter-spacing:4px">' + '★'.repeat(n) + '<span style="color:rgba(255,255,255,.15)">' + '★'.repeat(3 - n) + '</span></span>';
-const emo = (x, y, e, size) => `<text x="${x}" y="${y}" font-size="${size || 34}" text-anchor="middle" dominant-baseline="central">${e}</text>`;
+const emo = (x, y, e, size) => MLSticker.svg(x, y, e, size) || `<text x="${x}" y="${y}" font-size="${size || 34}" text-anchor="middle" dominant-baseline="central">${e}</text>`;
 
 /* Explore 1: Home Sweet Habitat */
 (function(){
@@ -407,14 +409,14 @@ const emo = (x, y, e, size) => `<text x="${x}" y="${y}" font-size="${size || 34}
       food:['🦟','Insects to catch'], water:['💧','Fresh water to keep its skin wet'], shelter:['🪨','Cool, damp rocks and leaves to hide under'],
       babies:['🫧','Water to lay eggs in. Tadpoles live in water.'], safety:['🌿','Tall reeds to hide from birds and snakes'] },
     { id:'owl', e:'🦉', n:'Wood owl', where:'forest', bg:'forest',
-      food:['🐭','Mice and insects to hunt at night'], water:['💧','A stream to drink from'], shelter:['🌳','A hollow tree to rest in during the day'],
+      food:['🐭','Mice and insects to hunt at night'], water:['💧','A stream to drink from'], shelter:['hollow-tree','A hollow tree to rest in during the day'],
       babies:['🥚','A nest inside the hollow tree for eggs and chicks'], safety:['🍃','Thick leaves to hide from bigger birds'] }
   ];
   let a = 0; const on = new Set(['food','water','shelter','babies','safety']);
   const pick = document.getElementById('h-pick'), needsEl = document.getElementById('h-needs'), bubble = document.getElementById('h-bubble');
   ANIMALS.forEach((an, i) => {
     const b = document.createElement('button'); b.type = 'button'; b.id = 'h-a' + i;
-    b.innerHTML = `<span class="e" aria-hidden="true">${an.e}</span>${an.n}`;
+    b.innerHTML = `<span class="e" aria-hidden="true">${MLSticker.img(an.e)}</span>${an.n}`;
     b.addEventListener('click', () => { a = i; NEEDS.forEach(([k]) => on.add(k)); draw(); });
     pick.appendChild(b);
   });
@@ -487,7 +489,7 @@ const emo = (x, y, e, size) => `<text x="${x}" y="${y}" font-size="${size || 34}
     }
     document.getElementById('mt-left').textContent = `${pos + 1} of ${deck.length}`;
     const it = deck[pos];
-    card.innerHTML = `<span class="e pop-in" aria-hidden="true">${it.e}</span><span class="n">${it.n}</span>`;
+    card.innerHTML = `<span class="e pop-in" aria-hidden="true">${MLSticker.img(it.e)}</span><span class="n">${it.n}</span>`;
     bins.forEach(b => b.disabled = false);
   }
   bins.forEach(b => b.addEventListener('click', () => {
@@ -553,7 +555,7 @@ const emo = (x, y, e, size) => `<text x="${x}" y="${y}" font-size="${size || 34}
     svg.querySelectorAll('.an').forEach(g => {
       const show = () => {
         const an = H.animals[+g.dataset.i]; found.add(hab + g.dataset.i);
-        info.innerHTML = `<b>${an.e} ${an.n} · ${hab}</b><br>${an.why}`;
+        info.innerHTML = `<b>${MLSticker.text(an.e)} ${an.n} · ${hab}</b><br>${an.why}`;
         document.getElementById('sf-count').textContent = `${found.size} of 16 animals found`;
         draw();
       };

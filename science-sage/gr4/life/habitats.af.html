@@ -2,6 +2,8 @@
 <html lang="af">
 <head>
 <script src="/assets/theme.js"></script>
+<script src="/assets/stickers.js"></script>
+<script>MLSticker.use({ '🌳': 'thorn-tree' });</script>
 <script defer src="/assets/lesson-toc.js"></script>
 <link rel="stylesheet" href="/assets/lesson-progress.css">
 <script defer src="/assets/lesson-progress.js"></script>
@@ -393,7 +395,7 @@ function goSim(id){ switchTab('explore'); const el=document.getElementById(id); 
 
 /* ─── Sims ─── */
 const starStr = n => '<span style="color:#fde047;font-size:40px;letter-spacing:4px">' + '★'.repeat(n) + '<span style="color:rgba(255,255,255,.15)">' + '★'.repeat(3 - n) + '</span></span>';
-const emo = (x, y, e, size) => `<text x="${x}" y="${y}" font-size="${size || 34}" text-anchor="middle" dominant-baseline="central">${e}</text>`;
+const emo = (x, y, e, size) => MLSticker.svg(x, y, e, size) || `<text x="${x}" y="${y}" font-size="${size || 34}" text-anchor="middle" dominant-baseline="central">${e}</text>`;
 
 /* Explore 1: Home Sweet Habitat */
 (function(){
@@ -407,14 +409,14 @@ const emo = (x, y, e, size) => `<text x="${x}" y="${y}" font-size="${size || 34}
       food:['🦟','Insekte om te vang'], water:['💧','Vars water om sy vel nat te hou'], shelter:['🪨','Koel, klam klippe en blare om onder te skuil'],
       babies:['🫧','Water om eiers in te lê. Paddavissies leef in water.'], safety:['🌿','Hoë riete om weg te kruip vir voëls en slange'] },
     { id:'owl', e:'🦉', n:'Bosuil', where:'forest', bg:'forest',
-      food:['🐭','Muise en insekte om snags te jag'], water:['💧','’n Stroompie om uit te drink'], shelter:['🌳','’n Hol boom om bedags in te rus'],
+      food:['🐭','Muise en insekte om snags te jag'], water:['💧','’n Stroompie om uit te drink'], shelter:['hollow-tree','’n Hol boom om bedags in te rus'],
       babies:['🥚','’n Nes binne-in die hol boom vir eiers en kuikens'], safety:['🍃','Digte blare om weg te kruip vir groter voëls'] }
   ];
   let a = 0; const on = new Set(['food','water','shelter','babies','safety']);
   const pick = document.getElementById('h-pick'), needsEl = document.getElementById('h-needs'), bubble = document.getElementById('h-bubble');
   ANIMALS.forEach((an, i) => {
     const b = document.createElement('button'); b.type = 'button'; b.id = 'h-a' + i;
-    b.innerHTML = `<span class="e" aria-hidden="true">${an.e}</span>${an.n}`;
+    b.innerHTML = `<span class="e" aria-hidden="true">${MLSticker.img(an.e)}</span>${an.n}`;
     b.addEventListener('click', () => { a = i; NEEDS.forEach(([k]) => on.add(k)); draw(); });
     pick.appendChild(b);
   });
@@ -487,7 +489,7 @@ const emo = (x, y, e, size) => `<text x="${x}" y="${y}" font-size="${size || 34}
     }
     document.getElementById('mt-left').textContent = `${pos + 1} van ${deck.length}`;
     const it = deck[pos];
-    card.innerHTML = `<span class="e pop-in" aria-hidden="true">${it.e}</span><span class="n">${it.n}</span>`;
+    card.innerHTML = `<span class="e pop-in" aria-hidden="true">${MLSticker.img(it.e)}</span><span class="n">${it.n}</span>`;
     bins.forEach(b => b.disabled = false);
   }
   bins.forEach(b => b.addEventListener('click', () => {
@@ -553,7 +555,7 @@ const emo = (x, y, e, size) => `<text x="${x}" y="${y}" font-size="${size || 34}
     svg.querySelectorAll('.an').forEach(g => {
       const show = () => {
         const an = H.animals[+g.dataset.i]; found.add(hab + g.dataset.i);
-        info.innerHTML = `<b>${an.e} ${an.n} · ${({grassland:'grasveld',river:'rivier',forest:'woud',sea:'see'})[hab]}</b><br>${an.why}`;
+        info.innerHTML = `<b>${MLSticker.text(an.e)} ${an.n} · ${({grassland:'grasveld',river:'rivier',forest:'woud',sea:'see'})[hab]}</b><br>${an.why}`;
         document.getElementById('sf-count').textContent = `${found.size} van 16 diere gevind`;
         draw();
       };

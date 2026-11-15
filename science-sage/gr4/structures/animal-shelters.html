@@ -2,6 +2,8 @@
 <html lang="en">
 <head>
 <script src="/assets/theme.js"></script>
+<script src="/assets/stickers.js"></script>
+<script>MLSticker.use({ '🐦': 'weaver-bird', '🦜': 'budgie', '🍂': 'wasp-nest', '🌳': 'hollow-tree' });</script>
 <script defer src="/assets/lesson-toc.js"></script>
 <link rel="stylesheet" href="/assets/lesson-progress.css">
 <script defer src="/assets/lesson-progress.js"></script>
@@ -431,12 +433,12 @@ const shuffle = arr => { for (let i = arr.length - 1; i > 0; i--) { const j = Ma
     }
     document.getElementById('fd-left').textContent = `${pos + 1} of ${deck.length}`;
     const it = deck[pos];
-    card.innerHTML = `<span class="e pop-in" aria-hidden="true">${it.e}</span><span class="n">Where does the ${it.n.toLowerCase()} shelter?</span>`;
+    card.innerHTML = `<span class="e pop-in" aria-hidden="true">${MLSticker.img(it.e)}</span><span class="n">Where does the ${it.n.toLowerCase()} shelter?</span>`;
     const others = shuffle(ITEMS.filter(x => x !== it)).slice(0, 2);
     optsEl.innerHTML = '';
     shuffle([it, ...others]).forEach(o => {
       const b = document.createElement('button'); b.type = 'button';
-      b.innerHTML = `<span class="e" aria-hidden="true">${o.se}</span>${o.s}`;
+      b.innerHTML = `<span class="e" aria-hidden="true">${MLSticker.img(o.se)}</span>${o.s}`;
       b.addEventListener('click', () => {
         const ok = o === it; if (ok) score++;
         optsEl.querySelectorAll('button').forEach(x => { x.disabled = true; });
@@ -560,7 +562,9 @@ const shuffle = arr => { for (let i = arr.length - 1; i > 0; i--) { const j = Ma
     if (S.extra.has('door')) s += `<path d="M${cx - dw/2} ${base} V${base - dh + dw/2} A${dw/2} ${dw/2} 0 0 1 ${cx + dw/2} ${base - dh + dw/2} V${base}Z" fill="#78350f" stroke="#451a03" stroke-width="2"/><circle cx="${cx + dw/4}" cy="${base - dh/2.4}" r="3" fill="#fde047"/>`;
     if (S.extra.has('air')) { const y = base - (S.shape === 'aframe' ? w*0.55 : S.shape === 'box' ? w*0.48 : w*0.6); s += [-1,0,1].map(i => `<circle cx="${cx + i*16}" cy="${y}" r="4.5" fill="#0d1016"/>`).join(''); }
     const fs = { small:34, medium:38, large:40 }[S.size];
-    s += `<text x="${cx + w/2 + 28}" y="${ground - 16}" font-size="${S.animal === 'chickens' ? 30 : fs}" text-anchor="middle">${A.e}${S.animal === 'chickens' ? A.e : ''}</text>`;
+    const asz = S.animal === 'chickens' ? 30 : fs, ax = cx + w/2 + 28, acy = ground - 16 - asz * 0.36;
+    const aimg = S.animal === 'chickens' ? MLSticker.svg(ax - asz * 0.55, acy, A.e, asz) + MLSticker.svg(ax + asz * 0.55, acy, A.e, asz) : MLSticker.svg(ax, acy, A.e, asz);
+    s += aimg || `<text x="${cx + w/2 + 28}" y="${ground - 16}" font-size="${S.animal === 'chickens' ? 30 : fs}" text-anchor="middle">${A.e}${S.animal === 'chickens' ? A.e : ''}</text>`;
     document.getElementById('ds-svg').innerHTML = s;
 
     const sizeOk = A.sizes.includes(S.size);

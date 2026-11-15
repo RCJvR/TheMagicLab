@@ -2,6 +2,8 @@
 <html lang="en">
 <head>
 <script src="/assets/theme.js"></script>
+<script src="/assets/stickers.js"></script>
+<script>MLSticker.use({ '🌳': 'thorn-tree' });</script>
 <script defer src="/assets/lesson-toc.js"></script>
 <link rel="stylesheet" href="/assets/lesson-progress.css">
 <script defer src="/assets/lesson-progress.js"></script>
@@ -551,7 +553,7 @@ function goSim(id){ switchTab('explore'); const el=document.getElementById(id); 
     feathers: "🪶 <b>Feathers:</b> keep it warm and dry, and help it fly.",
     scales: "🛡️ <b>Scales:</b> tough and smooth, great for water or hot, dry places.",
     sharp: "🥩 <b>Sharp teeth:</b> it tears meat. It's a hunter!",
-    flat: "🌾 <b>Flat teeth:</b> it grinds up grass and leaves.",
+    flat: "🦷 <b>Flat teeth:</b> it grinds up grass and leaves.",
     beak: "🌰 <b>Beak:</b> it pecks seeds, insects or fish.",
     front: "🎯 <b>Eyes in front:</b> it judges distance well to catch food.",
     side: "👀 <b>Eyes on the sides:</b> it sees nearly all around to spot danger."
@@ -580,7 +582,7 @@ function goSim(id){ switchTab('explore'); const el=document.getElementById(id); 
   document.querySelectorAll("#sim-creature .chips").forEach(box => {
     const k = box.dataset.k;
     OPTS[k].forEach(([v, label]) => {
-      const b = document.createElement("button"); b.type = "button"; b.id = `m-${k}-${v}`; b.textContent = label;
+      const b = document.createElement("button"); b.type = "button"; b.id = `m-${k}-${v}`; b.innerHTML = MLSticker.text(label);
       b.addEventListener("click", () => { cr[k] = v; drawCreature(); });
       box.appendChild(b);
     });
@@ -626,12 +628,12 @@ function goSim(id){ switchTab('explore'); const el=document.getElementById(id); 
     }
     document.getElementById("m-svg").innerHTML = s;
     document.getElementById("m-name").textContent = "The " + NAMEBITS.move[cr.move] + NAMEBITS.cover[cr.cover] + " " + NAMEBITS.mouth[cr.mouth];
-    document.getElementById("m-can").innerHTML = ["move", "cover", "mouth", "eyes"].map(k => `<p>${CAN[cr[k]]}</p>`).join("");
+    document.getElementById("m-can").innerHTML = ["move", "cover", "mouth", "eyes"].map(k => `<p>${MLSticker.text(CAN[cr[k]])}</p>`).join("");
     let best = REAL[0], bestScore = -1;
     REAL.forEach(r => { const sc = Object.keys(r.a).filter(k => r.a[k] === cr[k]).length; if (sc > bestScore) { best = r; bestScore = sc; } });
     document.getElementById("m-match").innerHTML = bestScore === 4
-      ? `${best.e} That's a real animal! Your creature is built just like a <b>${best.n}</b>.`
-      : `${best.e} Most like a real <b>${best.n}</b> (${bestScore} of 4 parts match).`;
+      ? `${MLSticker.text(best.e)} That's a real animal! Your creature is built just like a <b>${best.n}</b>.`
+      : `${MLSticker.text(best.e)} Most like a real <b>${best.n}</b> (${bestScore} of 4 parts match).`;
   }
   drawCreature();
 
@@ -652,7 +654,7 @@ function goSim(id){ switchTab('explore'); const el=document.getElementById(id); 
   const pickEl = document.getElementById('ps-pick'), grid = document.getElementById('ps-grid'), note = document.getElementById('ps-note');
   PLANTS.forEach(p => {
     const b = document.createElement('button'); b.type = 'button'; b.id = 'ps-' + p.id;
-    b.innerHTML = `<span class="e" aria-hidden="true">${p.e}</span>${p.n}`;
+    b.innerHTML = `<span class="e" aria-hidden="true">${MLSticker.img(p.e)}</span>${p.n}`;
     b.addEventListener('click', () => {
       if (chosen.includes(p.id)) { if (chosen.length > 1) chosen = chosen.filter(x => x !== p.id); }
       else { chosen.push(p.id); if (chosen.length > 3) chosen.shift(); }
@@ -664,7 +666,7 @@ function goSim(id){ switchTab('explore'); const el=document.getElementById(id); 
     pickEl.querySelectorAll('button').forEach(b => b.setAttribute('aria-pressed', chosen.includes(b.id.slice(3))));
     const ps = chosen.map(id => PLANTS.find(p => p.id === id));
     grid.style.setProperty('--cols', ps.length);
-    let h = `<div class="ps-cell ps-corner"></div>` + ps.map(p => `<div class="ps-cell ps-head"><span class="e" aria-hidden="true">${p.e}</span>${p.n}</div>`).join('');
+    let h = `<div class="ps-cell ps-corner"></div>` + ps.map(p => `<div class="ps-cell ps-head"><span class="e" aria-hidden="true">${MLSticker.img(p.e)}</span>${p.n}</div>`).join('');
     ROWS.forEach(([k, label]) => { h += `<div class="ps-cell ps-row">${label}</div>` + ps.map(p => `<div class="ps-cell">${p[k]}</div>`).join(''); });
     grid.innerHTML = h;
     note.textContent = ps.length < 3 ? `Pick ${3 - ps.length} more plant${ps.length === 2 ? '' : 's'} to compare three.` : 'Spot 3 differences between your plants. Look at size, shape and colour.';
