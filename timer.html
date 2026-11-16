@@ -128,6 +128,8 @@ body.hide-cursor { cursor: none; }
 /* each fact: its label above a large value, two to a row */
 .facts .fact { display: flex; flex-direction: column; gap: 0.6vmin; min-width: 0; }
 .facts dt { opacity: 0.75; line-height: 1.2; }
+/* beside a single paper the labels are a touch smaller, so they keep to one line and the times can be bigger */
+body:not(.is-multi) .facts dt { font-size: 0.78em; white-space: nowrap; }
 .facts dd { margin: 0; text-align: left; font-weight: 800; font-size: 1.6em; line-height: 1.1; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
 /* the note keeps its own size (look.isize, --isize) on top of the text size */
 .facts .fnote { font-size: calc(1em * var(--isize, 1)); white-space: pre-line; line-height: 1.45; opacity: 0.9; margin-top: 2.6vmin; padding-top: 2vmin;
@@ -1039,12 +1041,17 @@ body.sheet-side .sheet-in { width: 100%; }
     faces.style.flexWrap = under || stack ? 'wrap' : 'nowrap';
     var Hd = stack ? H * (showD ? 0.5 : 0.3) : H;
     facts.classList.toggle('row', stack && !showD); facts.style.maxWidth = '';
-    // big text on a small screen: the panel's text shrinks until it fits
+    // big text on a small screen: the panel's text shrinks until it fits;
+    // beside a single paper's timer it also grows (up to 1.8 times) to fill
+    // the height it has, so it reads from the back of the room
     facts.style.fontSize = '';
     if (facts.offsetParent) {
-      var room = under ? H * 0.45 : stack ? Hd : H;
-      var shrink = Math.min(1, room / facts.offsetHeight, facts.clientWidth / facts.scrollWidth);
-      if (shrink < 1) facts.style.fontSize = parseFloat(getComputedStyle(facts).fontSize) * shrink * 0.95 + 'px';
+      var room = under ? H * 0.45 : stack ? Hd : H, grow = !under && !stack && !showM;
+      var f0 = parseFloat(getComputedStyle(facts).fontSize);
+      var k = Math.min(grow ? 1.8 : 1, room * (grow ? 0.85 : 1) / facts.offsetHeight, grow ? 9 : facts.clientWidth / facts.scrollWidth);
+      if (k !== 1) facts.style.fontSize = f0 * k * (k < 1 ? 0.95 : 1) + 'px';
+      // grown text can be too wide for the panel: take it back until it fits
+      for (var gi = 0; gi < 6 && (facts.scrollWidth > facts.clientWidth + 1 || facts.offsetHeight > room); gi++) facts.style.fontSize = parseFloat(facts.style.fontSize || f0) * 0.92 + 'px';
       if (under) H = Math.max(40, H - facts.offsetHeight - (parseFloat(getComputedStyle(faces).rowGap) || 0));
       else W -= facts.offsetWidth + Math.min(W * 0.04, 48);
     }
