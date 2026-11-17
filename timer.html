@@ -1818,7 +1818,7 @@ body.sheet-side .sheet-in { width: 100%; }
       '<div class="pp-head"><span>' + esc(t('ppSubject')) + '</span><span>' + esc(t('ppMins')) + '</span></div>' + rows +
       (full ? '<p class="pnote">' + esc(t('ppFull', { n: TTTimetable.max })) + '</p>' :
         '<button type="button" class="pclose" id="pPaperAdd" style="justify-content:center">' + esc(t('ppAdd')) + '</button>' +
-        (TT ? '<input type="search" id="pPaperFind" placeholder="' + esc(t('ppFind')) + '" aria-label="' + esc(t('ppFind')) + '">' +
+        (ttOn() ? '<input type="search" id="pPaperFind" placeholder="' + esc(t('ppFind')) + '" aria-label="' + esc(t('ppFind')) + '">' +
           '<select id="pPaperPick" size="6" aria-label="' + esc(t('ppFind')) + '"></select>' +
           '<button type="button" class="pclose" id="pPaperPickAdd" style="justify-content:center">' + esc(t('ppPick')) + '</button>' : '')) +
       '<p class="pnote">' + esc(t('ppHint')) + '</p></div>';
@@ -1969,8 +1969,10 @@ body.sheet-side .sheet-in { width: 100%; }
   function ttListText(date, start, venue) {
     return TTTimetable.columns(TT, date, start, venue, lang()).map(function (c) { return c.name + ' · ' + c.paper + ' · ' + ttLen(c.mins); }).join('\n');
   }
+  // (a link with tt=0, for other schools, leaves our timetable out altogether)
+  function ttOn() { return !!TT && cfg.exam.tt !== false; }
   function ttPanelHtml() {
-    if (cfg.mode !== 'exam' || !TT) return '';
+    if (cfg.mode !== 'exam' || !ttOn()) return '';
     // it opens on the next session (today or later, not over yet), in this
     // device's venue (the last one filled in here) when that venue has it
     var myVenue = TTTimetable.venue(), nx = TTTimetable.next(TT, myVenue) || TTTimetable.next(TT, '');
@@ -2045,7 +2047,7 @@ body.sheet-side .sheet-in { width: 100%; }
     return st.started && elapsed() >= longest;
   }
   function autoNext() {
-    if (preview || !cfg || cfg.mode !== 'exam' || !TT || !TTTimetable.auto()) return;
+    if (preview || !cfg || cfg.mode !== 'exam' || !ttOn() || !TTTimetable.auto()) return;
     var venue = TTTimetable.venue(), nx = venue && TTTimetable.next(TT, venue);
     if (!nx) return;
     var f = TTTimetable.fillAuto(TT, nx.date, nx.start, venue, cfg.lang, cfg.look.afAuto), x = cfg.exam;
