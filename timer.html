@@ -85,7 +85,7 @@ body.hide-cursor { cursor: none; }
    the time keeps one width while it counts and the layout never re-centres */
 .digital .dc { display: inline-block; width: var(--dw, 0.62em); text-align: center; }
 .head .title { font-weight: 800; font-size: calc(5.4vmin * var(--tsize)); line-height: 1.1; letter-spacing: -0.02em; }
-.head .meta { font-size: calc(2.9vmin * var(--tsize)); opacity: 0.75; margin-top: 0.8vmin; }
+.head .meta { font-size: calc(3.9vmin * var(--tsize)); opacity: 0.85; margin-top: 1vmin; }
 .phase { font-size: calc(3.4vmin * var(--tsize)); font-weight: 700; color: var(--accent); }
 .faces { display: flex; align-items: center; align-content: center; justify-content: center; gap: 6vw; row-gap: 3vmin; flex-wrap: wrap; min-height: 0; }
 .digital {
@@ -97,7 +97,7 @@ body.hide-cursor { cursor: none; }
 /* the clock and, for several papers, the date under it */
 .aw { display: flex; flex-direction: column; align-items: center; gap: 1.4vmin; min-width: 0; }
 .aw.off { display: none; }
-.adate { font-size: calc(2.6vmin * var(--tsize)); opacity: 0.8; white-space: nowrap; }
+.adate { font-size: calc(3.4vmin * var(--tsize)); opacity: 0.85; white-space: nowrap; }
 .adate:empty { display: none; }
 .both .analogue { width: calc(50vmin * var(--dsize)); height: calc(50vmin * var(--dsize)); max-height: 66vh; }
 /* with a clock beside the digits, the status lines sit above and below the
@@ -111,6 +111,17 @@ body.hide-cursor { cursor: none; }
 }
 .laps { font-size: calc(2.4vmin * var(--tsize)); font-variant-numeric: tabular-nums; opacity: 0.85; columns: 2; column-gap: 4vw; max-height: 18vh; overflow: hidden; }
 .laps:empty { display: none; }
+.home { position: fixed; top: 2.4vmin; left: 3vw; z-index: 14; display: inline-flex; align-items: center; gap: 8px;
+  padding: 5px 12px 5px 5px; border-radius: 999px; text-decoration: none; color: var(--fg);
+  font-family: 'Cabinet Grotesk', system-ui, sans-serif; font-size: 14px; font-weight: 700;
+  background: color-mix(in srgb, var(--fg) 7%, var(--bg)); border: 1px solid color-mix(in srgb, var(--fg) 16%, transparent);
+  opacity: 0.8; transition: opacity 0.3s, translate 0.3s; }
+.home img { width: 22px; height: 22px; border-radius: 6px; display: block; }
+.home:hover, .home:focus-visible { opacity: 1; }
+.home:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.bar.idle ~ .home { opacity: 0; pointer-events: none; translate: 0 calc(-100% - 3vmin); }
+.preview .home { display: none; }
+@media (prefers-reduced-motion: reduce) { .home { transition: opacity 0.3s; } .bar.idle ~ .home { translate: none; } }
 .now { position: fixed; top: 2.4vmin; right: 3vw; font-size: calc(2.6vmin * var(--tsize)); opacity: 0.7; font-variant-numeric: tabular-nums; }
 /* Layouts (look.layout), from least to most information. "standard" is
    the original page and needs no rules. */
@@ -128,6 +139,8 @@ body.hide-cursor { cursor: none; }
 /* each fact: its label above a large value, two to a row */
 .facts .fact { display: flex; flex-direction: column; gap: 0.6vmin; min-width: 0; }
 .facts dt { opacity: 0.75; line-height: 1.2; }
+/* beside a single paper the labels are a touch smaller, so they keep to one line and the times can be bigger */
+body:not(.is-multi) .facts dt { font-size: 0.78em; white-space: nowrap; }
 .facts dd { margin: 0; text-align: left; font-weight: 800; font-size: 1.6em; line-height: 1.1; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
 /* the note keeps its own size (look.isize, --isize) on top of the text size */
 .facts .fnote { font-size: calc(1em * var(--isize, 1)); white-space: pre-line; line-height: 1.45; opacity: 0.9; margin-top: 2.6vmin; padding-top: 2vmin;
@@ -171,6 +184,9 @@ body.hide-cursor { cursor: none; }
    Time now | Started | the note */
 .lay-detailed .facts.row { display: flex; align-items: center; gap: 3vw; width: auto; max-width: 64vw; }
 .facts.row dl { grid-template-columns: repeat(2, auto); gap: 0 3vw; flex: 0 0 auto; }
+/* (on its side, "Time now" and "Started" are larger, to read across a hall; the note keeps its size) */
+.is-multi.lay-detailed .facts.row { font-size: calc(4vmin * min(var(--tsize), 1.2)); }
+.is-multi .facts.row .fnote { font-size: calc(0.65em * var(--isize, 1)); }
 /* the other arrangements of several papers (look.arr; sized in fitArranged) */
 .faces.arr-left { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; justify-items: center; align-content: center; }
 .faces.arr-left #aw { grid-column: 1; grid-row: 1 / span 3; }
@@ -193,12 +209,22 @@ body.hide-cursor { cursor: none; }
    (subgrid), so every end time and time left lines up; sized with --bk */
 .is-multi .multi.board { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; grid-auto-flow: row; text-align: left;
   font-size: calc(3vmin * var(--tsize) * var(--bk, 1)); column-gap: 1.6em; }
-.board .brow { grid-column: 1 / -1; display: grid; grid-template-columns: subgrid; align-items: center; padding: 0.32em 0;
-  border-bottom: 1px solid color-mix(in srgb, var(--fg) 18%, transparent); }
+.board .brow { grid-column: 1 / -1; display: grid; grid-template-columns: subgrid; align-items: center; padding: 0.4em 0;
+  border-bottom: max(3px, 0.07em) solid color-mix(in srgb, var(--fg) 50%, transparent); }
 .board .brow:last-child { border-bottom: 0; }
 .board .bname { min-width: 0; line-height: 1.12; }
 .board .bname b { display: block; font-weight: 800; letter-spacing: -0.01em; }
-.board .bname span { display: block; font-size: 0.62em; opacity: 0.75; margin-top: 0.15em; }
+/* the grade and paper have a column of their own, beside the end times, so
+   every row's lines up. The rows, their name cells and each paper in them
+   share the board's columns (subgrid):
+   name | (space) | grade and paper | ends | time left */
+.is-multi .multi.board { grid-template-columns: auto minmax(0, 1fr) auto auto auto; }
+.board .bname { grid-column: 1 / 4; display: grid; grid-template-columns: subgrid; row-gap: 0.15em; }
+.board .bitem { grid-column: 1 / -1; display: grid; grid-template-columns: subgrid; align-items: baseline; }
+.board .bitem b { grid-column: 1; min-width: 0; }
+.board .bname span { grid-column: 3; font-size: 0.62em; opacity: 0.75; white-space: nowrap; }
+.board .bend { grid-column: 4; }
+.board .btime { grid-column: 5; }
 .board .bend { font-size: 0.8em; opacity: 0.85; white-space: nowrap; font-variant-numeric: tabular-nums; text-align: right; }
 .board .btime { font-size: 1.9em; font-weight: var(--dweight); line-height: 1; white-space: nowrap; font-variant-numeric: tabular-nums; text-align: right; letter-spacing: -0.02em; }
 .board .btime .dc { display: inline-block; width: var(--dw, 0.62em); text-align: center; }
@@ -431,6 +457,8 @@ body.sheet-side .sheet-in { width: 100%; }
   </main>
   <div class="now" id="now"></div>
   <div class="bar" id="bar" role="toolbar" aria-label="Timer controls"></div>
+  <!-- the way to The Magic Lab, in a new tab so a running timer keeps going; it comes and goes with the toolbar -->
+  <a class="home" id="home" href="./" target="_blank" rel="noopener" title="The Magic Lab (opens in a new tab)"><img src="assets/logo-prism.svg" alt="" width="22" height="22"><span>The Magic Lab</span></a>
   <aside class="panel" id="panel" hidden></aside>
 
 <script src="assets/timer-talisman-themes.js"></script>
@@ -1039,12 +1067,17 @@ body.sheet-side .sheet-in { width: 100%; }
     faces.style.flexWrap = under || stack ? 'wrap' : 'nowrap';
     var Hd = stack ? H * (showD ? 0.5 : 0.3) : H;
     facts.classList.toggle('row', stack && !showD); facts.style.maxWidth = '';
-    // big text on a small screen: the panel's text shrinks until it fits
+    // big text on a small screen: the panel's text shrinks until it fits;
+    // beside a single paper's timer it also grows (up to 1.8 times) to fill
+    // the height it has, so it reads from the back of the room
     facts.style.fontSize = '';
     if (facts.offsetParent) {
-      var room = under ? H * 0.45 : stack ? Hd : H;
-      var shrink = Math.min(1, room / facts.offsetHeight, facts.clientWidth / facts.scrollWidth);
-      if (shrink < 1) facts.style.fontSize = parseFloat(getComputedStyle(facts).fontSize) * shrink * 0.95 + 'px';
+      var room = under ? H * 0.45 : stack ? Hd : H, grow = !under && !stack && !showM;
+      var f0 = parseFloat(getComputedStyle(facts).fontSize);
+      var k = Math.min(grow ? 1.8 : 1, room * (grow ? 0.85 : 1) / facts.offsetHeight, grow ? 9 : facts.clientWidth / facts.scrollWidth);
+      if (k !== 1) facts.style.fontSize = f0 * k * (k < 1 ? 0.95 : 1) + 'px';
+      // grown text can be too wide for the panel: take it back until it fits
+      for (var gi = 0; gi < 6 && (facts.scrollWidth > facts.clientWidth + 1 || facts.offsetHeight > room); gi++) facts.style.fontSize = parseFloat(facts.style.fontSize || f0) * 0.92 + 'px';
       if (under) H = Math.max(40, H - facts.offsetHeight - (parseFloat(getComputedStyle(faces).rowGap) || 0));
       else W -= facts.offsetWidth + Math.min(W * 0.04, 48);
     }
@@ -1261,10 +1294,18 @@ body.sheet-side .sheet-in { width: 100%; }
       var da = a.c.done && !a.c.flash, db = b.c.done && !b.c.flash;
       return (da - db) || (a.c.at - b.c.at) || (a.i - b.i);
     });
-    return rows.map(function (r) {
-      var c = r.c, wait = !c.time;
-      return '<div class="brow' + (c.warn ? ' warn' : '') + (c.done ? ' done' : '') + (c.flash ? ' flash' : '') + '">' +
-        '<div class="bname"><b>' + esc(c.name || DASH) + '</b>' + (c.paper ? '<span>' + esc(c.paper) + '</span>' : '') + '</div>' +
+    // papers that finish together share one row: their names stacked, one end time, one countdown
+    var groups = [], byKey = {};
+    rows.forEach(function (r) {
+      var c = r.c, key = [c.at, c.endTxt, c.time, c.wlen, !!c.done, !!c.flash, !!c.warn].join('|');
+      if (byKey[key]) byKey[key].push(c); else groups.push(byKey[key] = [c]);
+    });
+    return groups.map(function (g) {
+      var c = g[0], wait = !c.time;
+      return '<div class="brow' + (g.length > 1 ? ' merged' : '') + (c.warn ? ' warn' : '') + (c.done ? ' done' : '') + (c.flash ? ' flash' : '') + '">' +
+        '<div class="bname">' + g.map(function (p) {
+          return '<div class="bitem"><b>' + esc(p.name || DASH) + '</b>' + (p.paper ? '<span>' + esc(p.paper) + '</span>' : '') + '</div>';
+        }).join('') + '</div>' +
         '<div class="bend">' + esc(c.endTxt || '') + '</div>' +
         '<div class="btime' + (wait ? ' wait' : '') + '">' + (wait ? esc(c.wlen) : digitsHtml(c.time)) + '</div></div>';
     }).join('');
@@ -1811,7 +1852,7 @@ body.sheet-side .sheet-in { width: 100%; }
       '<div class="pp-head"><span>' + esc(t('ppSubject')) + '</span><span>' + esc(t('ppMins')) + '</span></div>' + rows +
       (full ? '<p class="pnote">' + esc(t('ppFull', { n: TTTimetable.max })) + '</p>' :
         '<button type="button" class="pclose" id="pPaperAdd" style="justify-content:center">' + esc(t('ppAdd')) + '</button>' +
-        (TT ? '<input type="search" id="pPaperFind" placeholder="' + esc(t('ppFind')) + '" aria-label="' + esc(t('ppFind')) + '">' +
+        (ttOn() ? '<input type="search" id="pPaperFind" placeholder="' + esc(t('ppFind')) + '" aria-label="' + esc(t('ppFind')) + '">' +
           '<select id="pPaperPick" size="6" aria-label="' + esc(t('ppFind')) + '"></select>' +
           '<button type="button" class="pclose" id="pPaperPickAdd" style="justify-content:center">' + esc(t('ppPick')) + '</button>' : '')) +
       '<p class="pnote">' + esc(t('ppHint')) + '</p></div>';
@@ -1962,8 +2003,10 @@ body.sheet-side .sheet-in { width: 100%; }
   function ttListText(date, start, venue) {
     return TTTimetable.columns(TT, date, start, venue, lang()).map(function (c) { return c.name + ' · ' + c.paper + ' · ' + ttLen(c.mins); }).join('\n');
   }
+  // (a link with tt=0, for other schools, leaves our timetable out altogether)
+  function ttOn() { return !!TT && cfg.exam.tt !== false; }
   function ttPanelHtml() {
-    if (cfg.mode !== 'exam' || !TT) return '';
+    if (cfg.mode !== 'exam' || !ttOn()) return '';
     // it opens on the next session (today or later, not over yet), in this
     // device's venue (the last one filled in here) when that venue has it
     var myVenue = TTTimetable.venue(), nx = TTTimetable.next(TT, myVenue) || TTTimetable.next(TT, '');
@@ -2038,7 +2081,7 @@ body.sheet-side .sheet-in { width: 100%; }
     return st.started && elapsed() >= longest;
   }
   function autoNext() {
-    if (preview || !cfg || cfg.mode !== 'exam' || !TT || !TTTimetable.auto()) return;
+    if (preview || !cfg || cfg.mode !== 'exam' || !ttOn() || !TTTimetable.auto()) return;
     var venue = TTTimetable.venue(), nx = venue && TTTimetable.next(TT, venue);
     if (!nx) return;
     var f = TTTimetable.fillAuto(TT, nx.date, nx.start, venue, cfg.lang, cfg.look.afAuto), x = cfg.exam;

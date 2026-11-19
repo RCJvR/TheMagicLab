@@ -1,6 +1,17 @@
 /* Science Sage lesson names by grade: "strand/file" → English name.
    Generated from the Science Sage home page by scripts/build-lesson-index.js; used by the teacher dashboard. */
 window.SS_LESSON_INDEX = {
+  4: {
+    "life/living-non-living": "Living & non-living things",
+    "life/plant-animal-parts": "Structure of plants & animals",
+    "life/what-plants-need": "What plants need to grow",
+    "life/habitats": "Habitats of animals",
+    "matter/materials-around-us": "Materials around us",
+    "matter/solid-materials": "Solid materials",
+    "structures/animal-shelters": "Structures for animal shelters",
+    "structures/strengthening-materials": "Strengthening materials",
+    "structures/frame-structures": "Strong frame structures"
+  },
   7: {
     "life/biodiversity": "Biodiversity & classification",
     "matter/separating-mixtures": "Separating mixtures",

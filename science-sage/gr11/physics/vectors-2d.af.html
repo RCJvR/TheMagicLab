@@ -152,7 +152,8 @@
 <script defer src="../../../progress.js"></script>
 <script defer src="../../../lesson-progress-observer.js"></script>
 <style id="ml-touch">@media (pointer:coarse){#tab-explore button,#tab-simulate button,#panel-explore button,#tab-explore select,#tab-simulate select,#panel-explore select{min-height:40px}#tab-explore input[type=range],#tab-simulate input[type=range],#panel-explore input[type=range]{min-height:32px}}</style>
-<style id="ml-wb-memo">.wb-memo{margin-top:12px;border-top:1px dashed rgba(255,255,255,.10);padding-top:10px}.wb-memo summary{cursor:pointer;font-size:13px;font-weight:700;color:#86efac;list-style:revert}.wb-memo-body{margin-top:8px;font-size:13.5px;line-height:1.8;color:rgba(210,218,245,.85);background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.18);border-radius:10px;padding:12px 16px}@media print{.wb-memo{display:none!important}}</style><style id="ml-exam-q">.wb-q.ml-exam-q{border-color:rgba(252,211,77,.35)}.ml-exam-q .wb-qnum{color:#fcd34d}</style></head>
+<style id="ml-wb-memo">.wb-memo{margin-top:12px;border-top:1px dashed rgba(255,255,255,.10);padding-top:10px}.wb-memo summary{cursor:pointer;font-size:13px;font-weight:700;color:#86efac;list-style:revert}.wb-memo-body{margin-top:8px;font-size:13.5px;line-height:1.8;color:rgba(210,218,245,.85);background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.18);border-radius:10px;padding:12px 16px}@media print{.wb-memo{display:none!important}}</style><style id="ml-exam-q">.wb-q.ml-exam-q{border-color:rgba(252,211,77,.35)}.ml-exam-q .wb-qnum{color:#fcd34d}</style><link rel="stylesheet" href="/assets/explore-kit.css">
+</head>
 <body>
   <a class="ml-skip" href="#ml-main">Skip to content</a>
 <nav data-ml-bar="science-sage" data-ml-home="/science-sage/index.html">
@@ -266,44 +267,10 @@
 
 <!-- EXPLORE TAB -->
 <div class="tab-panel" id="tab-explore">
-  <div class="ml-predict" style="margin:0 0 16px;padding:12px 16px;border-radius:10px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.075);border-left:2px solid #74d154;font-size:15px;line-height:1.6;color:#e3e8ef"><strong style="color:#f2f5f9">Voorspel eers:</strong> Kan kragte van 3 N, 4 N en 5 N so gerangskik word dat die voorwerp in ewewig is? <strong style="color:#f2f5f9">Toets dit dan:</strong> Gebruik 3 vektore met die ewewigstoets om dit te probeer.</div>
-  <div class="sim-outer">
-    <div class="sim-canvas-wrap">
-      <h3>Vektoroptelling-Speelarea</h3>
-      <canvas id="vecCanvas" height="420" role="img" aria-label="Vektoroptelling-Speelarea"></canvas>
-    </div>
-    <div class="sim-controls-row">
-      <div class="ctrl-card">
-        <div class="ctrl-label">Modus</div>
-        <button class="mode-btn active" id="mode2" onclick="setVecMode(2)">2 Vektore</button>
-        <button class="mode-btn" id="mode3" onclick="setVecMode(3)">3 Vektore</button>
-        <button class="mode-btn" id="modeEq" onclick="setVecMode('eq')">Ewewig-toets</button>
-        <div style="margin-top:10px">
-          <button class="mode-btn" id="compBtn" onclick="toggleComponents()">Komponentaansig: AF</button>
-        </div>
-      </div>
-      <div class="ctrl-card">
-        <div class="ctrl-label">Vektor 1 <span style="color:#60a5fa">●</span></div>
-        <div class="slider-row"><label for="m1">Grootte</label><input type="range" min="0" max="100" value="60" id="m1" oninput="drawVec()"><span class="slider-val" id="m1v">60 N</span></div>
-        <div class="slider-row"><label for="a1">Hoek</label><input type="range" min="0" max="360" value="30" id="a1" oninput="drawVec()"><span class="slider-val" id="a1v">30°</span></div>
-        <div class="ctrl-label" style="margin-top:10px">Vektor 2 <span style="color:#f87171">●</span></div>
-        <div class="slider-row"><label for="m2">Grootte</label><input type="range" min="0" max="100" value="40" id="m2" oninput="drawVec()"><span class="slider-val" id="m2v">40 N</span></div>
-        <div class="slider-row"><label for="a2">Hoek</label><input type="range" min="0" max="360" value="120" id="a2" oninput="drawVec()"><span class="slider-val" id="a2v">120°</span></div>
-        <div id="v3controls" style="display:none">
-          <div class="ctrl-label" style="margin-top:10px">Vektor 3 <span style="color:#4ade80">●</span></div>
-          <div class="slider-row"><label for="m3">Grootte</label><input type="range" min="0" max="100" value="50" id="m3" oninput="drawVec()"><span class="slider-val" id="m3v">50 N</span></div>
-          <div class="slider-row"><label for="a3">Hoek</label><input type="range" min="0" max="360" value="240" id="a3" oninput="drawVec()"><span class="slider-val" id="a3v">240°</span></div>
-        </div>
-      </div>
-    </div>
-    <div class="readout-grid">
-      <div class="readout"><div class="readout-label">ΣFx</div><div class="readout-val" id="ro-sx">—<span>N</span></div></div>
-      <div class="readout"><div class="readout-label">ΣFy</div><div class="readout-val" id="ro-sy">—<span>N</span></div></div>
-      <div class="readout"><div class="readout-label">|R|</div><div class="readout-val" id="ro-r">—<span>N</span></div></div>
-      <div class="readout"><div class="readout-label">θ van R</div><div class="readout-val" id="ro-th">—<span>°</span></div></div>
-    </div>
-    <div id="eq-result" style="display:none;margin-top:4px;padding:12px 16px;border-radius:10px;font-size:13px;font-family:var(--fm)"></div>
-  </div>
+  <div class="ml-predict" style="margin:0 0 16px;padding:12px 16px;border-radius:10px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.075);border-left:2px solid #74d154;font-size:15px;line-height:1.6;color:#e3e8ef"><strong style="color:#f2f5f9">Voorspel eers:</strong> Kan kragte van 30 N, 40 N en 50 N so gerangskik word dat die voorwerp in ewewig is? Indien wel, watter hoek moet tussen die 30 N- en 40 N-kragte wees? <strong style="color:#f2f5f9">Toets dit dan:</strong> Kies Ewewig, hou 30 N by 0° en 40 N by 90°, en draai die 50 N-krag totdat die vektordiagram sluit (R = 0).</div>
+  <div id="mlx-root"></div>
+  <script src="/assets/explore-kit.js"></script>
+  <script src="/assets/explore/vectors-2d.js"></script>
 </div>
 
 <!-- PRACTICE TAB -->
@@ -522,121 +489,8 @@
     }
   }
 
-  // SIMULATION
-  let vecMode=2;let showComponents=false;
-  function setVecMode(m){
-    vecMode=m;
-    ['mode2','mode3','modeEq'].forEach(id=>{
-      const el=document.getElementById(id);
-      if(el) el.classList.remove('active');
-    });
-    document.getElementById('mode'+m)?.classList.add('active');
-    document.getElementById('modeEq')?.classList.toggle('active',m==='eq');
-    document.getElementById('v3controls').style.display=(m===3||m==='eq')?'block':'none';
-    const eqr=document.getElementById('eq-result');
-    if(m!=='eq') eqr.style.display='none';
-    drawVec();
-  }
-  function toggleComponents(){
-    showComponents=!showComponents;
-    document.getElementById('compBtn').textContent='Komponentaansig: '+(showComponents?'AAN':'AF');
-    document.getElementById('compBtn').classList.toggle('active',showComponents);
-    drawVec();
-  }
+  function setVecMode(){} function toggleComponents(){} function initSim(){} function drawVec(){} function drawArrow(){} // the simulation is assets/explore/vectors-2d.js
 
-  let simInited=false;
-  function initSim(){if(!simInited){simInited=true;drawVec();}}
-
-  function drawVec(){
-    const canvas=document.getElementById('vecCanvas');
-    const dpr=window.devicePixelRatio||1;
-    const W=canvas.clientWidth,H=420;
-    canvas.width=W*dpr;canvas.height=H*dpr;
-    canvas.style.height=H+'px';
-    const ctx=canvas.getContext('2d');
-    ctx.setTransform(1,0,0,1,0,0);
-    ctx.scale(dpr,dpr);
-
-    ctx.clearRect(0,0,W,H);
-    const cx=W/2,cy=H/2;
-    const scale=2.0;// px per N
-
-    // Grid
-    ctx.strokeStyle='rgba(255,255,255,0.04)';ctx.lineWidth=1;
-    for(let x=0;x<=W;x+=40){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}
-    for(let y=0;y<=H;y+=40){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
-
-    // Axes
-    ctx.strokeStyle='rgba(255,255,255,0.15)';ctx.lineWidth=1.5;
-    ctx.beginPath();ctx.moveTo(0,cy);ctx.lineTo(W,cy);ctx.stroke();
-    ctx.beginPath();ctx.moveTo(cx,0);ctx.lineTo(cx,H);ctx.stroke();
-    ctx.fillStyle='rgba(255,255,255,0.25)';ctx.font='12px JetBrains Mono';
-    ctx.fillText('+x',W-24,cy-6);ctx.fillText('+y',cx+6,14);
-
-    const m1=+document.getElementById('m1').value,a1=+document.getElementById('a1').value;
-    const m2=+document.getElementById('m2').value,a2=+document.getElementById('a2').value;
-    const m3=+document.getElementById('m3').value,a3=+document.getElementById('a3').value;
-    document.getElementById('m1v').textContent=m1+' N';document.getElementById('a1v').textContent=a1+'°';
-    document.getElementById('m2v').textContent=m2+' N';document.getElementById('a2v').textContent=a2+'°';
-    document.getElementById('m3v').textContent=m3+' N';document.getElementById('a3v').textContent=a3+'°';
-
-    const deg=Math.PI/180;
-    const vecs=[];
-    vecs.push({m:m1,a:a1*deg,col:'#60a5fa'});
-    vecs.push({m:m2,a:a2*deg,col:'#f87171'});
-    if(vecMode===3||vecMode==='eq') vecs.push({m:m3,a:a3*deg,col:'#4ade80'});
-
-    let sx=0,sy=0;
-    vecs.forEach(v=>{
-      const vx=v.m*Math.cos(v.a),vy=v.m*Math.sin(v.a);
-      sx+=vx;sy+=vy;
-      drawArrow(ctx,cx,cy,cx+vx*scale,cy-vy*scale,v.col,2.5);
-      if(showComponents){
-        ctx.setLineDash([5,4]);
-        ctx.strokeStyle=v.col+'88';ctx.lineWidth=1.5;
-        ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(cx+vx*scale,cy);ctx.stroke();
-        ctx.beginPath();ctx.moveTo(cx+vx*scale,cy);ctx.lineTo(cx+vx*scale,cy-vy*scale);ctx.stroke();
-        ctx.setLineDash([]);
-      }
-    });
-
-    const R=Math.sqrt(sx*sx+sy*sy);
-    const theta=Math.atan2(sy,sx)*180/Math.PI;
-    if(R>0.5) drawArrow(ctx,cx,cy,cx+sx*scale,cy-sy*scale,'#fbbf24',3);
-
-    document.getElementById('ro-sx').innerHTML=sx.toFixed(1)+'<span>N</span>';
-    document.getElementById('ro-sy').innerHTML=sy.toFixed(1)+'<span>N</span>';
-    document.getElementById('ro-r').innerHTML=R.toFixed(1)+'<span>N</span>';
-    document.getElementById('ro-th').innerHTML=((theta%360+360)%360).toFixed(1)+'<span>°</span>';
-
-    if(vecMode==='eq'){
-      const eqr=document.getElementById('eq-result');
-      eqr.style.display='block';
-      if(R<2){
-        eqr.textContent='✓ Stelsel is in EWEWIG (|R| < 2 N)';
-        eqr.style.background='rgba(34,197,94,.12)';eqr.style.border='1px solid rgba(34,197,94,.3)';eqr.style.color='#86efac';
-      } else {
-        eqr.textContent='✗ NIE in ewewig nie — |R| = '+R.toFixed(1)+' N. Pas vektore aan sodat ΣFx≈0 en ΣFy≈0.';
-        eqr.style.background='rgba(239,68,68,.10)';eqr.style.border='1px solid rgba(239,68,68,.28)';eqr.style.color='#fca5a5';
-      }
-    }
-  }
-
-  function drawArrow(ctx,x1,y1,x2,y2,col,lw){
-    const dx=x2-x1,dy=y2-y1,len=Math.sqrt(dx*dx+dy*dy);
-    if(len<2) return;
-    const angle=Math.atan2(dy,dx);
-    const hw=8,hl=14;
-    ctx.strokeStyle=col;ctx.lineWidth=lw;ctx.fillStyle=col;
-    ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();
-    ctx.beginPath();
-    ctx.moveTo(x2,y2);
-    ctx.lineTo(x2-hl*Math.cos(angle-0.4),y2-hl*Math.sin(angle-0.4));
-    ctx.lineTo(x2-hl*Math.cos(angle+0.4),y2-hl*Math.sin(angle+0.4));
-    ctx.closePath();ctx.fill();
-  }
-
-  window.addEventListener('resize',()=>{if(simInited)drawVec();});
 </script>
 <script>const _st=window.switchTab;window.switchTab=function(id,btn){_st(id,btn);if(id==='explore')setTimeout(()=>window.dispatchEvent(new Event('resize')),60);}</script>
   <script>

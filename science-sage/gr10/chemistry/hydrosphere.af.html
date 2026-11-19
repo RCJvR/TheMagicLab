@@ -155,7 +155,8 @@ select option{background:#1a1f35}
 <script defer src="../../../progress.js"></script>
 <script defer src="../../../lesson-progress-observer.js"></script>
 <style id="ml-touch">@media (pointer:coarse){#tab-explore button,#tab-simulate button,#panel-explore button,#tab-explore select,#tab-simulate select,#panel-explore select{min-height:40px}#tab-explore input[type=range],#tab-simulate input[type=range],#panel-explore input[type=range]{min-height:32px}}</style>
-<style id="ml-wb-memo">.wb-memo{margin-top:12px;border-top:1px dashed rgba(255,255,255,.10);padding-top:10px}.wb-memo summary{cursor:pointer;font-size:13px;font-weight:700;color:#86efac;list-style:revert}.wb-memo-body{margin-top:8px;font-size:13.5px;line-height:1.8;color:rgba(210,218,245,.85);background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.18);border-radius:10px;padding:12px 16px}@media print{.wb-memo{display:none!important}}</style><style id="ml-ieb-relabel">.ieb-block.ml-core{display:block}</style><style id="ml-exam-q">.wb-q.ml-exam-q{border-color:rgba(252,211,77,.35)}.ml-exam-q .wb-qnum{color:#fcd34d}</style></head>
+<style id="ml-wb-memo">.wb-memo{margin-top:12px;border-top:1px dashed rgba(255,255,255,.10);padding-top:10px}.wb-memo summary{cursor:pointer;font-size:13px;font-weight:700;color:#86efac;list-style:revert}.wb-memo-body{margin-top:8px;font-size:13.5px;line-height:1.8;color:rgba(210,218,245,.85);background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.18);border-radius:10px;padding:12px 16px}@media print{.wb-memo{display:none!important}}</style><style id="ml-ieb-relabel">.ieb-block.ml-core{display:block}</style><style id="ml-exam-q">.wb-q.ml-exam-q{border-color:rgba(252,211,77,.35)}.ml-exam-q .wb-qnum{color:#fcd34d}</style><link rel="stylesheet" href="/assets/explore-kit.css">
+</head>
 <body>
   <a class="ml-skip" href="#ml-main">Skip to content</a>
 
@@ -262,29 +263,10 @@ select option{background:#1a1f35}
 
 <!-- ===== EXPLORE TAB ===== -->
 <div class="tab-panel" id="tab-explore">
-  <div class="ml-predict" style="margin:0 0 16px;padding:12px 16px;border-radius:10px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.075);border-left:2px solid #74d154;font-size:15px;line-height:1.6;color:#e3e8ef"><strong style="color:#f2f5f9">Voorspel eers:</strong> Raai watter persentasie van al die aarde se water varswater is wat ons werklik kan gebruik. <strong style="color:#f2f5f9">Toets dit dan:</strong> Klik op die balksegmente en skakel dan oor na die varswater-uiteensetting om jou raaiskoot te toets.</div>
-  <div class="sim-outer">
-    <div class="sim-canvas-wrap">
-      <h3 id="waterTitle">Die Aarde se Waterbegroting — Klik op 'n Segment</h3>
-      <canvas id="waterCanvas" height="320" role="img" aria-label="Die Aarde se Waterbegroting — Klik op &#x27;n Segment. Klik op enige segment van die balk om die presiese persentasie en &#x27;n kort feit te sien. Wissel aansigte om van die Aarde se totale water in te zoom na net die varswatergedeelte."></canvas>
-    </div>
-    <div class="sim-controls-row">
-      <div class="ctrl-card">
-        <div class="ctrl-label">Aansig</div>
-        <button class="mode-btn active" id="viewTotal" onclick="setWaterView('total',this)">Totale Waterbegroting</button>
-        <button class="mode-btn" id="viewFresh" onclick="setWaterView('fresh',this)">Varswater-uiteensetting</button>
-      </div>
-      <div class="ctrl-card">
-        <div class="ctrl-label">Hoe om te gebruik</div>
-        <p style="font-size:12px;color:var(--muted);line-height:1.7">Klik op enige segment van die balk om die presiese persentasie en 'n kort feit te sien. Wissel aansigte om van die Aarde se totale water in te zoom na net die varswatergedeelte.</p>
-      </div>
-    </div>
-    <div class="readout-grid" id="waterReadouts" style="max-width:900px">
-      <div class="readout"><div class="readout-label">Gekose Segment</div><div class="readout-val" id="ro-seg" style="font-size:15px">Klik op 'n segment</div></div>
-      <div class="readout"><div class="readout-label">Persentasie</div><div class="readout-val" id="ro-pct">—<span>%</span></div></div>
-      <div class="readout-fact" id="ro-fact">Klik op enige gekleurde segment van die balk hierbo om meer te leer oor daardie deel van die Aarde se waterbegroting.</div>
-    </div>
-  </div>
+  <div class="ml-predict" style="margin:0 0 16px;padding:12px 16px;border-radius:10px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.075);border-left:2px solid #74d154;font-size:15px;line-height:1.6;color:#e3e8ef"><strong style="color:#f2f5f9">Voorspel eers:</strong> Raai watter persentasie van al die aarde se water vars water is. En as die son minder energie gee, wat sal met die reën op die land gebeur? <strong style="color:#f2f5f9">Toets dit dan:</strong> Gebruik "Waar die water is" om jou raaiskoot te toets, en draai dan die sonenergie in die watersiklus af en kyk na die verdamping en die reën.</div>
+  <div id="mlx-root"></div>
+  <script src="/assets/explore-kit.js"></script>
+  <script src="/assets/explore/hydrosphere.js"></script>
 </div>
 
 <!-- ===== PRACTICE TAB ===== -->
@@ -541,147 +523,7 @@ function checkAns(qNum, chosenIdx, fbId){
   }
 }
 
-// ===== SIMULATION: EARTH'S WATER BUDGET =====
-let canvas, ctx, dpr;
-let waterView = 'total';
-let simSegments = []; // current clickable segments {x0,x1,label,pct,fact,colour}
-
-const totalSegments = [
-  {label:'Oseane (sout)', pct:97, colour:'#3b82f6', fact:'Oseane hou sowat 97% van alle water op Aarde. Hierdie water is te sout vir drink, besproeiing, of die meeste industriële gebruike sonder duur ontsouting.'},
-  {label:'Varswater', pct:3, colour:'#86efac', fact:"Slegs sowat 2,5–3% van die Aarde se water is vars. Klik op \"Varswater-uiteensetting\" hierbo om te sien hoe hierdie klein gedeelte verder verdeel word."}
-];
-
-const freshSegments = [
-  {label:'Yskappe & gletsers', pct:69, colour:'#e0f2fe', fact:'Sowat 69% van alle varswater is bevrore in yskappe en gletsers (bv. Antarktika, Groenland) — weggesluit en nie geredelik toeganklik vir gebruik nie.'},
-  {label:'Grondwater', pct:30, colour:'#60a5fa', fact:"Ongeveer 30% van varswater word ondergronds gestoor as grondwater in akwifere. Dit is 'n noodsaaklike bron vir boorgate en putte, veral in droë streke soos groot dele van Suid-Afrika."},
-  {label:'Oppervlakwater & atmosfeer', pct:1, colour:'#c084fc', fact:'Minder as 1% van varswater bestaan as oppervlakwater in riviere, mere, en vleilande, of as damp in die atmosfeer — tog verskaf hierdie klein fraksie die meeste van die water wat ons daagliks direk gebruik.'}
-];
-
-function initSim(){
-  if(!canvas){
-    canvas = document.getElementById('waterCanvas');
-    dpr = window.devicePixelRatio || 1;
-    resizeCanvas();
-    ctx = canvas.getContext('2d');
-    canvas.addEventListener('click', onCanvasClick);
-  }
-  setWaterView(waterView, null, true);
-}
-
-function resizeCanvas(){
-  const wrap = canvas.parentElement;
-  const w = wrap.clientWidth - 32;
-  const h = 320;
-  canvas.style.width = w + 'px';
-  canvas.style.height = h + 'px';
-  canvas.width = w * dpr;
-  canvas.height = h * dpr;
-}
-
-function setWaterView(view, btn, force){
-  if(view === waterView && !force) return;
-  waterView = view;
-  document.getElementById('viewTotal').classList.toggle('active', view==='total');
-  document.getElementById('viewFresh').classList.toggle('active', view==='fresh');
-  document.getElementById('waterTitle').textContent = view==='total' ? "Die Aarde se Totale Waterbegroting — Klik op 'n Segment" : "Varswater-uiteensetting — Klik op 'n Segment";
-  document.getElementById('ro-seg').textContent = "Klik op 'n segment";
-  document.getElementById('ro-pct').innerHTML = '—<span>%</span>';
-  document.getElementById('ro-fact').textContent = view==='total'
-    ? "Klik op enige gekleurde segment van die balk hierbo om meer te leer oor daardie deel van die Aarde se waterbegroting."
-    : "Klik op enige gekleurde segment om in te zoom op hoe die Aarde se klein varswatergedeelte verdeel word.";
-  drawSim();
-}
-
-function drawSim(){
-  if(!ctx) return;
-  ctx.setTransform(1,0,0,1,0,0);
-  ctx.scale(dpr, dpr);
-  const W = canvas.width / dpr;
-  const H = canvas.height / dpr;
-  ctx.clearRect(0, 0, W, H);
-
-  ctx.fillStyle = '#040710';
-  ctx.fillRect(0, 0, W, H);
-
-  drawBudgetBar(W, H);
-}
-
-function drawBudgetBar(W, H){
-  const segments = waterView === 'total' ? totalSegments : freshSegments;
-  const barX = 40;
-  const barW = W - 80;
-  const barY = H/2 - 50;
-  const barH = 100;
-
-  simSegments = [];
-  let xCursor = barX;
-
-  ctx.font = 'bold 12px "JetBrains Mono", monospace';
-  ctx.textAlign = 'center';
-
-  segments.forEach((seg, i)=>{
-    const segW = (seg.pct/100) * barW;
-    ctx.fillStyle = seg.colour;
-    ctx.globalAlpha = 0.85;
-    ctx.fillRect(xCursor, barY, Math.max(segW,1), barH);
-    ctx.globalAlpha = 1;
-    ctx.strokeStyle = 'rgba(4,7,16,0.8)';
-    ctx.lineWidth = 2;
-    ctx.strokeRect(xCursor, barY, Math.max(segW,1), barH);
-
-    // label inside or above segment depending on width
-    const midX = xCursor + segW/2;
-    if(segW > 60){
-      ctx.fillStyle = '#040710';
-      ctx.font = 'bold 12px "JetBrains Mono", monospace';
-      ctx.fillText(seg.pct + '%', midX, barY + barH/2 + 4);
-    }
-    // label below bar
-    ctx.fillStyle = 'rgba(210,218,245,0.7)';
-    ctx.font = '10px "JetBrains Mono", monospace';
-    const labelY = barY + barH + 20 + (i%2)*16;
-    ctx.fillText(seg.label, Math.min(Math.max(midX, barX+40), barX+barW-40), labelY);
-    // connecting tick
-    ctx.strokeStyle = 'rgba(210,218,245,0.25)';
-    ctx.lineWidth = 1;
-    ctx.beginPath();
-    ctx.moveTo(midX, barY+barH);
-    ctx.lineTo(Math.min(Math.max(midX, barX+40), barX+barW-40), labelY-10);
-    ctx.stroke();
-
-    simSegments.push({x0:xCursor, x1:xCursor+segW, seg});
-    xCursor += segW;
-  });
-
-  // Title above bar
-  ctx.fillStyle = 'rgba(210,218,245,0.55)';
-  ctx.font = '11px "JetBrains Mono", monospace';
-  ctx.textAlign = 'center';
-  ctx.fillText(waterView==='total' ? "100% van die Aarde se water" : "100% van die Aarde se varswater", W/2, barY - 16);
-}
-
-function onCanvasClick(e){
-  const rect = canvas.getBoundingClientRect();
-  const scaleX = (canvas.width/dpr) / rect.width;
-  const clickX = (e.clientX - rect.left) * scaleX;
-
-  for(const s of simSegments){
-    if(clickX >= s.x0 && clickX <= s.x1){
-      document.getElementById('ro-seg').textContent = s.seg.label;
-      document.getElementById('ro-pct').innerHTML = s.seg.pct + '<span>%</span>';
-      document.getElementById('ro-fact').textContent = s.seg.fact;
-      break;
-    }
-  }
-}
-
-window.addEventListener('resize', ()=>{
-  if(canvas){
-    resizeCanvas();
-    ctx = canvas.getContext('2d');
-    drawSim();
-  }
-});
+function drawBudgetBar(){} function drawSim(){} function initSim(){} function onCanvasClick(){} function resizeCanvas(){} function setWaterView(){} // the simulation is assets/explore/hydrosphere.js
 </script>
 <script>const _st=window.switchTab;window.switchTab=function(id,btn){_st(id,btn);if(id==='explore')setTimeout(()=>window.dispatchEvent(new Event('resize')),60);}</script>
   <script>

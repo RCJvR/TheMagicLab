@@ -330,7 +330,8 @@
             // and reading time, but each with its own writing time and finish
             count: 1, subject2: '', paper2: '', writing2: 10800, subject3: '', paper3: '', writing3: 10800,
             audio: false,     // (older links: offer the instructions recording; now always offered)
-            rec: '' },        // which recording (TTAudio.list id, or 'own'); '' = chosen from the papers
+            rec: '',          // which recording (TTAudio.list id, or 'own'); '' = chosen from the papers
+            tt: true },       // offer our school's exam timetable (tt=0 for a link shared with other schools)
     look: { display: 'digital', secs: true, h24: true, nums: true, now: true,
             bg: '#08090b', fg: '#f2f5f9', accent: '#ed5c86', warnc: '#f5b041', face: '#111418',
             font: 'cabinet', size: 100, tsize: 100, fit: false, layout: 'standard', fill: 'off', pic: false,
@@ -377,7 +378,7 @@
     ['look.bg', 'bg', 'hex'], ['look.fg', 'fg', 'hex'], ['look.accent', 'ac', 'hex'], ['look.warnc', 'wc', 'hex'], ['look.face', 'fc', 'hex'],
     ['look.font', 'f'], ['look.size', 'z', 'num'], ['look.tsize', 'tz', 'num'], ['look.fit', 'x', 'bool'],
     ['look.layout', 'y', 'layout'], ['look.fill', 'fl', 'fill'], ['look.pic', 'pi', 'bool'],
-    ['look.arr', 'ar'], ['look.fnow', 'fn', 'bool'], ['look.note', 'nt', 'bool'], ['look.afAuto', 'aa', 'bool'], ['exam.rec', 'ao'], ['look.isize', 'iz', 'num']
+    ['look.arr', 'ar'], ['look.fnow', 'fn', 'bool'], ['look.note', 'nt', 'bool'], ['look.afAuto', 'aa', 'bool'], ['exam.rec', 'ao'], ['look.isize', 'iz', 'num'], ['exam.tt', 'tt', 'bool']
   ];
   for (var kn = 4; kn <= MAX_PAPERS; kn++) KEYS.push(['exam.subject' + kn, 's' + kn], ['exam.paper' + kn, 'p' + kn], ['exam.writing' + kn, 'w' + kn, 'dur']);
   var MODES = { pomodoro: 'p', countdown: 'c', clock: 'k', stopwatch: 's', exam: 'e' };

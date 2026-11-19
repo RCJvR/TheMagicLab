@@ -185,7 +185,8 @@
 <script defer src="../../../progress.js"></script>
 <script defer src="../../../lesson-progress-observer.js"></script>
 <style id="ml-touch">@media (pointer:coarse){#tab-explore button,#tab-simulate button,#panel-explore button,#tab-explore select,#tab-simulate select,#panel-explore select{min-height:40px}#tab-explore input[type=range],#tab-simulate input[type=range],#panel-explore input[type=range]{min-height:32px}}</style>
-<style id="ml-wb-memo">.wb-memo{margin-top:12px;border-top:1px dashed rgba(255,255,255,.10);padding-top:10px}.wb-memo summary{cursor:pointer;font-size:13px;font-weight:700;color:#86efac;list-style:revert}.wb-memo-body{margin-top:8px;font-size:13.5px;line-height:1.8;color:rgba(210,218,245,.85);background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.18);border-radius:10px;padding:12px 16px}@media print{.wb-memo{display:none!important}}</style><style id="ml-exam-q">.wb-q.ml-exam-q{border-color:rgba(252,211,77,.35)}.ml-exam-q .wb-qnum{color:#fcd34d}</style></head>
+<style id="ml-wb-memo">.wb-memo{margin-top:12px;border-top:1px dashed rgba(255,255,255,.10);padding-top:10px}.wb-memo summary{cursor:pointer;font-size:13px;font-weight:700;color:#86efac;list-style:revert}.wb-memo-body{margin-top:8px;font-size:13.5px;line-height:1.8;color:rgba(210,218,245,.85);background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.18);border-radius:10px;padding:12px 16px}@media print{.wb-memo{display:none!important}}</style><style id="ml-exam-q">.wb-q.ml-exam-q{border-color:rgba(252,211,77,.35)}.ml-exam-q .wb-qnum{color:#fcd34d}</style><link rel="stylesheet" href="/assets/explore-kit.css">
+</head>
 <body>
   <a class="ml-skip" href="#ml-main">Skip to content</a>
 <nav data-ml-bar="science-sage" data-ml-home="/science-sage/index.html">
@@ -297,43 +298,9 @@
 <!-- EXPLORE TAB -->
 <div class="tab-panel" id="tab-explore">
   <div class="ml-predict" style="margin:0 0 16px;padding:12px 16px;border-radius:10px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.075);border-left:2px solid #74d154;font-size:15px;line-height:1.6;color:#e3e8ef"><strong style="color:#f2f5f9">Predict first:</strong> In a perfectly inelastic collision, is momentum conserved? Is kinetic energy? <strong style="color:#f2f5f9">Then test it:</strong> Run Elastic and Perfectly Inelastic collisions with the same values and compare.</div>
-  <div class="sim-outer">
-    <div class="sim-canvas-wrap">
-      <h3>Collision Simulator</h3>
-      <canvas id="colCanvas" height="300" role="img" aria-label="Collision Simulator"></canvas>
-    </div>
-    <div class="sim-controls-row">
-      <div class="ctrl-card">
-        <div class="ctrl-label">Collision Type</div>
-        <button class="mode-btn active" id="modeEl" onclick="setColMode('elastic')">Elastic</button>
-        <button class="mode-btn" id="modeIn" onclick="setColMode('inelastic')">Perfectly Inelastic</button>
-        <button class="mode-btn" id="modeCe" onclick="setColMode('custom')">Custom e (IEB)</button>
-        <div id="ce-row" style="display:none;margin-top:10px">
-          <div class="slider-row"><label for="sl-e">e value</label><input type="range" min="0" max="100" value="70" id="sl-e" oninput="updateCe()"><span class="slider-val" id="sv-e">0.70</span></div>
-        </div>
-        <div style="margin-top:12px;display:flex;gap:8px">
-          <button class="mode-btn active" onclick="resetSim()" style="background:rgba(96,165,250,.12);border-color:rgba(96,165,250,.30);color:#93c5fd">Reset</button>
-          <button class="mode-btn" id="playBtn" onclick="playSim()">Play</button>
-        </div>
-      </div>
-      <div class="ctrl-card">
-        <div class="ctrl-label">Block 1 <span style="color:#60a5fa">●</span> (left)</div>
-        <div class="slider-row"><label for="sl-m1">Mass m₁ (kg)</label><input type="range" min="1" max="10" value="4" id="sl-m1" oninput="resetSim()"><span class="slider-val" id="sv-m1">4 kg</span></div>
-        <div class="slider-row"><label for="sl-v1">Velocity v₁ᵢ</label><input type="range" min="-10" max="10" value="5" id="sl-v1" oninput="resetSim()"><span class="slider-val" id="sv-v1">+5 m·s⁻¹</span></div>
-        <div class="ctrl-label" style="margin-top:10px">Block 2 <span style="color:#f87171">●</span> (right)</div>
-        <div class="slider-row"><label for="sl-m2">Mass m₂ (kg)</label><input type="range" min="1" max="10" value="2" id="sl-m2" oninput="resetSim()"><span class="slider-val" id="sv-m2">2 kg</span></div>
-        <div class="slider-row"><label for="sl-v2">Velocity v₂ᵢ</label><input type="range" min="-10" max="10" value="-2" id="sl-v2" oninput="resetSim()"><span class="slider-val" id="sv-v2">−2 m·s⁻¹</span></div>
-      </div>
-    </div>
-    <div class="readout-grid">
-      <div class="readout"><div class="readout-label">p total (before)</div><div class="readout-val" id="ro-pb">—<span>kg·m·s⁻¹</span></div></div>
-      <div class="readout"><div class="readout-label">p total (after)</div><div class="readout-val" id="ro-pa">—<span>kg·m·s⁻¹</span></div></div>
-      <div class="readout"><div class="readout-label">KE before</div><div class="readout-val" id="ro-keb">—<span>J</span></div></div>
-      <div class="readout"><div class="readout-label">KE after</div><div class="readout-val" id="ro-kea">—<span>J</span></div></div>
-      <div class="readout"><div class="readout-label">KE lost</div><div class="readout-val" id="ro-kel">—<span>J</span></div></div>
-      <div class="readout"><div class="readout-label">Status</div><div class="readout-val" id="ro-stat" style="font-size:12px">—</div></div>
-    </div>
-  </div>
+  <div id="mlx-root"></div>
+  <script src="/assets/explore-kit.js"></script>
+  <script src="/assets/explore/momentum.js"></script>
 </div>
 
 <!-- PRACTICE TAB -->
@@ -540,170 +507,7 @@
     if(!id.startsWith('I')){scoreCount+=result==='correct'?1:0;answered++;if(answered>=8){document.getElementById('score-big').textContent=scoreCount+'/8';document.getElementById('score-banner').classList.add('show');}}
   }
 
-  // SIMULATION
-  let colMode='elastic';
-  let b1={x:0,v:0,m:0},b2={x:0,v:0,m:0};
-  let collided=false;let running=false;let raf=null;let lastT=null;
-  let simInited=false;
-
-  function setColMode(m){
-    colMode=m;
-    ['modeEl','modeIn','modeCe'].forEach(id=>document.getElementById(id).classList.remove('active'));
-    document.getElementById(m==='elastic'?'modeEl':m==='inelastic'?'modeIn':'modeCe').classList.add('active');
-    document.getElementById('ce-row').style.display=m==='custom'?'block':'none';
-    resetSim();
-  }
-  function updateCe(){document.getElementById('sv-e').textContent=(document.getElementById('sl-e').value/100).toFixed(2);}
-  function initSim(){if(!simInited){simInited=true;resetSim();}}
-
-  function resetSim(){
-    if(raf){cancelAnimationFrame(raf);raf=null;}
-    running=false;collided=false;lastT=null;
-    document.getElementById('playBtn').textContent='Play';
-    const m1=+document.getElementById('sl-m1').value,v1i=+document.getElementById('sl-v1').value;
-    const m2=+document.getElementById('sl-m2').value,v2i=+document.getElementById('sl-v2').value;
-    document.getElementById('sv-m1').textContent=m1+' kg';
-    document.getElementById('sv-v1').textContent=(v1i>=0?'+':'')+v1i+' m·s⁻¹';
-    document.getElementById('sv-m2').textContent=m2+' kg';
-    document.getElementById('sv-v2').textContent=(v2i>=0?'+':'')+v2i+' m·s⁻¹';
-    const canvas=document.getElementById('colCanvas');
-    const W=canvas.clientWidth||800;
-    b1={x:W*0.25,v:v1i,m:m1};
-    b2={x:W*0.72,v:v2i,m:m2};
-    const pb=m1*v1i+m2*v2i;
-    const keb=0.5*m1*v1i*v1i+0.5*m2*v2i*v2i;
-    document.getElementById('ro-pb').innerHTML=pb.toFixed(1)+'<span>kg·m·s⁻¹</span>';
-    document.getElementById('ro-keb').innerHTML=keb.toFixed(1)+'<span>J</span>';
-    document.getElementById('ro-pa').innerHTML='—<span>kg·m·s⁻¹</span>';
-    document.getElementById('ro-kea').innerHTML='—<span>J</span>';
-    document.getElementById('ro-kel').innerHTML='—<span>J</span>';
-    document.getElementById('ro-stat').innerHTML='Ready';
-    if(simInited) drawCol();
-  }
-
-  function playSim(){
-    if(running){cancelAnimationFrame(raf);running=false;document.getElementById('playBtn').textContent='Play';return;}
-    running=true;lastT=null;document.getElementById('playBtn').textContent='Pause';
-    raf=requestAnimationFrame(simStep);
-  }
-
-  function simStep(ts){
-    if(!running) return;
-    if(lastT===null){lastT=ts;raf=requestAnimationFrame(simStep);return;}
-    const dt=Math.min((ts-lastT)/1000,0.05);lastT=ts;
-    const scale=30;
-    b1.x+=b1.v*scale*dt;
-    b2.x+=b2.v*scale*dt;
-
-    // Collide when the drawn blocks touch (their drawn radius is 14 + 2m)
-    const r1=14+2*b1.m, r2=14+2*b2.m;
-    if(!collided&&b1.x+r1>=b2.x-r2){
-      collided=true;
-      doCollision();
-    }
-
-    const canvas=document.getElementById('colCanvas');
-    const W=canvas.clientWidth||800;
-    if(b1.x<r) b1.x=r;
-    if(b2.x>W-r) b2.x=W-r;
-
-    drawCol();
-    raf=requestAnimationFrame(simStep);
-  }
-
-  function doCollision(){
-    const m1=b1.m,v1i=b1.v,m2=b2.m,v2i=b2.v;
-    let v1f,v2f;
-    if(colMode==='elastic'){
-      v1f=((m1-m2)*v1i+2*m2*v2i)/(m1+m2);
-      v2f=((m2-m1)*v2i+2*m1*v1i)/(m1+m2);
-    } else if(colMode==='inelastic'){
-      const vf=(m1*v1i+m2*v2i)/(m1+m2);
-      v1f=vf;v2f=vf;
-    } else {
-      const e=document.getElementById('sl-e').value/100;
-      // e = (v2f-v1f)/(v1i-v2i), plus conservation: m1*v1i+m2*v2i = m1*v1f+m2*v2f
-      const ptot=m1*v1i+m2*v2i;
-      // v2f - v1f = e*(v1i - v2i)
-      const relV=e*(v1i-v2i);
-      v2f=(ptot+m1*relV)/(m1+m2);
-      v1f=v2f-relV;
-    }
-    b1.v=v1f;b2.v=v2f;
-    const pa=m1*v1f+m2*v2f;
-    const kea=0.5*m1*v1f*v1f+0.5*m2*v2f*v2f;
-    const keb=0.5*m1*v1i*v1i+0.5*m2*v2i*v2i;
-    const kel=keb-kea;
-    document.getElementById('ro-pa').innerHTML=pa.toFixed(1)+'<span>kg·m·s⁻¹</span>';
-    document.getElementById('ro-kea').innerHTML=kea.toFixed(1)+'<span>J</span>';
-    document.getElementById('ro-kel').innerHTML=kel.toFixed(1)+'<span>J</span>';
-    const type=colMode==='elastic'?'Elastic ✓':(colMode==='inelastic'?'Perfectly Inelastic':'Custom e');
-    document.getElementById('ro-stat').innerHTML=type;
-  }
-
-  function drawCol(){
-    const canvas=document.getElementById('colCanvas');
-    const dpr=window.devicePixelRatio||1;
-    const W=canvas.clientWidth||800,H=300;
-    canvas.width=W*dpr;canvas.height=H*dpr;
-    canvas.style.height=H+'px';
-    const ctx=canvas.getContext('2d');
-    ctx.setTransform(1,0,0,1,0,0);
-    ctx.scale(dpr,dpr);
-    ctx.clearRect(0,0,W,H);
-
-    // Track
-    ctx.fillStyle='rgba(96,165,250,0.06)';
-    ctx.fillRect(0,H-50,W,50);
-    ctx.strokeStyle='rgba(96,165,250,0.25)';ctx.lineWidth=1.5;
-    ctx.beginPath();ctx.moveTo(0,H-50);ctx.lineTo(W,H-50);ctx.stroke();
-
-    // Positive direction arrow
-    ctx.fillStyle='rgba(255,255,255,0.2)';ctx.font='12px JetBrains Mono';ctx.textAlign='left';
-    ctx.fillText('+ →',8,16);
-
-    const r1=14+b1.m*2,r2=14+b2.m*2;
-    const by=H-50;
-
-    // Block 1
-    ctx.fillStyle='rgba(96,165,250,0.3)';ctx.strokeStyle='#60a5fa';ctx.lineWidth=2;
-    ctx.beginPath();ctx.roundRect(b1.x-r1,by-r1*2,r1*2,r1*2,6);ctx.fill();ctx.stroke();
-    ctx.fillStyle='#fff';ctx.font='bold 12px Cabinet Grotesk';ctx.textAlign='center';
-    ctx.fillText(b1.m+'kg',b1.x,by-r1);
-
-    // Velocity arrow for block 1
-    if(Math.abs(b1.v)>0.05){
-      const arLen=b1.v*10;
-      drawArrow(ctx,b1.x,by-r1*2-8,b1.x+arLen,by-r1*2-8,'#60a5fa',1.5);
-    }
-
-    // Block 2
-    ctx.fillStyle='rgba(248,113,113,0.3)';ctx.strokeStyle='#f87171';ctx.lineWidth=2;
-    ctx.beginPath();ctx.roundRect(b2.x-r2,by-r2*2,r2*2,r2*2,6);ctx.fill();ctx.stroke();
-    ctx.fillStyle='#fff';ctx.font='bold 12px Cabinet Grotesk';ctx.textAlign='center';
-    ctx.fillText(b2.m+'kg',b2.x,by-r2);
-
-    if(Math.abs(b2.v)>0.05){
-      const arLen=b2.v*10;
-      drawArrow(ctx,b2.x,by-r2*2-8,b2.x+arLen,by-r2*2-8,'#f87171',1.5);
-    }
-
-    // Velocity labels
-    ctx.fillStyle='rgba(255,255,255,0.45)';ctx.font='12px JetBrains Mono';ctx.textAlign='center';
-    ctx.fillText((b1.v>=0?'+':'')+b1.v.toFixed(1)+' m/s',b1.x,by-r1*2-20);
-    ctx.fillText((b2.v>=0?'+':'')+b2.v.toFixed(1)+' m/s',b2.x,by-r2*2-20);
-  }
-
-  function drawArrow(ctx,x1,y1,x2,y2,col,lw){
-    const dx=x2-x1,dy=y2-y1,len=Math.sqrt(dx*dx+dy*dy);
-    if(len<3) return;
-    const ang=Math.atan2(dy,dx);
-    ctx.strokeStyle=col;ctx.lineWidth=lw;ctx.fillStyle=col;
-    ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();
-    ctx.beginPath();ctx.moveTo(x2,y2);ctx.lineTo(x2-10*Math.cos(ang-0.4),y2-10*Math.sin(ang-0.4));ctx.lineTo(x2-10*Math.cos(ang+0.4),y2-10*Math.sin(ang+0.4));ctx.closePath();ctx.fill();
-  }
-
-  window.addEventListener('resize',()=>{if(simInited)drawCol();});
+  function doCollision(){} function drawArrow(){} function drawCol(){} function initSim(){} function playSim(){} function resetSim(){} function setColMode(){} function simStep(){} function updateCe(){} // the simulation is assets/explore/momentum.js
 </script>
 <script>const _st=window.switchTab;window.switchTab=function(id,btn){_st(id,btn);if(id==='explore')setTimeout(()=>window.dispatchEvent(new Event('resize')),60);}</script>
   <script>

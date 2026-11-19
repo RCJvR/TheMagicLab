@@ -153,7 +153,8 @@ input[type=range]{flex:1;accent-color:#60a5fa;cursor:pointer}
 <script defer src="../../../progress.js"></script>
 <script defer src="../../../lesson-progress-observer.js"></script>
 <style id="ml-touch">@media (pointer:coarse){#tab-explore button,#tab-simulate button,#panel-explore button,#tab-explore select,#tab-simulate select,#panel-explore select{min-height:40px}#tab-explore input[type=range],#tab-simulate input[type=range],#panel-explore input[type=range]{min-height:32px}}</style>
-<style id="ml-wb-memo">.wb-memo{margin-top:12px;border-top:1px dashed rgba(255,255,255,.10);padding-top:10px}.wb-memo summary{cursor:pointer;font-size:13px;font-weight:700;color:#86efac;list-style:revert}.wb-memo-body{margin-top:8px;font-size:13.5px;line-height:1.8;color:rgba(210,218,245,.85);background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.18);border-radius:10px;padding:12px 16px}@media print{.wb-memo{display:none!important}}</style><style id="ml-exam-q">.wb-q.ml-exam-q{border-color:rgba(252,211,77,.35)}.ml-exam-q .wb-qnum{color:#fcd34d}</style></head>
+<style id="ml-wb-memo">.wb-memo{margin-top:12px;border-top:1px dashed rgba(255,255,255,.10);padding-top:10px}.wb-memo summary{cursor:pointer;font-size:13px;font-weight:700;color:#86efac;list-style:revert}.wb-memo-body{margin-top:8px;font-size:13.5px;line-height:1.8;color:rgba(210,218,245,.85);background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.18);border-radius:10px;padding:12px 16px}@media print{.wb-memo{display:none!important}}</style><style id="ml-exam-q">.wb-q.ml-exam-q{border-color:rgba(252,211,77,.35)}.ml-exam-q .wb-qnum{color:#fcd34d}</style><link rel="stylesheet" href="/assets/explore-kit.css">
+</head>
 <body>
   <a class="ml-skip" href="#ml-main">Skip to content</a>
 <nav data-ml-bar="science-sage" data-ml-home="/science-sage/index.html">
@@ -274,61 +275,10 @@ input[type=range]{flex:1;accent-color:#60a5fa;cursor:pointer}
 
 <!-- SIMULATE TAB -->
 <div class="tab-panel" id="tab-explore">
-  <div class="ml-predict" style="margin:0 0 16px;padding:12px 16px;border-radius:10px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.075);border-left:2px solid #74d154;font-size:15px;line-height:1.6;color:#e3e8ef"><strong style="color:#f2f5f9">Voorspel eers:</strong> Twee kragte van 5 N werk teen 90° tot mekaar. Is die resultant 10 N, sowat 7 N, of 0 N? <strong style="color:#f2f5f9">Toets dit dan:</strong> Stel albei vektore op 5 met hoeke 90° uitmekaar en lees die resultant af.</div>
-  <div class="sim-outer">
-    <div class="sim-canvas-wrap">
-      <h3>Vektoroptelling-Speelarea</h3>
-      <canvas id="vecCanvas" height="340" role="img" aria-label="Vektoroptelling-Speelarea"></canvas>
-    </div>
-    <div class="sim-controls-row">
-      <div class="ctrl-card">
-        <div class="ctrl-label">Modus</div>
-        <button class="mode-btn active" id="mode1d" onclick="setMode('1d')">1D-Getallelyn</button>
-        <button class="mode-btn" id="mode2d" onclick="setMode('2d')">2D-Vektore</button>
-        <div style="margin-top:14px">
-          <div class="ctrl-label">Vektor A (blou)</div>
-          <div class="slider-row">
-            <label for="slA">Grootte</label>
-            <input type="range" id="slA" min="1" max="10" value="5" step="0.5" oninput="updateSim()">
-            <span class="slider-val" id="valA">5</span>
-          </div>
-          <div class="slider-row" id="rowAngA">
-            <label for="angA">Hoek (°)</label>
-            <input type="range" id="angA" min="0" max="359" value="0" oninput="updateSim()">
-            <span class="slider-val" id="valAngA">0°</span>
-          </div>
-        </div>
-        <div style="margin-top:14px">
-          <div class="ctrl-label">Vektor B (pers)</div>
-          <div class="slider-row">
-            <label for="slB">Grootte</label>
-            <input type="range" id="slB" min="1" max="10" value="4" step="0.5" oninput="updateSim()">
-            <span class="slider-val" id="valB">4</span>
-          </div>
-          <div class="slider-row" id="rowAngB">
-            <label for="angB">Hoek (°)</label>
-            <input type="range" id="angB" min="0" max="359" value="90" oninput="updateSim()">
-            <span class="slider-val" id="valAngB">90°</span>
-          </div>
-        </div>
-      </div>
-      <div class="ctrl-card">
-        <div class="ctrl-label">Lesings</div>
-        <div class="readout-grid">
-          <div class="readout"><div class="readout-label">|A|</div><div class="readout-val" id="ro-a">5<span>eenhede</span></div></div>
-          <div class="readout"><div class="readout-label">|B|</div><div class="readout-val" id="ro-b">4<span>eenhede</span></div></div>
-          <div class="readout"><div class="readout-label">|R| Resultant</div><div class="readout-val" id="ro-r">—<span>eenhede</span></div></div>
-          <div class="readout"><div class="readout-label">Hoek van R</div><div class="readout-val" id="ro-ang">—<span>°</span></div></div>
-        </div>
-        <div style="margin-top:14px;font-size:12px;color:var(--muted);line-height:1.7">
-          <span style="color:#60a5fa">■</span> Vektor A &nbsp;
-          <span style="color:#a78bfa">■</span> Vektor B &nbsp;
-          <span style="color:#fbbf24">■</span> Resultant R<br>
-          <span style="color:rgba(255,255,255,.25)">- - -</span> Komponente
-        </div>
-      </div>
-    </div>
-  </div>
+  <div class="ml-predict" style="margin:0 0 16px;padding:12px 16px;border-radius:10px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.075);border-left:2px solid #74d154;font-size:15px;line-height:1.6;color:#e3e8ef"><strong style="color:#f2f5f9">Voorspel eers:</strong> 'n Leerder loop 3 m Oos en dan 5 m Wes. Watter afstand loop die leerder, en wat is die resulterende verplasing? <strong style="color:#f2f5f9">Toets dit dan:</strong> Stel been 1 op 3 m Oos en been 2 op 5 m Wes, druk Loop dit, en vergelyk die afstand met die verplasing. Stel dan die positiewe rigting op Wes: wat verander en wat bly dieselfde?</div>
+  <div id="mlx-root"></div>
+  <script src="/assets/explore-kit.js"></script>
+  <script src="/assets/explore/vectors-1d.js"></script>
 </div>
 
 <!-- PRACTICE TAB -->
@@ -389,185 +339,7 @@ function switchTab(id,btn){
   if(id==='explore') initSim();
 }
 
-// ── Simulation ─────────────────────────────────────────────────────
-let simMode='1d';
-let simInited=false;
-const DEG=Math.PI/180;
-
-function setMode(m){
-  simMode=m;
-  document.getElementById('mode1d').classList.toggle('active',m==='1d');
-  document.getElementById('mode2d').classList.toggle('active',m==='2d');
-  // In 1D each vector points either along + (0°) or − (180°): keep the direction sliders visible but snap them
-  // to those two values, so the learner can always see and change each vector's direction.
-  ['angA','angB'].forEach(id=>{
-    const s=document.getElementById(id);
-    if(m==='1d'){ const a=+s.value; s.max=180; s.step=180; s.value=(a>90&&a<270)?180:0; }
-    else { s.max=359; s.step=1; }
-  });
-  document.getElementById('rowAngA').style.display='flex';
-  document.getElementById('rowAngB').style.display='flex';
-  updateSim();
-}
-
-function initSim(){
-  if(simInited) return;
-  simInited=true;
-  setMode('1d');
-  updateSim();
-}
-
-function updateSim(){
-  const canvas=document.getElementById('vecCanvas');
-  if(!canvas) return;
-  const dpr=window.devicePixelRatio||1;
-  const W=canvas.offsetWidth||600;
-  const H=340;
-  canvas.width=W*dpr;
-  canvas.height=H*dpr;
-  const ctx=canvas.getContext('2d');
-  ctx.setTransform(1,0,0,1,0,0);
-  ctx.scale(dpr,dpr);
-
-  const magA=parseFloat(document.getElementById('slA').value);
-  const magB=parseFloat(document.getElementById('slB').value);
-  const angA=parseFloat(document.getElementById('angA').value);
-  const angB=parseFloat(document.getElementById('angB').value);
-
-  document.getElementById('valA').textContent=magA;
-  document.getElementById('valB').textContent=magB;
-  document.getElementById('valAngA').textContent=angA+'°';
-  document.getElementById('valAngB').textContent=angB+'°';
-  document.getElementById('ro-a').innerHTML=magA+'<span>eenhede</span>';
-  document.getElementById('ro-b').innerHTML=magB+'<span>eenhede</span>';
-
-  ctx.clearRect(0,0,W,H);
-  ctx.fillStyle='#040710';
-  ctx.fillRect(0,0,W,H);
-
-  if(simMode==='1d'){
-    draw1D(ctx,W,H,magA,magB,angA,angB);
-  } else {
-    draw2D(ctx,W,H,magA,magB,angA,angB);
-  }
-}
-
-function drawArrow(ctx,x1,y1,x2,y2,color,lw){
-  const dx=x2-x1,dy=y2-y1;
-  const len=Math.sqrt(dx*dx+dy*dy);
-  if(len<2) return;
-  const ux=dx/len,uy=dy/len;
-  const hw=Math.max(8,lw*3);
-  ctx.strokeStyle=color;ctx.fillStyle=color;ctx.lineWidth=lw;
-  ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2-ux*hw,y2-uy*hw);ctx.stroke();
-  ctx.beginPath();
-  ctx.moveTo(x2,y2);
-  ctx.lineTo(x2-ux*hw-uy*hw*0.5,y2-uy*hw+ux*hw*0.5);
-  ctx.lineTo(x2-ux*hw+uy*hw*0.5,y2-uy*hw-ux*hw*0.5);
-  ctx.closePath();ctx.fill();
-}
-
-function draw1D(ctx,W,H,magA,magB,angA,angB){
-  const cx=W/2,cy=H/2;
-  const scale=18;
-  // axis
-  ctx.strokeStyle='rgba(255,255,255,.15)';ctx.lineWidth=1;
-  ctx.beginPath();ctx.moveTo(40,cy);ctx.lineTo(W-40,cy);ctx.stroke();
-  // ticks
-  for(let i=-10;i<=10;i++){
-    const x=cx+i*scale;
-    ctx.strokeStyle='rgba(255,255,255,.12)';ctx.lineWidth=1;
-    ctx.beginPath();ctx.moveTo(x,cy-5);ctx.lineTo(x,cy+5);ctx.stroke();
-    if(i!==0){
-      ctx.fillStyle='rgba(210,218,245,.4)';ctx.font='12px JetBrains Mono';ctx.textAlign='center';
-      ctx.fillText(i,x,cy+16);
-    }
-  }
-  ctx.fillStyle='rgba(210,218,245,.4)';ctx.font='12px JetBrains Mono';ctx.textAlign='center';
-  ctx.fillText(0,cx,cy+16);
-  ctx.fillStyle='rgba(210,218,245,.5)';ctx.font='12px JetBrains Mono';ctx.textAlign='left';
-  ctx.fillText('+',W-36,cy+4);ctx.textAlign='right';ctx.fillText('−',44,cy+4);
-
-  // direction-aware sign
-  const signA=(angA>=90&&angA<270)?-1:1;
-  const signB=(angB>=90&&angB<270)?-1:1;
-  const ax=signA*magA*scale;
-  const bx=signB*magB*scale;
-  const rx=ax+bx;
-
-  // vector A from origin
-  drawArrow(ctx,cx,cy-18,cx+ax,cy-18,'#60a5fa',3);
-  // vector B from tip of A
-  drawArrow(ctx,cx+ax,cy,cx+ax+bx,cy,'#a78bfa',3);
-  // resultant below
-  if(Math.abs(rx)>2){
-    drawArrow(ctx,cx,cy+22,cx+rx,cy+22,'#fbbf24',3);
-  }
-
-  // labels
-  ctx.font='bold 12px Cabinet Grotesk';ctx.textAlign='center';
-  ctx.fillStyle='#93c5fd';ctx.fillText('A',cx+ax/2,cy-28);
-  ctx.fillStyle='#c4b5fd';ctx.fillText('B',cx+ax+bx/2,cy-12);
-  ctx.fillStyle='#fbbf24';ctx.fillText('R',cx+rx/2,cy+38);
-
-  const r=Math.abs(rx/scale).toFixed(2);
-  const dir=rx>=0?'positiewe rigting':'negatiewe rigting';
-  document.getElementById('ro-r').innerHTML=r+'<span>eenhede</span>';
-  document.getElementById('ro-ang').innerHTML=(rx>=0?'0':'180')+'<span>°</span>';
-  document.getElementById('ro-ang').innerHTML='<span style="font-size:11px">'+dir+'</span>';
-}
-
-function draw2D(ctx,W,H,magA,magB,angA,angB){
-  const cx=W/2,cy=H/2;
-  const scale=22;
-
-  // grid
-  ctx.strokeStyle='rgba(255,255,255,.05)';ctx.lineWidth=1;
-  for(let i=-12;i<=12;i++){
-    ctx.beginPath();ctx.moveTo(cx+i*scale,0);ctx.lineTo(cx+i*scale,H);ctx.stroke();
-    ctx.beginPath();ctx.moveTo(0,cy+i*scale);ctx.lineTo(W,cy+i*scale);ctx.stroke();
-  }
-  // axes
-  ctx.strokeStyle='rgba(255,255,255,.2)';ctx.lineWidth=1.5;
-  ctx.beginPath();ctx.moveTo(40,cy);ctx.lineTo(W-20,cy);ctx.stroke();
-  ctx.beginPath();ctx.moveTo(cx,H-20);ctx.lineTo(cx,20);ctx.stroke();
-  ctx.fillStyle='rgba(210,218,245,.4)';ctx.font='12px JetBrains Mono';
-  ctx.textAlign='left';ctx.fillText('+x',W-32,cy-6);
-  ctx.textAlign='center';ctx.fillText('+y',cx+10,28);
-
-  const axA=Math.cos(angA*DEG)*magA*scale,ayA=-Math.sin(angA*DEG)*magA*scale;
-  const axB=Math.cos(angB*DEG)*magB*scale,ayB=-Math.sin(angB*DEG)*magB*scale;
-  const rx=axA+axB,ry=ayA+ayB;
-
-  // components (dashed)
-  ctx.setLineDash([4,4]);ctx.lineWidth=1;
-  ctx.strokeStyle='rgba(96,165,250,.35)';
-  ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(cx+axA,cy);ctx.lineTo(cx+axA,cy+ayA);ctx.stroke();
-  ctx.strokeStyle='rgba(167,139,250,.35)';
-  ctx.beginPath();ctx.moveTo(cx+axA,cy+ayA);ctx.lineTo(cx+axA+axB,cy+ayA);ctx.lineTo(cx+axA+axB,cy+ayA+ayB);ctx.stroke();
-  ctx.setLineDash([]);
-
-  // Vector A from origin
-  drawArrow(ctx,cx,cy,cx+axA,cy+ayA,'#60a5fa',3);
-  // Vector B from tip of A (tail-to-head)
-  drawArrow(ctx,cx+axA,cy+ayA,cx+axA+axB,cy+ayA+ayB,'#a78bfa',3);
-  // Resultant from origin
-  drawArrow(ctx,cx,cy,cx+rx,cy+ry,'#fbbf24',2.5);
-
-  // labels
-  ctx.font='bold 13px Cabinet Grotesk';ctx.textAlign='center';
-  ctx.fillStyle='#93c5fd';ctx.fillText('A',cx+axA/2-6,cy+ayA/2-6);
-  ctx.fillStyle='#c4b5fd';ctx.fillText('B',cx+axA+axB/2+6,cy+ayA+ayB/2-6);
-  ctx.fillStyle='#fbbf24';ctx.fillText('R',cx+rx/2+8,cy+ry/2+8);
-
-  const R=Math.sqrt(rx*rx+ry*ry)/scale;
-  const theta=Math.atan2(-ry,rx)/DEG;
-  const thetaPos=(theta+360)%360;
-  document.getElementById('ro-r').innerHTML=R.toFixed(2)+'<span>eenhede</span>';
-  document.getElementById('ro-ang').innerHTML=thetaPos.toFixed(1)+'<span>°</span>';
-}
-
-window.addEventListener('resize',()=>{if(simInited)updateSim();});
+function setMode(){} function initSim(){} function updateSim(){} function drawArrow(){} function draw1D(){} function draw2D(){} // the simulation is assets/explore/vectors-1d.js
 
 // ── Practice ───────────────────────────────────────────────────────
 const nscQs=[

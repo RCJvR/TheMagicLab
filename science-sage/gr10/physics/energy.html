@@ -186,7 +186,8 @@ input[type=range]{flex:1;accent-color:#60a5fa;cursor:pointer}
 <script defer src="../../../progress.js"></script>
 <script defer src="../../../lesson-progress-observer.js"></script>
 <style id="ml-touch">@media (pointer:coarse){#tab-explore button,#tab-simulate button,#panel-explore button,#tab-explore select,#tab-simulate select,#panel-explore select{min-height:40px}#tab-explore input[type=range],#tab-simulate input[type=range],#panel-explore input[type=range]{min-height:32px}}</style>
-<style id="ml-wb-memo">.wb-memo{margin-top:12px;border-top:1px dashed rgba(255,255,255,.10);padding-top:10px}.wb-memo summary{cursor:pointer;font-size:13px;font-weight:700;color:#86efac;list-style:revert}.wb-memo-body{margin-top:8px;font-size:13.5px;line-height:1.8;color:rgba(210,218,245,.85);background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.18);border-radius:10px;padding:12px 16px}@media print{.wb-memo{display:none!important}}</style><style id="ml-exam-q">.wb-q.ml-exam-q{border-color:rgba(252,211,77,.35)}.ml-exam-q .wb-qnum{color:#fcd34d}</style></head>
+<style id="ml-wb-memo">.wb-memo{margin-top:12px;border-top:1px dashed rgba(255,255,255,.10);padding-top:10px}.wb-memo summary{cursor:pointer;font-size:13px;font-weight:700;color:#86efac;list-style:revert}.wb-memo-body{margin-top:8px;font-size:13.5px;line-height:1.8;color:rgba(210,218,245,.85);background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.18);border-radius:10px;padding:12px 16px}@media print{.wb-memo{display:none!important}}</style><style id="ml-exam-q">.wb-q.ml-exam-q{border-color:rgba(252,211,77,.35)}.ml-exam-q .wb-qnum{color:#fcd34d}</style><link rel="stylesheet" href="/assets/explore-kit.css">
+</head>
 <body>
   <a class="ml-skip" href="#ml-main">Skip to content</a>
 <nav data-ml-bar="science-sage" data-ml-home="/science-sage/index.html">
@@ -292,48 +293,10 @@ input[type=range]{flex:1;accent-color:#60a5fa;cursor:pointer}
 
 <!-- SIMULATE TAB -->
 <div class="tab-panel" id="tab-explore">
-  <div class="ml-predict" style="margin:0 0 16px;padding:12px 16px;border-radius:10px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.075);border-left:2px solid #74d154;font-size:15px;line-height:1.6;color:#e3e8ef"><strong style="color:#f2f5f9">Predict first:</strong> With no friction, can the ball ever rise higher than its starting height? <strong style="color:#f2f5f9">Then test it:</strong> Play with friction OFF, then ON, and watch the energy readouts.</div>
-  <div class="sim-outer">
-    <div class="sim-canvas-wrap">
-      <h3>Energy Conservation Visualiser — Ball on Curved Track</h3>
-      <canvas id="energyCanvas" height="360" role="img" aria-label="Energy Conservation Visualiser — Ball on Curved Track"></canvas>
-    </div>
-    <div class="sim-controls-row">
-      <div class="ctrl-card">
-        <div class="ctrl-label">Controls</div>
-        <div class="slider-row">
-          <label for="slMass">Mass (kg)</label>
-          <input type="range" id="slMass" min="1" max="10" value="2" step="0.5" oninput="resetEnergy()">
-          <span class="slider-val" id="valMass">2 kg</span>
-        </div>
-        <div class="slider-row">
-          <label for="slH">Start Height</label>
-          <input type="range" id="slH" min="1" max="8" value="5" step="0.5" oninput="resetEnergy()">
-          <span class="slider-val" id="valH">5 m</span>
-        </div>
-        <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap">
-          <button class="mode-btn active" id="btnFric" onclick="toggleFriction()">Friction: OFF</button>
-          <button class="mode-btn active" id="btnPlayE" onclick="togglePlayE()">Play</button>
-          <button class="mode-btn" onclick="resetEnergy()">Reset</button>
-        </div>
-      </div>
-      <div class="ctrl-card">
-        <div class="ctrl-label">Live Energy Readouts</div>
-        <div class="readout-grid">
-          <div class="readout"><div class="readout-label">KE</div><div class="readout-val" id="ro-ke">0<span>J</span></div></div>
-          <div class="readout"><div class="readout-label">GPE</div><div class="readout-val" id="ro-gpe">—<span>J</span></div></div>
-          <div class="readout"><div class="readout-label">ME (total)</div><div class="readout-val" id="ro-me">—<span>J</span></div></div>
-          <div class="readout"><div class="readout-label">Heat lost</div><div class="readout-val" id="ro-heat">0<span>J</span></div></div>
-        </div>
-        <div style="margin-top:10px;font-size:11px;color:var(--muted)">
-          <span style="color:#60a5fa">■</span> KE &nbsp;
-          <span style="color:#4ade80">■</span> GPE &nbsp;
-          <span style="color:#f8fafc">■</span> Total ME &nbsp;
-          <span style="color:#f87171">■</span> Heat
-        </div>
-      </div>
-    </div>
-  </div>
+  <div class="ml-predict" style="margin:0 0 16px;padding:12px 16px;border-radius:10px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.075);border-left:2px solid #74d154;font-size:15px;line-height:1.6;color:#e3e8ef"><strong style="color:#f2f5f9">Predict first:</strong> With no friction, can the ball ever rise higher than its starting height? <strong style="color:#f2f5f9">Then test it:</strong> Release the ball with friction off, then tick Friction on the track, and watch the dashed release-height line and the energy bars.</div>
+  <div id="mlx-root"></div>
+  <script src="/assets/explore-kit.js"></script>
+  <script src="/assets/explore/mech-energy.js"></script>
 </div>
 
 <!-- PRACTICE TAB -->
@@ -392,192 +355,7 @@ function switchTab(id,btn){
   if(id==='explore') initEnergy();
 }
 
-// ── Energy Simulation ──────────────────────────────────────────────
-const G=9.8;
-let eInited=false,ePlaying=false,eAnimId=null;
-let ePhase=0; // 0..1 along the track
-let eFriction=false;
-let heatLost=0;
-const FRICTION_COEF=0.08;
-
-function initEnergy(){
-  if(eInited) return;
-  eInited=true;
-  resetEnergy();
-}
-function toggleFriction(){
-  eFriction=!eFriction;
-  document.getElementById('btnFric').textContent='Friction: '+(eFriction?'ON':'OFF');
-  document.getElementById('btnFric').style.color=eFriction?'#f87171':'';
-  resetEnergy();
-}
-function togglePlayE(){
-  if(ePlaying){
-    ePlaying=false;if(eAnimId){cancelAnimationFrame(eAnimId);eAnimId=null;}
-    document.getElementById('btnPlayE').textContent='Play';
-  } else {
-    if(ePhase>=1) resetEnergy();
-    ePlaying=true;document.getElementById('btnPlayE').textContent='Pause';
-    let last=null;
-    function step(ts){
-      if(!ePlaying) return;
-      if(last===null) last=ts;
-      const dt=Math.min((ts-last)/1000,0.05);last=ts;
-      ePhase+=dt*0.35;
-      if(ePhase>=1){ePhase=1;ePlaying=false;document.getElementById('btnPlayE').textContent='Play';}
-      drawEnergy();
-      if(ePlaying) eAnimId=requestAnimationFrame(step);
-    }
-    eAnimId=requestAnimationFrame(step);
-  }
-}
-function resetEnergy(){
-  if(eAnimId){cancelAnimationFrame(eAnimId);eAnimId=null;}
-  ePlaying=false;ePhase=0;heatLost=0;
-  document.getElementById('btnPlayE').textContent='Play';
-  const m=parseFloat(document.getElementById('slMass').value);
-  const h=parseFloat(document.getElementById('slH').value);
-  document.getElementById('valMass').textContent=m+' kg';
-  document.getElementById('valH').textContent=h+' m';
-  document.getElementById('ro-gpe').innerHTML=(m*G*h).toFixed(1)+'<span>J</span>';
-  document.getElementById('ro-ke').innerHTML='0<span>J</span>';
-  document.getElementById('ro-me').innerHTML=(m*G*h).toFixed(1)+'<span>J</span>';
-  document.getElementById('ro-heat').innerHTML='0<span>J</span>';
-  drawEnergy();
-}
-
-// Track shape: a simple curved hill → parametric
-function trackY(p,W,trackTopY,trackBotY){
-  // Smooth half-sine drop from left high point to bottom to right
-  // p=0 → left top, p=0.5 → bottom, p=1 → right (half height)
-  const h = p<0.5
-    ? trackTopY + (trackBotY-trackTopY)*Math.sin(p*Math.PI)
-    : trackBotY + (trackTopY*0.4-trackBotY)*Math.sin((p-0.5)*Math.PI);
-  return h;
-}
-function trackX(p,W){return 40+p*(W-80);}
-
-function drawEnergy(){
-  const canvas=document.getElementById('energyCanvas');
-  if(!canvas) return;
-  const dpr=window.devicePixelRatio||1;
-  const W=canvas.offsetWidth||700;
-  const H=360;
-  canvas.width=W*dpr;canvas.height=H*dpr;
-  const ctx=canvas.getContext('2d');
-  ctx.setTransform(1,0,0,1,0,0);ctx.scale(dpr,dpr);
-  ctx.clearRect(0,0,W,H);ctx.fillStyle='#040710';ctx.fillRect(0,0,W,H);
-
-  const m=parseFloat(document.getElementById('slMass').value);
-  const startH=parseFloat(document.getElementById('slH').value);
-  const maxH=8;
-  const trackTopY=40;
-  const trackBotY=220;
-  const trackRightY=trackTopY+0.4*(trackBotY-trackTopY);
-  const BARX=W-118,BARY=40,BARW=24,BARGAP=8,BARH=trackBotY-40;
-
-  // track path
-  const pts=[];
-  for(let i=0;i<=100;i++){
-    const p=i/100;
-    const ty=p<0.5
-      ? trackTopY+(trackBotY-trackTopY)*Math.sin(p*Math.PI)
-      : trackBotY+(trackRightY-trackBotY)*Math.sin((p-0.5)*Math.PI);
-    pts.push({x:trackX(p,W),y:ty});
-  }
-  ctx.strokeStyle='rgba(255,255,255,.25)';ctx.lineWidth=3;ctx.beginPath();
-  pts.forEach((pt,i)=>i===0?ctx.moveTo(pt.x,pt.y):ctx.lineTo(pt.x,pt.y));
-  ctx.stroke();
-  // ground
-  ctx.strokeStyle='rgba(255,255,255,.08)';ctx.lineWidth=1;
-  ctx.beginPath();ctx.moveTo(20,trackBotY+2);ctx.lineTo(W-100,trackBotY+2);ctx.stroke();
-
-  // height arrow
-  const bx=trackX(ePhase,W);
-  const byFn=(p)=> p<0.5
-    ? trackTopY+(trackBotY-trackTopY)*Math.sin(p*Math.PI)
-    : trackBotY+(trackRightY-trackBotY)*Math.sin((p-0.5)*Math.PI);
-  const by=byFn(ePhase);
-
-  // height at current phase
-  const heightFraction=(p)=> p<0.5
-    ? (1-Math.sin(p*Math.PI))
-    : (trackRightY-trackBotY)/trackBotY*(1-Math.sin((p-0.5)*Math.PI))*0;
-  // actual height from track geometry
-  const pixPerM=(trackBotY-trackTopY)/startH;
-  const curH=Math.max(0,(trackBotY-by)/pixPerM);
-
-  const ME0=m*G*startH;
-  let gpe=m*G*curH;
-  let ke=ME0-gpe;
-  if(eFriction){
-    heatLost=ePhase*ME0*FRICTION_COEF*3;
-    heatLost=Math.min(heatLost,ME0*0.35);
-    ke=Math.max(0,ME0-gpe-heatLost);
-    gpe=Math.max(0,ME0-ke-heatLost);
-  }
-  const me=ke+gpe; // mechanical energy = KE + GPE; it falls by the energy converted to heat
-
-  document.getElementById('ro-ke').innerHTML=ke.toFixed(1)+'<span>J</span>';
-  document.getElementById('ro-gpe').innerHTML=gpe.toFixed(1)+'<span>J</span>';
-  document.getElementById('ro-me').innerHTML=me.toFixed(1)+'<span>J</span>';
-  document.getElementById('ro-heat').innerHTML=heatLost.toFixed(1)+'<span>J</span>';
-
-  // ── Energy bar chart on right ──
-  ctx.fillStyle='rgba(255,255,255,.06)';
-  const BOXW=BARW*3+BARGAP*2+10;
-  ctx.fillRect(BARX-5,BARY-10,BOXW,BARH+14);
-  ctx.strokeStyle='rgba(255,255,255,.10)';ctx.lineWidth=1;
-  ctx.strokeRect(BARX-5,BARY-10,BOXW,BARH+14);
-
-  const drawBar=(x,yBot,val,maxVal,color,label)=>{
-    const bh=Math.max(0,(val/maxVal)*BARH);
-    ctx.fillStyle=color;
-    ctx.fillRect(x,yBot-bh,BARW,bh);
-    ctx.fillStyle='rgba(210,218,245,.6)';ctx.font='12px JetBrains Mono';ctx.textAlign='center';
-    ctx.fillText(label,x+BARW/2,yBot+12);
-    ctx.fillText(val.toFixed(0)+'J',x+BARW/2,Math.max(BARY+4,yBot-bh-4));
-  };
-
-  const colW=BARW;const gap=2;
-  drawBar(BARX, trackBotY, ke, ME0, '#3b82f6','KE');
-
-  // GPE and heat each get their own bar beside KE
-  drawBar(BARX+BARW+BARGAP, trackBotY, gpe, ME0, '#4ade80','GPE');
-  drawBar(BARX+2*(BARW+BARGAP), trackBotY, heatLost, ME0, '#f87171', document.documentElement.lang==='af'?'Hitte':'Heat');
-
-  // total ME line
-  ctx.strokeStyle='rgba(248,250,252,.4)';ctx.lineWidth=1;ctx.setLineDash([3,3]);
-  ctx.beginPath();ctx.moveTo(BARX-5,BARY);ctx.lineTo(BARX-5+BOXW,BARY);ctx.stroke();
-  ctx.setLineDash([]);
-  ctx.fillStyle='rgba(248,250,252,.5)';ctx.font='12px JetBrains Mono';ctx.textAlign='center';
-  ctx.fillText('ME₀='+ME0.toFixed(0)+'J',BARX-5+BOXW/2,BARY-4);
-
-  // ball
-  const ballR=12;
-  const ballGrad=ctx.createRadialGradient(bx-3,by-18,2,bx,by-15,ballR);
-  ballGrad.addColorStop(0,'#fde68a');ballGrad.addColorStop(1,'#d97706');
-  ctx.beginPath();ctx.arc(bx,by-15,ballR,0,Math.PI*2);ctx.fillStyle=ballGrad;ctx.fill();
-
-  // height dashed line
-  if(curH>0.1){
-    ctx.strokeStyle='rgba(74,222,128,.4)';ctx.lineWidth=1;ctx.setLineDash([3,4]);
-    ctx.beginPath();ctx.moveTo(bx-20,by-15);ctx.lineTo(bx-20,trackBotY);ctx.stroke();
-    ctx.setLineDash([]);
-    ctx.fillStyle='#4ade80';ctx.font='12px JetBrains Mono';ctx.textAlign='right';
-    ctx.fillText('h='+curH.toFixed(1)+'m',bx-24,(by+trackBotY)/2);
-  }
-
-  // labels
-  ctx.fillStyle='rgba(210,218,245,.4)';ctx.font='12px JetBrains Mono';ctx.textAlign='left';
-  ctx.fillText('Reference (h = 0)',40,trackBotY+18);
-  if(eFriction){
-    ctx.fillStyle='rgba(248,113,113,.7)';ctx.font='bold 12px Cabinet Grotesk';
-    ctx.fillText('Friction ON — ME decreasing',40,trackBotY+36);
-  }
-}
-
-window.addEventListener('resize',()=>{if(eInited) drawEnergy();});
+function drawEnergy(){} function initEnergy(){} function resetEnergy(){} function step(){} function toggleFriction(){} function togglePlayE(){} function trackX(){} function trackY(){} // the simulation is assets/explore/mech-energy.js
 
 // ── Practice ───────────────────────────────────────────────────────
 const nscQs=[

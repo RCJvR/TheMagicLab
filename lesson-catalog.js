@@ -3423,6 +3423,66 @@ window.ML_LESSON_CATALOG = {
   ],
   "science-sage": [
     {
+      "group": "Grade 4 — Life & Living",
+      "lessons": [
+        {
+          "value": "Living & non-living things",
+          "label": "Living & non-living things",
+          "ref": "ss:4:life/living-non-living"
+        },
+        {
+          "value": "Structure of plants & animals",
+          "label": "Structure of plants & animals",
+          "ref": "ss:4:life/plant-animal-parts"
+        },
+        {
+          "value": "What plants need to grow",
+          "label": "What plants need to grow",
+          "ref": "ss:4:life/what-plants-need"
+        },
+        {
+          "value": "Habitats of animals",
+          "label": "Habitats of animals",
+          "ref": "ss:4:life/habitats"
+        }
+      ]
+    },
+    {
+      "group": "Grade 4 — Matter & Materials",
+      "lessons": [
+        {
+          "value": "Materials around us",
+          "label": "Materials around us",
+          "ref": "ss:4:matter/materials-around-us"
+        },
+        {
+          "value": "Solid materials",
+          "label": "Solid materials",
+          "ref": "ss:4:matter/solid-materials"
+        }
+      ]
+    },
+    {
+      "group": "Grade 4 — Structures",
+      "lessons": [
+        {
+          "value": "Structures for animal shelters",
+          "label": "Structures for animal shelters",
+          "ref": "ss:4:structures/animal-shelters"
+        },
+        {
+          "value": "Strengthening materials",
+          "label": "Strengthening materials",
+          "ref": "ss:4:structures/strengthening-materials"
+        },
+        {
+          "value": "Strong frame structures",
+          "label": "Strong frame structures",
+          "ref": "ss:4:structures/frame-structures"
+        }
+      ]
+    },
+    {
       "group": "Grade 7 — Life & Living",
       "lessons": [
         {
