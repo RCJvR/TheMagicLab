@@ -555,26 +555,66 @@ const lvl3 = v => v < 40 ? 0 : v <= 60 ? 1 : 2;
     fb.hidden = true;
     if (n >= GOAL.length) {
       task.innerHTML = `<div class="end-card" style="width:100%">${stars(score >= 4 ? 3 : score >= 2 ? 2 : 1)}<div>${T.allDone}</div><button class="btn" type="button" id="pv-again">${T.again}</button></div>`;
-      document.getElementById('pv-again').addEventListener('click', () => { n = 0; score = 0; drawTask(); }); return;
+      document.getElementById('pv-again').addEventListener('click', () => { stopTone(); n = 0; score = 0; drawTask(); }); return;
     }
     const t = T.tasks[n], g = GOAL[n];
     task.innerHTML = `<span class="e" aria-hidden="true">${STK(t.e)}</span><div class="tx"><small>${T.challenge} ${T.of(n + 1, GOAL.length)}</small><b>${t.n}</b><br>${T.makeIt(T.vols[g[0] === 'soft' ? 0 : 2], T.pitches[g[1] === 'low' ? 0 : 2])}</div><div style="display:flex;flex-direction:column;gap:8px"><button class="btn ghost" type="button" id="pv-hear">${T.hear}</button><button class="btn" type="button" id="pv-check">${T.check}</button></div>`;
     document.getElementById('pv-check').addEventListener('click', check);
     document.getElementById('pv-hear').addEventListener('click', () => sample(n));
   }
-  /* A held note (220 Hz to about 1 300 Hz) that follows the sliders while it sounds. The octave overtone keeps low notes audible on small speakers. */
-  const toneF = () => 220 * Math.pow(2, +pit.value / 100 * 2.6), toneG = () => 0.05 + +vol.value / 100 * 0.4;
+  /* Sound engine. Each challenge has its own voice (bee buzz, lion roar, drum taps, siren); the sliders set its volume and pitch live.
+     Pitch runs from 220 Hz to about 1 300 Hz so small laptop and phone speakers can still play it. */
+  const fOf = p => 220 * Math.pow(2, p / 100 * 2.6), gOf = v => 0.05 + v / 100 * 0.4;
+  const toneF = () => fOf(+pit.value), toneG = () => gOf(+vol.value);
+  const VOICE = ['buzz', 'roar', 'drum', 'siren'], EXAMPLE = [[20, 85], [85, 15], [20, 15], [85, 85]];
   const playBtn = document.getElementById('pv-play');
   let actx = null, held = null, holdT = 0;
-  function retune(){ if (!held) return; const t = actx.currentTime, f = toneF(); held.o[0].frequency.setTargetAtTime(f, t, 0.03); held.o[1].frequency.setTargetAtTime(f * 2, t, 0.03); held.g.gain.setTargetAtTime(toneG(), t, 0.05); }
-  function stopTone(){ if (!held) return; const h = held, t = actx.currentTime; held = null; clearTimeout(holdT); h.g.gain.cancelScheduledValues(t); h.g.gain.setTargetAtTime(0, t, 0.06); setTimeout(() => h.o.forEach(o => o.stop()), 400); playBtn.textContent = T.play; }
+  function ac(){ const C = window.AudioContext || window.webkitAudioContext; if (!C) return null; actx = actx || new C(); if (actx.state === 'suspended') actx.resume(); return actx; }
+  function noiseLoop(c){ const b = c.createBuffer(1, c.sampleRate, c.sampleRate), d = b.getChannelData(0); for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1; const s = c.createBufferSource(); s.buffer = b; s.loop = true; return s; }
+  function makeVoice(type, c){
+    const out = c.createGain(), srcs = []; out.gain.value = 0; out.connect(c.destination);
+    const osc = (t, f) => { const o = c.createOscillator(); o.type = t; o.frequency.value = f; srcs.push(o); return o; };
+    let set, extraStop = () => {};
+    if (type === 'buzz') {
+      const o = osc('sawtooth', 300), l = osc('sine', 6), lg = c.createGain(), bp = c.createBiquadFilter(); bp.type = 'bandpass'; bp.Q.value = 1.5;
+      l.connect(lg); lg.connect(o.frequency); o.connect(bp); bp.connect(out);
+      set = (f, g, t) => { o.frequency.setTargetAtTime(f, t, 0.03); lg.gain.setTargetAtTime(f * 0.04, t, 0.03); bp.frequency.setTargetAtTime(f * 2.2, t, 0.03); out.gain.setTargetAtTime(g * 0.8, t, 0.06); };
+    } else if (type === 'roar') {
+      const o1 = osc('sawtooth', 120), o2 = osc('sawtooth', 120), lp = c.createBiquadFilter(), am = c.createGain(), l = osc('square', 26), lg = c.createGain(), n = noiseLoop(c), nlp = c.createBiquadFilter(), ng = c.createGain();
+      srcs.push(n); o2.detune.value = 18; lp.type = 'lowpass'; nlp.type = 'lowpass'; ng.gain.value = 0.4; am.gain.value = 0.6; lg.gain.value = 0.3;
+      l.connect(lg); lg.connect(am.gain); o1.connect(lp); o2.connect(lp); lp.connect(am); n.connect(nlp); nlp.connect(ng); ng.connect(am); am.connect(out);
+      set = (f, g, t) => { [o1, o2].forEach(o => o.frequency.setTargetAtTime(f, t, 0.05)); lp.frequency.setTargetAtTime(f * 3, t, 0.05); nlp.frequency.setTargetAtTime(f * 2.5, t, 0.05); out.gain.setTargetAtTime(g * 0.75, t, 0.08); };
+    } else if (type === 'drum') {
+      let cf = 220, cg = 0.2; out.gain.value = 1;
+      const tap = () => { const t = c.currentTime, o = c.createOscillator(), g = c.createGain(), f = cf * 0.45; o.frequency.setValueAtTime(f * 1.5, t); o.frequency.exponentialRampToValueAtTime(f, t + 0.12); g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(Math.max(0.0002, cg), t + 0.01); g.gain.exponentialRampToValueAtTime(0.0001, t + 0.45); o.connect(g); g.connect(out); o.start(t); o.stop(t + 0.5); };
+      set = (f, g) => { cf = f; cg = g * 1.1; };
+      let iv = 0; setTimeout(() => { tap(); iv = setInterval(tap, 480); }, 0); extraStop = () => clearInterval(iv);
+    } else if (type === 'siren') {
+      const o = osc('triangle', 800), o2 = osc('square', 800), g2 = c.createGain(), l = osc('triangle', 0.8), lg = c.createGain(); g2.gain.value = 0.15;
+      l.connect(lg); lg.connect(o.frequency); lg.connect(o2.frequency); o.connect(out); o2.connect(g2); g2.connect(out);
+      set = (f, g, t) => { o.frequency.setTargetAtTime(f, t, 0.03); o2.frequency.setTargetAtTime(f, t, 0.03); lg.gain.setTargetAtTime(f * 0.3, t, 0.03); out.gain.setTargetAtTime(g * 0.8, t, 0.06); };
+    } else {
+      const o1 = osc('triangle', 220), o2 = osc('sine', 440), g2 = c.createGain(); g2.gain.value = 0.35; o1.connect(out); o2.connect(g2); g2.connect(out);
+      set = (f, g, t) => { o1.frequency.setTargetAtTime(f, t, 0.03); o2.frequency.setTargetAtTime(f * 2, t, 0.03); out.gain.setTargetAtTime(g, t, 0.05); };
+    }
+    srcs.forEach(s => s.start());
+    return {
+      type, set: (f, g) => set(f, g, c.currentTime),
+      stop(){ extraStop(); const t = c.currentTime; if (type !== 'drum') { out.gain.cancelScheduledValues(t); out.gain.setTargetAtTime(0, t, 0.06); } setTimeout(() => { srcs.forEach(s => { try { s.stop(); } catch (e) {} }); out.disconnect(); }, 450); }
+    };
+  }
+  const voiceNow = () => n < VOICE.length ? VOICE[n] : 'tone';
+  function retune(){ if (held) held.set(toneF(), toneG()); }
+  function stopTone(){ if (!held) return; const h = held; held = null; clearTimeout(holdT); h.stop(); playBtn.textContent = T.play; }
   function play(secs){
-    const C = window.AudioContext || window.webkitAudioContext; if (!C) return;
-    actx = actx || new C(); if (actx.state === 'suspended') actx.resume();
-    if (held) clearTimeout(holdT);
-    else { const g = actx.createGain(), g2 = actx.createGain(), o1 = actx.createOscillator(), o2 = actx.createOscillator(); g.gain.value = 0; g2.gain.value = 0.35; o1.type = 'triangle'; o2.type = 'sine'; o1.connect(g); o2.connect(g2); g2.connect(g); g.connect(actx.destination); o1.frequency.value = toneF(); o2.frequency.value = toneF() * 2; o1.start(); o2.start(); held = { o: [o1, o2], g }; playBtn.textContent = T.stop; }
+    const c = ac(); if (!c) return;
+    if (held && held.type !== voiceNow()) stopTone();
+    if (held) clearTimeout(holdT); else { held = makeVoice(voiceNow(), c); playBtn.textContent = T.stop; }
     retune(); holdT = setTimeout(stopTone, (secs || 4) * 1000);
   }
+  /* The example plays the same voice at the settings the challenge asks for. */
+  let ex = null;
+  function sample(i){ const c = ac(); if (!c) return; stopTone(); if (ex) ex.stop(); const v = makeVoice(VOICE[i], c), e = EXAMPLE[i]; v.set(fOf(e[1]), gOf(e[0])); ex = v; setTimeout(() => { v.stop(); if (ex === v) ex = null; }, 2400); }
   let tries = 0;
   function check(){
     play(2.5);
@@ -584,41 +624,10 @@ const lvl3 = v => v < 40 ? 0 : v <= 60 ? 1 : 2;
     if (vOk && pOk) {
       if (tries === 0) score++;
       fb.className = 's-fb good'; fb.innerHTML = `<b>${T.pvRight}</b> <button class="btn" type="button" id="pv-next" style="margin-left:10px">${T.next}</button>`;
-      document.getElementById('pv-next').addEventListener('click', () => { n++; tries = 0; drawTask(); });
+      document.getElementById('pv-next').addEventListener('click', () => { stopTone(); n++; tries = 0; drawTask(); });
     } else {
       tries++;
       fb.className = 's-fb bad'; fb.innerHTML = `<b>${T.pvWrong}</b>${vOk ? '' : T.needVol(T.wordMore[g[0]])}${pOk ? '' : T.needPitch(T.wordMore[g[1]])}`;
-    }
-  }
-  /* Example sounds for the challenge cards, made with Web Audio. */
-  function ac(){ const C = window.AudioContext || window.webkitAudioContext; if (!C) return null; actx = actx || new C(); if (actx.state === 'suspended') actx.resume(); return actx; }
-  function noiseSrc(c, secs){ const b = c.createBuffer(1, Math.floor(c.sampleRate * secs), c.sampleRate), d = b.getChannelData(0); for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1; const s = c.createBufferSource(); s.buffer = b; return s; }
-  function sample(i){
-    const c = ac(); if (!c) return; stopTone();
-    const t = c.currentTime, out = c.createGain(); out.connect(c.destination);
-    if (i === 0) { /* bee far away: soft, high buzz */
-      const o = c.createOscillator(), f = c.createBiquadFilter(), l = c.createOscillator(), lg = c.createGain();
-      o.type = 'sawtooth'; o.frequency.value = 520; l.frequency.value = 6; lg.gain.value = 25; l.connect(lg); lg.connect(o.frequency);
-      f.type = 'bandpass'; f.frequency.value = 1200; f.Q.value = 1.2; o.connect(f); f.connect(out);
-      out.gain.setValueAtTime(0, t); out.gain.linearRampToValueAtTime(0.07, t + 0.3); out.gain.linearRampToValueAtTime(0.04, t + 1); out.gain.linearRampToValueAtTime(0.07, t + 1.7); out.gain.linearRampToValueAtTime(0, t + 2.2);
-      [o, l].forEach(x => { x.start(t); x.stop(t + 2.3); });
-    } else if (i === 1) { /* lion roar: loud, low growl */
-      const o = c.createOscillator(), o2 = c.createOscillator(), f = c.createBiquadFilter(), n = noiseSrc(c, 2.2), nf = c.createBiquadFilter(), ng = c.createGain();
-      o.type = 'sawtooth'; o2.type = 'sawtooth'; o2.detune.value = 18;
-      [o, o2].forEach(x => { x.frequency.setValueAtTime(70, t); x.frequency.linearRampToValueAtTime(130, t + 0.5); x.frequency.linearRampToValueAtTime(85, t + 1.4); x.frequency.linearRampToValueAtTime(55, t + 2); x.connect(f); });
-      f.type = 'lowpass'; f.frequency.setValueAtTime(400, t); f.frequency.linearRampToValueAtTime(900, t + 0.5); f.frequency.linearRampToValueAtTime(300, t + 2); f.connect(out);
-      nf.type = 'lowpass'; nf.frequency.value = 500; ng.gain.value = 0.3; n.connect(nf); nf.connect(ng); ng.connect(out);
-      out.gain.setValueAtTime(0, t); out.gain.linearRampToValueAtTime(0.38, t + 0.35); out.gain.linearRampToValueAtTime(0.3, t + 1.2); out.gain.linearRampToValueAtTime(0, t + 2.1);
-      [o, o2, n].forEach(x => { x.start(t); x.stop(t + 2.2); });
-    } else if (i === 2) { /* big drum tapped gently: soft, low taps */
-      [0, 0.55, 1.1].forEach(dt => { const o = c.createOscillator(), g = c.createGain(), s = t + dt; o.frequency.setValueAtTime(95, s); o.frequency.exponentialRampToValueAtTime(60, s + 0.15); g.gain.setValueAtTime(0.0001, s); g.gain.exponentialRampToValueAtTime(0.18, s + 0.01); g.gain.exponentialRampToValueAtTime(0.0001, s + 0.6); o.connect(g); g.connect(out); o.start(s); o.stop(s + 0.7); });
-    } else { /* ambulance siren close by: loud, high wail */
-      const o = c.createOscillator(), o2 = c.createOscillator(), g2 = c.createGain(), l = c.createOscillator(), lg = c.createGain();
-      o.type = 'triangle'; o2.type = 'square'; g2.gain.value = 0.15; o.frequency.value = 1050; o2.frequency.value = 1050;
-      l.type = 'triangle'; l.frequency.value = 0.8; lg.gain.value = 350; l.connect(lg); lg.connect(o.frequency); lg.connect(o2.frequency);
-      o.connect(out); o2.connect(g2); g2.connect(out);
-      out.gain.setValueAtTime(0, t); out.gain.linearRampToValueAtTime(0.32, t + 0.1); out.gain.setValueAtTime(0.32, t + 2.6); out.gain.linearRampToValueAtTime(0, t + 2.9);
-      [o, o2, l].forEach(x => { x.start(t); x.stop(t + 3); });
     }
   }
   vol.addEventListener('input', () => { wave(); retune(); }); pit.addEventListener('input', () => { wave(); retune(); });
