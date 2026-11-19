@@ -111,6 +111,17 @@ body.hide-cursor { cursor: none; }
 }
 .laps { font-size: calc(2.4vmin * var(--tsize)); font-variant-numeric: tabular-nums; opacity: 0.85; columns: 2; column-gap: 4vw; max-height: 18vh; overflow: hidden; }
 .laps:empty { display: none; }
+.home { position: fixed; top: 2.4vmin; left: 3vw; z-index: 14; display: inline-flex; align-items: center; gap: 8px;
+  padding: 5px 12px 5px 5px; border-radius: 999px; text-decoration: none; color: var(--fg);
+  font-family: 'Cabinet Grotesk', system-ui, sans-serif; font-size: 14px; font-weight: 700;
+  background: color-mix(in srgb, var(--fg) 7%, var(--bg)); border: 1px solid color-mix(in srgb, var(--fg) 16%, transparent);
+  opacity: 0.8; transition: opacity 0.3s, translate 0.3s; }
+.home img { width: 22px; height: 22px; border-radius: 6px; display: block; }
+.home:hover, .home:focus-visible { opacity: 1; }
+.home:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.bar.idle ~ .home { opacity: 0; pointer-events: none; translate: 0 calc(-100% - 3vmin); }
+.preview .home { display: none; }
+@media (prefers-reduced-motion: reduce) { .home { transition: opacity 0.3s; } .bar.idle ~ .home { translate: none; } }
 .now { position: fixed; top: 2.4vmin; right: 3vw; font-size: calc(2.6vmin * var(--tsize)); opacity: 0.7; font-variant-numeric: tabular-nums; }
 /* Layouts (look.layout), from least to most information. "standard" is
    the original page and needs no rules. */
@@ -433,6 +444,8 @@ body.sheet-side .sheet-in { width: 100%; }
   </main>
   <div class="now" id="now"></div>
   <div class="bar" id="bar" role="toolbar" aria-label="Timer controls"></div>
+  <!-- the way to The Magic Lab, in a new tab so a running timer keeps going; it comes and goes with the toolbar -->
+  <a class="home" id="home" href="./" target="_blank" rel="noopener" title="The Magic Lab (opens in a new tab)"><img src="assets/logo-prism.svg" alt="" width="22" height="22"><span>The Magic Lab</span></a>
   <aside class="panel" id="panel" hidden></aside>
 
 <script src="assets/timer-talisman-themes.js"></script>
