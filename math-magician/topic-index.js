@@ -12,7 +12,12 @@ window.MM_TOPIC_INDEX = {
     201: ["2-D shapes",2],
     202: ["Polygons",2],
     203: ["Drawing polygons",2],
-    204: ["3-D objects",2]
+    204: ["3-D objects",2],
+    301: ["Multiplying",3],
+    302: ["Multiples",3],
+    303: ["Doubling and ×10, ×100, ×1 000",3],
+    304: ["Factors and splitting",3],
+    305: ["Multiplication problems",3]
   },
   8: {
     101: ["The four operations",1],

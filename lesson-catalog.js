@@ -1379,6 +1379,36 @@ window.ML_LESSON_CATALOG = {
       ]
     },
     {
+      "group": "Grade 4 — Ch 3 — Multiplication, Multiples and Factors",
+      "lessons": [
+        {
+          "value": "Multiplying",
+          "label": "Multiplying",
+          "ref": "mm:4:301"
+        },
+        {
+          "value": "Multiples",
+          "label": "Multiples",
+          "ref": "mm:4:302"
+        },
+        {
+          "value": "Doubling and ×10, ×100, ×1 000",
+          "label": "Doubling and ×10, ×100, ×1 000",
+          "ref": "mm:4:303"
+        },
+        {
+          "value": "Factors and splitting",
+          "label": "Factors and splitting",
+          "ref": "mm:4:304"
+        },
+        {
+          "value": "Multiplication problems",
+          "label": "Multiplication problems",
+          "ref": "mm:4:305"
+        }
+      ]
+    },
+    {
       "group": "Grade 8 — Ch 1 — Whole Numbers, Ratios, Rates & Finance",
       "lessons": [
         {
