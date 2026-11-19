@@ -118,7 +118,7 @@ T.push({
   },
   qs: [
     { en: 'What are the factors of 6?', af: 'Wat is die faktore van 6?', o: [['1, 2, 3, 6', '1, 6', '2, 3', '6, 12, 18'], ['1, 2, 3, 6', '1, 6', '2, 3', '6, 12, 18']], a: 0, lv: 'K', h: ['Which numbers divide into 6 exactly?', 'Watter getalle deel presies in 6 in?'], s: same('6 = 1 × 6 = 2 × 3') },
-    { en: 'How many factors does 18 have?', af: 'Hoeveel faktore het 18?', a: '6', lv: 'R', h: ['Find the pairs: 1 × 18, 2 × 9, …', 'Kry die pare: 1 × 18, 2 × 9, …'], s: same('1, 2, 3, 6, 9, 18 → 6 factors') },
+    { en: 'How many factors does 18 have?', af: 'Hoeveel faktore het 18?', a: '6', lv: 'R', h: ['Find the pairs: 1 × 18, 2 × 9, …', 'Kry die pare: 1 × 18, 2 × 9, …'], s: [['1, 2, 3, 6, 9, 18 → 6 factors'], ['1, 2, 3, 6, 9, 18 → 6 faktore']] },
     { en: 'Which number is NOT a factor of 24?', af: 'Watter getal is NIE \'n faktor van 24 nie?', o: [['3', '4', '5', '6'], ['3', '4', '5', '6']], a: 2, lv: 'R', h: ['Check each: does it divide 24 with nothing left over?', 'Toets elkeen: deel dit 24 met niks oor nie?'], s: [['3 × 8, 4 × 6 and 6 × 4 make 24.', '24 ends in 4, so 5 does not divide it exactly.'], ['3 × 8, 4 × 6 en 6 × 4 maak 24.', '24 eindig op 4, so 5 deel dit nie presies nie.']] },
     { en: '5 × 7 = (5 × 4) + (5 × ___)', af: '5 × 7 = (5 × 4) + (5 × ___)', a: '3', lv: 'R', h: ['4 + ? = 7', '4 + ? = 7'], s: same('7 = 4 + 3') },
     { en: '6 × 13 = (6 × 10) + (6 × 3) = ?', af: '6 × 13 = (6 × 10) + (6 × 3) = ?', a: '78', lv: 'R', h: ['Work out each bracket, then add.', 'Werk elke hakie uit en tel dan bymekaar.'], s: same('60 + 18 = 78') },

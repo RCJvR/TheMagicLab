@@ -17,7 +17,12 @@ window.MM_TOPIC_INDEX = {
     302: ["Multiples",3],
     303: ["Doubling and ×10, ×100, ×1 000",3],
     304: ["Factors and splitting",3],
-    305: ["Multiplication problems",3]
+    305: ["Multiplication problems",3],
+    401: ["Dividing",4],
+    402: ["Halving, even and odd",4],
+    403: ["Dividing bigger numbers",4],
+    404: ["Multiplication and division",4],
+    405: ["Sharing problems",4]
   },
   8: {
     101: ["The four operations",1],

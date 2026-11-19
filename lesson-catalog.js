@@ -1409,6 +1409,36 @@ window.ML_LESSON_CATALOG = {
       ]
     },
     {
+      "group": "Grade 4 — Ch 4 — Multiplication and Division",
+      "lessons": [
+        {
+          "value": "Dividing",
+          "label": "Dividing",
+          "ref": "mm:4:401"
+        },
+        {
+          "value": "Halving, even and odd",
+          "label": "Halving, even and odd",
+          "ref": "mm:4:402"
+        },
+        {
+          "value": "Dividing bigger numbers",
+          "label": "Dividing bigger numbers",
+          "ref": "mm:4:403"
+        },
+        {
+          "value": "Multiplication and division",
+          "label": "Multiplication and division",
+          "ref": "mm:4:404"
+        },
+        {
+          "value": "Sharing problems",
+          "label": "Sharing problems",
+          "ref": "mm:4:405"
+        }
+      ]
+    },
+    {
       "group": "Grade 8 — Ch 1 — Whole Numbers, Ratios, Rates & Finance",
       "lessons": [
         {
