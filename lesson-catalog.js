@@ -1354,6 +1354,31 @@ window.ML_LESSON_CATALOG = {
       ]
     },
     {
+      "group": "Grade 4 — Ch 2 — 2-D Shapes and 3-D Objects",
+      "lessons": [
+        {
+          "value": "2-D shapes",
+          "label": "2-D shapes",
+          "ref": "mm:4:201"
+        },
+        {
+          "value": "Polygons",
+          "label": "Polygons",
+          "ref": "mm:4:202"
+        },
+        {
+          "value": "Drawing polygons",
+          "label": "Drawing polygons",
+          "ref": "mm:4:203"
+        },
+        {
+          "value": "3-D objects",
+          "label": "3-D objects",
+          "ref": "mm:4:204"
+        }
+      ]
+    },
+    {
       "group": "Grade 8 — Ch 1 — Whole Numbers, Ratios, Rates & Finance",
       "lessons": [
         {

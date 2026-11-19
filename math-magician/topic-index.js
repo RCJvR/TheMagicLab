@@ -8,7 +8,11 @@ window.MM_TOPIC_INDEX = {
     104: ["Rounding off",1],
     105: ["Adding whole numbers",1],
     106: ["Subtracting whole numbers",1],
-    107: ["Problem solving",1]
+    107: ["Problem solving",1],
+    201: ["2-D shapes",2],
+    202: ["Polygons",2],
+    203: ["Drawing polygons",2],
+    204: ["3-D objects",2]
   },
   8: {
     101: ["The four operations",1],
