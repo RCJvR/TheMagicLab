@@ -1199,9 +1199,9 @@
     const savedPath=localStorage.getItem('scienceSagePath');
     applyPath(savedPath||'grade7',!!savedPath);
     // First visit: default to the learner's own grade once their profile loads.
-    document.addEventListener('magiclab:auth:ready',()=>{
+    document.addEventListener('magiclab:auth:ready',e=>{
       if(localStorage.getItem('scienceSagePath')) return;
-      const g=parseInt(window.MagicLabAuth?.getProfile?.()?.grade,10);
+      const g=parseInt((e.detail?.profile || window.MagicLabAuth?.getProfile?.())?.grade,10);
       if(g>=7&&g<=9) applyPath('grade'+g,false);
       else if(g>=10&&g<=12) applyPath('grade'+g+'-life',false);
     });

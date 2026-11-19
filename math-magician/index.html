@@ -657,6 +657,22 @@
     document.addEventListener('magiclab:progress:ready', renderContinueCard);
     if(window.MagicLabProgress) renderContinueCard();
   </script>
+  <script>
+  // First visit for a signed-in learner: open the grade they chose at sign-up, not the grade grid.
+  // It happens once per browser. After that the grid is as usual, and the continue card and
+  // per-grade progress show where they left off.
+  (function () {
+    var KEY = 'mathMagicianStartGrade';
+    try { if (localStorage.getItem(KEY)) return; } catch (e) { return; }
+    document.addEventListener('magiclab:auth:ready', function (e) {
+      var g = parseInt(e.detail && e.detail.profile && e.detail.profile.grade, 10);
+      if (!(g >= 1 && g <= 12)) return;   // no grade on the profile (e.g. a teacher)
+      if (g < 8) g = 8;                   // Math Magician starts at Grade 8
+      try { localStorage.setItem(KEY, String(g)); } catch (err) {}
+      location.replace('gr' + g + '/index.html');
+    });
+  })();
+  </script>
   <script src="/contact-button.js" defer></script>
 <script src="/assets/ml-bar.js" defer></script>
 </body>
