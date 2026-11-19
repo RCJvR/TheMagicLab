@@ -561,7 +561,8 @@ const lvl3 = v => v < 40 ? 0 : v <= 60 ? 1 : 2;
     task.innerHTML = `<span class="e" aria-hidden="true">${STK(t.e)}</span><div class="tx"><small>${T.challenge} ${T.of(n + 1, GOAL.length)}</small><b>${t.n}</b><br>${T.makeIt(T.vols[g[0] === 'soft' ? 0 : 2], T.pitches[g[1] === 'low' ? 0 : 2])}</div><button class="btn" type="button" id="pv-check">${T.check}</button>`;
     document.getElementById('pv-check').addEventListener('click', check);
   }
-  function play(){ const v = +vol.value, p = +pit.value; SND.tone(150 * Math.pow(2, p / 100 * 3), 0.9, 0.03 + v / 100 * 0.3, 'triangle'); }
+  /* 220 Hz to about 1 300 Hz: low enough to hear 'low', high enough for laptop and phone speakers. The octave overtone keeps low notes audible on small speakers. */
+  function play(secs){ const v = +vol.value, p = +pit.value, f = 220 * Math.pow(2, p / 100 * 2.6), g = 0.08 + v / 100 * 0.62; SND.tone(f, secs || 0.9, g, 'triangle'); SND.tone(f * 2, secs || 0.9, g * 0.35, 'sine'); }
   let tries = 0;
   function check(){
     play();
@@ -578,7 +579,8 @@ const lvl3 = v => v < 40 ? 0 : v <= 60 ? 1 : 2;
     }
   }
   vol.addEventListener('input', wave); pit.addEventListener('input', wave);
-  document.getElementById('pv-play').addEventListener('click', play);
+  vol.addEventListener('change', () => play(0.35)); pit.addEventListener('change', () => play(0.35));
+  document.getElementById('pv-play').addEventListener('click', () => play());
   wave(); drawTask();
 })();
 
