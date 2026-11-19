@@ -3483,6 +3483,56 @@ window.ML_LESSON_CATALOG = {
       ]
     },
     {
+      "group": "Grade 4 — Energy & Change",
+      "lessons": [
+        {
+          "value": "Energy for Life",
+          "label": "Energy for Life",
+          "ref": "ss:4:energy/energy-for-life"
+        },
+        {
+          "value": "Energy Around Us",
+          "label": "Energy Around Us",
+          "ref": "ss:4:energy/energy-around-us"
+        },
+        {
+          "value": "Musical Instruments",
+          "label": "Musical Instruments",
+          "ref": "ss:4:energy/musical-instruments"
+        },
+        {
+          "value": "Sound",
+          "label": "Sound",
+          "ref": "ss:4:energy/sound"
+        }
+      ]
+    },
+    {
+      "group": "Grade 4 — Planet Earth & Beyond",
+      "lessons": [
+        {
+          "value": "Planet Earth",
+          "label": "Planet Earth",
+          "ref": "ss:4:earth/planet-earth"
+        },
+        {
+          "value": "The Sun and the Earth",
+          "label": "The Sun and the Earth",
+          "ref": "ss:4:earth/sun-and-earth"
+        },
+        {
+          "value": "The Moon",
+          "label": "The Moon",
+          "ref": "ss:4:earth/the-moon"
+        },
+        {
+          "value": "Rocket Systems",
+          "label": "Rocket Systems",
+          "ref": "ss:4:earth/rocket-systems"
+        }
+      ]
+    },
+    {
       "group": "Grade 7 — Life & Living",
       "lessons": [
         {

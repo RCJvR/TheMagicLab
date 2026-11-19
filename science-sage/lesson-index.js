@@ -10,7 +10,15 @@ window.SS_LESSON_INDEX = {
     "matter/solid-materials": "Solid materials",
     "structures/animal-shelters": "Structures for animal shelters",
     "structures/strengthening-materials": "Strengthening materials",
-    "structures/frame-structures": "Strong frame structures"
+    "structures/frame-structures": "Strong frame structures",
+    "energy/energy-for-life": "Energy for Life",
+    "energy/energy-around-us": "Energy Around Us",
+    "energy/musical-instruments": "Musical Instruments",
+    "energy/sound": "Sound",
+    "earth/planet-earth": "Planet Earth",
+    "earth/sun-and-earth": "The Sun and the Earth",
+    "earth/the-moon": "The Moon",
+    "earth/rocket-systems": "Rocket Systems"
   },
   7: {
     "life/biodiversity": "Biodiversity & classification",
