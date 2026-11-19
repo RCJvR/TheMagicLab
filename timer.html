@@ -214,8 +214,11 @@ body:not(.is-multi) .facts dt { font-size: 0.78em; white-space: nowrap; }
 .board .brow:last-child { border-bottom: 0; }
 .board .bname { min-width: 0; line-height: 1.12; }
 .board .bname b { display: block; font-weight: 800; letter-spacing: -0.01em; }
-.board .bname span { display: block; font-size: 0.62em; opacity: 0.75; margin-top: 0.15em; }
-.board .bname .bitem + .bitem { margin-top: 0.35em; }
+/* the grade and paper sit beside the name (under it when they do not fit), so the names can be larger */
+.board .bitem { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 0.6em; }
+.board .bname b { flex: 0 1 auto; min-width: 0; }
+.board .bname span { font-size: 0.62em; opacity: 0.75; white-space: nowrap; }
+.board .bname .bitem + .bitem { margin-top: 0.15em; }
 .board .bend { font-size: 0.8em; opacity: 0.85; white-space: nowrap; font-variant-numeric: tabular-nums; text-align: right; }
 .board .btime { font-size: 1.9em; font-weight: var(--dweight); line-height: 1; white-space: nowrap; font-variant-numeric: tabular-nums; text-align: right; letter-spacing: -0.02em; }
 .board .btime .dc { display: inline-block; width: var(--dw, 0.62em); text-align: center; }
