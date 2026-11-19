@@ -83,8 +83,8 @@ HUBS = {
                               'CAPS-aligned Technology lessons for Grades 8 and 9: structures, mechanical systems, electrical systems and processing, with simulations and practice, in English and Afrikaans.'),
     'drawing-druid/index.html': ('Drawing Druid — Engineering Graphics & Design (EGD), Grades 10–12',
                                  'Interactive Engineering Graphics & Design for Grades 10–12: step-by-step constructions, orthographic and isometric drawing, perspective, loci, solid geometry and the civil, mechanical and electrical drawings in the CAPS curriculum.'),
-    'math-magician/index.html': ('Math Magician — CAPS Mathematics, Grades 8–12',
-                                 'Interactive mathematics lessons, guided practice and workbook exercises for Grades 8–12, aligned to the South African curriculum, plus graphing, geometry and statistics tools.'),
+    'math-magician/index.html': ('Math Magician — CAPS Mathematics, Grades 4 and 8–12',
+                                 'Interactive mathematics lessons, guided practice and workbook exercises for Grades 4 and 8–12, aligned to the South African curriculum, plus graphing, geometry and statistics tools.'),
     'model-mage.html': ('Model Mage — CAD workshop and circuit simulator',
                         'Sketch and 3D-print parts in a browser-based CAD workshop, or build working circuits and program a microcontroller in the Circuit Simulator. For Grades 8–12.'),
 }

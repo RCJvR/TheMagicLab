@@ -10,7 +10,7 @@ const ROOT = path.join(__dirname, '..'), MM = path.join(ROOT, 'math-magician');
 const { setCatalogSection } = require('./lesson-catalog-file');
 
 const groups = [], totals = {};
-for (const g of [8, 9, 10, 11, 12]) {
+for (const g of [4, 8, 9, 10, 11, 12]) {
   const idxPath = path.join(MM, 'gr' + g, 'index.html');
   let idx = fs.readFileSync(idxPath, 'utf8');
   const rows = [...idx.matchAll(/\{ num:\s*(\d+), name: "([^"]+)",[^\n]*?topics:\s*(\d+), file: "([^"]+)"/g)];

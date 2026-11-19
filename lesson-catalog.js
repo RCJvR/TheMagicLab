@@ -1314,6 +1314,46 @@ window.ML_LESSON_CATALOG = {
   ],
   "math-magician": [
     {
+      "group": "Grade 4 — Ch 1 — Whole Numbers",
+      "lessons": [
+        {
+          "value": "Counting in intervals",
+          "label": "Counting in intervals",
+          "ref": "mm:4:101"
+        },
+        {
+          "value": "Place value",
+          "label": "Place value",
+          "ref": "mm:4:102"
+        },
+        {
+          "value": "Number lines and ordering",
+          "label": "Number lines and ordering",
+          "ref": "mm:4:103"
+        },
+        {
+          "value": "Rounding off",
+          "label": "Rounding off",
+          "ref": "mm:4:104"
+        },
+        {
+          "value": "Adding whole numbers",
+          "label": "Adding whole numbers",
+          "ref": "mm:4:105"
+        },
+        {
+          "value": "Subtracting whole numbers",
+          "label": "Subtracting whole numbers",
+          "ref": "mm:4:106"
+        },
+        {
+          "value": "Problem solving",
+          "label": "Problem solving",
+          "ref": "mm:4:107"
+        }
+      ]
+    },
+    {
       "group": "Grade 8 — Ch 1 — Whole Numbers, Ratios, Rates & Finance",
       "lessons": [
         {
@@ -2995,6 +3035,11 @@ window.ML_LESSON_CATALOG = {
           "value": "Sketching functions: intercepts, domain & range",
           "label": "Sketching functions: intercepts, domain & range",
           "ref": "mm:11:502"
+        },
+        {
+          "value": "Hyperbola: axes of symmetry",
+          "label": "Hyperbola: axes of symmetry",
+          "ref": "mm:11:503"
         }
       ]
     },
@@ -3065,6 +3110,11 @@ window.ML_LESSON_CATALOG = {
           "value": "Circle geometry riders",
           "label": "Circle geometry riders",
           "ref": "mm:11:803"
+        },
+        {
+          "value": "Examinable circle-theorem proofs",
+          "label": "Examinable circle-theorem proofs",
+          "ref": "mm:11:804"
         }
       ]
     },
@@ -3205,6 +3255,11 @@ window.ML_LESSON_CATALOG = {
           "value": "Graphing exponential & logarithmic functions",
           "label": "Graphing exponential & logarithmic functions",
           "ref": "mm:12:203"
+        },
+        {
+          "value": "Transforming exponential and log graphs",
+          "label": "Transforming exponential and log graphs",
+          "ref": "mm:12:204"
         }
       ]
     },
@@ -3230,6 +3285,11 @@ window.ML_LESSON_CATALOG = {
           "value": "Comparing investment & loan options",
           "label": "Comparing investment & loan options",
           "ref": "mm:12:303"
+        },
+        {
+          "value": "Annuities due and deferred loans",
+          "label": "Annuities due and deferred loans",
+          "ref": "mm:12:304"
         }
       ]
     },
@@ -3255,6 +3315,16 @@ window.ML_LESSON_CATALOG = {
           "value": "Proving trigonometric identities",
           "label": "Proving trigonometric identities",
           "ref": "mm:12:403"
+        },
+        {
+          "value": "Reduction formulae",
+          "label": "Reduction formulae",
+          "ref": "mm:12:404"
+        },
+        {
+          "value": "Shifted trigonometric graphs",
+          "label": "Shifted trigonometric graphs",
+          "ref": "mm:12:405"
         }
       ]
     },
@@ -3280,6 +3350,11 @@ window.ML_LESSON_CATALOG = {
           "value": "Sketching cubic graphs from key features",
           "label": "Sketching cubic graphs from key features",
           "ref": "mm:12:503"
+        },
+        {
+          "value": "Cubic–line intersections & inequalities",
+          "label": "Cubic–line intersections & inequalities",
+          "ref": "mm:12:504"
         }
       ]
     },
@@ -3330,6 +3405,11 @@ window.ML_LESSON_CATALOG = {
           "value": "Tangents from an external point",
           "label": "Tangents from an external point",
           "ref": "mm:12:703"
+        },
+        {
+          "value": "Shortest distances & translated circles",
+          "label": "Shortest distances & translated circles",
+          "ref": "mm:12:704"
         }
       ]
     },
@@ -3350,6 +3430,11 @@ window.ML_LESSON_CATALOG = {
           "value": "Similar polygons & scale factor problems",
           "label": "Similar polygons & scale factor problems",
           "ref": "mm:12:802"
+        },
+        {
+          "value": "Examinable similarity proofs",
+          "label": "Examinable similarity proofs",
+          "ref": "mm:12:803"
         }
       ]
     },
