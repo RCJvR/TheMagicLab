@@ -580,10 +580,19 @@ const lvl3 = v => v < 40 ? 0 : v <= 60 ? 1 : 2;
       l.connect(lg); lg.connect(o.frequency); o.connect(bp); bp.connect(out);
       set = (f, g, t) => { o.frequency.setTargetAtTime(f, t, 0.03); lg.gain.setTargetAtTime(f * 0.04, t, 0.03); bp.frequency.setTargetAtTime(f * 2.2, t, 0.03); out.gain.setTargetAtTime(g * 0.8, t, 0.06); };
     } else if (type === 'roar') {
-      const o1 = osc('sawtooth', 120), o2 = osc('sawtooth', 120), lp = c.createBiquadFilter(), am = c.createGain(), l = osc('square', 26), lg = c.createGain(), n = noiseLoop(c), nlp = c.createBiquadFilter(), ng = c.createGain();
-      srcs.push(n); o2.detune.value = 18; lp.type = 'lowpass'; nlp.type = 'lowpass'; ng.gain.value = 0.4; am.gain.value = 0.6; lg.gain.value = 0.3;
-      l.connect(lg); lg.connect(am.gain); o1.connect(lp); o2.connect(lp); lp.connect(am); n.connect(nlp); nlp.connect(ng); ng.connect(am); am.connect(out);
-      set = (f, g, t) => { [o1, o2].forEach(o => o.frequency.setTargetAtTime(f, t, 0.05)); lp.frequency.setTargetAtTime(f * 3, t, 0.05); nlp.frequency.setTargetAtTime(f * 2.5, t, 0.05); out.gain.setTargetAtTime(g * 0.75, t, 0.08); };
+      /* A repeating roar that rises, peaks and falls away. At loud and low it is exactly the original example roar. */
+      const o1 = osc('sawtooth', 70), o2 = osc('sawtooth', 70), lp = c.createBiquadFilter(), env = c.createGain(), n = noiseLoop(c), nlp = c.createBiquadFilter(), ng = c.createGain();
+      srcs.push(n); o2.detune.value = 18; lp.type = 'lowpass'; nlp.type = 'lowpass'; nlp.frequency.value = 500; ng.gain.value = 0.3; env.gain.value = 0;
+      o1.connect(lp); o2.connect(lp); lp.connect(env); n.connect(nlp); nlp.connect(ng); ng.connect(env); env.connect(out);
+      let cf = 288, kT = 1;
+      const roar = () => {
+        const t = c.currentTime, k = cf * 0.45 / 130; kT = k;
+        [o1, o2].forEach((o, j) => { o.detune.cancelScheduledValues(t); o.detune.setValueAtTime(j ? 18 : 0, t); o.frequency.cancelScheduledValues(t); o.frequency.setValueAtTime(70 * k, t); o.frequency.linearRampToValueAtTime(130 * k, t + 0.5); o.frequency.linearRampToValueAtTime(85 * k, t + 1.4); o.frequency.linearRampToValueAtTime(55 * k, t + 2); });
+        lp.frequency.cancelScheduledValues(t); lp.frequency.setValueAtTime(400 * k, t); lp.frequency.linearRampToValueAtTime(900 * k, t + 0.5); lp.frequency.linearRampToValueAtTime(300 * k, t + 2);
+        env.gain.cancelScheduledValues(t); env.gain.setValueAtTime(0, t); env.gain.linearRampToValueAtTime(0.38, t + 0.35); env.gain.linearRampToValueAtTime(0.3, t + 1.2); env.gain.linearRampToValueAtTime(0, t + 2.1);
+      };
+      set = (f, g, t) => { cf = f; out.gain.setTargetAtTime(g / 0.39, t, 0.06); const d = 1200 * Math.log2(f * 0.45 / 130 / kT); o1.detune.setTargetAtTime(d, t, 0.05); o2.detune.setTargetAtTime(d + 18, t, 0.05); };
+      let iv = 0; setTimeout(() => { roar(); iv = setInterval(roar, 2400); }, 0); extraStop = () => clearInterval(iv);
     } else if (type === 'drum') {
       let cf = 220, cg = 0.2; out.gain.value = 1;
       const tap = () => { const t = c.currentTime, o = c.createOscillator(), g = c.createGain(), f = cf * 0.45; o.frequency.setValueAtTime(f * 1.5, t); o.frequency.exponentialRampToValueAtTime(f, t + 0.12); g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(Math.max(0.0002, cg), t + 0.01); g.gain.exponentialRampToValueAtTime(0.0001, t + 0.45); o.connect(g); g.connect(out); o.start(t); o.stop(t + 0.5); };
@@ -614,7 +623,7 @@ const lvl3 = v => v < 40 ? 0 : v <= 60 ? 1 : 2;
   }
   /* The example plays the same voice at the settings the challenge asks for. */
   let ex = null;
-  function sample(i){ const c = ac(); if (!c) return; stopTone(); if (ex) ex.stop(); const v = makeVoice(VOICE[i], c), e = EXAMPLE[i]; v.set(fOf(e[1]), gOf(e[0])); ex = v; setTimeout(() => { v.stop(); if (ex === v) ex = null; }, 2400); }
+  function sample(i){ const c = ac(); if (!c) return; stopTone(); if (ex) ex.stop(); const v = makeVoice(VOICE[i], c), e = EXAMPLE[i]; v.set(fOf(e[1]), gOf(e[0])); ex = v; setTimeout(() => { v.stop(); if (ex === v) ex = null; }, 2300); }
   let tries = 0;
   function check(){
     play(2.5);
