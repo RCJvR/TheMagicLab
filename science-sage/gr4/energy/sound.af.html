@@ -457,7 +457,7 @@ const T = {
   s2tag: 'Verken 2 · Volume en toonhoogte', s2title: 'Volume-en-toonhoogte-lab',
   s2how: 'Skuif die skuifbalke en druk Speel. Maak dan elke klank in die uitdaging.',
   s2aria: '\'n Klankgolf. Hoër golwe is harder. Golwe wat nader aan mekaar is, is hoër.',
-  volL: 'Volume:', pitchL: 'Toonhoogte:', play: 'Speel', stop: 'Stop', check: 'Toets my klank', next: 'Volgende uitdaging',
+  volL: 'Volume:', pitchL: 'Toonhoogte:', play: 'Speel', stop: 'Stop', check: 'Toets my klank', hear: 'Luister na die voorbeeld', next: 'Volgende uitdaging',
   vols: ['sag', 'medium', 'hard'], pitches: ['laag', 'middel', 'hoog'],
   challenge: 'Uitdaging', makeIt: (v, p) => `Maak \'n <b>${v}</b>, <b>${p}</b> klank.`,
   tasks: [ { e:'🐝', n:'\'n Gonsende by ver weg' }, { e:'🦁', n:'\'n Leeu se brul' }, { e:'🥁', n:'\'n Groot trom wat saggies getik word' }, { e:'🚑', n:'\'n Ambulans se sirene naby' } ],
@@ -558,8 +558,9 @@ const lvl3 = v => v < 40 ? 0 : v <= 60 ? 1 : 2;
       document.getElementById('pv-again').addEventListener('click', () => { n = 0; score = 0; drawTask(); }); return;
     }
     const t = T.tasks[n], g = GOAL[n];
-    task.innerHTML = `<span class="e" aria-hidden="true">${STK(t.e)}</span><div class="tx"><small>${T.challenge} ${T.of(n + 1, GOAL.length)}</small><b>${t.n}</b><br>${T.makeIt(T.vols[g[0] === 'soft' ? 0 : 2], T.pitches[g[1] === 'low' ? 0 : 2])}</div><button class="btn" type="button" id="pv-check">${T.check}</button>`;
+    task.innerHTML = `<span class="e" aria-hidden="true">${STK(t.e)}</span><div class="tx"><small>${T.challenge} ${T.of(n + 1, GOAL.length)}</small><b>${t.n}</b><br>${T.makeIt(T.vols[g[0] === 'soft' ? 0 : 2], T.pitches[g[1] === 'low' ? 0 : 2])}</div><div style="display:flex;flex-direction:column;gap:8px"><button class="btn ghost" type="button" id="pv-hear">${T.hear}</button><button class="btn" type="button" id="pv-check">${T.check}</button></div>`;
     document.getElementById('pv-check').addEventListener('click', check);
+    document.getElementById('pv-hear').addEventListener('click', () => sample(n));
   }
   /* A held note (220 Hz to about 1 300 Hz) that follows the sliders while it sounds. The octave overtone keeps low notes audible on small speakers. */
   const toneF = () => 220 * Math.pow(2, +pit.value / 100 * 2.6), toneG = () => 0.05 + +vol.value / 100 * 0.4;
@@ -587,6 +588,37 @@ const lvl3 = v => v < 40 ? 0 : v <= 60 ? 1 : 2;
     } else {
       tries++;
       fb.className = 's-fb bad'; fb.innerHTML = `<b>${T.pvWrong}</b>${vOk ? '' : T.needVol(T.wordMore[g[0]])}${pOk ? '' : T.needPitch(T.wordMore[g[1]])}`;
+    }
+  }
+  /* Example sounds for the challenge cards, made with Web Audio. */
+  function ac(){ const C = window.AudioContext || window.webkitAudioContext; if (!C) return null; actx = actx || new C(); if (actx.state === 'suspended') actx.resume(); return actx; }
+  function noiseSrc(c, secs){ const b = c.createBuffer(1, Math.floor(c.sampleRate * secs), c.sampleRate), d = b.getChannelData(0); for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1; const s = c.createBufferSource(); s.buffer = b; return s; }
+  function sample(i){
+    const c = ac(); if (!c) return; stopTone();
+    const t = c.currentTime, out = c.createGain(); out.connect(c.destination);
+    if (i === 0) { /* bee far away: soft, high buzz */
+      const o = c.createOscillator(), f = c.createBiquadFilter(), l = c.createOscillator(), lg = c.createGain();
+      o.type = 'sawtooth'; o.frequency.value = 520; l.frequency.value = 6; lg.gain.value = 25; l.connect(lg); lg.connect(o.frequency);
+      f.type = 'bandpass'; f.frequency.value = 1200; f.Q.value = 1.2; o.connect(f); f.connect(out);
+      out.gain.setValueAtTime(0, t); out.gain.linearRampToValueAtTime(0.07, t + 0.3); out.gain.linearRampToValueAtTime(0.04, t + 1); out.gain.linearRampToValueAtTime(0.07, t + 1.7); out.gain.linearRampToValueAtTime(0, t + 2.2);
+      [o, l].forEach(x => { x.start(t); x.stop(t + 2.3); });
+    } else if (i === 1) { /* lion roar: loud, low growl */
+      const o = c.createOscillator(), o2 = c.createOscillator(), f = c.createBiquadFilter(), n = noiseSrc(c, 2.2), nf = c.createBiquadFilter(), ng = c.createGain();
+      o.type = 'sawtooth'; o2.type = 'sawtooth'; o2.detune.value = 18;
+      [o, o2].forEach(x => { x.frequency.setValueAtTime(70, t); x.frequency.linearRampToValueAtTime(130, t + 0.5); x.frequency.linearRampToValueAtTime(85, t + 1.4); x.frequency.linearRampToValueAtTime(55, t + 2); x.connect(f); });
+      f.type = 'lowpass'; f.frequency.setValueAtTime(400, t); f.frequency.linearRampToValueAtTime(900, t + 0.5); f.frequency.linearRampToValueAtTime(300, t + 2); f.connect(out);
+      nf.type = 'lowpass'; nf.frequency.value = 500; ng.gain.value = 0.3; n.connect(nf); nf.connect(ng); ng.connect(out);
+      out.gain.setValueAtTime(0, t); out.gain.linearRampToValueAtTime(0.38, t + 0.35); out.gain.linearRampToValueAtTime(0.3, t + 1.2); out.gain.linearRampToValueAtTime(0, t + 2.1);
+      [o, o2, n].forEach(x => { x.start(t); x.stop(t + 2.2); });
+    } else if (i === 2) { /* big drum tapped gently: soft, low taps */
+      [0, 0.55, 1.1].forEach(dt => { const o = c.createOscillator(), g = c.createGain(), s = t + dt; o.frequency.setValueAtTime(95, s); o.frequency.exponentialRampToValueAtTime(60, s + 0.15); g.gain.setValueAtTime(0.0001, s); g.gain.exponentialRampToValueAtTime(0.18, s + 0.01); g.gain.exponentialRampToValueAtTime(0.0001, s + 0.6); o.connect(g); g.connect(out); o.start(s); o.stop(s + 0.7); });
+    } else { /* ambulance siren close by: loud, high wail */
+      const o = c.createOscillator(), o2 = c.createOscillator(), g2 = c.createGain(), l = c.createOscillator(), lg = c.createGain();
+      o.type = 'triangle'; o2.type = 'square'; g2.gain.value = 0.15; o.frequency.value = 1050; o2.frequency.value = 1050;
+      l.type = 'triangle'; l.frequency.value = 0.8; lg.gain.value = 350; l.connect(lg); lg.connect(o.frequency); lg.connect(o2.frequency);
+      o.connect(out); o2.connect(g2); g2.connect(out);
+      out.gain.setValueAtTime(0, t); out.gain.linearRampToValueAtTime(0.32, t + 0.1); out.gain.setValueAtTime(0.32, t + 2.6); out.gain.linearRampToValueAtTime(0, t + 2.9);
+      [o, o2, l].forEach(x => { x.start(t); x.stop(t + 3); });
     }
   }
   vol.addEventListener('input', () => { wave(); retune(); }); pit.addEventListener('input', () => { wave(); retune(); });
