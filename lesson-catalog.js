@@ -3448,12 +3448,37 @@ window.ML_LESSON_CATALOG = {
       ]
     },
     {
+      "group": "Grade 4 — Matter & Materials",
+      "lessons": [
+        {
+          "value": "Materials around us",
+          "label": "Materials around us",
+          "ref": "ss:4:matter/materials-around-us"
+        },
+        {
+          "value": "Solid materials",
+          "label": "Solid materials",
+          "ref": "ss:4:matter/solid-materials"
+        }
+      ]
+    },
+    {
       "group": "Grade 4 — Structures",
       "lessons": [
         {
           "value": "Structures for animal shelters",
           "label": "Structures for animal shelters",
           "ref": "ss:4:structures/animal-shelters"
+        },
+        {
+          "value": "Strengthening materials",
+          "label": "Strengthening materials",
+          "ref": "ss:4:structures/strengthening-materials"
+        },
+        {
+          "value": "Strong frame structures",
+          "label": "Strong frame structures",
+          "ref": "ss:4:structures/frame-structures"
         }
       ]
     },

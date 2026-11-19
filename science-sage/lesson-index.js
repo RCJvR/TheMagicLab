@@ -6,7 +6,11 @@ window.SS_LESSON_INDEX = {
     "life/plant-animal-parts": "Structure of plants & animals",
     "life/what-plants-need": "What plants need to grow",
     "life/habitats": "Habitats of animals",
-    "structures/animal-shelters": "Structures for animal shelters"
+    "matter/materials-around-us": "Materials around us",
+    "matter/solid-materials": "Solid materials",
+    "structures/animal-shelters": "Structures for animal shelters",
+    "structures/strengthening-materials": "Strengthening materials",
+    "structures/frame-structures": "Strong frame structures"
   },
   7: {
     "life/biodiversity": "Biodiversity & classification",
