@@ -457,7 +457,7 @@ const T = {
   s2tag: 'Verken 2 · Volume en toonhoogte', s2title: 'Volume-en-toonhoogte-lab',
   s2how: 'Skuif die skuifbalke en druk Speel. Maak dan elke klank in die uitdaging.',
   s2aria: '\'n Klankgolf. Hoër golwe is harder. Golwe wat nader aan mekaar is, is hoër.',
-  volL: 'Volume:', pitchL: 'Toonhoogte:', play: 'Speel', check: 'Toets my klank', next: 'Volgende uitdaging',
+  volL: 'Volume:', pitchL: 'Toonhoogte:', play: 'Speel', stop: 'Stop', check: 'Toets my klank', next: 'Volgende uitdaging',
   vols: ['sag', 'medium', 'hard'], pitches: ['laag', 'middel', 'hoog'],
   challenge: 'Uitdaging', makeIt: (v, p) => `Maak \'n <b>${v}</b>, <b>${p}</b> klank.`,
   tasks: [ { e:'🐝', n:'\'n Gonsende by ver weg' }, { e:'🦁', n:'\'n Leeu se brul' }, { e:'🥁', n:'\'n Groot trom wat saggies getik word' }, { e:'🚑', n:'\'n Ambulans se sirene naby' } ],
@@ -561,11 +561,22 @@ const lvl3 = v => v < 40 ? 0 : v <= 60 ? 1 : 2;
     task.innerHTML = `<span class="e" aria-hidden="true">${STK(t.e)}</span><div class="tx"><small>${T.challenge} ${T.of(n + 1, GOAL.length)}</small><b>${t.n}</b><br>${T.makeIt(T.vols[g[0] === 'soft' ? 0 : 2], T.pitches[g[1] === 'low' ? 0 : 2])}</div><button class="btn" type="button" id="pv-check">${T.check}</button>`;
     document.getElementById('pv-check').addEventListener('click', check);
   }
-  /* 220 Hz to about 1 300 Hz: low enough to hear 'low', high enough for laptop and phone speakers. The octave overtone keeps low notes audible on small speakers. */
-  function play(secs){ const v = +vol.value, p = +pit.value, f = 220 * Math.pow(2, p / 100 * 2.6), g = 0.08 + v / 100 * 0.62; SND.tone(f, secs || 0.9, g, 'triangle'); SND.tone(f * 2, secs || 0.9, g * 0.35, 'sine'); }
+  /* A held note (220 Hz to about 1 300 Hz) that follows the sliders while it sounds. The octave overtone keeps low notes audible on small speakers. */
+  const toneF = () => 220 * Math.pow(2, +pit.value / 100 * 2.6), toneG = () => 0.05 + +vol.value / 100 * 0.4;
+  const playBtn = document.getElementById('pv-play');
+  let actx = null, held = null, holdT = 0;
+  function retune(){ if (!held) return; const t = actx.currentTime, f = toneF(); held.o[0].frequency.setTargetAtTime(f, t, 0.03); held.o[1].frequency.setTargetAtTime(f * 2, t, 0.03); held.g.gain.setTargetAtTime(toneG(), t, 0.05); }
+  function stopTone(){ if (!held) return; const h = held, t = actx.currentTime; held = null; clearTimeout(holdT); h.g.gain.cancelScheduledValues(t); h.g.gain.setTargetAtTime(0, t, 0.06); setTimeout(() => h.o.forEach(o => o.stop()), 400); playBtn.textContent = T.play; }
+  function play(secs){
+    const C = window.AudioContext || window.webkitAudioContext; if (!C) return;
+    actx = actx || new C(); if (actx.state === 'suspended') actx.resume();
+    if (held) clearTimeout(holdT);
+    else { const g = actx.createGain(), g2 = actx.createGain(), o1 = actx.createOscillator(), o2 = actx.createOscillator(); g.gain.value = 0; g2.gain.value = 0.35; o1.type = 'triangle'; o2.type = 'sine'; o1.connect(g); o2.connect(g2); g2.connect(g); g.connect(actx.destination); o1.frequency.value = toneF(); o2.frequency.value = toneF() * 2; o1.start(); o2.start(); held = { o: [o1, o2], g }; playBtn.textContent = T.stop; }
+    retune(); holdT = setTimeout(stopTone, (secs || 4) * 1000);
+  }
   let tries = 0;
   function check(){
-    play();
+    play(2.5);
     const v = +vol.value, p = +pit.value, g = GOAL[n];
     const vOk = g[0] === 'soft' ? v < 40 : v > 60, pOk = g[1] === 'low' ? p < 40 : p > 60;
     fb.hidden = false;
@@ -578,9 +589,9 @@ const lvl3 = v => v < 40 ? 0 : v <= 60 ? 1 : 2;
       fb.className = 's-fb bad'; fb.innerHTML = `<b>${T.pvWrong}</b>${vOk ? '' : T.needVol(T.wordMore[g[0]])}${pOk ? '' : T.needPitch(T.wordMore[g[1]])}`;
     }
   }
-  vol.addEventListener('input', wave); pit.addEventListener('input', wave);
-  vol.addEventListener('change', () => play(0.35)); pit.addEventListener('change', () => play(0.35));
-  document.getElementById('pv-play').addEventListener('click', () => play());
+  vol.addEventListener('input', () => { wave(); retune(); }); pit.addEventListener('input', () => { wave(); retune(); });
+  vol.addEventListener('change', () => { if (!held) play(1); }); pit.addEventListener('change', () => { if (!held) play(1); });
+  playBtn.addEventListener('click', () => { if (held) stopTone(); else play(5); });
   wave(); drawTask();
 })();
 
