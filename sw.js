@@ -511,6 +511,7 @@ const urlsToCache = [
   '/assets/notebook.js',
   '/assets/notebook.css',
   '/assets/notebook-launcher.js',
+  '/notebook-view.html',
   '/assets/vendor/tiptap-notebook-3.32.1.bundle.js',
 
   // CDN resources

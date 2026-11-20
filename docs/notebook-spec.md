@@ -11,7 +11,14 @@ Design spec. Written 2026-11-20. **Phase 1 built 2026-11-20** (branch `feature/l
 > - **The account is the backup** so learners on shared or unreliable devices don't lose work.
 >   OneDrive is a later, optional **one-way copy** into the learner's own OneDrive (deleting it
 >   there never deletes anything here). Not the learner's or anyone else's single store.
-> - Still open: the name (working title kept), and teacher access (notes are private for now).
+> - **Teacher access = learner-initiated sharing** (decided 2026-11-20). Notes stay private; a
+>   learner can share one page with one of their classes ("Share with my teacher" in the page
+>   menu). That class's teachers (owner and co-teachers) can read the page — always the current
+>   version, never edit it — and comment; the learner sees comments under the page title and can
+>   reply. Stopping sharing removes access at once. Teachers find shared pages, plus their own
+>   notebook, in Teacher Dashboard › **Notebooks** (badge = new or changed), and read them in
+>   `notebook-view.html`. Tables: `notebook_shares`, `notebook_share_comments` (notebook-schema.sql).
+> - Still open: the name (working title kept).
 >
 > **What Phase 1 includes:** Notebook button on Science Sage, Tech Tower and Math Magician
 > lessons; split view on wide screens, full-screen sheet on phones, pop-out window; dividers and

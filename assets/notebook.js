@@ -330,6 +330,7 @@ export function mount(root, opts = {}) {
             <button type="button" class="nb-icon-btn nb-page-menu" title="Page options" aria-label="Page options" aria-haspopup="menu">${ic('ellipsis')}</button>
           </div>
           <div class="nb-lessonlink" hidden></div>
+          <div class="nb-sharebar" hidden></div>
           <div class="nb-toolbar" role="toolbar" aria-label="Formatting"></div>
           <div class="nb-paper"><div class="nb-editor"></div></div>
         </div>
@@ -403,7 +404,7 @@ export function mount(root, opts = {}) {
     if (uid === S.owner) { if (uid) proStatus(uid).then(pro => { if (pro && S.access !== 'pro') { S.access = 'pro'; render(); } }); return; }
     // Someone signed in or out: start again with the right person's notebook.
     destroyEditor(true);
-    S.currentId = null; S.dividers = []; S.pages = [];
+    S.currentId = null; S.dividers = []; S.pages = []; myClasses = null;
     start();
   }
 
@@ -825,6 +826,7 @@ export function mount(root, opts = {}) {
       { label: 'Move up', icon: 'arrow-up', disabled: i === 0, action: () => swapPage(p, sibs[i - 1]) },
       { label: 'Move down', icon: 'arrow-down', disabled: i === sibs.length - 1, action: () => swapPage(p, sibs[i + 1]) },
       { label: 'Move to another divider…', icon: 'folder-input', disabled: !others.length, action: () => moveMenu(anchor, p, others) },
+      { label: 'Share with my teacher…', icon: 'send', action: async () => { await switchTo(p.id); shareMenu($('.nb-page-menu'), p); } },
       { label: 'Print this page', icon: 'printer', action: () => printPages([p], null) },
       'sep',
       { label: 'Delete page', icon: 'trash-2', danger: true, action: () => deletePage(p) }
@@ -911,6 +913,7 @@ export function mount(root, opts = {}) {
       icons(ll);
     } else ll.hidden = true;
     $('.nb-paper').className = 'nb-paper nb-bg-' + (p.background || 'blank');
+    loadShares(p);
 
     destroyEditor();
     S.editor = new Editor({
@@ -933,7 +936,8 @@ export function mount(root, opts = {}) {
           closeMenu(); p.background = b.dataset.bg; $('.nb-paper').className = 'nb-paper nb-bg-' + p.background; await promote(p); await savePage(p);
         })) },
       'sep',
-      ...[{ label: 'Duplicate', icon: 'copy', action: () => duplicatePage(p) },
+      ...[{ label: 'Share with my teacher…', icon: 'send', action: () => shareMenu(anchor, p) },
+        { label: 'Duplicate', icon: 'copy', action: () => duplicatePage(p) },
         { label: 'Print this page', icon: 'printer', action: () => printPages([p], null) },
         { label: 'Delete page', icon: 'trash-2', danger: true, action: () => deletePage(p) }]
     ]);
@@ -1106,6 +1110,119 @@ export function mount(root, opts = {}) {
     }
   });
 
+  /* ── Sharing a page with a teacher ─────────────────────────
+     The learner picks one of their classes; that class's teachers can then
+     read this page (always the current version) and comment on it. Stopping
+     sharing takes their access away straight away. Needs the network. */
+  let myClasses = null;
+  async function getMyClasses() {
+    if (myClasses) return myClasses;
+    const { data, error } = await client().rpc('notebook_my_classes');
+    if (error) throw error;
+    return (myClasses = data || []);
+  }
+  async function shareMenu(anchor, p) {
+    if (!client() || !navigator.onLine) { toast('Sharing needs an internet connection.'); return; }
+    await flush();
+    const cur = pageById(p.id);
+    if (!cur || !(cur.version > 0) || cur.dirty) { toast('This page is still backing up. Try again in a moment.'); scheduleSync(0); return; }
+    let classes, shares;
+    try {
+      classes = await getMyClasses();
+      const { data, error } = await client().from('notebook_shares').select('id,class_id').eq('page_id', p.id);
+      if (error) throw error;
+      shares = data || [];
+    } catch (e) { console.warn('[notebook] share', e); toast('Sharing couldn’t load. Please try again.'); return; }
+    if (!classes.length) { toast('Join your class first (on your dashboard, under To do). Then you can share pages with your teacher.'); return; }
+    const sharedWith = new Map(shares.map(s => [s.class_id, s.id]));
+    menu(anchor, [{
+      html: `<div class="nb-menu-label">Share this page with a class’s teachers</div>
+        <div class="nb-sharelist">${classes.map(c => {
+          const on = sharedWith.has(c.class_id);
+          return `<div class="nb-sharerow"><span>${esc(c.name)}</span><button type="button" class="nb-btn nb-btn-sm${on ? '' : ' nb-btn-primary'}" data-class="${esc(c.class_id)}" data-on="${on}">${on ? 'Stop sharing' : 'Share'}</button></div>`;
+        }).join('')}</div>
+        <p class="nb-menu-note">Your teacher can read this page, including later changes, and leave comments. Nothing else in your notebook is shared.</p>`,
+      mount: box => box.querySelectorAll('[data-class]').forEach(b => b.addEventListener('click', async () => {
+        b.disabled = true;
+        const classId = b.dataset.class, on = b.dataset.on === 'true';
+        const res = on
+          ? await client().from('notebook_shares').delete().eq('id', sharedWith.get(classId))
+          : await client().from('notebook_shares').insert({ page_id: p.id, owner: S.owner, class_id: classId });
+        closeMenu();
+        if (res.error) { console.warn('[notebook] share', res.error); toast('That didn’t work. Please try again.'); return; }
+        const name = (classes.find(c => c.class_id === classId) || {}).name || 'your class';
+        toast(on ? `Stopped sharing with ${name}.` : `Shared with ${name}’s teachers.`);
+        loadShares(p);
+      }))
+    }], 'nb-menu-wide');
+  }
+  // The strip under the title: who it's shared with, and the teacher's comments.
+  let shareLoadToken = 0;
+  async function loadShares(p) {
+    const bar = $('.nb-sharebar');
+    const token = ++shareLoadToken;
+    bar.hidden = true; bar.innerHTML = '';
+    const sb = client();
+    if (!sb || !navigator.onLine || !(p.version > 0)) return;
+    try {
+      const { data: shares, error } = await sb.from('notebook_shares').select('id,class_id,created_at').eq('page_id', p.id);
+      if (error) throw error;
+      if (token !== shareLoadToken || !shares.length) return;
+      const classes = await getMyClasses().catch(() => []);
+      const { data: comments, error: e2 } = await sb.from('notebook_share_comments').select('id,share_id,author,body,created_at')
+        .in('share_id', shares.map(s => s.id)).order('created_at');
+      if (e2) throw e2;
+      if (token !== shareLoadToken) return;
+      renderShareBar(p, shares, classes, comments || []);
+    } catch (e) { console.warn('[notebook] shares', e); }
+  }
+  function renderShareBar(p, shares, classes, comments) {
+    const bar = $('.nb-sharebar');
+    const nameOf = id => (classes.find(c => c.class_id === id) || {}).name || 'your class';
+    const names = shares.map(s => nameOf(s.class_id));
+    const open = bar.dataset.open === p.id;
+    const when = iso => new Date(iso).toLocaleDateString('en-ZA', { day: 'numeric', month: 'short' }) + ' ' + new Date(iso).toLocaleTimeString('en-ZA', { hour: '2-digit', minute: '2-digit' });
+    bar.hidden = false;
+    bar.innerHTML = `
+      <button type="button" class="nb-sharebar-toggle" aria-expanded="${open}">
+        ${ic('users')}<span>Shared with ${esc(names.join(', '))}</span>
+        ${comments.length ? `<span class="nb-sharebar-count">${comments.length} comment${comments.length === 1 ? '' : 's'}</span>` : ''}
+        <i data-lucide="chevron-down" class="nb-chev2" aria-hidden="true"></i>
+      </button>
+      <div class="nb-thread"${open ? '' : ' hidden'}>
+        ${shares.map(s => {
+          const list = comments.filter(k => k.share_id === s.id);
+          return `<div class="nb-thread-share">
+            ${shares.length > 1 ? `<div class="nb-menu-label">${esc(nameOf(s.class_id))}</div>` : ''}
+            ${list.length ? list.map(k => `<div class="nb-comment${k.author === S.owner ? ' nb-mine' : ''}">
+              <div class="nb-comment-who">${k.author === S.owner ? 'You' : 'Teacher'} · <span>${esc(when(k.created_at))}</span></div>
+              <div class="nb-comment-body">${esc(k.body)}</div></div>`).join('') : '<p class="nb-muted">No comments yet.</p>'}
+            <form class="nb-reply" data-share="${esc(s.id)}">
+              <textarea rows="2" maxlength="2000" placeholder="Reply to your teacher…" aria-label="Reply to your teacher"></textarea>
+              <button type="submit" class="nb-btn nb-btn-sm nb-btn-primary">Send</button>
+            </form>
+          </div>`;
+        }).join('')}
+        <button type="button" class="nb-text-btn nb-sm nb-share-manage">${ic('settings-2', 'Change who can see this page')}</button>
+      </div>`;
+    icons(bar);
+    bar.querySelector('.nb-sharebar-toggle').addEventListener('click', () => {
+      bar.dataset.open = bar.dataset.open === p.id ? '' : p.id;
+      renderShareBar(p, shares, classes, comments);
+    });
+    bar.querySelector('.nb-share-manage')?.addEventListener('click', e => shareMenu(e.currentTarget, p));
+    bar.querySelectorAll('.nb-reply').forEach(f => f.addEventListener('submit', async e => {
+      e.preventDefault();
+      const ta = f.querySelector('textarea'), body = ta.value.trim();
+      if (!body) return;
+      f.querySelector('button').disabled = true;
+      const { error } = await client().from('notebook_share_comments').insert({ share_id: f.dataset.share, author: S.owner, body });
+      if (error) { toast('Your reply didn’t send. Please try again.'); f.querySelector('button').disabled = false; return; }
+      bar.dataset.open = p.id;
+      loadShares(p);
+    }));
+  }
+
   /* ── Clips from lessons ────────────────────────────────── */
   async function insertClip(clip) {
     if (!canWrite()) { toast('Notebook editing is part of Pro.'); return false; }
@@ -1204,4 +1321,4 @@ export function mount(root, opts = {}) {
   };
 }
 
-export { channel as notebookChannel, WINDOW_ID };
+export { channel as notebookChannel, WINDOW_ID, extensions as notebookExtensions, EMPTY_DOC };
