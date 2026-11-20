@@ -64,7 +64,8 @@ writeChapter(N, { en: 'Chapter name', af: 'Hoofstuknaam' }, T, process.argv[2] |
 Rules learned the hard way:
 
 - **Sim strings:** functions in `L` must be **top-level keys**. Nested functions, or functions inside arrays, are lost in serialisation. Pass data as arrays of plain objects.
-- **MC answers:** for `mc`, `a` is the exact option text in the EN list. AF options must be the same length and in the same order.
+- **MC answers:** for `mc`, `a` is the **index** of the correct option (0, 1, 2…), not its text. The page checks `idx === q.answer`. AF options must be the same length and in the same order.
+- **Workbook answers:** `ans[0]` is shown in **both** the EN and AF answer keys, so keep it free of words: numbers, units, R amounts or `—`. Put any words in the two notes (`ans[1]` EN, `ans[2]` AF), e.g. `['40', 'tiles: 5 × 8', 'teëls: 5 × 8']`.
 - **Typed answers:** `a` may contain spaces ("1 250"), an R prefix or units. The checker accepts these.
 - **`same(s)` helper:** only for steps with no words, i.e. pure arithmetic. If a step has words, write separate AF text. English left inside AF steps has been a repeated bug.
 - **Afrikaans terms:** use proper ones: *omtrek, oppervlakte, volume, breuk, teller, noemer, verhouding, koers, simmetrielyn, invoer/uitvoer, waarskynlikheid*. Decimal comma style: "3,5".
@@ -110,7 +111,7 @@ node scripts/build-math-topic-index.js && node scripts/build-math-catalog.js
    `sed '/require-auth.js/d' math-magician/gr4/index.html > math-magician/gr4/_test.html`
 2. In the built-in browser, open `http://127.0.0.1:8765/math-magician/gr4/_test.html?v=N`. Change N every load to bust the cache. Then run:
    `document.documentElement.style.visibility='visible'`, remove fixed overlays with z-index above 50, and `document.querySelectorAll('.topic-item')[i].click()`.
-   - Topic items are indexed across all chapters: Ch1 0–6, Ch2 7–10, Ch3 11–15, Ch4 16–20, Ch5 21–23, Ch6 24–27, and Ch7 starts at 28.
+   - Topic items are indexed across all chapters: Ch1 0–6, Ch2 7–10, Ch3 11–15, Ch4 16–20, Ch5 21–23, Ch6 24–27, Ch7 28–31, Ch8 32–35, and Ch9 starts at 36.
    - The page may open in Afrikaans (saved in localStorage). That's fine: test both.
 3. **Check with JavaScript first:**
    - no console errors
@@ -124,7 +125,7 @@ node scripts/build-math-topic-index.js && node scripts/build-math-catalog.js
 
 - Stage only the chapter files, the generated files, `index.html`, `topic-index.js` and `lesson-catalog.js` (plus `math-magician/index.html` if the catalog changed it).
 - Commit message: `Math Magician Grade 4: Chapter N (Name)`, ending with the Co-Authored-By trailer.
-- Push to main (this deploys). Confirm it's live with `curl -s "https://themagiclab.co.za/math-magician/gr4/chN.js?v=$RANDOM" | head -c 200`.
+- Push to main (this deploys; GitHub Pages takes about 30 seconds). The shell here has no internet access, so `curl` fails. Confirm it's live in the built-in browser instead: open `https://themagiclab.co.za/math-magician/gr4/` and run `(await fetch('chN.js?v=' + Math.random(), {cache: 'no-store'})).status` until it returns 200.
 - Update the memory file `project_math_gr4.md` and its `MEMORY.md` line, e.g. "Ch 1–N live (date)".
 
 ## Shell pitfalls on this machine
