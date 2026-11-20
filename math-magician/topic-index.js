@@ -22,7 +22,10 @@ window.MM_TOPIC_INDEX = {
     402: ["Halving, even and odd",4],
     403: ["Dividing bigger numbers",4],
     404: ["Multiplication and division",4],
-    405: ["Sharing problems",4]
+    405: ["Sharing problems",4],
+    501: ["Which comes first?",5],
+    502: ["Missing numbers",5],
+    503: ["Writing number sentences",5]
   },
   8: {
     101: ["The four operations",1],

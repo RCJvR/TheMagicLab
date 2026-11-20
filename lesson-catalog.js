@@ -1439,6 +1439,26 @@ window.ML_LESSON_CATALOG = {
       ]
     },
     {
+      "group": "Grade 4 — Ch 5 — Multiple Operations and Number Sentences",
+      "lessons": [
+        {
+          "value": "Which comes first?",
+          "label": "Which comes first?",
+          "ref": "mm:4:501"
+        },
+        {
+          "value": "Missing numbers",
+          "label": "Missing numbers",
+          "ref": "mm:4:502"
+        },
+        {
+          "value": "Writing number sentences",
+          "label": "Writing number sentences",
+          "ref": "mm:4:503"
+        }
+      ]
+    },
+    {
       "group": "Grade 8 — Ch 1 — Whole Numbers, Ratios, Rates & Finance",
       "lessons": [
         {
