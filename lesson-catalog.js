@@ -1484,6 +1484,31 @@ window.ML_LESSON_CATALOG = {
       ]
     },
     {
+      "group": "Grade 4 — Ch 7 — Perimeter, Area, Capacity and Volume",
+      "lessons": [
+        {
+          "value": "Perimeter",
+          "label": "Perimeter",
+          "ref": "mm:4:701"
+        },
+        {
+          "value": "Area",
+          "label": "Area",
+          "ref": "mm:4:702"
+        },
+        {
+          "value": "Capacity",
+          "label": "Capacity",
+          "ref": "mm:4:703"
+        },
+        {
+          "value": "Volume",
+          "label": "Volume",
+          "ref": "mm:4:704"
+        }
+      ]
+    },
+    {
       "group": "Grade 8 — Ch 1 — Whole Numbers, Ratios, Rates & Finance",
       "lessons": [
         {

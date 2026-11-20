@@ -29,7 +29,11 @@ window.MM_TOPIC_INDEX = {
     601: ["Length",6],
     602: ["Mass",6],
     603: ["Capacity",6],
-    604: ["Converting and problems",6]
+    604: ["Converting and problems",6],
+    701: ["Perimeter",7],
+    702: ["Area",7],
+    703: ["Capacity",7],
+    704: ["Volume",7]
   },
   8: {
     101: ["The four operations",1],
