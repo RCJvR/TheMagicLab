@@ -2,7 +2,10 @@
 // THE MAGIC LAB — sw.js  (updated for Phase 1)
 // ============================================================
 
-const CACHE_NAME = 'magic-lab-v68'; // no longer load-bearing for freshness (fetch handler is network-first) — bump only to prune old/removed cached files
+const CACHE_NAME = 'magic-lab-v69'; // no longer load-bearing for freshness (fetch handler is network-first) — bump only to prune old/removed cached files
+// v69: Study Spellbook, the Pro learner notebook (docs/notebook-spec.md):
+// notebook.html, assets/notebook*.{js,css} and the notebook TipTap bundle
+// added to the precache list so the notebook opens offline.
 // v68: math-magician/gr9 — fixed character-encoding corruption (garbled
 // ×, ÷, π, √, arrows, emoji, etc.) across all 15 affected Grade 9 chapter
 // files (ch1-8, ch10-12, ch14-17), reconstructed against the byte-clean
@@ -502,6 +505,13 @@ const urlsToCache = [
   '/assets/memory-mirror/science-sage-gr12-life.json',
   '/assets/vendor/lucide-1.56.0.min.js',
   '/assets/vendor/supabase-2.117.3.min.js',
+  // Study Spellbook (learner notebook): precached so it opens offline even
+  // before its first use on this device.
+  '/notebook.html',
+  '/assets/notebook.js',
+  '/assets/notebook.css',
+  '/assets/notebook-launcher.js',
+  '/assets/vendor/tiptap-notebook-3.32.1.bundle.js',
 
   // CDN resources
   'https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap'

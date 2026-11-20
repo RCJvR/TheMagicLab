@@ -1,0 +1,380 @@
+/* ============================================================
+   THE MAGIC LAB — Study Spellbook styles (assets/notebook.css)
+   The notebook itself (.nb-root), the lesson-side panel and button
+   (.ml-nb-*), the "Add to notes" pill, and print.
+   Loaded with data-ml-no-theme: light mode is written out here, so
+   theme.js must not remap it.
+   ============================================================ */
+
+.nb-root {
+  --nb-bg: #0c0e11;
+  --nb-side: #08090b;
+  --nb-raised: #111418;
+  --nb-input: #171b20;
+  --nb-line: rgba(255, 255, 255, .08);
+  --nb-line-2: rgba(255, 255, 255, .16);
+  --nb-text: #e3e8ef;
+  --nb-text-2: rgba(226, 232, 240, .72);
+  --nb-text-3: rgba(226, 232, 240, .52);
+  --nb-hover: rgba(255, 255, 255, .06);
+  --nb-active: rgba(255, 255, 255, .10);
+  --nb-accent: #6ea8ff;
+  --nb-rule: rgba(255, 255, 255, .07);
+  --nb-good: #4ade80;
+  --nb-warn: #fbbf24;
+  --nb-danger: #f87171;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+  background: var(--nb-bg);
+  color: var(--nb-text);
+  font: 15px/1.5 "Cabinet Grotesk", "Segoe UI", system-ui, sans-serif;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+.nb-root *, .nb-root *::before, .nb-root *::after { box-sizing: border-box; }
+html[data-theme="light"] .nb-root {
+  --nb-bg: #ffffff;
+  --nb-side: #f5f6f8;
+  --nb-raised: #ffffff;
+  --nb-input: #f1f3f6;
+  --nb-line: rgba(0, 0, 0, .08);
+  --nb-line-2: rgba(0, 0, 0, .16);
+  --nb-text: #16181d;
+  --nb-text-2: #4a525e;
+  --nb-text-3: #6b7380;
+  --nb-hover: rgba(0, 0, 0, .05);
+  --nb-active: rgba(0, 0, 0, .08);
+  --nb-accent: #2f6fd6;
+  --nb-rule: rgba(0, 0, 0, .07);
+  --nb-good: #15803d;
+  --nb-warn: #a16207;
+  --nb-danger: #c62828;
+}
+.nb-root svg.lucide, .nb-root i[data-lucide] { width: 16px; height: 16px; flex-shrink: 0; }
+.nb-root [hidden] { display: none !important; }
+:where(.nb-root) button { font: inherit; color: inherit; }
+.nb-root :focus-visible { outline: 2px solid var(--nb-accent); outline-offset: 2px; }
+.nb-muted { color: var(--nb-text-3); font-size: 13.5px; }
+
+/* ── Buttons ─────────────────────────────────────────────── */
+.nb-icon-btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 34px; height: 34px; padding: 0; flex-shrink: 0;
+  border: 0; border-radius: 9px; background: transparent; cursor: pointer; color: var(--nb-text-2);
+}
+.nb-icon-btn:hover { background: var(--nb-hover); color: var(--nb-text); }
+.nb-icon-btn.nb-sm { width: 28px; height: 28px; border-radius: 7px; }
+.nb-text-btn {
+  display: inline-flex; align-items: center; gap: 6px; padding: 6px 8px;
+  border: 0; border-radius: 8px; background: transparent; cursor: pointer;
+  color: var(--nb-text-2); font-weight: 600; font-size: 13.5px;
+}
+.nb-text-btn:hover { background: var(--nb-hover); color: var(--nb-text); }
+.nb-text-btn.nb-sm { padding: 4px 6px; font-size: 12.5px; }
+.nb-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  min-height: 38px; padding: 0 16px; border-radius: 999px;
+  border: 1px solid var(--nb-line-2); background: transparent; color: var(--nb-text);
+  font: 700 14.5px/1 "Cabinet Grotesk", "Segoe UI", system-ui, sans-serif;
+  text-decoration: none; cursor: pointer; white-space: nowrap;
+}
+.nb-btn:hover { background: var(--nb-hover); }
+.nb-btn-primary { background: var(--nb-text); border-color: var(--nb-text); color: var(--nb-bg); }
+.nb-btn-primary:hover { background: var(--nb-text); opacity: .9; }
+.nb-btn-sm { min-height: 30px; padding: 0 12px; font-size: 13px; }
+
+/* ── Top bar ─────────────────────────────────────────────── */
+.nb-top {
+  display: flex; align-items: center; gap: 8px; flex-shrink: 0;
+  min-height: 52px; padding: 8px 10px; border-bottom: 1px solid var(--nb-line);
+}
+.nb-brand { display: inline-flex; align-items: center; gap: 8px; font-weight: 800; letter-spacing: -.01em; white-space: nowrap; }
+.nb-status {
+  display: inline-flex; align-items: center; gap: 6px; min-width: 0;
+  margin-left: 4px; color: var(--nb-text-3); font-size: 12.5px;
+}
+.nb-status span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.nb-status svg { width: 14px !important; height: 14px !important; }
+.nb-status-saved svg { color: var(--nb-good); }
+.nb-status-error, .nb-status-offline { color: var(--nb-warn); }
+.nb-status-saving svg { animation: nb-spin 1s linear infinite; }
+@keyframes nb-spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .nb-status-saving svg { animation: none; } }
+.nb-top-actions { display: inline-flex; gap: 2px; margin-left: auto; }
+.nb-narrow .nb-status span { display: none; }
+.nb-home { text-decoration: none; margin-right: 4px; }
+.nb-narrow .nb-home span { display: none; }
+
+.nb-banner {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+  padding: 10px 14px; border-bottom: 1px solid var(--nb-line);
+  background: var(--nb-raised); color: var(--nb-text-2); font-size: 13.5px;
+}
+.nb-banner span { display: inline-flex; align-items: center; gap: 8px; }
+
+/* ── Body: list + page ───────────────────────────────────── */
+.nb-body { position: relative; display: flex; flex: 1; min-height: 0; }
+.nb-side {
+  display: flex; flex-direction: column; width: 248px; flex-shrink: 0;
+  background: var(--nb-side); border-right: 1px solid var(--nb-line);
+}
+.nb-side-closed .nb-side { display: none; }
+.nb-narrow .nb-side {
+  position: absolute; z-index: 5; top: 0; bottom: 0; left: 0; width: min(300px, 86%);
+  box-shadow: 12px 0 32px -16px rgba(0, 0, 0, .6);
+}
+.nb-scrim { position: absolute; inset: 0; z-index: 4; background: rgba(0, 0, 0, .4); }
+.nb-tree { flex: 1; overflow-y: auto; padding: 8px 6px; }
+.nb-tree-empty { padding: 8px 10px; }
+.nb-side-foot { padding: 8px 6px; border-top: 1px solid var(--nb-line); }
+
+.nb-div { margin-bottom: 2px; border-radius: 10px; }
+.nb-div.nb-drop-into { background: var(--nb-hover); }
+.nb-div-row { display: flex; align-items: center; gap: 2px; }
+.nb-div-row .nb-icon-btn { opacity: 0; }
+.nb-div-row:hover .nb-icon-btn, .nb-div-row .nb-icon-btn:focus-visible, .nb-div-row .nb-icon-btn[aria-expanded="true"] { opacity: 1; }
+@media (hover: none) { .nb-div-row .nb-icon-btn, .nb-pages .nb-page-more { opacity: 1 !important; } }
+.nb-div-toggle {
+  display: flex; align-items: center; gap: 8px; flex: 1; min-width: 0;
+  min-height: 34px; padding: 4px 8px; border: 0; border-radius: 8px; background: transparent;
+  cursor: pointer; text-align: left; font-weight: 700; font-size: 14px;
+}
+.nb-div-toggle:hover { background: var(--nb-hover); }
+.nb-chev { transition: transform 140ms; color: var(--nb-text-3); width: 14px !important; height: 14px !important; }
+.nb-div-toggle[aria-expanded="true"] .nb-chev { transform: rotate(90deg); }
+.nb-swatch { width: 10px; height: 10px; border-radius: 3px; background: var(--div); flex-shrink: 0; }
+.nb-div-name { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.nb-count { color: var(--nb-text-3); font: 500 11.5px/1 "JetBrains Mono", ui-monospace, monospace; }
+.nb-rename {
+  flex: 1; min-width: 0; height: 32px; margin: 1px 0; padding: 0 8px;
+  border: 1px solid var(--nb-accent); border-radius: 8px; background: var(--nb-input); color: var(--nb-text); font: inherit; font-weight: 700;
+}
+.nb-pages { list-style: none; margin: 0 0 6px; padding: 0 0 0 18px; }
+.nb-pages li { position: relative; display: flex; align-items: center; gap: 2px; border-radius: 8px; }
+.nb-pages li.nb-dragging { opacity: .4; }
+.nb-pages li.nb-drop-before::before { content: ""; position: absolute; left: 0; right: 0; top: -1px; height: 2px; border-radius: 2px; background: var(--nb-accent); }
+.nb-page-btn {
+  display: flex; align-items: center; gap: 8px; flex: 1; min-width: 0;
+  min-height: 32px; padding: 4px 8px; border: 0; border-left: 2px solid transparent; border-radius: 0 8px 8px 0;
+  background: transparent; cursor: pointer; text-align: left; color: var(--nb-text-2); font-size: 14px;
+}
+.nb-page-btn span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.nb-page-btn svg { color: var(--nb-text-3); width: 14px !important; height: 14px !important; }
+.nb-page-btn:hover { background: var(--nb-hover); color: var(--nb-text); }
+.nb-page-btn[aria-current="page"] { background: var(--nb-active); color: var(--nb-text); font-weight: 700; border-left-color: var(--div, var(--nb-accent)); }
+.nb-page-btn.nb-auto span { font-style: italic; }
+.nb-pages .nb-page-more { opacity: 0; }
+.nb-pages li:hover .nb-page-more, .nb-pages .nb-page-more:focus-visible { opacity: 1; }
+.nb-add-page { color: var(--nb-text-3); font-weight: 600; }
+.nb-bin { margin-top: 10px; padding-top: 8px; border-top: 1px solid var(--nb-line); }
+.nb-bin .nb-div-toggle { font-weight: 600; color: var(--nb-text-2); }
+.nb-bin-note { margin: 2px 10px 6px 28px; font-size: 12.5px; }
+.nb-bin-title { flex: 1; min-width: 0; padding: 4px 8px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--nb-text-3); font-size: 13.5px; }
+
+/* ── The page ────────────────────────────────────────────── */
+.nb-main { position: relative; flex: 1; min-width: 0; display: flex; flex-direction: column; overflow: hidden; }
+.nb-pagewrap { display: flex; flex-direction: column; flex: 1; min-height: 0; }
+.nb-pagehead { display: flex; align-items: center; gap: 6px; padding: 14px 18px 2px; }
+.nb-title {
+  flex: 1; min-width: 0; padding: 4px 6px; margin-left: -6px;
+  border: 1px solid transparent; border-radius: 8px; background: transparent; color: var(--nb-text);
+  font: 800 24px/1.2 "Cabinet Grotesk", "Segoe UI", system-ui, sans-serif; letter-spacing: -.015em;
+}
+.nb-title:hover:not([readonly]) { border-color: var(--nb-line); }
+.nb-title:focus { outline: none; border-color: var(--nb-accent); }
+.nb-lessonlink { display: flex; align-items: center; gap: 6px; padding: 0 18px 6px; color: var(--nb-text-3); font-size: 13px; }
+.nb-lessonlink a { color: var(--nb-text-2); text-decoration: underline; text-underline-offset: 2px; }
+.nb-lessonlink svg { width: 14px !important; height: 14px !important; }
+
+.nb-toolbar {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 2px;
+  margin: 6px 12px 0; padding: 4px; border: 1px solid var(--nb-line); border-radius: 12px; background: var(--nb-raised);
+}
+.nb-tb-btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 32px; height: 32px; padding: 0; border: 0; border-radius: 8px; background: transparent; cursor: pointer; color: var(--nb-text-2);
+}
+.nb-tb-btn:hover:not(:disabled) { background: var(--nb-hover); color: var(--nb-text); }
+.nb-tb-btn[aria-pressed="true"] { background: var(--nb-active); color: var(--nb-text); }
+.nb-tb-btn:disabled { opacity: .35; cursor: default; }
+.nb-tb-sep { width: 1px; height: 20px; margin: 0 4px; background: var(--nb-line-2); }
+.nb-root .nb-tb-select {
+  width: auto; max-width: 150px; min-height: 0; margin: 0; height: 32px; padding: 0 8px; border: 1px solid var(--nb-line); border-radius: 8px;
+  background: var(--nb-input); color: var(--nb-text); font: 600 13.5px "Cabinet Grotesk", "Segoe UI", system-ui, sans-serif; cursor: pointer;
+}
+.nb-narrow .nb-tb-sep { display: none; }
+
+.nb-paper { flex: 1; min-height: 0; overflow-y: auto; margin-top: 8px; display: flex; flex-direction: column; }
+.nb-editor { flex: 1 0 auto; display: flex; flex-direction: column; }
+.nb-root .nb-editor > .nb-prose { flex: 1 0 auto; }
+.nb-root .nb-prose:focus, .nb-root .nb-prose:focus-visible { outline: none; }
+.nb-prose {
+  max-width: 820px; padding: 10px 24px 120px; outline: none;
+  font-size: 16px; line-height: 1.7; color: var(--nb-text);
+}
+.nb-bg-lined .nb-prose, .nb-print-page.nb-bg-lined { background-image: linear-gradient(var(--nb-rule) 1px, transparent 1px); background-size: 100% 27.2px; background-position: 0 9px; }
+.nb-bg-grid .nb-prose, .nb-print-page.nb-bg-grid { background-image: linear-gradient(var(--nb-rule) 1px, transparent 1px), linear-gradient(90deg, var(--nb-rule) 1px, transparent 1px); background-size: 24px 24px; }
+.nb-bg-dotted .nb-prose, .nb-print-page.nb-bg-dotted { background-image: radial-gradient(var(--nb-line-2) 1.2px, transparent 1.4px); background-size: 22px 22px; }
+.nb-prose > * + * { margin-top: .6em; }
+.nb-prose p { margin: 0; }
+.nb-prose h1, .nb-prose h2, .nb-prose h3 { margin: 1.1em 0 .3em; line-height: 1.25; letter-spacing: -.01em; font-weight: 800; }
+.nb-prose h1 { font-size: 1.6em; } .nb-prose h2 { font-size: 1.3em; } .nb-prose h3 { font-size: 1.1em; }
+.nb-prose ul, .nb-prose ol { padding-left: 1.4em; margin: .4em 0; }
+.nb-prose li > p { margin: 0; }
+.nb-prose a { color: var(--nb-accent); text-decoration: underline; text-underline-offset: 2px; }
+.nb-prose blockquote { margin: .6em 0; padding: 2px 0 2px 14px; border-left: 3px solid var(--nb-line-2); color: var(--nb-text-2); }
+.nb-prose mark { color: #111; border-radius: 3px; padding: 0 2px; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
+.nb-prose code { padding: 1px 5px; border-radius: 5px; background: var(--nb-input); font: .9em "JetBrains Mono", ui-monospace, monospace; }
+.nb-prose pre { padding: 10px 12px; border-radius: 10px; background: var(--nb-input); overflow-x: auto; }
+.nb-prose pre code { padding: 0; background: none; }
+.nb-prose img { max-width: 100%; height: auto; border-radius: 8px; }
+.nb-prose hr { border: 0; border-top: 1px solid var(--nb-line-2); margin: 1.2em 0; }
+.nb-prose table { border-collapse: collapse; width: 100%; margin: .6em 0; table-layout: fixed; }
+.nb-prose th, .nb-prose td { border: 1px solid var(--nb-line-2); padding: 6px 8px; vertical-align: top; }
+.nb-prose th { background: var(--nb-input); font-weight: 700; text-align: left; }
+.nb-prose .selectedCell { background: rgba(110, 168, 255, .18); }
+.nb-prose .tableWrapper { overflow-x: auto; }
+.nb-prose ul[data-type="taskList"] { list-style: none; padding-left: .2em; }
+.nb-prose ul[data-type="taskList"] li { display: flex; gap: 8px; align-items: flex-start; }
+.nb-prose ul[data-type="taskList"] li > label { margin-top: .3em; flex-shrink: 0; }
+.nb-prose ul[data-type="taskList"] li > label input { width: 16px; height: 16px; accent-color: var(--nb-accent); cursor: pointer; }
+.nb-prose ul[data-type="taskList"] li > div { flex: 1; min-width: 0; }
+.nb-prose ul[data-type="taskList"] li[data-checked="true"] > div { color: var(--nb-text-3); text-decoration: line-through; }
+.nb-prose p.is-editor-empty:first-child::before { content: attr(data-placeholder); float: left; height: 0; pointer-events: none; color: var(--nb-text-3); }
+
+/* A clip from a lesson */
+.nb-clip { margin: .8em 0; padding: 10px 14px 8px; border-radius: 10px; border: 1px solid var(--nb-line); border-left: 3px solid var(--nb-accent); background: var(--nb-raised); }
+.nb-clip-body > :first-child { margin-top: 0; }
+.nb-clip-src { margin-top: 6px; font-size: 12.5px; user-select: none; }
+.nb-clip-src a { color: var(--nb-text-3) !important; text-decoration: none !important; cursor: pointer; }
+.nb-clip-src a:hover { color: var(--nb-text) !important; text-decoration: underline !important; }
+
+/* ── Empty states and the Pro card ───────────────────────── */
+.nb-empty, .nb-gate { flex: 1; display: flex; align-items: center; justify-content: center; padding: 24px 18px; overflow-y: auto; }
+.nb-empty-card { max-width: 340px; text-align: center; }
+.nb-empty-card > svg { width: 28px !important; height: 28px !important; color: var(--nb-text-3); }
+.nb-empty-card h2 { margin: 10px 0 6px; font-size: 18px; }
+.nb-empty-card .nb-btn { margin-top: 14px; }
+.nb-gate-card { max-width: 400px; }
+.nb-gate-icon { display: inline-flex; padding: 10px; border-radius: 12px; background: var(--nb-raised); border: 1px solid var(--nb-line); }
+.nb-gate-icon svg { width: 22px !important; height: 22px !important; }
+.nb-kicker { margin: 14px 0 4px; color: var(--nb-text-3); font: 600 12px/1 "JetBrains Mono", ui-monospace, monospace; letter-spacing: .06em; text-transform: uppercase; }
+.nb-gate-card h2 { margin: 0 0 12px; font-size: 22px; line-height: 1.2; letter-spacing: -.015em; }
+.nb-gate-list { margin: 0 0 18px; padding: 0; list-style: none; display: grid; gap: 8px; color: var(--nb-text-2); font-size: 14.5px; }
+.nb-gate-list li { position: relative; padding-left: 20px; }
+.nb-gate-list li::before { content: ""; position: absolute; left: 2px; top: .55em; width: 8px; height: 8px; border-radius: 2px; background: var(--nb-text-3); }
+.nb-gate-actions { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 10px; }
+
+/* ── Menus and toasts ────────────────────────────────────── */
+.nb-menu {
+  position: absolute; z-index: 20; min-width: 200px; max-width: min(300px, calc(100% - 16px)); max-height: 70%; overflow-y: auto;
+  padding: 6px; border-radius: 12px; border: 1px solid var(--nb-line-2); background: var(--nb-raised);
+  box-shadow: 0 14px 34px -14px rgba(0, 0, 0, .7);
+}
+html[data-theme="light"] .nb-menu { box-shadow: 0 14px 34px -14px rgba(0, 0, 0, .25); }
+.nb-menu > button {
+  display: flex; align-items: center; gap: 10px; width: 100%; min-height: 34px; padding: 6px 10px;
+  border: 0; border-radius: 8px; background: transparent; cursor: pointer; text-align: left; font-size: 14px; color: var(--nb-text);
+}
+.nb-menu > button:hover:not(:disabled), .nb-menu > button:focus-visible { background: var(--nb-hover); outline: none; }
+.nb-menu > button:disabled { opacity: .4; cursor: default; }
+.nb-menu > button svg { color: var(--nb-text-3); }
+.nb-menu > button.nb-danger, .nb-menu > button.nb-danger svg { color: var(--nb-danger); }
+.nb-menu-sep { height: 1px; margin: 5px 4px; background: var(--nb-line); }
+.nb-menu-custom { padding: 4px 6px; }
+.nb-menu-label { display: block; margin: 2px 0 8px; color: var(--nb-text-3); font-size: 12px; font-weight: 600; }
+.nb-swatches { display: flex; flex-wrap: wrap; gap: 6px; }
+.nb-swatch-btn { width: 26px; height: 26px; padding: 0; border-radius: 7px; border: 2px solid transparent; background: var(--c); cursor: pointer; box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .2); }
+.nb-swatch-btn[aria-pressed="true"] { border-color: var(--nb-text); }
+.nb-swatch-none { background: linear-gradient(135deg, transparent 45%, var(--nb-danger) 46%, var(--nb-danger) 54%, transparent 55%), var(--nb-input) !important; }
+.nb-bgs { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.nb-bgs button { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 6px; border: 1px solid var(--nb-line); border-radius: 8px; background: transparent; cursor: pointer; font-size: 12.5px; }
+.nb-bgs button[aria-pressed="true"] { border-color: var(--nb-accent); }
+.nb-bg-sample { display: block; width: 100%; height: 30px; border-radius: 5px; background-color: var(--nb-bg); border: 1px solid var(--nb-line); }
+.nb-bg-sample.nb-bg-lined { background-image: linear-gradient(var(--nb-line-2) 1px, transparent 1px); background-size: 100% 7px; }
+.nb-bg-sample.nb-bg-grid { background-image: linear-gradient(var(--nb-line-2) 1px, transparent 1px), linear-gradient(90deg, var(--nb-line-2) 1px, transparent 1px); background-size: 7px 7px; }
+.nb-bg-sample.nb-bg-dotted { background-image: radial-gradient(var(--nb-line-2) 1px, transparent 1.2px); background-size: 6px 6px; }
+.nb-linkform { display: grid; gap: 8px; width: 250px; max-width: 100%; }
+.nb-linkform input { height: 34px; padding: 0 10px; border: 1px solid var(--nb-line-2); border-radius: 8px; background: var(--nb-input); color: var(--nb-text); font: inherit; }
+.nb-linkrow { display: flex; gap: 6px; }
+.nb-toast {
+  position: absolute; z-index: 30; left: 50%; bottom: 16px; transform: translateX(-50%);
+  display: flex; align-items: center; gap: 10px; max-width: calc(100% - 24px);
+  padding: 8px 8px 8px 14px; border-radius: 12px; background: var(--nb-text); color: var(--nb-bg); font-size: 13.5px;
+  box-shadow: 0 10px 30px -12px rgba(0, 0, 0, .6);
+}
+.nb-toast .nb-text-btn { color: var(--nb-bg); text-decoration: underline; }
+.nb-toast .nb-text-btn:hover { background: transparent; color: var(--nb-bg); }
+
+/* ============================================================
+   On a lesson: the button, the side panel and the clip pill
+   ============================================================ */
+.ml-nb-btn { gap: 6px; }
+.ml-nb-btn[aria-expanded="true"] { border-color: currentColor !important; }
+/* 9998: above the Contact button (same level, added later), below the sign-in window (9999). */
+.ml-nb-panel {
+  position: fixed; z-index: 9998; top: 0; right: 0; bottom: 0;
+  width: var(--ml-nb-w, 520px); max-width: 100vw;
+  border-left: 1px solid rgba(255, 255, 255, .12);
+  box-shadow: -18px 0 40px -24px rgba(0, 0, 0, .7);
+  background: #0c0e11;
+}
+html[data-theme="light"] .ml-nb-panel { border-left-color: rgba(0, 0, 0, .12); background: #fff; }
+.ml-nb-panel .nb-root { height: 100%; }
+.ml-nb-resize {
+  position: absolute; z-index: 2; top: 0; bottom: 0; left: -5px; width: 10px; cursor: col-resize; touch-action: none;
+}
+.ml-nb-resize::after { content: ""; position: absolute; top: 50%; left: 3px; width: 4px; height: 40px; margin-top: -20px; border-radius: 4px; background: rgba(255, 255, 255, .18); opacity: 0; transition: opacity 140ms; }
+.ml-nb-resize:hover::after, .ml-nb-resizing .ml-nb-resize::after { opacity: 1; }
+html[data-theme="light"] .ml-nb-resize::after { background: rgba(0, 0, 0, .2); }
+/* Wide screens: the lesson moves over to make room, so nothing is hidden. */
+html.ml-nb-split body { margin-right: var(--ml-nb-w, 520px) !important; }
+html.ml-nb-split .ml-toc { display: none !important; }
+html.ml-nb-resizing, html.ml-nb-resizing * { cursor: col-resize !important; user-select: none !important; }
+/* Narrow screens: the notebook is a full-screen sheet over the lesson. */
+html.ml-nb-sheet .ml-nb-panel { left: 0; width: 100vw; border-left: 0; box-shadow: none; }
+html.ml-nb-sheet .ml-nb-resize, html.ml-nb-sheet .ml-nb-panel .nb-popout { display: none; }
+html.ml-nb-sheet body { overflow: hidden !important; }
+
+.ml-nb-clip {
+  position: fixed; z-index: 9998;
+  display: inline-flex; align-items: center; gap: 6px; min-height: 34px; padding: 0 12px;
+  border: 0; border-radius: 999px; background: #f2f5f9; color: #0b0d10; cursor: pointer;
+  font: 700 13.5px/1 "Cabinet Grotesk", "Segoe UI", system-ui, sans-serif;
+  box-shadow: 0 10px 26px -10px rgba(0, 0, 0, .7);
+}
+.ml-nb-clip[hidden] { display: none; }
+.ml-nb-clip svg { width: 15px; height: 15px; }
+html[data-theme="light"] .ml-nb-clip { background: #16181d; color: #fff; }
+.ml-nb-clip:focus-visible { outline: 2px solid #6ea8ff; outline-offset: 2px; }
+.ml-nb-flash { animation: ml-nb-flash 1.6s ease-out; border-radius: 6px; }
+@keyframes ml-nb-flash { 0%, 30% { background: rgba(253, 224, 71, .35); } 100% { background: transparent; } }
+
+/* ============================================================
+   Print: only the chosen notes, on white paper
+   ============================================================ */
+#nb-print { display: none; }
+@media print {
+  html.nb-printing body > *:not(#nb-print) { display: none !important; }
+  html.nb-printing body { margin: 0 !important; background: #fff !important; }
+  html.nb-printing #nb-print {
+    display: block !important;
+    --nb-text: #111; --nb-text-2: #333; --nb-text-3: #666; --nb-line: #ccc; --nb-line-2: #bbb; --nb-input: #f2f2f2;
+    --nb-raised: #fafafa; --nb-accent: #1d4ed8; --nb-rule: #e3e3e3; --nb-bg: #fff;
+    color: #111; font: 11.5pt/1.55 "Cabinet Grotesk", "Segoe UI", system-ui, sans-serif;
+  }
+  #nb-print .nb-print-divider { font-size: 22pt; margin: 0 0 12pt; padding-bottom: 6pt; border-bottom: 2px solid #111; break-after: avoid; }
+  #nb-print .nb-print-divider:not(:first-child) { break-before: page; }
+  #nb-print .nb-print-page { padding: 4pt 0 18pt; }
+  #nb-print .nb-print-page + .nb-print-page { break-before: page; }
+  #nb-print .nb-print-title { font-size: 16pt; margin: 0 0 2pt; }
+  #nb-print .nb-print-lesson { margin: 0 0 10pt; color: #666; font-size: 10pt; }
+  #nb-print .nb-prose { max-width: none; padding: 0; min-height: 0; font-size: 11.5pt; color: #111; background: none !important; }
+  #nb-print .nb-clip { break-inside: avoid; background: #fafafa; }
+  #nb-print .nb-clip-src a { color: #666 !important; }
+  #nb-print table, #nb-print img { break-inside: avoid; }
+  #nb-print * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+}

@@ -168,3 +168,13 @@
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
   else init();
 })();
+
+// Study Spellbook: the Notebook button on every lesson that has this list
+// (assets/notebook-launcher.js; docs/notebook-spec.md).
+(function () {
+  if (window.MLNotebook || document.querySelector('script[src*="notebook-launcher.js"]')) return;
+  var s = document.createElement('script');
+  s.src = '/assets/notebook-launcher.js';
+  s.defer = true;
+  document.head.appendChild(s);
+})();
