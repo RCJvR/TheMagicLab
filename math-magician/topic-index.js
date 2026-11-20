@@ -33,7 +33,11 @@ window.MM_TOPIC_INDEX = {
     701: ["Perimeter",7],
     702: ["Area",7],
     703: ["Capacity",7],
-    704: ["Volume",7]
+    704: ["Volume",7],
+    801: ["Rand and cents",8],
+    802: ["Giving change",8],
+    803: ["Budgets and profit",8],
+    804: ["Money problems",8]
   },
   8: {
     101: ["The four operations",1],

@@ -1509,6 +1509,31 @@ window.ML_LESSON_CATALOG = {
       ]
     },
     {
+      "group": "Grade 4 — Ch 8 — Financial Mathematics",
+      "lessons": [
+        {
+          "value": "Rand and cents",
+          "label": "Rand and cents",
+          "ref": "mm:4:801"
+        },
+        {
+          "value": "Giving change",
+          "label": "Giving change",
+          "ref": "mm:4:802"
+        },
+        {
+          "value": "Budgets and profit",
+          "label": "Budgets and profit",
+          "ref": "mm:4:803"
+        },
+        {
+          "value": "Money problems",
+          "label": "Money problems",
+          "ref": "mm:4:804"
+        }
+      ]
+    },
+    {
       "group": "Grade 8 — Ch 1 — Whole Numbers, Ratios, Rates & Finance",
       "lessons": [
         {
