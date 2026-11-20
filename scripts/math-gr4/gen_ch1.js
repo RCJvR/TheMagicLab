@@ -9,7 +9,7 @@ const sim = (id, fn, L, markup) => `<div class="g4-sim" id="${id}">${markup}</di
 const ex = (title, steps) => `<div class="example-box"><div class="example-box-title">✏️ ${title}</div>${steps.map((s, i) => `<div class="example-step"><span class="step-num">${i + 1}</span><span>${s}</span></div>`).join('')}</div>`;
 const def = (title, html) => `<div class="def-box"><div class="def-box-title">📖 ${title}</div><p>${html}</p></div>`;
 const tip = html => `<div class="tip-box"><span class="tip-icon">💡</span><span>${html}</span></div>`;
-const hero = (s, html) => `<div class="g4-hero">${stk(s)}<p>${html}</p></div>`;
+const hero = (s, html) => `<div class="g4-hero">${stk(s)}<p>${html.replace(/(\d) (?=\d{3}\b)/g, '$1&nbsp;')}</p></div>`;
 
 // Functions inside L objects are not JSON, so sims receive them as source text and rebuild them.
 // Simpler: give sims plain strings plus small templates (functions) converted with a reviver.

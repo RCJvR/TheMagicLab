@@ -33,7 +33,7 @@ exports.s101 = function (L, root) {
       if (i > 0) h += '<path d="M' + (x - gap + 6) + ' 108 Q' + (x - gap / 2) + ' 52 ' + (x - 6) + ' 108" fill="none" stroke="#9ed43c" stroke-width="3" stroke-dasharray="6 5"/><text x="' + (x - gap / 2) + '" y="62" text-anchor="middle" fill="#c3e56f" font-size="16" font-weight="800">' + (dir > 0 ? '+' : '−') + step + '</text>';
     });
     const fx = x0 + (show.length - 1) * gap;
-    h += '<image href="/assets/stickers/frog.webp" x="' + (fx - 30) + '" y="44" width="60" height="60"/>';
+    h += '<image href="/assets/stickers/frog.webp" x="' + (fx - 43) + '" y="20" width="86" height="86"/>';
     svg.innerHTML = h;
     let msg = '<b>' + seq.map(fmt).join('; ') + '</b>';
     if (seq.length > 2) msg += '<br>' + L.pattern(step, dir);

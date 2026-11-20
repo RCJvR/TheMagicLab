@@ -37,7 +37,7 @@ exports.s602 = function (L, root) {
     h += '<path d="M' + (cx - R - 18) + ' ' + cy + ' A' + (R + 18) + ' ' + (R + 18) + ' 0 0 1 ' + (cx + R + 18) + ' ' + cy + ' Z" fill="#f8fafc" stroke="#cbd5e1" stroke-width="4"/>';
     for (let m = 0; m <= 2000; m += 50) { const a = ang(m), big = m % 500 === 0, mid = m % 100 === 0, r1 = R - (big ? 22 : mid ? 14 : 8); h += '<line x1="' + (cx + R * Math.cos(a)) + '" y1="' + (cy - R * Math.sin(a)) + '" x2="' + (cx + r1 * Math.cos(a)) + '" y2="' + (cy - r1 * Math.sin(a)) + '" stroke="#1f2937" stroke-width="' + (big ? 3 : 1.5) + '"/>'; if (big) h += '<text x="' + (cx + (R - 48) * Math.cos(a)) + '" y="' + (cy - (R - 48) * Math.sin(a) + 6) + '" text-anchor="middle" fill="#1f2937" font-size="19" font-weight="800">' + (m === 0 ? '0' : m % 1000 === 0 ? (m / 1000) + ' kg' : m) + '</text>'; }
     const a = ang(mass); h += '<line x1="' + cx + '" y1="' + cy + '" x2="' + (cx + (R - 10) * Math.cos(a)) + '" y2="' + (cy - (R - 10) * Math.sin(a)) + '" stroke="#e11d48" stroke-width="4" stroke-linecap="round"/><circle cx="' + cx + '" cy="' + cy + '" r="9" fill="#e11d48"/><text x="' + cx + '" y="' + (cy - 30) + '" text-anchor="middle" fill="#64748b" font-size="13">g</text>';
-    if (item) h += '<image href="/assets/stickers/' + item.s + '.webp" x="' + (cx - 34) + '" y="2" width="68" height="68"/>';
+    if (item) h += '<image href="/assets/stickers/' + item.s + '.webp" x="' + (cx - 75) + '" y="-48" width="150" height="150"/>';
     if (reveal) h += '<text x="' + cx + '" y="' + (cy - 55) + '" text-anchor="middle" fill="#fde047" font-size="18" font-weight="900">' + mass + ' g</text>';
     svg.innerHTML = h;
   }

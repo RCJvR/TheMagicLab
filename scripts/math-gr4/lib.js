@@ -19,7 +19,7 @@ const fp = q => q.type === 'mc' ? 'm' + q.options.length + ':' + q.answer : 'i:'
 const ex = (title, steps) => `<div class="example-box"><div class="example-box-title">✏️ ${title}</div>${steps.map((s, i) => `<div class="example-step"><span class="step-num">${i + 1}</span><span>${s}</span></div>`).join('')}</div>`;
 const def = (title, html) => `<div class="def-box"><div class="def-box-title">📖 ${title}</div><p>${html}</p></div>`;
 const tip = html => `<div class="tip-box"><span class="tip-icon">💡</span><span>${html}</span></div>`;
-const hero = (s, html) => `<div class="g4-hero">${stk(s)}<p>${html}</p></div>`;
+const hero = (s, html) => `<div class="g4-hero">${stk(s)}<p>${html.replace(/(\d) (?=\d{3}\b)/g, '$1&nbsp;')}</p></div>`;
 // A sim: markup in a .g4-sim box plus an inline script. Each script sits in its own block so re-rendering a lesson never redeclares anything.
 const sim = (id, fn, L, markup) => `<div class="g4-sim" id="${id}">${markup}</div><script>${PRELUDE}\n{ ${REVIVE}\n(${fn.toString()})(__rev(${JSON.stringify(Lfix(L))}), document.getElementById('${id}')); }</script>`;
 const W = {
