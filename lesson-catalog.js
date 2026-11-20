@@ -1534,6 +1534,31 @@ window.ML_LESSON_CATALOG = {
       ]
     },
     {
+      "group": "Grade 4 — Ch 9 — Common Fractions",
+      "lessons": [
+        {
+          "value": "What is a fraction?",
+          "label": "What is a fraction?",
+          "ref": "mm:4:901"
+        },
+        {
+          "value": "Compare fractions",
+          "label": "Compare fractions",
+          "ref": "mm:4:902"
+        },
+        {
+          "value": "Add fractions",
+          "label": "Add fractions",
+          "ref": "mm:4:903"
+        },
+        {
+          "value": "Fractions of amounts",
+          "label": "Fractions of amounts",
+          "ref": "mm:4:904"
+        }
+      ]
+    },
+    {
       "group": "Grade 8 — Ch 1 — Whole Numbers, Ratios, Rates & Finance",
       "lessons": [
         {

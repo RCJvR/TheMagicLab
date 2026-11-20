@@ -37,7 +37,11 @@ window.MM_TOPIC_INDEX = {
     801: ["Rand and cents",8],
     802: ["Giving change",8],
     803: ["Budgets and profit",8],
-    804: ["Money problems",8]
+    804: ["Money problems",8],
+    901: ["What is a fraction?",9],
+    902: ["Compare fractions",9],
+    903: ["Add fractions",9],
+    904: ["Fractions of amounts",9]
   },
   8: {
     101: ["The four operations",1],
