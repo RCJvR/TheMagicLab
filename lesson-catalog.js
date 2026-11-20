@@ -1559,6 +1559,31 @@ window.ML_LESSON_CATALOG = {
       ]
     },
     {
+      "group": "Grade 4 — Ch 10 — Ratio and Rate",
+      "lessons": [
+        {
+          "value": "What is a ratio?",
+          "label": "What is a ratio?",
+          "ref": "mm:4:1001"
+        },
+        {
+          "value": "Ratio tables",
+          "label": "Ratio tables",
+          "ref": "mm:4:1002"
+        },
+        {
+          "value": "What is a rate?",
+          "label": "What is a rate?",
+          "ref": "mm:4:1003"
+        },
+        {
+          "value": "Rate problems",
+          "label": "Rate problems",
+          "ref": "mm:4:1004"
+        }
+      ]
+    },
+    {
       "group": "Grade 8 — Ch 1 — Whole Numbers, Ratios, Rates & Finance",
       "lessons": [
         {

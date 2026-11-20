@@ -41,7 +41,11 @@ window.MM_TOPIC_INDEX = {
     901: ["What is a fraction?",9],
     902: ["Compare fractions",9],
     903: ["Add fractions",9],
-    904: ["Fractions of amounts",9]
+    904: ["Fractions of amounts",9],
+    1001: ["What is a ratio?",10],
+    1002: ["Ratio tables",10],
+    1003: ["What is a rate?",10],
+    1004: ["Rate problems",10]
   },
   8: {
     101: ["The four operations",1],
