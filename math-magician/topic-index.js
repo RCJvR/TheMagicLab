@@ -25,7 +25,11 @@ window.MM_TOPIC_INDEX = {
     405: ["Sharing problems",4],
     501: ["Which comes first?",5],
     502: ["Missing numbers",5],
-    503: ["Writing number sentences",5]
+    503: ["Writing number sentences",5],
+    601: ["Length",6],
+    602: ["Mass",6],
+    603: ["Capacity",6],
+    604: ["Converting and problems",6]
   },
   8: {
     101: ["The four operations",1],

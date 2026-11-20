@@ -1459,6 +1459,31 @@ window.ML_LESSON_CATALOG = {
       ]
     },
     {
+      "group": "Grade 4 — Ch 6 — Length, Mass and Capacity",
+      "lessons": [
+        {
+          "value": "Length",
+          "label": "Length",
+          "ref": "mm:4:601"
+        },
+        {
+          "value": "Mass",
+          "label": "Mass",
+          "ref": "mm:4:602"
+        },
+        {
+          "value": "Capacity",
+          "label": "Capacity",
+          "ref": "mm:4:603"
+        },
+        {
+          "value": "Converting and problems",
+          "label": "Converting and problems",
+          "ref": "mm:4:604"
+        }
+      ]
+    },
+    {
       "group": "Grade 8 — Ch 1 — Whole Numbers, Ratios, Rates & Finance",
       "lessons": [
         {
