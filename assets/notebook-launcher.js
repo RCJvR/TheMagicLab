@@ -18,7 +18,7 @@
   var WIDE = 1100;               // below this the notebook is a full-screen sheet
   var MIN_W = 360, DEF_W = 520;
   var PRO_PLANS = ['pro', 'school'];
-  var ACCENT = { 'science-sage': '#4acf6b', 'math-magician': '#9ed43c', 'tech-tower': '#eda13c' };
+  var ACCENT = { 'science-sage': '#4acf6b', 'math-magician': '#9ed43c', 'tech-tower': '#eda13c', 'code-conjurer': '#9b6bff', 'java-genie': '#5b93ff', 'computer-codex': '#35a6f0' };
   var SUBJECT = { 'science-sage': 'Science', 'math-magician': 'Maths', 'tech-tower': 'Technology' };
   var ICON = '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13.4 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7.4"/><path d="M2 6h4"/><path d="M2 10h4"/><path d="M2 14h4"/><path d="M2 18h4"/><path d="M21.378 5.626a1 1 0 1 0-3.004-3.004l-5.01 5.012a2 2 0 0 0-.506.854l-.837 2.87a.5.5 0 0 0 .62.62l2.87-.837a2 2 0 0 0 .854-.506z"/></svg>';
   var CLIP_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M12 5v14"/></svg>';
@@ -42,8 +42,78 @@
   function tool() { var b = document.querySelector('[data-ml-bar]'); return b ? b.getAttribute('data-ml-bar') : ''; }
   function txt(sel) { var n = document.querySelector(sel); return n ? n.textContent.replace(/\s+/g, ' ').trim() : ''; }
   function topicId() { try { return typeof currentTopicId !== 'undefined' ? currentTopicId : null; } catch (e) { return null; } } // Math Magician's global
+  /* ── Tools whose lessons open inside one page ──────────────
+     Code Conjurer, Java Genie and Computer Codex show lessons in an overlay
+     or a reader on a single page, so each says here which lesson is open,
+     where its text is, and how to come back to it. They read the page's own
+     globals (lessonGrade, LESSONS …), which only exist on that page. */
+  var CODEX_TRACKS = { 'coding': 'Coding & Robotics (Gr 8–9)', 'cat-caps': 'CAT (Gr 10–12)', 'cat-ieb': 'CAT (Gr 10–12)', 'it-caps': 'IT (Gr 10–12)', 'it-ieb': 'IT (Gr 10–12)' };
+  function visible(sel) { var n = document.querySelector(sel); return n && !n.classList.contains('hidden') && getComputedStyle(n).display !== 'none' ? n : null; }
+  function jgSlide() {
+    var ov = visible('#tutorialOverlay') || visible('#advancedOverlay');
+    var slide = ov && ov.querySelector('.tut-slide.active');
+    if (!slide) return null;
+    var all = [].slice.call(ov.querySelectorAll('.tut-slide'));
+    return { slide: slide, index: all.indexOf(slide), set: ov.id === 'advancedOverlay' ? 'adv' : 'tut' };
+  }
+  var ADAPTERS = {
+    'code-conjurer': {
+      state: function () { try { return { grade: lessonGrade, index: lessonIndex, open: !!visible('#lessonOverlay') }; } catch (e) { return {}; } },
+      info: function () {
+        var s = this.state();
+        if (!s.open) return { title: 'Java notes', subject: 'Java (IT)', ref: 'conj:general', url: '/code-conjurer.html', divider: 'Java (IT)' };
+        return { title: txt('#lessonContentInner .les-title') || 'Java lesson', subject: 'Java (IT)', grade: String(s.grade),
+          ref: 'conj:' + s.grade + ':' + s.index, url: '/code-conjurer.html?nbg=' + s.grade + '&nbi=' + s.index, divider: 'Java (IT) · Gr ' + s.grade };
+      },
+      body: function () { return this.state().open ? document.getElementById('lessonContentInner') : null; },
+      // Open lesson nbi of grade nbg (from a notebook link).
+      jump: function (u) {
+        var g = parseInt(u.searchParams.get('nbg'), 10), i = parseInt(u.searchParams.get('nbi'), 10);
+        if (isNaN(g) || isNaN(i)) return false;
+        try { lessonIndex = i; openLessons(g); return true; } catch (e) { return false; }   // eslint-disable-line no-undef
+      }
+    },
+    'java-genie': {
+      info: function () {
+        var s = jgSlide();
+        if (!s) return { title: 'Java Genie notes', subject: 'Java Genie', ref: 'jg:general', url: '/java-genie.html', divider: 'Java Genie (Gr 8–9)' };
+        var h = s.slide.querySelector('h3');
+        var title = h ? h.textContent.replace(/^\s*\d+\s*/, '').replace(/\s+/g, ' ').trim() : 'Java Genie lesson';
+        return { title: title, subject: 'Java Genie', ref: 'jg:' + s.set + ':' + s.index, url: '/java-genie.html', divider: 'Java Genie (Gr 8–9)' };
+      },
+      body: function () { var s = jgSlide(); return s && s.slide; }
+    },
+    'computer-codex': {
+      lesson: function () { try { return { les: LESSONS[currentLesson], track: activeTrack, grade: TRACKS[activeTrack].gradeNum }; } catch (e) { return {}; } },
+      info: function () {
+        var c = this.lesson(), les = c.les;
+        var divider = CODEX_TRACKS[c.track] || 'Computer Codex';
+        if (!les) return { title: 'Computer Codex notes', subject: 'Computer Codex', ref: 'cc:general', url: '/computer-codex.html', divider: divider };
+        return { title: les.title, subject: divider, grade: String(c.grade || ''), ref: 'cc:' + (c.grade || 0) + ':' + les.key,
+          url: '/computer-codex.html?key=' + encodeURIComponent(les.key), divider: divider };
+      },
+      body: function () { return document.querySelector('#lessonContent .lesson-body'); },
+      jump: function (u) {
+        var key = u.searchParams.get('key');
+        if (!key) return false;
+        try {
+          var tk = key.split('/')[0];
+          if (TRACKS[tk] && tk !== activeTrack) restoreTrack(tk);     // eslint-disable-line no-undef
+          var idx = LESSONS.findIndex(function (l) { return l.key === key; });
+          if (idx > -1) { goTo(idx); return true; }
+        } catch (e) {}
+        return false;
+      }
+    }
+  };
+
   function lessonInfo() {
     var t = tool(), path = location.pathname.replace(/\.af\.html$/, '.html');
+    if (ADAPTERS[t]) {
+      var a = ADAPTERS[t].info();
+      a.tool = t; a.colour = ACCENT[t] || null; a.grade = a.grade || '';
+      return a;
+    }
     var grade = (path.match(/\/gr(\d+)\//) || [])[1] || '';
     var gLabel = grade ? ' · Gr ' + grade : '';
     var info = { tool: t, grade: grade, colour: ACCENT[t] || null };
@@ -68,6 +138,7 @@
     return info;
   }
   function lessonBody() {
+    if (ADAPTERS[tool()]) return ADAPTERS[tool()].body();
     return document.querySelector('#lessonPanel .lesson-body') || document.querySelector('.tab-panel.active .lesson-body') || document.querySelector('.lesson-body');
   }
 
@@ -100,7 +171,10 @@
     if (store('ml-nb-open') === '1' && innerWidth >= WIDE) open();
     // Arrived from a notebook clip link: scroll to that section.
     var m = location.hash.match(/^#nb=(.+)$/);
-    if (m) setTimeout(function () { scrollToSection(decodeURIComponent(m[1])); }, 600);
+    // Code Conjurer has no lesson links of its own: open the lesson a notebook link names.
+    var ad = ADAPTERS[tool()];
+    if (ad && ad.jump && /[?&]nbg=/.test(location.search)) setTimeout(function () { ad.jump(new URL(location.href)); }, 400);
+    if (m) setTimeout(function () { scrollToSection(decodeURIComponent(m[1])); }, 900);
   }
 
   /* ── Opening and closing ───────────────────────────────── */
@@ -157,6 +231,7 @@
         });
         await api.ready;
         if (!(opts && opts.noFocus)) api.focus();
+        watchLesson();
       } catch (e) {
         console.error('[notebook] could not load', e);
         host.innerHTML = '<div class="nb-root" data-ml-no-theme><div class="nb-empty"><div class="nb-empty-card"><h2>The notebook could not open</h2><p class="nb-muted">Check your connection and try again.</p></div></div></div>';
@@ -165,8 +240,21 @@
     })().finally(function () { opening = null; });
     return opening;
   }
+  // In tools where lessons change without a page load (Code Conjurer, Java Genie,
+  // Computer Codex, Math Magician topics), let the notebook follow the lesson.
+  var lessonTimer = null;
+  function watchLesson() {
+    clearInterval(lessonTimer);
+    var lastRef = lessonInfo().ref;
+    lessonTimer = setInterval(function () {
+      if (!api || !api.followLesson) return;
+      var info = lessonInfo();
+      if (info.ref !== lastRef) { lastRef = info.ref; api.followLesson(info); }
+    }, 1500);
+  }
   async function close() {
     if (!panel) return;
+    clearInterval(lessonTimer);
     var p = panel, a = api;
     panel = null; api = null;
     store('ml-nb-open', '0');
@@ -227,6 +315,15 @@
     return true;
   }
   function goToLesson(url, section) {
+    var ad = ADAPTERS[tool()];
+    if (ad) {
+      var u; try { u = new URL(url, location.href); } catch (e) { return; }
+      if (u.pathname === location.pathname) {
+        if (ad.jump) ad.jump(u);
+        setTimeout(function () { scrollToSection(section); }, 200);
+        return;
+      }
+    }
     if (samePlace(url)) {
       var t = new URL(url, location.href).searchParams.get('topic');
       if (t != null && typeof selectTopic === 'function' && String(topicId()) !== t) { try { selectTopic(+t); } catch (e) {} }

@@ -1303,6 +1303,14 @@ export function mount(root, opts = {}) {
     ready,
     insertClip,
     async openForLesson(lesson) { await ready; await openForLesson(lesson, false); render(); },
+    // The learner opened another lesson in the same page (Code Conjurer, Codex …):
+    // follow it, unless they have started writing on the page that is open.
+    async followLesson(lesson) {
+      await ready;
+      const p = pageById(S.currentId);
+      if (p && !p.auto) return;
+      await openForLesson(lesson, false);
+    },
     flush,
     focus() { (S.editor && S.editor.isEditable ? S.editor.commands.focus() : root.querySelector('button:not([hidden])')?.focus()); },
     currentPageId: () => S.currentId,
