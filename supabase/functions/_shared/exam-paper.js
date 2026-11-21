@@ -84,7 +84,9 @@ export function prepare(source, opts = {}) {
   const learner = {
     format: PAPER_FORMAT, title: src.title || 'Untitled paper', subject: src.subject || '', grade: src.grade || null,
     minutes: src.minutes || 60, intro: src.intro || '', topics: src.topics || {}, lang,
-    addendum: src.addendum || '',            // the paper's information sheet (HTML), shown as a fold-out
+    addendum: src.addendum || '',            // the paper's own information sheet (HTML)
+    sheets: Array.isArray(src.sheets) ? src.sheets.filter(x => /^[a-z0-9-]{1,20}$/.test(x)) : [],   // formula sheets in the overlay (assets/exam-sheets.js)
+    calculator: !!src.calculator,            // scientific calculator in the overlay
     sections: [], scenarios: {}, items: []
   };
   const memo = {};

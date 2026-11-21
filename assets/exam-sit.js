@@ -11,6 +11,7 @@
  */
 import { sb, $, el, esc, whenAuthReady, friendly, fmtNum, fmtClock, isStaff } from './exam-core.js';
 import { renderItem, renderScenario, seededOrder, isAnswered } from './exam-render.js';
+import { SHEETS, sheetTitle, sheetBody } from './exam-sheets.js';
 
 const params = new URLSearchParams(location.search);
 const show = id => ['vCover', 'vPaper', 'vDone', 'vMonitor', 'msg'].forEach(v => { $(v).hidden = v !== id; });
@@ -88,8 +89,7 @@ function drawPaper() {
   const box = $('pBody'); box.innerHTML = '';
   const nav = $('pNav'); nav.innerHTML = '';
   if (paper.intro) box.appendChild(el('p', { class: 'xm-text', text: paper.intro }));
-  if (paper.addendum) box.appendChild(el('details', { class: 'xm-addendum' }, [
-    el('summary', { text: paper.lang === 'af' ? 'Addendum (inligtingsblad)' : 'Addendum (information sheet)' }), el('div', { html: paper.addendum })]));
+  buildTools();
   let sec = -1, scen = null;
   paper.items.forEach(it => {
     if (it.sec !== sec) {
@@ -199,6 +199,44 @@ function finish(text) {
 }
 function done(text) { $('doneText').textContent = text + ' You may close this window when your teacher says so.'; document.body.classList.remove('xm-sit'); show('vDone'); }
 
+/* ── on-screen tools: formula sheets and the calculator, in an overlay ── */
+// The overlay stays inside the exam page, so opening it is not "leaving": no lock, no event.
+let toolTabs = [], calcFrame = null;
+function buildTools() {
+  const L = paper.lang === 'af';
+  toolTabs = [];
+  if (paper.addendum) toolTabs.push({ id: 'addendum', title: L ? 'Inligtingsblad' : 'Information sheet', html: paper.addendum });
+  (paper.sheets || []).filter(id => SHEETS[id]).forEach(id => toolTabs.push({ id, title: sheetTitle(id, paper.lang), html: sheetBody(id, paper.lang) }));
+  if (paper.calculator) toolTabs.push({ id: 'calc', title: L ? 'Sakrekenaar' : 'Calculator' });
+  const bar = $('pTools'); bar.innerHTML = '';
+  const sheets = toolTabs.filter(t => t.id !== 'calc');
+  if (sheets.length) bar.appendChild(el('button', { class: 'gg-btn gg-btn--sm', type: 'button', text: L ? 'Formuleblaaie' : 'Formula sheets', 'aria-haspopup': 'dialog', onclick: () => openTool(sheets[0].id) }));
+  if (paper.calculator) bar.appendChild(el('button', { class: 'gg-btn gg-btn--sm', type: 'button', text: L ? 'Sakrekenaar' : 'Calculator', 'aria-haspopup': 'dialog', onclick: () => openTool('calc') }));
+  $('drClose').setAttribute('aria-label', L ? 'Maak toe' : 'Close');
+}
+function openTool(id) {
+  const tabs = $('drTabs'); tabs.innerHTML = '';
+  toolTabs.forEach(t => tabs.appendChild(el('button', { class: 'gg-btn gg-btn--sm', type: 'button', role: 'tab', 'aria-selected': String(t.id === id), text: t.title, onclick: () => openTool(t.id) })));
+  const tab = toolTabs.find(t => t.id === id);
+  if (id === 'calc') {
+    if (!calcFrame) {
+      calcFrame = el('iframe', { src: 'math-magician/calculator.html?embed=1', title: tab.title, class: 'xm-calcframe' });
+      $('drCalc').appendChild(calcFrame);           // made once and kept, so the calculator keeps its memory and history
+    }
+    $('drBody').hidden = true; $('drCalc').hidden = false;
+  } else {
+    $('drBody').innerHTML = '';
+    $('drBody').appendChild(el('h2', { class: 'xm-drawer-h', text: tab.title }));
+    $('drBody').appendChild(el('div', { class: 'xm-sheet', html: tab.html }));
+    $('drBody').hidden = false; $('drCalc').hidden = true;
+  }
+  $('vDrawer').hidden = false;
+  document.body.classList.add('xm-drawer-open');
+}
+function closeTools() { $('vDrawer').hidden = true; document.body.classList.remove('xm-drawer-open'); }
+$('drClose').addEventListener('click', closeTools);
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && !$('vDrawer').hidden) closeTools(); });
+
 /* ── leaving the page ── */
 let lastEvent = {};
 function ev(kind, detail) {
@@ -229,7 +267,14 @@ $('btnResume').addEventListener('click', () => { if (fsOK()) goFs(); $('vLock').
 
 document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden') { ev('hidden'); if (att && version !== savedVersion) keepLocal(false); } });
 let blurTimer = null;
-window.addEventListener('blur', () => { clearTimeout(blurTimer); blurTimer = setTimeout(() => { if (!document.hasFocus()) ev('blur'); }, 1500); });
+window.addEventListener('blur', () => {
+  clearTimeout(blurTimer);
+  blurTimer = setTimeout(() => {
+    // focus inside the calculator overlay (an iframe on this page) is not leaving the page
+    if (calcFrame && document.activeElement === calcFrame) return;
+    if (!document.hasFocus()) ev('blur');
+  }, 1500);
+});
 window.addEventListener('focus', () => clearTimeout(blurTimer));
 ['fullscreenchange', 'webkitfullscreenchange'].forEach(n => document.addEventListener(n, () => {
   if (armed && fsOK() && !inFs() && $('vLock').hidden) ev('fs_exit');

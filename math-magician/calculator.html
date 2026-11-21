@@ -3,6 +3,7 @@
 <html lang="en">
 <head>
 <script src="/assets/theme.js"></script>
+<script>/* ?embed=1: the calculator alone, for the exam page overlay (exam-sit.html) */ if (/[?&]embed=1(&|$)/.test(location.search)) document.documentElement.classList.add("embed");</script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="theme-color" content="#08090b">
@@ -206,6 +207,10 @@
     .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
     @media (max-width: 400px) { .k { font-size: 12px; } .row6, .row5, .keys { gap: 6px; } .expr { font-size: 18px; } .res { font-size: 25px; } }
     @media (prefers-reduced-motion: reduce) { .expr .cur { animation: none; } .k { transition: none; } }
+    /* Embedded in the exam page: only the calculator, no site header, history or guide */
+    html.embed nav, html.embed .side, html.embed .kb-note { display: none !important; }
+    html.embed body { min-height: 0; background: var(--bg); }
+    html.embed .wrap { padding: 8px; grid-template-columns: minmax(0, 1fr) !important; justify-items: center; }
   </style>
 </head>
 <body>
@@ -213,6 +218,7 @@
     <a href="index.html" class="logo" data-ml-brand><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="8" y2="10"/><line x1="12" y1="10" x2="12" y2="10"/><line x1="16" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="8" y2="14"/><line x1="12" y1="14" x2="12" y2="14"/><line x1="16" y1="14" x2="16" y2="18"/><line x1="8" y1="18" x2="12" y2="18"/></svg> Math Magician</a>
     <a class="back" href="index.html"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-2px;flex-shrink:0"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg> Back to Math Magician</a>
   </nav>
+  <script>if (document.documentElement.classList.contains('embed')) document.currentScript.previousElementSibling.remove();</script>
 
   <main class="wrap">
     <section class="calc" aria-label="Scientific calculator">
@@ -837,8 +843,9 @@
     // size). Height counts too, so a short pop-up does not run off the bottom.
     function fitToWindow() {
       // 690px is the calculator's height at full size; 110px is the header and the gap around it
-      const s = Math.min(innerWidth / 440, (innerHeight - 110) / 690);
-      document.documentElement.style.setProperty('--cz', Math.min(1.2, Math.max(0.9, s)).toFixed(3));
+      const embed = document.documentElement.classList.contains('embed');
+      const s = Math.min(innerWidth / 440, (innerHeight - (embed ? 20 : 110)) / 690);
+      document.documentElement.style.setProperty('--cz', Math.min(1.2, Math.max(embed ? 0.55 : 0.9, s)).toFixed(3));
     }
     fitToWindow();
     addEventListener('resize', fitToWindow);

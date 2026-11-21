@@ -35,7 +35,7 @@
     <h2 class="gg-h">Papers</h2>
     <div class="gg-top"><button class="gg-btn gg-btn--primary" type="button" id="btnImport">Import a paper</button></div>
     <div class="xm-table-wrap"><table class="xm-table" id="paperTable">
-      <thead><tr><th>Title</th><th>Grade</th><th>Marks</th><th>Time</th><th>Blueprint</th><th>State</th><th></th></tr></thead><tbody></tbody>
+      <thead><tr><th>Title</th><th>Grade</th><th>Marks</th><th>Time</th><th>Blueprint</th><th>Tools</th><th>State</th><th></th></tr></thead><tbody></tbody>
     </table></div>
     <p class="gg-hint" id="paperEmpty" hidden>No papers yet.</p>
   </div>
@@ -55,12 +55,24 @@
     <div class="gg-field" id="impLangWrap" hidden><label for="impLang">Language</label>
       <select id="impLang"><option value="en">English</option><option value="af">Afrikaans</option></select></div>
   </div>
+  <fieldset class="xm-tools" id="impTools" hidden><legend>On-screen tools for learners</legend><div class="xm-toolgrid"></div>
+    <p class="gg-hint">Learners open these from buttons on the exam page, in an overlay, so they never leave the paper. Check that a sheet does not give away an answer.</p></fieldset>
   <p class="gg-err" id="impErr" role="alert"></p>
   <div class="gg-top" style="margin:8px 0 0">
     <button class="gg-btn gg-btn--primary" type="button" id="impSave" disabled>Save paper</button>
     <button class="gg-btn" type="button" id="impPreview" disabled>Preview with memo</button>
     <button class="gg-btn" type="button" data-close>Cancel</button>
   </div>
+</dialog>
+
+<!-- On-screen tools of an existing paper -->
+<dialog class="xm-dialog" id="dlgTools" aria-labelledby="toolsH">
+  <h2 id="toolsH" style="margin-top:0">On-screen tools</h2>
+  <p class="gg-hint" id="toolsPaper"></p>
+  <fieldset class="xm-tools"><legend>Learners can open</legend><div class="xm-toolgrid" id="toolsGrid"></div></fieldset>
+  <p class="gg-hint">Changes apply to learners who open the paper from now on, also in sittings that are already set. Check that a sheet does not give away an answer.</p>
+  <p class="gg-err" id="toolsErr" role="alert"></p>
+  <div class="gg-top" style="margin-top:10px"><button class="gg-btn gg-btn--primary" type="button" id="toolsSave">Save</button><button class="gg-btn" type="button" data-close>Cancel</button></div>
 </dialog>
 
 <!-- Set for classes -->
@@ -96,9 +108,22 @@
 <script type="module">
 import { sb, $, el, esc, whenAuthReady, friendly, fmtNum, fmtWhen, isStaff } from './assets/exam-core.js';
 import { prepare, memoText, hasAfrikaans } from './assets/exam-paper.js';
+import { SHEET_IDS, sheetTitle } from './assets/exam-sheets.js';
 import { renderItem, renderScenario } from './assets/exam-render.js';
 
-let papers = [], sittings = [], classes = [], pending = null, setPaperRow = null;
+let papers = [], sittings = [], classes = [], pending = null, setPaperRow = null, toolsRow = null;
+
+/* On-screen tools: a checkbox per formula sheet, and the calculator */
+function toolBoxes(grid, sel = {}) {
+  grid.innerHTML = '';
+  SHEET_IDS.forEach(id => grid.appendChild(el('label', { class: 'gg-check' }, [
+    el('input', { type: 'checkbox', value: id, 'data-sheet': '1', checked: (sel.sheets || []).includes(id) }), ' ' + sheetTitle(id, 'en')])));
+  grid.appendChild(el('label', { class: 'gg-check' }, [el('input', { type: 'checkbox', 'data-calc': '1', checked: !!sel.calculator }), ' Scientific calculator']));
+}
+function readTools(grid) {
+  return { sheets: [...grid.querySelectorAll('[data-sheet]:checked')].map(i => i.value), calculator: !!grid.querySelector('[data-calc]:checked') };
+}
+const toolsText = l => [...((l && l.sheets) || []).map(id => sheetTitle(id, 'en')), l && l.calculator ? 'Calculator' : null].filter(Boolean).join(', ') || '–';
 document.querySelectorAll('[data-close]').forEach(b => b.addEventListener('click', () => b.closest('dialog').close()));
 
 const target = bp => bp && bp.objectivePct >= 20 && bp.objectivePct <= 25
@@ -119,7 +144,7 @@ function bpHtml(bp) {
 /* ── Load ─────────────────────────────────────────────── */
 async function load() {
   const [p, s] = await Promise.all([
-    sb().from('exam_papers').select('id, title, grade, minutes, total, blueprint, status, created_at, owner_id').neq('status', 'archived').order('created_at', { ascending: false }),
+    sb().from('exam_papers').select('id, title, grade, minutes, total, blueprint, status, created_at, owner_id, tools:learner->sheets, calc:learner->calculator').neq('status', 'archived').order('created_at', { ascending: false }),
     sb().from('exam_sittings').select('id, paper_id, class_id, class_name, title, join_code, minutes, is_open, lockdown, released_at, created_at').order('created_at', { ascending: false }).limit(200)
   ]);
   if (p.error || s.error) { $('msg').textContent = friendly(p.error || s.error); $('msg').hidden = false; return; }
@@ -145,10 +170,12 @@ function drawPapers() {
       el('td', { text: fmtNum(p.total) }),
       el('td', { text: p.minutes + ' min' }),
       el('td', { html: target(p.blueprint) }),
+      el('td', { class: 'gg-hint', text: toolsText({ sheets: p.tools, calculator: p.calc }) }),
       el('td', {}, [el('select', { class: 'gg-in', 'aria-label': 'State of ' + p.title, onchange: e => setStatus(p, e.target.value) },
         [['draft', 'Draft'], ['ready', 'Ready'], ['archived', 'Archive']].map(([v, t]) => { const o = el('option', { value: v, text: t }); if (v === p.status) o.selected = true; return o; }))]),
       el('td', {}, [
         el('button', { class: 'gg-btn gg-btn--sm', type: 'button', text: 'Preview', onclick: () => previewPaper(p.id) }), ' ',
+        el('button', { class: 'gg-btn gg-btn--sm', type: 'button', text: 'Tools', title: 'Formula sheets and calculator', onclick: () => openTools(p) }), ' ',
         el('button', { class: 'gg-btn gg-btn--sm gg-btn--primary', type: 'button', text: 'Set for classes', disabled: p.status !== 'ready', title: p.status !== 'ready' ? 'Mark it Ready first' : null, onclick: () => openSet(p) })
       ])
     ]));
@@ -195,7 +222,8 @@ async function delSitting(s) {
 
 /* ── Import ───────────────────────────────────────────── */
 function check(text) {
-  pending = null; $('impSave').disabled = $('impPreview').disabled = true; $('impMeta').hidden = true; $('impErr').textContent = '';
+  const keepTools = $('impTools').hidden ? null : readTools($('impTools').querySelector('.xm-toolgrid'));   // a language change keeps the ticks
+  pending = null; $('impSave').disabled = $('impPreview').disabled = true; $('impMeta').hidden = true; $('impTools').hidden = true; $('impErr').textContent = '';
   if (!text.trim()) { $('impReport').innerHTML = ''; return; }
   let src;
   try { src = JSON.parse(text); } catch (e) { $('impReport').innerHTML = '<p class="gg-err">That is not valid JSON: ' + esc(e.message) + '</p>'; return; }
@@ -211,10 +239,12 @@ function check(text) {
   $('impReport').innerHTML = h;
   if (r.errors.length) return;
   pending = { src, lang, ...r };
+  $('impTools').hidden = false;
+  toolBoxes($('impTools').querySelector('.xm-toolgrid'), keepTools || { sheets: r.learner.sheets, calculator: r.learner.calculator });
   $('impTitle').value = (lang === 'af' ? (src.titleAf || src.title) : src.title) || ''; $('impGrade').value = src.grade || ''; $('impMin').value = src.minutes || 60;
   $('impMeta').hidden = false; $('impSave').disabled = $('impPreview').disabled = false;
 }
-$('btnImport').addEventListener('click', () => { $('impText').value = ''; $('impFile').value = ''; check(''); $('dlgImport').showModal(); });
+$('btnImport').addEventListener('click', () => { $('impText').value = ''; $('impFile').value = ''; $('impTools').hidden = true; check(''); $('dlgImport').showModal(); });
 $('impText').addEventListener('input', () => check($('impText').value));
 $('impLang').addEventListener('change', () => check($('impText').value));
 $('impFile').addEventListener('change', async () => { const f = $('impFile').files[0]; if (!f) return; const t = await f.text(); $('impText').value = t; check(t); });
@@ -225,6 +255,7 @@ $('impSave').addEventListener('click', async () => {
   if (!title) return $('impErr').textContent = 'Give the paper a title.';
   if (!(minutes >= 5 && minutes <= 300)) return $('impErr').textContent = 'Minutes must be 5 to 300.';
   pending.learner.title = title; pending.learner.minutes = minutes;
+  Object.assign(pending.learner, readTools($('impTools').querySelector('.xm-toolgrid')));
   $('impSave').disabled = true;
   const { error } = await sb().from('exam_papers').insert({
     title, grade, minutes, subject: pending.src.subject || null, total: pending.total,
@@ -260,6 +291,28 @@ function showPreview(learner, memo) {
   if (window.MMFigs) MMFigs.scan(box);
   $('dlgPreview').showModal();
 }
+
+/* ── On-screen tools of a saved paper ─────────────────── */
+async function openTools(p) {
+  toolsRow = p;
+  $('toolsPaper').textContent = p.title;
+  $('toolsErr').textContent = '';
+  const { data, error } = await sb().from('exam_papers').select('learner').eq('id', p.id).single();
+  if (error) return alert(friendly(error));
+  toolBoxes($('toolsGrid'), { sheets: data.learner.sheets || [], calculator: !!data.learner.calculator });
+  $('dlgTools').showModal();
+}
+$('toolsSave').addEventListener('click', async () => {
+  const sel = readTools($('toolsGrid'));
+  $('toolsSave').disabled = true;
+  const { data, error } = await sb().from('exam_papers').select('learner').eq('id', toolsRow.id).single();
+  if (error) { $('toolsSave').disabled = false; return $('toolsErr').textContent = friendly(error); }
+  const learner = Object.assign({}, data.learner, sel);
+  const r = await sb().from('exam_papers').update({ learner, updated_at: new Date().toISOString() }).eq('id', toolsRow.id);
+  $('toolsSave').disabled = false;
+  if (r.error) return $('toolsErr').textContent = friendly(r.error);
+  $('dlgTools').close(); load();
+});
 
 /* ── Set for classes ──────────────────────────────────── */
 const LOCK_HINT = {

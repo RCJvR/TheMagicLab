@@ -142,3 +142,26 @@ body.xm-sit textarea, body.xm-sit input { user-select: text; -webkit-user-select
 .xm-addendum table { border-collapse: collapse; font-size: 14px; margin-top: 10px; }
 .xm-addendum td, .xm-addendum th { border: 1px solid var(--line-hard); padding: 4px 8px; text-align: left; vertical-align: top; }
 .xm-figure img, .xm-addendum img { max-width: 100%; height: auto; background: #fff; border-radius: 4px; }
+
+/* On-screen tools: formula sheets and calculator overlay */
+.xm-toolbtns { display: flex; gap: 6px; flex-wrap: wrap; }
+.xm-drawer { position: fixed; top: 0; right: 0; bottom: 0; width: min(460px, 100vw); z-index: 40; background: var(--ink-900);
+  border-left: 1px solid var(--line-hard); display: flex; flex-direction: column; box-shadow: -18px 0 40px -24px rgba(0,0,0,.6); }
+.xm-drawer-head { display: flex; gap: 8px; align-items: flex-start; padding: 10px 12px; border-bottom: 1px solid var(--line); }
+.xm-drawer-tabs { display: flex; gap: 6px; flex-wrap: wrap; flex: 1; }
+.xm-drawer-tabs [aria-selected="true"] { background: var(--paper); color: var(--ink-900); border-color: var(--paper); }
+.xm-drawer-body { overflow: auto; padding: 12px 16px 24px; flex: 1; }
+.xm-drawer-calc { flex: 1; display: flex; min-height: 0; }
+.xm-drawer-calc[hidden], .xm-drawer-body[hidden] { display: none; }
+.xm-calcframe { border: 0; width: 100%; flex: 1; background: var(--ink-900); }
+.xm-drawer-h { font-size: 18px; color: var(--paper); margin: 4px 0 10px; }
+.xm-sheet table { border-collapse: collapse; font-size: 14px; margin: 8px 0 12px; width: 100%; }
+.xm-sheet td, .xm-sheet th { border: 1px solid var(--line-hard); padding: 5px 8px; text-align: left; vertical-align: top; }
+.xm-sheet th { color: var(--text-2); }
+.xm-sheet p { line-height: 1.55; margin: 6px 0; }
+.xm-sheet code { font-family: var(--font-mono, monospace); font-size: 13px; background: var(--ink-850); border: 1px solid var(--line); border-radius: 4px; padding: 1px 5px; }
+.xm-sheet .xm-big { font: 800 28px/1.2 var(--font-mono, monospace); color: var(--paper); text-align: center; margin: 10px 0 14px; }
+@media (min-width: 1100px) { body.xm-drawer-open #vPaper { margin-right: 460px; } }
+.xm-tools { border: 1px solid var(--line); border-radius: var(--radius-sm); padding: 10px 14px; margin: 6px 0 12px; }
+.xm-tools legend { font-size: 13px; font-weight: 700; color: var(--text-2); padding: 0 6px; }
+.xm-toolgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 6px; }
