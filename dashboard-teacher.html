@@ -1018,6 +1018,7 @@
       <div class="assign-toolbar" style="align-items:center">
         <a class="btn-primary" style="flex:0 0 auto;padding:10px 22px;text-decoration:none" href="grimoire-set.html">+ New written task</a>
         <button class="back-btn" type="button" style="flex:0 0 auto" onclick="switchTab('rubric')">Rubric Builder</button>
+        <a class="back-btn" id="exam-papers-btn" style="flex:0 0 auto;text-decoration:none;display:none" href="exam-papers.html">Exam papers (AI marking)</a>
         <span id="gg-tab-summary" style="color:var(--muted);font-size:14px"></span>
       </div>
       <div id="gg-tab-list"></div>
@@ -2042,6 +2043,20 @@
   document.addEventListener('magiclab:auth:ready', update);
   document.addEventListener('magiclab:auth:change', update);
   update();
+})();
+</script>
+<script>
+// Exam Sanctum: the Exam papers button shows only for teachers on the exam staff list.
+(function () {
+  var done = false;
+  function check() {
+    var A = window.MagicLabAuth, b = document.getElementById('exam-papers-btn');
+    if (done || !A || !b || !A.isLoggedIn() || !A._supabase) return;
+    done = true;
+    A._supabase().rpc('is_exam_staff').then(function (r) { if (r && r.data === true) b.style.display = ''; });
+  }
+  document.addEventListener('magiclab:auth:ready', check);
+  check();
 })();
 </script>
   <script src="/contact-button.js" defer></script>

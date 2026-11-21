@@ -1,0 +1,83 @@
+<!doctype html>
+<!-- © 2026 Ruhan Janse van Rensburg. All rights reserved. -->
+<html lang="en">
+<head>
+<script src="/assets/theme.js"></script>
+<script>document.documentElement.style.visibility='hidden';</script>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#08090b">
+<title>Mark &amp; review — Exam Sanctum</title>
+<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700,800,900&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="assets/magic-lab.css">
+<link rel="stylesheet" href="assets/grimoire.css">
+<link rel="stylesheet" href="assets/exam.css">
+<link rel="stylesheet" href="math-magician/figs.css">
+<script defer src="math-magician/figs.js"></script>
+</head>
+<body class="gg">
+<main class="gg-main" id="main">
+  <div class="gg-top"><a class="gg-back" href="exam-papers.html">← Exam papers</a><a class="gg-back" id="lnkMonitor" href="#">Monitor</a></div>
+  <h1 id="rTitle">Mark &amp; review</h1>
+  <div class="gg-meta" id="rMeta"></div>
+  <p class="gg-msg" id="msg">Loading…</p>
+
+  <div id="app" hidden>
+    <div class="xm-bp" id="rStats"></div>
+    <div class="gg-top">
+      <button class="gg-btn gg-btn--primary" type="button" id="btnMark">Mark all handed-in scripts</button>
+      <span class="gg-hint" id="markProg" aria-live="polite"></span>
+    </div>
+    <p class="gg-err" id="rErr" role="alert"></p>
+
+    <div class="xm-tabs" role="toolbar" aria-label="View">
+      <button class="gg-btn gg-btn--sm" type="button" data-tab="q" aria-pressed="true">By question</button>
+      <button class="gg-btn gg-btn--sm" type="button" data-tab="l" aria-pressed="false">By learner</button>
+      <button class="gg-btn gg-btn--sm" type="button" data-tab="s" aria-pressed="false">Moderation sample</button>
+      <button class="gg-btn gg-btn--sm" type="button" data-tab="r" aria-pressed="false">Results &amp; release</button>
+    </div>
+
+    <section id="tabQ">
+      <p class="gg-hint" style="margin:0 0 8px">Mark one question for the whole class at a time. Answers the AI was unsure about, and possible correct answers the memo misses, come first. Tick or untick memo points to change a mark; your mark always wins.</p>
+      <div class="xm-qlist" id="qList"></div>
+      <div id="qView"></div>
+    </section>
+    <section id="tabL" hidden>
+      <div class="gg-field" style="max-width:360px"><label for="lSel">Learner</label><select id="lSel"></select></div>
+      <div id="lView"></div>
+    </section>
+    <section id="tabS" hidden>
+      <p class="gg-hint" style="max-width:70ch">Check a random 10% of scripts in full. Below: how often you agreed with the AI on the written answers you have looked at. If agreement on a question is low, fix its memo and re-mark that question for everyone.</p>
+      <div id="sView"></div>
+    </section>
+    <section id="tabR" hidden>
+      <div class="gg-top">
+        <div class="gg-field" style="margin:0"><label for="relType">Markbook type</label>
+          <select id="relType"><option>Test</option><option>Exam</option><option>Assignment</option><option>Practical</option><option>Other</option></select></div>
+        <div class="gg-field" style="margin:0"><label for="relTerm">Term</label>
+          <select id="relTerm"><option value="">–</option><option>1</option><option>2</option><option>3</option><option>4</option></select></div>
+        <button class="gg-btn gg-btn--primary" type="button" id="btnRelease">Release marks to learners and the markbook</button>
+        <button class="gg-btn" type="button" id="btnUnrelease" hidden>Take the release back</button>
+        <button class="gg-btn" type="button" id="btnCsv">Download CSV</button>
+      </div>
+      <p class="gg-hint" id="relState"></p>
+      <div class="xm-table-wrap"><table class="xm-table" id="resTable"><thead></thead><tbody></tbody></table></div>
+    </section>
+  </div>
+</main>
+
+<dialog class="xm-dialog" id="dlgMemo" aria-labelledby="memoH">
+  <h2 id="memoH" style="margin-top:0">Edit the memo</h2>
+  <p class="gg-hint">One memo point per line, with its marks in brackets at the start, e.g. <span class="gg-mono">(1) Input is data entered into the system</span>. Saving re-marks this question for every learner; marks you changed by hand stay as you set them.</p>
+  <textarea class="gg-in" id="memoText" rows="10" style="width:100%"></textarea>
+  <p class="gg-err" id="memoErr" role="alert"></p>
+  <div class="gg-top" style="margin-top:10px"><button class="gg-btn gg-btn--primary" type="button" id="memoSave">Save and re-mark</button><button class="gg-btn" type="button" data-close>Cancel</button></div>
+</dialog>
+
+<script src="auth.js"></script>
+<script defer src="require-auth.js"></script>
+<script type="module" src="assets/exam-review.js"></script>
+</body>
+</html>
