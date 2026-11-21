@@ -1,0 +1,149 @@
+<!doctype html>
+<!-- © 2026 Ruhan Janse van Rensburg. All rights reserved. -->
+<html lang="en">
+<head>
+<script src="/assets/theme.js"></script>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#08090b">
+<title>Shared notebook page — The Magic Lab</title>
+<link rel="icon" type="image/svg+xml" href="/assets/logo-prism.svg">
+<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700,800,900&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="/auth-modal.css">
+<link rel="stylesheet" href="/assets/notebook.css" data-ml-no-theme>
+<!-- A teacher's read-only view of one notebook page a learner shared with their
+     class, with the comment thread. Opened from Teacher Dashboard › Notebooks.
+     Access is decided by the database (notebook_shares + notebook_pages_shared_read). -->
+<style data-ml-no-theme>
+  html, body { margin: 0; min-height: 100%; background: #0c0e11; }
+  html[data-theme="light"], html[data-theme="light"] body { background: #fff; }
+  .nv { min-height: 100vh; overflow: visible; }
+  .nv-top { position: sticky; top: 0; z-index: 3; background: var(--nb-bg); }
+  .nv-back { text-decoration: none; }
+  .nv-wrap { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 24px; width: 100%; max-width: 1180px; margin: 0 auto; padding: 20px 16px 60px; box-sizing: border-box; }
+  .nv-head h1 { margin: 0 0 6px; font-size: 26px; line-height: 1.2; letter-spacing: -.015em; }
+  .nv-meta { display: flex; flex-wrap: wrap; gap: 6px 14px; color: var(--nb-text-3); font-size: 13.5px; }
+  .nv-meta a { color: var(--nb-text-2); }
+  .nv-ro { display: inline-flex; align-items: center; gap: 6px; padding: 2px 10px; border-radius: 999px; background: var(--nb-active); color: var(--nb-text-2); font-size: 12px; font-weight: 700; }
+  .nv-ro svg { width: 13px !important; height: 13px !important; }
+  .nv-paper { margin-top: 16px; border: 1px solid var(--nb-line); border-radius: 14px; overflow: hidden; }
+  .nv-paper .nb-prose { max-width: none; padding: 18px 22px 30px; }
+  .nv-side { align-self: start; position: sticky; top: 72px; border: 1px solid var(--nb-line); border-radius: 14px; background: var(--nb-raised); padding: 14px; }
+  .nv-side h2 { margin: 0 0 6px; font-size: 15px; }
+  .nv-thread { max-height: calc(100vh - 260px); overflow-y: auto; }
+  .nv-msg { padding: 60px 16px; text-align: center; color: var(--nb-text-2); }
+  @media (max-width: 900px) { .nv-wrap { grid-template-columns: 1fr; } .nv-side { position: static; } .nv-thread { max-height: none; } }
+  @media print {
+    .nv-top, .nv-side, .ml-theme-toggle { display: none !important; }
+    html, body, .nv, .nv-paper { background: #fff !important; color: #111 !important; border: 0 !important; }
+    .nv-wrap { display: block; padding: 0; }
+    .nv { --nb-text: #111; --nb-text-2: #333; --nb-text-3: #666; --nb-line: #ccc; --nb-line-2: #bbb; --nb-input: #f2f2f2; --nb-raised: #fafafa; --nb-accent: #1d4ed8; --nb-rule: #e3e3e3; --nb-bg: #fff; }
+  }
+</style>
+</head>
+<body>
+<div class="nb-root nv" id="nv" data-ml-no-theme>
+  <div class="nb-top nv-top">
+    <a class="nb-text-btn nv-back" href="/dashboard-teacher.html" id="nvBack"><i data-lucide="arrow-left" aria-hidden="true"></i><span>Notebooks</span></a>
+    <div class="nb-brand"><i data-lucide="notebook-pen" aria-hidden="true"></i><span>Shared notebook page</span></div>
+    <div class="nb-top-actions"><button type="button" class="nb-icon-btn" id="nvPrint" title="Print" aria-label="Print"><i data-lucide="printer" aria-hidden="true"></i></button></div>
+  </div>
+  <div id="nvBody"><p class="nv-msg">Opening…</p></div>
+</div>
+<script src="/assets/vendor/lucide-1.56.0.min.js"></script>
+<script src="/auth.js"></script>
+<script src="/auth-modal.js" defer></script>
+<script type="module">
+  import { generateHTML } from '/assets/vendor/tiptap-notebook-3.32.1.bundle.js';
+  import { notebookExtensions, EMPTY_DOC } from '/assets/notebook.js';
+
+  const $ = id => document.getElementById(id);
+  const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const icons = () => window.lucide && window.lucide.createIcons({ attrs: { width: 16, height: 16 } });
+  const when = iso => new Date(iso).toLocaleDateString('en-ZA', { day: 'numeric', month: 'short' }) + ' ' + new Date(iso).toLocaleTimeString('en-ZA', { hour: '2-digit', minute: '2-digit' });
+  const shareId = new URLSearchParams(location.search).get('share');
+  const say = (msg, extra = '') => { $('nvBody').innerHTML = `<p class="nv-msg">${msg}</p>${extra}`; };
+
+  // Back goes to the Notebooks tab (the dashboard reopens the last tab used).
+  $('nvBack').addEventListener('click', () => { try { localStorage.setItem('mlTeacherLastTab', 'notebooks'); } catch (e) {} });
+  $('nvPrint').addEventListener('click', () => window.print());
+  icons();
+
+  const authReady = () => new Promise(r => window.MagicLabAuth ? r() : document.addEventListener('magiclab:auth:ready', r, { once: true }));
+  await authReady();
+  const auth = window.MagicLabAuth, sb = auth._supabase(), me = auth.getSession()?.user?.id;
+  if (!me) say('Sign in to see this page.', '<p style="text-align:center"><button class="nb-btn nb-btn-primary" onclick="window.MagicLabModal&&MagicLabModal.open()">Sign in</button></p>');
+  else if (!shareId) say('No page was chosen. Open one from Teacher Dashboard › Notebooks.');
+  else load();
+
+  let share, info, comments = [];
+  async function load() {
+    const [s, list] = await Promise.all([
+      sb.from('notebook_shares').select('id,owner,class_id,page_id').eq('id', shareId).maybeSingle(),
+      sb.rpc('notebook_shared_with_me')
+    ]);
+    share = s.data;
+    info = (list.data || []).find(r => r.share_id === shareId);
+    if (!share || !info) return say('This page isn’t shared with you, or the learner has stopped sharing it.');
+    const { data: page, error } = await sb.from('notebook_pages').select('title,doc,background,lesson_title,lesson_url,updated_at').eq('id', share.page_id).maybeSingle();
+    if (error || !page) return say('This page isn’t shared with you any more.');
+    let html = '';
+    try { html = generateHTML(page.doc || EMPTY_DOC, notebookExtensions('')); } catch (e) { html = '<p>This page couldn’t be shown.</p>'; }
+    document.title = `${page.title} — ${info.learner_name} — The Magic Lab`;
+    $('nvBody').innerHTML = `
+      <div class="nv-wrap">
+        <article>
+          <div class="nv-head">
+            <h1>${esc(page.title || 'Untitled page')}</h1>
+            <div class="nv-meta">
+              <span><strong>${esc(info.learner_name)}</strong> · ${esc(info.class_name)}</span>
+              ${page.lesson_title ? `<span>Lesson: ${page.lesson_url ? `<a href="${esc(page.lesson_url)}" target="_blank" rel="noopener">${esc(page.lesson_title)}</a>` : esc(page.lesson_title)}</span>` : ''}
+              <span>Last changed ${esc(when(page.updated_at))}</span>
+              <span class="nv-ro"><i data-lucide="eye" aria-hidden="true"></i>Read only</span>
+            </div>
+          </div>
+          <div class="nv-paper nb-bg-${esc(page.background || 'blank')}"><div class="nb-prose">${html}</div></div>
+        </article>
+        <aside class="nv-side" aria-label="Comments">
+          <h2>Comments</h2>
+          <p class="nb-muted" style="margin:0 0 8px">${esc(info.learner_name)} sees these under the page title and can reply.</p>
+          <div class="nv-thread" id="nvThread"></div>
+          <form class="nb-reply" id="nvReply">
+            <textarea rows="3" maxlength="2000" placeholder="Write a comment…" aria-label="Write a comment"></textarea>
+            <button type="submit" class="nb-btn nb-btn-sm nb-btn-primary">Send</button>
+          </form>
+        </aside>
+      </div>`;
+    // Clip source links open the lesson in a new tab.
+    $('nvBody').querySelectorAll('.nb-clip-src a, .nb-prose a[href]').forEach(a => { a.target = '_blank'; a.rel = 'noopener'; });
+    icons();
+    $('nvReply').addEventListener('submit', send);
+    await loadComments();
+    sb.rpc('notebook_mark_share_seen', { p_share: shareId });
+  }
+  async function loadComments() {
+    const { data } = await sb.from('notebook_share_comments').select('id,author,body,created_at').eq('share_id', shareId).order('created_at');
+    comments = data || [];
+    const who = k => k.author === me ? 'You' : k.author === share.owner ? info.learner_name : 'Co-teacher';
+    $('nvThread').innerHTML = comments.length
+      ? comments.map(k => `<div class="nb-comment${k.author === me ? ' nb-mine' : ''}"><div class="nb-comment-who">${esc(who(k))} · <span>${esc(when(k.created_at))}</span></div><div class="nb-comment-body">${esc(k.body)}</div></div>`).join('')
+      : '<p class="nb-muted">No comments yet.</p>';
+    $('nvThread').scrollTop = $('nvThread').scrollHeight;
+  }
+  async function send(e) {
+    e.preventDefault();
+    const ta = e.target.querySelector('textarea'), btn = e.target.querySelector('button'), body = ta.value.trim();
+    if (!body) return;
+    btn.disabled = true;
+    const { error } = await sb.from('notebook_share_comments').insert({ share_id: shareId, author: me, body });
+    btn.disabled = false;
+    if (error) { alert('Your comment didn’t send. Please try again.'); return; }
+    ta.value = '';
+    loadComments();
+    sb.rpc('notebook_mark_share_seen', { p_share: shareId });
+  }
+</script>
+</body>
+</html>

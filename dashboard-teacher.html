@@ -191,6 +191,26 @@
       letter-spacing:-0.03em;color:#fff;margin-bottom:6px;
     }
     .page-header p{font-size:15px;color:var(--muted);line-height:1.6;}
+    /* Notebooks tab */
+    .nbs-own{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:18px 22px;margin-bottom:28px;border-radius:var(--radius-md);background:var(--surface);border:1px solid var(--border);}
+    .nbs-own-title{display:flex;align-items:center;gap:8px;font-family:var(--font-display);font-weight:700;font-size:15px;color:var(--paper);}
+    .nbs-own-title svg{width:16px;height:16px;}
+    .nbs-own p{margin:4px 0 0;font-size:13.5px;color:var(--text2);max-width:60ch;}
+    .nbs-btn{text-decoration:none;display:inline-flex;align-items:center;}
+    .nbs-muted{font-size:14px;color:var(--muted);line-height:1.6;max-width:70ch;}
+    .nbs-class{margin-bottom:24px;}
+    .nbs-class h3{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin:0 0 10px;font-family:var(--font-display);font-size:16px;color:var(--paper);}
+    .nbs-class h3 span{font-family:var(--font-mono);font-size:12px;font-weight:500;color:var(--muted);}
+    .nbs-class h3 b{color:var(--paper);}
+    .nbs-row{display:flex;align-items:center;gap:14px;padding:14px 18px;margin-bottom:8px;border-radius:var(--radius-md);background:var(--surface);border:1px solid var(--border);text-decoration:none;color:inherit;}
+    .nbs-row:hover{border-color:var(--line-hard);}
+    .nbs-row.nbs-new{border-color:var(--line-hard);}
+    .nbs-row-main{flex:1;min-width:0;}
+    .nbs-row-title{font-family:var(--font-display);font-weight:700;font-size:14.5px;color:var(--paper);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+    .nbs-row-meta{display:flex;flex-wrap:wrap;gap:4px 14px;margin-top:3px;font-size:12.5px;color:var(--muted);}
+    .nbs-pill{flex-shrink:0;padding:3px 10px;border-radius:999px;background:var(--paper);color:var(--ink-900);font-size:11.5px;font-weight:800;}
+    .nbs-when{flex-shrink:0;font-family:var(--font-mono);font-size:11px;color:var(--muted);}
+    @media (max-width:600px){.nbs-when{display:none;}}
 
     /* ── Section header ── */
     .section-hdr{
@@ -858,6 +878,7 @@
           <button class="tab-btn active" data-tab="classes" onclick="switchTab('classes', this)"><i data-lucide="school" aria-hidden="true"></i><span class="tab-label">My Classes</span></button>
           <button class="tab-btn" data-tab="assignments" onclick="switchTab('assignments', this)"><i data-lucide="file-text" aria-hidden="true"></i><span class="tab-label">Assignments</span></button>
           <button class="tab-btn" data-tab="marking" onclick="switchTab('marking', this)"><i data-lucide="check-check" aria-hidden="true"></i><span class="tab-label">Grading Grimoire</span></button>
+          <button class="tab-btn" data-tab="notebooks" onclick="switchTab('notebooks', this)"><i data-lucide="notebook-pen" aria-hidden="true"></i><span class="tab-label">Notebooks</span><span id="nb-tab-badge" class="help-tab-badge" style="display:none;"></span></button>
           <button class="tab-btn" data-tab="markbook" onclick="switchTab('markbook', this)"><i data-lucide="sheet" aria-hidden="true"></i><span class="tab-label">Markbook</span></button>
           <button class="tab-btn" data-tab="rubric" onclick="switchTab('rubric', this)"><i data-lucide="table" aria-hidden="true"></i><span class="tab-label">Rubric Builder</span></button>
           <button class="tab-btn" data-tab="tracker" onclick="switchTab('tracker', this)"><i data-lucide="calendar-check" aria-hidden="true"></i><span class="tab-label">Assessment Tracker</span></button>
@@ -997,6 +1018,7 @@
       <div class="assign-toolbar" style="align-items:center">
         <a class="btn-primary" style="flex:0 0 auto;padding:10px 22px;text-decoration:none" href="grimoire-set.html">+ New written task</a>
         <button class="back-btn" type="button" style="flex:0 0 auto" onclick="switchTab('rubric')">Rubric Builder</button>
+        <a class="back-btn" id="exam-papers-btn" style="flex:0 0 auto;text-decoration:none;display:none" href="exam-papers.html">Exam papers (AI marking)</a>
         <span id="gg-tab-summary" style="color:var(--muted);font-size:14px"></span>
       </div>
       <div id="gg-tab-list"></div>
@@ -1827,6 +1849,15 @@
 
 
     <!-- ═══ TAB: HELP REQUESTS ═══ -->
+    <!-- Notebooks: the teacher's own Study Spellbook + pages learners share (assets/teacher-notebook-shares.js) -->
+    <div class="tab-panel" id="tab-notebooks">
+      <div class="page-header">
+        <h1>Notebooks</h1>
+        <p>Your own notebook, and notebook pages learners have chosen to share with your classes. Learners' notebooks are otherwise private.</p>
+      </div>
+      <div id="nb-shares-body"></div>
+    </div>
+
     <div class="tab-panel" id="tab-help">
 
       <div class="page-header">
@@ -1997,6 +2028,7 @@
 <script src="assets/codex-lesson-index.js"></script>
 <script src="assets/teacher-lesson-results.js"></script>
 <script src="assets/teacher-class-overview.js"></script>
+<script src="assets/teacher-notebook-shares.js"></script>
 
 <script>
 /* Accommodations register: shown only to the site admin account (the same account the
@@ -2011,6 +2043,20 @@
   document.addEventListener('magiclab:auth:ready', update);
   document.addEventListener('magiclab:auth:change', update);
   update();
+})();
+</script>
+<script>
+// Exam Sanctum: the Exam papers button shows only for teachers on the exam staff list.
+(function () {
+  var done = false;
+  function check() {
+    var A = window.MagicLabAuth, b = document.getElementById('exam-papers-btn');
+    if (done || !A || !b || !A.isLoggedIn() || !A._supabase) return;
+    done = true;
+    A._supabase().rpc('is_exam_staff').then(function (r) { if (r && r.data === true) b.style.display = ''; });
+  }
+  document.addEventListener('magiclab:auth:ready', check);
+  check();
 })();
 </script>
   <script src="/contact-button.js" defer></script>

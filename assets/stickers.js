@@ -29,6 +29,12 @@
     '🦏': 'rhino', '🐙': 'octopus', '🐘': 'elephant', '🦌': 'bushbuck', '🐾': 'paw-prints',
     '🦟': 'mosquito', '🫧': 'frog-spawn', '🌿': 'reeds', '🐭': 'mouse', '🥚': 'nest-eggs',
     '🍃': 'thick-leaves', '🪺': 'woven-nest', '🐌': 'snail', '🐚': 'snail-shell',
+    // Term 2: materials and structures
+    '🫒': 'cooking-oil', '🎈': 'balloon', '♨': 'gas-cylinder', '🧃': 'juice-box', '🍵': 'tea',
+    '🧊': 'ice-cubes', '🧈': 'butter', '🍫': 'chocolate', '🕯': 'candle', '🍦': 'ice-cream',
+    '🏖': 'sand', '🫙': 'glass-jar', '🟤': 'clay', '☕': 'ceramic-mug', '🛢': 'oil-drum',
+    '⚫': 'coal', '🎨': 'paint', '📄': 'paper', '🌱': 'cotton-plant', '🐑': 'sheep',
+    '🧶': 'wool-jersey', '👞': 'leather-shoe', '🪟': 'window',
     '🐝': 'paper-wasp', '🏠': 'kennel', '🐴': 'horse', '🏚': 'stable', '🪵': 'kraal',
     '🔲': 'bird-cage', '🐔': 'chicken', '🛖': 'hen-house', '🐇': 'rabbit'
   };

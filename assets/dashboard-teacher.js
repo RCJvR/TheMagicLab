@@ -7452,6 +7452,7 @@ function switchTab(name, btn) {
   // come back.
   if (name === 'marking') window.MLGrimoireTab?.load();
   if (name === 'markbook') window.MLMarkbook?.load();
+  if (name === 'notebooks') window.MLNotebookShares?.load();
   if (_helpListPollTimer) { clearInterval(_helpListPollTimer); _helpListPollTimer = null; }
   if (name === 'help' && window.MagicLabHelpChat) {
     _loadHelpThreads();
@@ -7466,7 +7467,7 @@ function _fmtDate(iso) {
 
 document.addEventListener('DOMContentLoaded', () => {
   window.lucide?.createIcons();
-  const VALID_TABS = ['classes', 'assignments', 'marking', 'markbook', 'livegame', 'training', 'planning', 'reports', 'rubric', 'paper', 'classroom', 'log', 'tracker', 'timetable', 'help'];
+  const VALID_TABS = ['classes', 'assignments', 'marking', 'markbook', 'livegame', 'training', 'planning', 'reports', 'rubric', 'paper', 'classroom', 'log', 'tracker', 'timetable', 'help', 'notebooks'];
   let lastTab = null;
   try { lastTab = localStorage.getItem('mlTeacherLastTab'); } catch (e) { /* private mode etc. */ }
   if (lastTab && lastTab !== 'classes' && VALID_TABS.includes(lastTab)) switchTab(lastTab);

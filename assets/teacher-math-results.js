@@ -75,7 +75,7 @@
     // Weakest learners first; learners with no practice at the end.
     stats.sort((a, b) => (a.acc == null) - (b.acc == null) || (a.acc ?? 0) - (b.acc ?? 0));
 
-    const grades = [8, 9, 10, 11, 12], has = new Set(gradesWithData());
+    const grades = [4, 8, 9, 10, 11, 12], has = new Set(gradesWithData());
     wrap.innerHTML = `
       <div class="mmr-head">
         <div>

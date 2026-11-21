@@ -3,7 +3,7 @@
 const fs = require('fs'), vm = require('vm'), path = require('path');
 const M = path.join(__dirname, '..', 'math-magician') + '/';
 const out = {};
-for (const g of [8, 9, 10, 11, 12]) {
+for (const g of [4, 8, 9, 10, 11, 12]) {
   out[g] = {};
   const n = fs.readdirSync(M + 'gr' + g).filter(f => /^ch\d+\.js$/.test(f)).length;
   for (let c = 1; c <= n; c++) {

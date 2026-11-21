@@ -1,0 +1,48 @@
+<!doctype html>
+<!-- © 2026 Ruhan Janse van Rensburg. All rights reserved. -->
+<html lang="en">
+<head>
+<script src="/assets/theme.js"></script>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#08090b">
+<title>Study Spellbook — The Magic Lab</title>
+<meta name="description" content="Your notebook for Magic Lab lessons: clip, type, highlight and print your notes, backed up to your account.">
+<link rel="icon" type="image/svg+xml" href="/assets/logo-prism.svg">
+<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700,800,900&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="/auth-modal.css">
+<link rel="stylesheet" href="/assets/notebook.css" data-ml-no-theme>
+<style data-ml-no-theme>
+  html, body { height: 100%; margin: 0; background: #0c0e11; }
+  html[data-theme="light"], html[data-theme="light"] body { background: #fff; }
+  #notebook { height: 100%; }
+  /* theme.js puts its floating light/dark switch in the bottom-left corner on this page */
+  #notebook .nb-side-foot { padding-left: 56px; }
+</style>
+</head>
+<body>
+<div id="notebook"></div>
+<script src="/assets/vendor/lucide-1.56.0.min.js"></script>
+<script src="/auth.js"></script>
+<script src="/auth-modal.js" defer></script>
+<script type="module">
+  import { mount, notebookChannel } from '/assets/notebook.js';
+  const params = new URLSearchParams(location.search);
+  // Opened as a pop-out beside a lesson there's nowhere to go back to; opened on
+  // its own (from the dashboard or a bookmark) it gets a way back to the dashboard.
+  const popout = !!window.opener || window.name === 'ml-notebook';
+  const nb = mount(document.getElementById('notebook'), { startPageId: params.get('page'), homeHref: popout ? null : '/dashboard-student.html#notebook' });
+  // Lesson tabs ask "is the notebook open in its own window?" before opening a side panel,
+  // and send clips and lessons here when it is.
+  notebookChannel && notebookChannel.addEventListener('message', async e => {
+    const m = e.data || {};
+    if (m.type === 'ping') notebookChannel.postMessage({ type: 'pong', id: m.id });
+    if (m.type === 'clip') { await nb.ready; await nb.insertClip(m.clip); }
+    if (m.type === 'open-lesson') { await nb.ready; await nb.openForLesson(m.lesson); }
+  });
+  window.addEventListener('pagehide', () => { nb.flush(); });
+</script>
+</body>
+</html>

@@ -1314,6 +1314,276 @@ window.ML_LESSON_CATALOG = {
   ],
   "math-magician": [
     {
+      "group": "Grade 4 — Ch 1 — Whole Numbers",
+      "lessons": [
+        {
+          "value": "Counting in intervals",
+          "label": "Counting in intervals",
+          "ref": "mm:4:101"
+        },
+        {
+          "value": "Place value",
+          "label": "Place value",
+          "ref": "mm:4:102"
+        },
+        {
+          "value": "Number lines and ordering",
+          "label": "Number lines and ordering",
+          "ref": "mm:4:103"
+        },
+        {
+          "value": "Rounding off",
+          "label": "Rounding off",
+          "ref": "mm:4:104"
+        },
+        {
+          "value": "Adding whole numbers",
+          "label": "Adding whole numbers",
+          "ref": "mm:4:105"
+        },
+        {
+          "value": "Subtracting whole numbers",
+          "label": "Subtracting whole numbers",
+          "ref": "mm:4:106"
+        },
+        {
+          "value": "Problem solving",
+          "label": "Problem solving",
+          "ref": "mm:4:107"
+        }
+      ]
+    },
+    {
+      "group": "Grade 4 — Ch 2 — 2-D Shapes and 3-D Objects",
+      "lessons": [
+        {
+          "value": "2-D shapes",
+          "label": "2-D shapes",
+          "ref": "mm:4:201"
+        },
+        {
+          "value": "Polygons",
+          "label": "Polygons",
+          "ref": "mm:4:202"
+        },
+        {
+          "value": "Drawing polygons",
+          "label": "Drawing polygons",
+          "ref": "mm:4:203"
+        },
+        {
+          "value": "3-D objects",
+          "label": "3-D objects",
+          "ref": "mm:4:204"
+        }
+      ]
+    },
+    {
+      "group": "Grade 4 — Ch 3 — Multiplication, Multiples and Factors",
+      "lessons": [
+        {
+          "value": "Multiplying",
+          "label": "Multiplying",
+          "ref": "mm:4:301"
+        },
+        {
+          "value": "Multiples",
+          "label": "Multiples",
+          "ref": "mm:4:302"
+        },
+        {
+          "value": "Doubling and ×10, ×100, ×1 000",
+          "label": "Doubling and ×10, ×100, ×1 000",
+          "ref": "mm:4:303"
+        },
+        {
+          "value": "Factors and splitting",
+          "label": "Factors and splitting",
+          "ref": "mm:4:304"
+        },
+        {
+          "value": "Multiplication problems",
+          "label": "Multiplication problems",
+          "ref": "mm:4:305"
+        }
+      ]
+    },
+    {
+      "group": "Grade 4 — Ch 4 — Multiplication and Division",
+      "lessons": [
+        {
+          "value": "Dividing",
+          "label": "Dividing",
+          "ref": "mm:4:401"
+        },
+        {
+          "value": "Halving, even and odd",
+          "label": "Halving, even and odd",
+          "ref": "mm:4:402"
+        },
+        {
+          "value": "Dividing bigger numbers",
+          "label": "Dividing bigger numbers",
+          "ref": "mm:4:403"
+        },
+        {
+          "value": "Multiplication and division",
+          "label": "Multiplication and division",
+          "ref": "mm:4:404"
+        },
+        {
+          "value": "Sharing problems",
+          "label": "Sharing problems",
+          "ref": "mm:4:405"
+        }
+      ]
+    },
+    {
+      "group": "Grade 4 — Ch 5 — Multiple Operations and Number Sentences",
+      "lessons": [
+        {
+          "value": "Which comes first?",
+          "label": "Which comes first?",
+          "ref": "mm:4:501"
+        },
+        {
+          "value": "Missing numbers",
+          "label": "Missing numbers",
+          "ref": "mm:4:502"
+        },
+        {
+          "value": "Writing number sentences",
+          "label": "Writing number sentences",
+          "ref": "mm:4:503"
+        }
+      ]
+    },
+    {
+      "group": "Grade 4 — Ch 6 — Length, Mass and Capacity",
+      "lessons": [
+        {
+          "value": "Length",
+          "label": "Length",
+          "ref": "mm:4:601"
+        },
+        {
+          "value": "Mass",
+          "label": "Mass",
+          "ref": "mm:4:602"
+        },
+        {
+          "value": "Capacity",
+          "label": "Capacity",
+          "ref": "mm:4:603"
+        },
+        {
+          "value": "Converting and problems",
+          "label": "Converting and problems",
+          "ref": "mm:4:604"
+        }
+      ]
+    },
+    {
+      "group": "Grade 4 — Ch 7 — Perimeter, Area, Capacity and Volume",
+      "lessons": [
+        {
+          "value": "Perimeter",
+          "label": "Perimeter",
+          "ref": "mm:4:701"
+        },
+        {
+          "value": "Area",
+          "label": "Area",
+          "ref": "mm:4:702"
+        },
+        {
+          "value": "Capacity",
+          "label": "Capacity",
+          "ref": "mm:4:703"
+        },
+        {
+          "value": "Volume",
+          "label": "Volume",
+          "ref": "mm:4:704"
+        }
+      ]
+    },
+    {
+      "group": "Grade 4 — Ch 8 — Financial Mathematics",
+      "lessons": [
+        {
+          "value": "Rand and cents",
+          "label": "Rand and cents",
+          "ref": "mm:4:801"
+        },
+        {
+          "value": "Giving change",
+          "label": "Giving change",
+          "ref": "mm:4:802"
+        },
+        {
+          "value": "Budgets and profit",
+          "label": "Budgets and profit",
+          "ref": "mm:4:803"
+        },
+        {
+          "value": "Money problems",
+          "label": "Money problems",
+          "ref": "mm:4:804"
+        }
+      ]
+    },
+    {
+      "group": "Grade 4 — Ch 9 — Common Fractions",
+      "lessons": [
+        {
+          "value": "What is a fraction?",
+          "label": "What is a fraction?",
+          "ref": "mm:4:901"
+        },
+        {
+          "value": "Compare fractions",
+          "label": "Compare fractions",
+          "ref": "mm:4:902"
+        },
+        {
+          "value": "Add fractions",
+          "label": "Add fractions",
+          "ref": "mm:4:903"
+        },
+        {
+          "value": "Fractions of amounts",
+          "label": "Fractions of amounts",
+          "ref": "mm:4:904"
+        }
+      ]
+    },
+    {
+      "group": "Grade 4 — Ch 10 — Ratio and Rate",
+      "lessons": [
+        {
+          "value": "What is a ratio?",
+          "label": "What is a ratio?",
+          "ref": "mm:4:1001"
+        },
+        {
+          "value": "Ratio tables",
+          "label": "Ratio tables",
+          "ref": "mm:4:1002"
+        },
+        {
+          "value": "What is a rate?",
+          "label": "What is a rate?",
+          "ref": "mm:4:1003"
+        },
+        {
+          "value": "Rate problems",
+          "label": "Rate problems",
+          "ref": "mm:4:1004"
+        }
+      ]
+    },
+    {
       "group": "Grade 8 — Ch 1 — Whole Numbers, Ratios, Rates & Finance",
       "lessons": [
         {
@@ -2995,6 +3265,11 @@ window.ML_LESSON_CATALOG = {
           "value": "Sketching functions: intercepts, domain & range",
           "label": "Sketching functions: intercepts, domain & range",
           "ref": "mm:11:502"
+        },
+        {
+          "value": "Hyperbola: axes of symmetry",
+          "label": "Hyperbola: axes of symmetry",
+          "ref": "mm:11:503"
         }
       ]
     },
@@ -3065,6 +3340,11 @@ window.ML_LESSON_CATALOG = {
           "value": "Circle geometry riders",
           "label": "Circle geometry riders",
           "ref": "mm:11:803"
+        },
+        {
+          "value": "Examinable circle-theorem proofs",
+          "label": "Examinable circle-theorem proofs",
+          "ref": "mm:11:804"
         }
       ]
     },
@@ -3205,6 +3485,11 @@ window.ML_LESSON_CATALOG = {
           "value": "Graphing exponential & logarithmic functions",
           "label": "Graphing exponential & logarithmic functions",
           "ref": "mm:12:203"
+        },
+        {
+          "value": "Transforming exponential and log graphs",
+          "label": "Transforming exponential and log graphs",
+          "ref": "mm:12:204"
         }
       ]
     },
@@ -3230,6 +3515,11 @@ window.ML_LESSON_CATALOG = {
           "value": "Comparing investment & loan options",
           "label": "Comparing investment & loan options",
           "ref": "mm:12:303"
+        },
+        {
+          "value": "Annuities due and deferred loans",
+          "label": "Annuities due and deferred loans",
+          "ref": "mm:12:304"
         }
       ]
     },
@@ -3255,6 +3545,16 @@ window.ML_LESSON_CATALOG = {
           "value": "Proving trigonometric identities",
           "label": "Proving trigonometric identities",
           "ref": "mm:12:403"
+        },
+        {
+          "value": "Reduction formulae",
+          "label": "Reduction formulae",
+          "ref": "mm:12:404"
+        },
+        {
+          "value": "Shifted trigonometric graphs",
+          "label": "Shifted trigonometric graphs",
+          "ref": "mm:12:405"
         }
       ]
     },
@@ -3280,6 +3580,11 @@ window.ML_LESSON_CATALOG = {
           "value": "Sketching cubic graphs from key features",
           "label": "Sketching cubic graphs from key features",
           "ref": "mm:12:503"
+        },
+        {
+          "value": "Cubic–line intersections & inequalities",
+          "label": "Cubic–line intersections & inequalities",
+          "ref": "mm:12:504"
         }
       ]
     },
@@ -3330,6 +3635,11 @@ window.ML_LESSON_CATALOG = {
           "value": "Tangents from an external point",
           "label": "Tangents from an external point",
           "ref": "mm:12:703"
+        },
+        {
+          "value": "Shortest distances & translated circles",
+          "label": "Shortest distances & translated circles",
+          "ref": "mm:12:704"
         }
       ]
     },
@@ -3350,6 +3660,11 @@ window.ML_LESSON_CATALOG = {
           "value": "Similar polygons & scale factor problems",
           "label": "Similar polygons & scale factor problems",
           "ref": "mm:12:802"
+        },
+        {
+          "value": "Examinable similarity proofs",
+          "label": "Examinable similarity proofs",
+          "ref": "mm:12:803"
         }
       ]
     },
@@ -3448,12 +3763,87 @@ window.ML_LESSON_CATALOG = {
       ]
     },
     {
+      "group": "Grade 4 — Matter & Materials",
+      "lessons": [
+        {
+          "value": "Materials around us",
+          "label": "Materials around us",
+          "ref": "ss:4:matter/materials-around-us"
+        },
+        {
+          "value": "Solid materials",
+          "label": "Solid materials",
+          "ref": "ss:4:matter/solid-materials"
+        }
+      ]
+    },
+    {
       "group": "Grade 4 — Structures",
       "lessons": [
         {
           "value": "Structures for animal shelters",
           "label": "Structures for animal shelters",
           "ref": "ss:4:structures/animal-shelters"
+        },
+        {
+          "value": "Strengthening materials",
+          "label": "Strengthening materials",
+          "ref": "ss:4:structures/strengthening-materials"
+        },
+        {
+          "value": "Strong frame structures",
+          "label": "Strong frame structures",
+          "ref": "ss:4:structures/frame-structures"
+        }
+      ]
+    },
+    {
+      "group": "Grade 4 — Energy & Change",
+      "lessons": [
+        {
+          "value": "Energy for Life",
+          "label": "Energy for Life",
+          "ref": "ss:4:energy/energy-for-life"
+        },
+        {
+          "value": "Energy Around Us",
+          "label": "Energy Around Us",
+          "ref": "ss:4:energy/energy-around-us"
+        },
+        {
+          "value": "Musical Instruments",
+          "label": "Musical Instruments",
+          "ref": "ss:4:energy/musical-instruments"
+        },
+        {
+          "value": "Sound",
+          "label": "Sound",
+          "ref": "ss:4:energy/sound"
+        }
+      ]
+    },
+    {
+      "group": "Grade 4 — Planet Earth & Beyond",
+      "lessons": [
+        {
+          "value": "Planet Earth",
+          "label": "Planet Earth",
+          "ref": "ss:4:earth/planet-earth"
+        },
+        {
+          "value": "The Sun and the Earth",
+          "label": "The Sun and the Earth",
+          "ref": "ss:4:earth/sun-and-earth"
+        },
+        {
+          "value": "The Moon",
+          "label": "The Moon",
+          "ref": "ss:4:earth/the-moon"
+        },
+        {
+          "value": "Rocket Systems",
+          "label": "Rocket Systems",
+          "ref": "ss:4:earth/rocket-systems"
         }
       ]
     },

@@ -7,7 +7,7 @@
   <meta name="robots" content="noindex">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#08090b">
-  <title>My Profile — The Magic Lab</title>
+  <title>My dashboard — The Magic Lab</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://api.fontshare.com">
   <!-- Cabinet Grotesk is a Fontshare font, not a Google Fonts family — load it from
@@ -444,6 +444,58 @@
     .help-chat-send:hover { background: #fff; }
     .help-class-picker { margin-bottom: 10px; }
 
+    /* ── Tabs: To do · My notebook · Practice · Progress ─────────────────── */
+    .dash-tabs {
+      display: flex; gap: 4px; margin: 0 0 var(--space-6); padding: 4px;
+      border-radius: var(--radius-md); background: var(--ink-850); border: 1px solid var(--line);
+    }
+    .dash-tab-btn {
+      flex: 1; display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 42px; padding: 0 12px;
+      border: 0; border-radius: var(--radius-sm); background: transparent; color: var(--text-2); cursor: pointer;
+      font-family: var(--font-display); font-size: 14.5px; font-weight: 700; white-space: nowrap;
+      transition: background var(--dur-fast) var(--ease-standard), color var(--dur-fast) var(--ease-standard);
+    }
+    .dash-tab-btn svg { width: 16px; height: 16px; flex-shrink: 0; }
+    .dash-tab-btn:hover { background: rgba(255,255,255,0.05); color: var(--text); }
+    .dash-tab-btn[aria-selected="true"] { background: var(--ink-750); color: var(--paper); box-shadow: inset 0 0 0 1px var(--line-hard); }
+    .dash-tab-btn:focus-visible { outline: 2px solid var(--paper); outline-offset: 2px; }
+    .dash-tab-count {
+      min-width: 20px; height: 20px; padding: 0 6px; border-radius: 999px; display: inline-flex; align-items: center; justify-content: center;
+      background: rgba(255,255,255,0.10); color: var(--text); font-family: var(--font-mono); font-size: 11px; font-weight: 600;
+    }
+    .dash-tab-count.late { background: rgba(239,91,91,0.18); color: #f5a3a3; }
+    .dash-tab[hidden], .dash-tab-btn[hidden], .dash-tab-count[hidden], .class-panel[hidden] { display: none !important; }
+    .dash-tab:focus { outline: none; }
+
+    /* ── My notebook tab ────────────────────────────────────────────────── */
+    .nb-dash-dividers { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: var(--space-6); }
+    .nb-dash-divider {
+      display: inline-flex; align-items: center; gap: 8px; min-height: 36px; padding: 0 14px;
+      border-radius: 999px; border: 1px solid var(--line); background: var(--ink-850); color: var(--text);
+      font-size: 13.5px; font-weight: 600; text-decoration: none;
+    }
+    .nb-dash-divider:hover { border-color: var(--line-hard); }
+    .nb-dash-swatch { width: 10px; height: 10px; border-radius: 3px; flex-shrink: 0; }
+    .nb-dash-divider .n { font-family: var(--font-mono); font-size: 11px; color: var(--text-3); }
+    .nb-dash-page {
+      display: flex; align-items: center; gap: var(--space-4); padding: var(--space-4) var(--space-5); margin-bottom: 10px;
+      border-radius: var(--radius-md); background: var(--ink-850); border: 1px solid var(--line); text-decoration: none; color: inherit;
+    }
+    .nb-dash-page:hover { border-color: var(--line-hard); }
+    .nb-dash-page-main { flex: 1; min-width: 0; }
+    .nb-dash-page-title { margin-bottom: 3px; font-family: var(--font-display); font-weight: 700; font-size: 14px; color: var(--paper); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .nb-dash-page-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; font-size: 12.5px; color: var(--text-3); }
+    .nb-dash-page-meta .div { display: inline-flex; align-items: center; gap: 6px; color: var(--text-2); }
+    .nb-dash-page-when { flex-shrink: 0; font-family: var(--font-mono); font-size: 11px; color: var(--text-3); }
+    .nb-dash-note { margin: 0 0 var(--space-4); font-size: 13px; color: var(--text-2); }
+    .nb-dash-pro ul { margin: 10px 0 0; padding-left: 18px; color: var(--text-2); font-size: 13.5px; line-height: 1.7; }
+
+    @media (max-width: 720px) {
+      .dash-tab-btn { flex-direction: column; gap: 3px; min-height: 54px; padding: 4px 2px; font-size: 12.5px; }
+      .dash-tab-count { position: absolute; transform: translate(14px, -16px); }
+      .dash-tab-btn { position: relative; }
+      .nb-dash-page-when { display: none; }
+    }
     @media (max-width: 720px) {
       nav { min-height: 60px; }
       .player-hero { grid-template-columns: auto 1fr; gap: var(--space-4); padding: var(--space-5); }
@@ -455,7 +507,7 @@
 </head>
 <body>
   <a class="ml-skip" href="#ml-main">Skip to content</a>
-  <h1 class="sr-only">Student dashboard</h1>
+  <h1 class="sr-only">My dashboard</h1>
 
   <nav>
     <a href="index.html" class="nav-logo"><img src="assets/logo-prism.svg" alt="" style="width:30px;height:30px;vertical-align:-8px;margin-right:4px;">The Magic Lab</a>
@@ -524,137 +576,173 @@
         </div>
       </div>
 
-      <!-- Assignments (students only) -->
-      <div id="assignments-panel" style="display:none;">
-        <div class="section-hdr">My Assignments</div>
-        <div class="assignment-tools" id="assignments-tools" role="group" aria-label="Filter and sort assignments"></div>
-        <div id="assignments-feed"></div>
+      <!-- Tabs: To do · My notebook · Practice · Progress. Each is a panel below;
+           the choice is remembered on this device and in the address (#todo …). -->
+      <div class="dash-tabs" role="tablist" aria-label="My dashboard">
+        <button type="button" class="dash-tab-btn" role="tab" id="tabbtn-todo" aria-controls="tab-todo" aria-selected="false" data-tab="todo"><i data-lucide="list-checks" aria-hidden="true"></i><span>To do</span><span class="dash-tab-count" id="todo-count" hidden></span></button>
+        <button type="button" class="dash-tab-btn" role="tab" id="tabbtn-notebook" aria-controls="tab-notebook" aria-selected="false" data-tab="notebook"><i data-lucide="notebook-pen" aria-hidden="true"></i><span>My notebook</span></button>
+        <button type="button" class="dash-tab-btn" role="tab" id="tabbtn-practice" aria-controls="tab-practice" aria-selected="false" data-tab="practice"><i data-lucide="swords" aria-hidden="true"></i><span>Practice</span></button>
+        <button type="button" class="dash-tab-btn" role="tab" id="tabbtn-progress" aria-controls="tab-progress" aria-selected="false" data-tab="progress"><i data-lucide="chart-no-axes-column" aria-hidden="true"></i><span>Progress</span></button>
       </div>
 
-      <!-- Streak + heatmap -->
-      <div class="section-hdr">Streak</div>
-      <div class="streak-row">
-        <div class="streak-card">
-          <div class="streak-flame"><i data-lucide="flame" style="width:28px;height:28px;"></i></div>
-          <div>
-            <div class="streak-number" id="streak-number">0</div>
-            <div class="streak-label">day streak</div>
-            <div class="streak-best" id="streak-best">Longest: 0 days</div>
+      <!-- ── To do: assignments and homework, joining a class, asking for help ── -->
+      <section class="dash-tab" id="tab-todo" role="tabpanel" aria-labelledby="tabbtn-todo" tabindex="-1" hidden>
+        <!-- Assignments (students only) -->
+        <div id="assignments-panel" style="display:none;">
+          <div class="section-hdr">My Assignments</div>
+          <div class="assignment-tools" id="assignments-tools" role="group" aria-label="Filter and sort assignments"></div>
+          <div id="assignments-feed"></div>
+        </div>
+
+        <div class="class-panel" id="todo-empty" hidden>
+          <div class="class-panel-text">
+            <div class="class-panel-title">Nothing to do yet</div>
+            <div class="class-panel-sub">Assignments and homework from your teachers appear here, with the ones due soonest first. Join your class below to get them.</div>
           </div>
         </div>
-        <div class="heatmap-card">
-          <div class="heatmap-title">Activity — last 10 weeks</div>
-          <div id="heatmap-grid"></div>
-        </div>
-      </div>
-
-      <!-- Class join (students only) -->
-      <div class="class-panel" id="class-panel" style="display:none;">
-        <div class="class-panel-text">
-          <div class="class-panel-title">Join a class</div>
-          <div class="class-panel-sub">Enter the invite code your teacher gave you</div>
-        </div>
-        <div class="class-input-row">
-          <input aria-label="Class code" class="class-input" id="class-code-input" placeholder="ABC12345" maxlength="8">
-          <button class="class-join-btn" id="class-join-btn">Join</button>
-        </div>
-        <div id="class-join-msg" style="font-size:12px;color:#6ee7b7;display:none;width:100%;margin-top:4px;"></div>
-      </div>
-
-      <!-- The Arena join -->
-      <div class="class-panel">
-        <div class="class-panel-text">
-          <div class="class-panel-title" style="display:flex;align-items:center;gap:8px;"><i data-lucide="trophy" style="width:16px;height:16px;"></i>Enter The Arena</div>
-          <div class="class-panel-sub">Enter the code your teacher shared to play</div>
-        </div>
-        <div class="class-input-row">
-          <input aria-label="Game code" class="class-input" id="game-code-input" placeholder="ABC123" maxlength="6">
-          <button class="class-join-btn" id="game-join-btn">Join</button>
-        </div>
-      </div>
-
-      <!-- Memory Mirror -->
-      <div class="class-panel">
-        <div class="class-panel-text">
-          <div class="class-panel-title" style="display:flex;align-items:center;gap:8px;"><i data-lucide="layers" style="width:16px;height:16px;"></i>Memory Mirror</div>
-          <div class="class-panel-sub" id="mm-due-sub">Flashcards for exam revision</div>
-        </div>
-        <a class="class-join-btn" href="memory-mirror.html" style="text-decoration:none;display:inline-flex;align-items:center;">Revise</a>
-      </div>
-
-      <!-- Test Tome -->
-      <div class="class-panel">
-        <div class="class-panel-text">
-          <div class="class-panel-title" style="display:flex;align-items:center;gap:8px;"><i data-lucide="book-check" style="width:16px;height:16px;"></i>Test Tome</div>
-          <div class="class-panel-sub">Exam-style practice tests that mark themselves</div>
-        </div>
-        <a class="class-join-btn" href="test-tome.html" style="text-decoration:none;display:inline-flex;align-items:center;">Practise</a>
-      </div>
-
-      <!-- Mock exams -->
-      <div class="class-panel">
-        <div class="class-panel-text">
-          <div class="class-panel-title" style="display:flex;align-items:center;gap:8px;"><i data-lucide="file-check" style="width:16px;height:16px;"></i>Grade 12 mock exams</div>
-          <div class="class-panel-sub">Full-length printable papers with marking memos</div>
-        </div>
-        <a class="class-join-btn" href="mock-exams/index.html" style="text-decoration:none;display:inline-flex;align-items:center;">Open</a>
-      </div>
-
-      <!-- Friends + Lesson Invites (students only) -->
-      <div id="social-section" style="display:none;">
-        <div class="section-hdr">Friends</div>
-        <div id="friend-requests-wrap" style="display:none;"></div>
-        <div class="section-sub-label">My friends</div>
-        <div id="friends-list-wrap"></div>
-
-        <div class="section-sub-label">Add a friend</div>
-        <div class="friend-card" style="justify-content:space-between;">
-          <div>
-            <div class="friend-sub" style="margin-bottom:3px;">Your friend code — share it with a classmate</div>
-            <div class="friend-name" id="my-friend-code" style="font-family:var(--font-mono);letter-spacing:0.1em;font-size:15px;">——————</div>
+        <!-- Class join (students only) -->
+        <div class="class-panel" id="class-panel" style="display:none;">
+          <div class="class-panel-text">
+            <div class="class-panel-title">Join a class</div>
+            <div class="class-panel-sub">Enter the invite code your teacher gave you</div>
           </div>
-          <button class="friend-btn" id="copy-friend-code-btn">Copy</button>
+          <div class="class-input-row">
+            <input aria-label="Class code" class="class-input" id="class-code-input" placeholder="ABC12345" maxlength="8">
+            <button class="class-join-btn" id="class-join-btn">Join</button>
+          </div>
+          <div id="class-join-msg" style="font-size:12px;color:#6ee7b7;display:none;width:100%;margin-top:4px;"></div>
         </div>
-        <div class="class-input-row" style="margin-top:8px;">
-          <input aria-label="Friend's code" class="class-input" id="add-friend-code-input" placeholder="ABC123" maxlength="8">
-          <button class="class-join-btn" id="add-friend-code-btn">Add Friend</button>
-        </div>
-        <div id="add-friend-msg" style="font-size:12px;margin-top:6px;display:none;"></div>
 
-        <div class="section-hdr" style="margin-top:36px;">
-          Lesson Invites
-          <button class="cta-btn" style="padding:8px 18px;font-size:12px;flex-shrink:0;" onclick="openInviteModal()">+ Invite a friend</button>
-        </div>
-        <div id="invites-incoming-wrap"></div>
-        <div class="section-sub-label">Sent &amp; in progress</div>
-        <div id="invites-mine-wrap"></div>
-      </div>
-
-      <!-- Ask your teacher for help (students only) -->
-      <div id="help-section" style="display:none;">
-        <div class="section-hdr" style="margin-top:36px;">Ask your teacher for help</div>
-        <p id="help-empty-hint" class="empty-hint" style="display:none;">Join a class above to message your teacher.</p>
-        <select aria-label="Choose a class to message" class="class-input help-class-picker" id="help-class-picker" style="display:none;width:100%;text-transform:none;"></select>
-        <div class="help-chat-box" id="help-chat-panel" style="display:none;">
-          <div class="help-chat-messages" id="help-chat-messages"></div>
-          <div class="help-chat-input-row">
-            <input aria-label="Type a message" type="text" id="help-chat-input" placeholder="Type a message…" maxlength="1000">
-            <button class="help-chat-send" id="help-chat-send">Send</button>
+        <!-- Ask your teacher for help (students only) -->
+        <div id="help-section" style="display:none;">
+          <div class="section-hdr" style="margin-top:36px;">Ask your teacher for help</div>
+          <p id="help-empty-hint" class="empty-hint" style="display:none;">Join a class above to message your teacher.</p>
+          <select aria-label="Choose a class to message" class="class-input help-class-picker" id="help-class-picker" style="display:none;width:100%;text-transform:none;"></select>
+          <div class="help-chat-box" id="help-chat-panel" style="display:none;">
+            <div class="help-chat-messages" id="help-chat-messages"></div>
+            <div class="help-chat-input-row">
+              <input aria-label="Type a message" type="text" id="help-chat-input" placeholder="Type a message…" maxlength="1000">
+              <button class="help-chat-send" id="help-chat-send">Send</button>
+            </div>
           </div>
         </div>
-      </div>
+      </section>
 
-      <!-- Tool progress -->
-      <div class="section-hdr">Progress by tool</div>
-      <div class="tool-grid" id="tool-grid"></div>
+      <!-- ── My notebook (Study Spellbook): filled by _loadNotebookTab() ── -->
+      <section class="dash-tab" id="tab-notebook" role="tabpanel" aria-labelledby="tabbtn-notebook" tabindex="-1" hidden>
+        <div class="class-panel nb-dash-head">
+          <div class="class-panel-text">
+            <div class="class-panel-title" style="display:flex;align-items:center;gap:8px;"><i data-lucide="notebook-pen" style="width:16px;height:16px;"></i>Study Spellbook</div>
+            <div class="class-panel-sub" id="nb-dash-sub">Your notes from every lesson, backed up to your account.</div>
+          </div>
+          <a class="class-join-btn" id="nb-dash-open" href="notebook.html" style="text-decoration:none;display:inline-flex;align-items:center;">Open notebook</a>
+        </div>
+        <div id="nb-dash-body"><p class="empty-hint">Loading your notebook…</p></div>
+      </section>
 
-      <!-- Badges -->
-      <div class="section-hdr">Badges <span style="font-size:11px;opacity:0.5;margin-left:4px;" id="badges-count-label"></span></div>
-      <div class="badges-grid" id="badges-grid"></div>
+      <!-- ── Practice: games, revision, tests, friends ── -->
+      <section class="dash-tab" id="tab-practice" role="tabpanel" aria-labelledby="tabbtn-practice" tabindex="-1" hidden>
+        <!-- The Arena join -->
+        <div class="class-panel">
+          <div class="class-panel-text">
+            <div class="class-panel-title" style="display:flex;align-items:center;gap:8px;"><i data-lucide="trophy" style="width:16px;height:16px;"></i>Enter The Arena</div>
+            <div class="class-panel-sub">Enter the code your teacher shared to play</div>
+          </div>
+          <div class="class-input-row">
+            <input aria-label="Game code" class="class-input" id="game-code-input" placeholder="ABC123" maxlength="6">
+            <button class="class-join-btn" id="game-join-btn">Join</button>
+          </div>
+        </div>
 
-      <!-- Activity feed -->
-      <div class="section-hdr">Recent activity</div>
-      <div class="feed" id="activity-feed"></div>
+        <!-- Memory Mirror -->
+        <div class="class-panel">
+          <div class="class-panel-text">
+            <div class="class-panel-title" style="display:flex;align-items:center;gap:8px;"><i data-lucide="layers" style="width:16px;height:16px;"></i>Memory Mirror</div>
+            <div class="class-panel-sub" id="mm-due-sub">Flashcards for exam revision</div>
+          </div>
+          <a class="class-join-btn" href="memory-mirror.html" style="text-decoration:none;display:inline-flex;align-items:center;">Revise</a>
+        </div>
+
+        <!-- Test Tome -->
+        <div class="class-panel">
+          <div class="class-panel-text">
+            <div class="class-panel-title" style="display:flex;align-items:center;gap:8px;"><i data-lucide="book-check" style="width:16px;height:16px;"></i>Test Tome</div>
+            <div class="class-panel-sub">Exam-style practice tests that mark themselves</div>
+          </div>
+          <a class="class-join-btn" href="test-tome.html" style="text-decoration:none;display:inline-flex;align-items:center;">Practise</a>
+        </div>
+
+        <!-- Mock exams -->
+        <div class="class-panel">
+          <div class="class-panel-text">
+            <div class="class-panel-title" style="display:flex;align-items:center;gap:8px;"><i data-lucide="file-check" style="width:16px;height:16px;"></i>Grade 12 mock exams</div>
+            <div class="class-panel-sub">Full-length printable papers with marking memos</div>
+          </div>
+          <a class="class-join-btn" href="mock-exams/index.html" style="text-decoration:none;display:inline-flex;align-items:center;">Open</a>
+        </div>
+
+        <!-- Friends + Lesson Invites (students only) -->
+        <div id="social-section" style="display:none;">
+          <div class="section-hdr">Friends</div>
+          <div id="friend-requests-wrap" style="display:none;"></div>
+          <div class="section-sub-label">My friends</div>
+          <div id="friends-list-wrap"></div>
+
+          <div class="section-sub-label">Add a friend</div>
+          <div class="friend-card" style="justify-content:space-between;">
+            <div>
+              <div class="friend-sub" style="margin-bottom:3px;">Your friend code — share it with a classmate</div>
+              <div class="friend-name" id="my-friend-code" style="font-family:var(--font-mono);letter-spacing:0.1em;font-size:15px;">——————</div>
+            </div>
+            <button class="friend-btn" id="copy-friend-code-btn">Copy</button>
+          </div>
+          <div class="class-input-row" style="margin-top:8px;">
+            <input aria-label="Friend's code" class="class-input" id="add-friend-code-input" placeholder="ABC123" maxlength="8">
+            <button class="class-join-btn" id="add-friend-code-btn">Add Friend</button>
+          </div>
+          <div id="add-friend-msg" style="font-size:12px;margin-top:6px;display:none;"></div>
+
+          <div class="section-hdr" style="margin-top:36px;">
+            Lesson Invites
+            <button class="cta-btn" style="padding:8px 18px;font-size:12px;flex-shrink:0;" onclick="openInviteModal()">+ Invite a friend</button>
+          </div>
+          <div id="invites-incoming-wrap"></div>
+          <div class="section-sub-label">Sent &amp; in progress</div>
+          <div id="invites-mine-wrap"></div>
+        </div>
+      </section>
+
+      <!-- ── Progress: streak, tools, badges, activity ── -->
+      <section class="dash-tab" id="tab-progress" role="tabpanel" aria-labelledby="tabbtn-progress" tabindex="-1" hidden>
+        <!-- Streak + heatmap -->
+        <div class="section-hdr">Streak</div>
+        <div class="streak-row">
+          <div class="streak-card">
+            <div class="streak-flame"><i data-lucide="flame" style="width:28px;height:28px;"></i></div>
+            <div>
+              <div class="streak-number" id="streak-number">0</div>
+              <div class="streak-label">day streak</div>
+              <div class="streak-best" id="streak-best">Longest: 0 days</div>
+            </div>
+          </div>
+          <div class="heatmap-card">
+            <div class="heatmap-title">Activity — last 10 weeks</div>
+            <div id="heatmap-grid"></div>
+          </div>
+        </div>
+
+        <!-- Tool progress -->
+        <div class="section-hdr">Progress by tool</div>
+        <div class="tool-grid" id="tool-grid"></div>
+
+        <!-- Badges -->
+        <div class="section-hdr">Badges <span style="font-size:11px;opacity:0.5;margin-left:4px;" id="badges-count-label"></span></div>
+        <div class="badges-grid" id="badges-grid"></div>
+
+        <!-- Activity feed -->
+        <div class="section-hdr">Recent activity</div>
+        <div class="feed" id="activity-feed"></div>
+      </section>
 
     </div>
   </main>
@@ -782,6 +870,8 @@
         profile?.package ? profile.package + ' plan' : '',
       ].filter(Boolean).join(' · ');
 
+      _initTabs(profile);
+
       if (profile?.role === 'student') {
         document.getElementById('class-panel').style.display = 'flex';
         document.getElementById('social-section').style.display = 'block';
@@ -813,6 +903,159 @@
       _renderFeed(recentEvents);
     }
 
+    /* ── Tabs ─────────────────────────────────────────────────────────────
+       To do (learners only) · My notebook · Practice · Progress. The open tab
+       is kept in the address (#todo, #notebook, #practice, #progress) so links
+       and the account menu can open one, and remembered on this device. */
+    const DASH_TABS = ['todo', 'notebook', 'practice', 'progress'];
+    const DASH_TAB_PREF = 'ml-dash-tab';
+    let _dashTabsReady = false;
+    function _tabFromHash() {
+      const h = location.hash.replace('#', '');
+      if (h === 'assignments-panel') return 'todo';
+      return DASH_TABS.includes(h) ? h : null;
+    }
+    function _tabAllowed(id) { const b = document.getElementById('tabbtn-' + id); return b && !b.hidden; }
+    function _showTab(id, opts = {}) {
+      if (!_tabAllowed(id)) id = _tabAllowed('todo') ? 'todo' : 'progress';
+      DASH_TABS.forEach(t => {
+        const b = document.getElementById('tabbtn-' + t), p = document.getElementById('tab-' + t);
+        const on = t === id;
+        b.setAttribute('aria-selected', String(on));
+        b.tabIndex = on ? 0 : -1;
+        p.hidden = !on;
+      });
+      try { localStorage.setItem(DASH_TAB_PREF, id); } catch (e) {}
+      if (opts.updateHash !== false && location.hash !== '#' + id) history.replaceState(null, '', '#' + id);
+      if (opts.focus) document.getElementById('tabbtn-' + id).focus();
+      if (id === 'notebook') _loadNotebookTab();
+    }
+    function _initTabs(profile) {
+      if (_dashTabsReady) return;
+      _dashTabsReady = true;
+      const isStudent = profile?.role === 'student';
+      document.getElementById('tabbtn-todo').hidden = !isStudent;
+      const btns = DASH_TABS.map(t => document.getElementById('tabbtn-' + t));
+      btns.forEach(b => {
+        b.addEventListener('click', () => _showTab(b.dataset.tab));
+        b.addEventListener('keydown', e => {
+          const vis = btns.filter(x => !x.hidden), i = vis.indexOf(b);
+          let n = null;
+          if (e.key === 'ArrowRight') n = vis[(i + 1) % vis.length];
+          if (e.key === 'ArrowLeft') n = vis[(i - 1 + vis.length) % vis.length];
+          if (e.key === 'Home') n = vis[0];
+          if (e.key === 'End') n = vis[vis.length - 1];
+          if (n) { e.preventDefault(); _showTab(n.dataset.tab, { focus: true }); }
+        });
+      });
+      let stored = null; try { stored = localStorage.getItem(DASH_TAB_PREF); } catch (e) {}
+      const first = _tabFromHash() || (DASH_TABS.includes(stored) ? stored : null) || (isStudent ? 'todo' : 'progress');
+      _showTab(first, { updateHash: !!_tabFromHash() && location.hash !== '#assignments-panel' });
+      window.addEventListener('hashchange', () => { const t = _tabFromHash(); if (t) _showTab(t, { updateHash: false }); });
+    }
+    // The number on the To do tab: what's still open, in red when something is overdue.
+    function _setTodoCount(assignments) {
+      const el = document.getElementById('todo-count');
+      const today = new Date().toISOString().slice(0, 10);
+      const open = assignments.filter(a => !a.done);
+      const late = open.filter(a => a.due_date && a.due_date < today).length;
+      el.hidden = !open.length;
+      el.textContent = open.length;
+      el.classList.toggle('late', late > 0);
+      el.title = open.length + ' to do' + (late ? ', ' + late + ' overdue' : '');
+      el.setAttribute('aria-label', el.title);
+    }
+
+    /* ── My notebook tab (Study Spellbook) ────────────────────────────────
+       Read from the account, so it shows the same notes on every device.
+       Pro or School plans can write; anyone can read notes they already
+       have (a lapsed plan never hides work). Spec: docs/notebook-spec.md. */
+    let _nbLoaded = false;
+    async function _loadNotebookTab(force) {
+      if (_nbLoaded && !force) return;
+      _nbLoaded = true;
+      const body = document.getElementById('nb-dash-body'), sub = document.getElementById('nb-dash-sub');
+      const auth = window.MagicLabAuth, profile = auth && auth.getProfile();
+      const pro = ['pro', 'school'].includes(profile?.package);
+      const sb = auth && auth._supabase && auth._supabase();
+      let dividers = [], pages = [], failed = false;
+      if (sb) {
+        try {
+          const [d, p] = await Promise.all([
+            sb.from('notebook_dividers').select('id,name,colour,sort').is('deleted_at', null).order('sort'),
+            sb.from('notebook_pages').select('id,title,divider_id,updated_at,lesson_title,lesson_url').is('deleted_at', null).order('updated_at', { ascending: false }).limit(500)
+          ]);
+          if (d.error || p.error) throw (d.error || p.error);
+          dividers = d.data || []; pages = p.data || [];
+        } catch (e) { console.warn('[Dashboard] notebook', e); failed = true; }
+      }
+      const open = id => `notebook.html${id ? '?page=' + encodeURIComponent(id) : ''}`;
+      document.getElementById('nb-dash-open').href = open(pages[0] && pages[0].id);
+
+      if (failed) {
+        body.innerHTML = `<p class="empty-hint">Your notebook list couldn’t load just now. <a href="notebook.html" style="color:var(--paper)">Open the notebook</a> to see your notes.</p>`;
+        return;
+      }
+      if (!pro && !pages.length) {
+        sub.textContent = 'Study Spellbook is part of the Pro plan.';
+        document.getElementById('nb-dash-open').style.display = 'none';
+        body.innerHTML = `<div class="class-panel nb-dash-pro">
+          <div class="class-panel-text">
+            <div class="class-panel-title">Your own notebook, next to every lesson</div>
+            <ul>
+              <li>Clip text from lessons, with a link back to where it came from</li>
+              <li>Type, highlight, and add checklists, tables and links</li>
+              <li>A divider for each subject, backed up to your account</li>
+              <li>Print a page, a subject or the whole notebook</li>
+            </ul>
+          </div>
+          <a class="class-join-btn" href="pricing.html" style="text-decoration:none;display:inline-flex;align-items:center;">Upgrade to Pro</a>
+        </div>`;
+        return;
+      }
+      const byId = new Map(dividers.map(d => [d.id, d]));
+      const counts = new Map();
+      pages.forEach(p => counts.set(p.divider_id, (counts.get(p.divider_id) || 0) + 1));
+      sub.textContent = pages.length
+        ? `${pages.length} page${pages.length === 1 ? '' : 's'} in ${dividers.length} divider${dividers.length === 1 ? '' : 's'}, backed up to your account.`
+        : 'Your notes from every lesson, backed up to your account.';
+      if (!pages.length) {
+        body.innerHTML = `<p class="empty-hint">Your notebook is empty. On any lesson, choose <strong>Notebook</strong> at the top to start notes for it, or open the notebook to make your own pages.</p>`;
+        return;
+      }
+      const ago = iso => {
+        const s = (Date.now() - Date.parse(iso)) / 1000;
+        if (s < 60) return 'just now';
+        if (s < 3600) return Math.round(s / 60) + ' min ago';
+        if (s < 86400) return Math.round(s / 3600) + ' h ago';
+        if (s < 7 * 86400) return Math.round(s / 86400) + ' d ago';
+        return new Date(iso).toLocaleDateString('en-ZA', { day: 'numeric', month: 'short' });
+      };
+      const divChip = d => {
+        const first = pages.find(p => p.divider_id === d.id);
+        return `<a class="nb-dash-divider" href="${open(first && first.id)}"><span class="nb-dash-swatch" style="background:${_esc(d.colour)}"></span>${_esc(d.name)}<span class="n">${counts.get(d.id) || 0}</span></a>`;
+      };
+      const pageRow = p => {
+        const d = byId.get(p.divider_id);
+        return `<a class="nb-dash-page" href="${open(p.id)}">
+          <div class="nb-dash-page-main">
+            <div class="nb-dash-page-title">${_esc(p.title || 'Untitled page')}</div>
+            <div class="nb-dash-page-meta">
+              ${d ? `<span class="div"><span class="nb-dash-swatch" style="background:${_esc(d.colour)}"></span>${_esc(d.name)}</span>` : ''}
+              ${p.lesson_title ? `<span>Lesson: ${_esc(p.lesson_title)}</span>` : ''}
+            </div>
+          </div>
+          <span class="nb-dash-page-when">${ago(p.updated_at)}</span>
+        </a>`;
+      };
+      body.innerHTML = `
+        ${pro ? '' : `<p class="nb-dash-note">Your notes are safe and you can read and print them. Writing in the notebook is part of Pro. <a href="pricing.html" style="color:var(--paper)">Upgrade</a></p>`}
+        <div class="section-hdr">Dividers</div>
+        <div class="nb-dash-dividers">${dividers.filter(d => counts.get(d.id)).map(divChip).join('')}</div>
+        <div class="section-hdr">Recently edited</div>
+        ${pages.slice(0, 8).map(pageRow).join('')}`;
+    }
+
     /* My Assignments: grouped by class, then by type (written tasks, then each tool's lessons).
        Learners can filter by class, type and status and choose the order; the choice is remembered
        on this device. */
@@ -828,6 +1071,8 @@
 
     function _renderAssignments(assignments, profile) {
       const panel = document.getElementById('assignments-panel');
+      document.getElementById('todo-empty').hidden = !(profile?.role === 'student' && !assignments.length);
+      _setTodoCount(assignments);
       if (profile?.role !== 'student' || !assignments.length) {
         panel.style.display = 'none';
         return;
@@ -838,6 +1083,7 @@
       _renderAssignmentList();
 
       if (window.location.hash === '#assignments-panel') {
+        _showTab('todo');
         panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
         panel.classList.add('jump-highlight');
         setTimeout(() => panel.classList.remove('jump-highlight'), 2500);
