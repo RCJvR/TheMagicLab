@@ -44,7 +44,7 @@
 <!-- Import -->
 <dialog class="xm-dialog" id="dlgImport" aria-labelledby="impH">
   <h2 id="impH" style="margin-top:0">Import a paper</h2>
-  <p class="gg-hint">Paste or choose a paper in the Test Tome format (the JSON Claude writes from your notes). The memo stays in the database; learners only ever receive the questions.</p>
+  <p class="gg-hint">Paste or choose a paper in the Test Tome format (the JSON Claude writes from your notes). The memo stays in the database; learners only ever receive the questions. A paper with an Afrikaans version can be imported once per language.</p>
   <div class="gg-field"><label for="impFile">File</label><input type="file" id="impFile" accept=".json,application/json"></div>
   <div class="gg-field"><label for="impText">…or paste it</label><textarea id="impText" rows="6" spellcheck="false" style="font-family:var(--font-mono,monospace);font-size:12px"></textarea></div>
   <div id="impReport"></div>
@@ -52,6 +52,8 @@
     <div class="gg-field"><label for="impTitle">Title</label><input class="gg-in" id="impTitle" maxlength="160"></div>
     <div class="gg-field"><label for="impGrade">Grade</label><input class="gg-in" id="impGrade" type="number" min="1" max="12"></div>
     <div class="gg-field"><label for="impMin">Minutes</label><input class="gg-in" id="impMin" type="number" min="5" max="300"></div>
+    <div class="gg-field" id="impLangWrap" hidden><label for="impLang">Language</label>
+      <select id="impLang"><option value="en">English</option><option value="af">Afrikaans</option></select></div>
   </div>
   <p class="gg-err" id="impErr" role="alert"></p>
   <div class="gg-top" style="margin:8px 0 0">
@@ -93,7 +95,7 @@
 <script defer src="require-auth.js"></script>
 <script type="module">
 import { sb, $, el, esc, whenAuthReady, friendly, fmtNum, fmtWhen, isStaff } from './assets/exam-core.js';
-import { prepare, memoText } from './assets/exam-paper.js';
+import { prepare, memoText, hasAfrikaans } from './assets/exam-paper.js';
 import { renderItem, renderScenario } from './assets/exam-render.js';
 
 let papers = [], sittings = [], classes = [], pending = null, setPaperRow = null;
@@ -197,19 +199,24 @@ function check(text) {
   if (!text.trim()) { $('impReport').innerHTML = ''; return; }
   let src;
   try { src = JSON.parse(text); } catch (e) { $('impReport').innerHTML = '<p class="gg-err">That is not valid JSON: ' + esc(e.message) + '</p>'; return; }
-  const r = prepare(src);
+  const af = hasAfrikaans(src);
+  $('impLangWrap').hidden = !af;
+  if (!af) $('impLang').value = 'en';
+  const lang = $('impLang').value;
+  const r = prepare(src, { lang });
   let h = '';
   if (r.errors.length) h += '<p class="gg-err"><b>Fix before saving:</b><br>' + r.errors.map(esc).join('<br>') + '</p>';
   if (!r.errors.length) h += bpHtml(r.blueprint);
   if (r.warnings.length) h += '<p style="color:var(--warn);font-size:14px"><b>Check:</b><br>' + r.warnings.map(esc).join('<br>') + '</p>';
   $('impReport').innerHTML = h;
   if (r.errors.length) return;
-  pending = { src, ...r };
-  $('impTitle').value = src.title || ''; $('impGrade').value = src.grade || ''; $('impMin').value = src.minutes || 60;
+  pending = { src, lang, ...r };
+  $('impTitle').value = (lang === 'af' ? (src.titleAf || src.title) : src.title) || ''; $('impGrade').value = src.grade || ''; $('impMin').value = src.minutes || 60;
   $('impMeta').hidden = false; $('impSave').disabled = $('impPreview').disabled = false;
 }
 $('btnImport').addEventListener('click', () => { $('impText').value = ''; $('impFile').value = ''; check(''); $('dlgImport').showModal(); });
 $('impText').addEventListener('input', () => check($('impText').value));
+$('impLang').addEventListener('change', () => check($('impText').value));
 $('impFile').addEventListener('change', async () => { const f = $('impFile').files[0]; if (!f) return; const t = await f.text(); $('impText').value = t; check(t); });
 $('impPreview').addEventListener('click', () => pending && showPreview(pending.learner, pending.memo));
 $('impSave').addEventListener('click', async () => {
@@ -237,7 +244,8 @@ async function previewPaper(id) {
 function showPreview(learner, memo) {
   const box = $('prevBody'); box.innerHTML = '';
   box.appendChild(el('h2', { text: learner.title, style: 'margin:0' }));
-  box.appendChild(el('p', { class: 'gg-hint', text: `${fmtNum(learner.total)} marks · ${learner.minutes} minutes` }));
+  box.appendChild(el('p', { class: 'gg-hint', text: `${fmtNum(learner.total)} marks · ${learner.minutes} minutes` + (learner.lang === 'af' ? ' · Afrikaans' : '') }));
+  if (learner.addendum) box.appendChild(el('details', { class: 'xm-addendum' }, [el('summary', { text: learner.lang === 'af' ? 'Addendum' : 'Addendum' }), el('div', { html: learner.addendum })]));
   let sec = -1, scen = null;
   learner.items.forEach(it => {
     if (it.sec !== sec) { sec = it.sec; const s = learner.sections[sec]; box.appendChild(el('h3', { class: 'xm-section-h', text: `${s.title} (${fmtNum(s.total)})` })); if (s.intro) box.appendChild(el('p', { class: 'xm-section-intro', text: s.intro })); }

@@ -19,6 +19,7 @@ const msg = t => { $('msg').textContent = t; show('msg'); };
 /* ═════════════════════════════ LEARNER ═════════════════════════════ */
 let att = null;            // { id, deadline, offset, status, lockOnExit, lockdown, shuffle, title }
 let paper = null, answers = {}, version = 0, savedVersion = 0;
+const AF = () => !!(paper && paper.lang === 'af');
 let events = [], saving = false, armed = false, finished = false, lastFocusItem = null, lastQuickSave = 0;
 let pollLock = null, tick = null, saver = null;
 const LS = id => 'xm-sit:' + id;
@@ -76,20 +77,30 @@ function drawPaper() {
   document.body.classList.add('xm-sit');
   document.title = att.title + ' — Exam';
   $('pTitle').textContent = att.title;
+  if (AF()) {
+    document.documentElement.lang = 'af';
+    $('btnSubmit').textContent = 'Handig my vraestel in';
+    $('lockH').textContent = 'Jou vraestel is gesluit';
+    $('lockP').textContent = 'Jy het die eksamenbladsy verlaat. Steek jou hand op: jou onderwyser moet dit oopsluit. Jou antwoorde is veilig.';
+    $('btnResume').textContent = 'Terug na my vraestel';
+    $('vOffline').textContent = 'Geen verbinding nie. Skryf voort: jou antwoorde word op hierdie rekenaar gehou en gestuur sodra die verbinding terug is.';
+  }
   const box = $('pBody'); box.innerHTML = '';
   const nav = $('pNav'); nav.innerHTML = '';
   if (paper.intro) box.appendChild(el('p', { class: 'xm-text', text: paper.intro }));
+  if (paper.addendum) box.appendChild(el('details', { class: 'xm-addendum' }, [
+    el('summary', { text: paper.lang === 'af' ? 'Addendum (inligtingsblad)' : 'Addendum (information sheet)' }), el('div', { html: paper.addendum })]));
   let sec = -1, scen = null;
   paper.items.forEach(it => {
     if (it.sec !== sec) {
       sec = it.sec; const s = paper.sections[sec];
-      box.appendChild(el('h2', { class: 'xm-section-h', text: `${s.title} (${fmtNum(s.total)} marks)` }));
+      box.appendChild(el('h2', { class: 'xm-section-h', text: `${s.title} (${fmtNum(s.total)} ${AF() ? 'punte' : 'marks'})` }));
       if (s.intro) box.appendChild(el('p', { class: 'xm-section-intro', text: s.intro }));
     }
     if (it.scen && it.scen !== scen) box.appendChild(renderScenario(paper.scenarios[it.scen]));
     scen = it.scen || null;
     const mix = it.type === 'mcq' && att.shuffle && !it.keepOrder ? seededOrder(it.options.length, att.id + it.id) : null;
-    box.appendChild(renderItem(it, { answer: answers[it.id], mix, onChange: v => setAnswer(it, v) }));
+    box.appendChild(renderItem(it, { answer: answers[it.id], mix, lang: paper.lang, onChange: v => setAnswer(it, v) }));
     nav.appendChild(el('a', { href: '#q-' + it.id, 'data-id': it.id, text: it.num, onclick: e => { e.preventDefault(); document.getElementById('q-' + it.id).scrollIntoView({ block: 'start' }); } }));
   });
   if (window.MMFigs) window.MMFigs.scan(box);
@@ -110,10 +121,11 @@ function setAnswer(it, v) {
 }
 function progress() {
   const n = paper.items.filter(it => isAnswered(it, answers[it.id])).length;
-  $('pProg').textContent = `${n} of ${paper.items.length} answered`;
+  $('pProg').textContent = AF() ? `${n} van ${paper.items.length} beantwoord` : `${n} of ${paper.items.length} answered`;
   $('pNav').querySelectorAll('a').forEach(a => { const it = paper.items.find(x => x.id === a.dataset.id); a.classList.toggle('done', isAnswered(it, answers[it.id])); });
   const left = paper.items.length - n;
-  $('pEndHint').textContent = left ? `${left} question${left === 1 ? '' : 's'} not answered yet.` : 'Every question has an answer.';
+  $('pEndHint').textContent = AF() ? (left ? `${left} vra${left === 1 ? 'ag' : 'e'} nog nie beantwoord nie.` : 'Elke vraag het ’n antwoord.')
+    : (left ? `${left} question${left === 1 ? '' : 's'} not answered yet.` : 'Every question has an answer.');
 }
 
 function saveState(text, bad) { $('pSave').textContent = text; $('pSave').classList.toggle('bad', !!bad); }

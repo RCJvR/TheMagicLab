@@ -11,7 +11,8 @@
  * which copies it there (the site does not publish supabase/).
  *
  * Item ids and numbers follow test-tome.html exactly: section si, question n,
- * sub-question k → id "si.n" or "si.n.k", number "(si+1).n(.k)".
+ * sub-question k → id "si.n" or "si.n.k", number "(si+1).n(.k)". A question (or
+ * scenario) may set "n" to show the number printed on the paper instead, e.g. "6.2(a)".
  */
 
 export const PAPER_FORMAT = 1;
@@ -44,13 +45,19 @@ function derange(n, rand) {
   return s;
 }
 const sum = a => a.reduce((x, y) => x + (Number(y) || 0), 0);
-function english(o) {                  // drop the …Af twins: exams are English for now
-  if (Array.isArray(o)) return o.map(english);
+/** One language of a paper: every field may have an …Af twin (Test Tome convention). */
+function localise(o, lang) {
+  if (Array.isArray(o)) return o.map(x => localise(x, lang));
   if (!o || typeof o !== 'object') return o;
   const r = {};
-  for (const k of Object.keys(o)) if (!/Af$/.test(k)) r[k] = english(o[k]);
+  for (const k of Object.keys(o)) {
+    if (/Af$/.test(k)) continue;
+    r[k] = localise(lang === 'af' && o[k + 'Af'] != null ? o[k + 'Af'] : o[k], lang);
+  }
   return r;
 }
+/** Does this paper also have an Afrikaans version (…Af fields)? */
+export function hasAfrikaans(source) { return /"[A-Za-z]+Af"\s*:/.test(JSON.stringify(source || {})); }
 
 export function maxMarks(q) {
   const n = q.type === 'match' || q.type === 'pairs' ? (q.pairs || []).length
@@ -64,18 +71,21 @@ export function maxMarks(q) {
 
 /* ── split a paper ─────────────────────────────────────────── */
 /**
- * prepare(source) → { learner, memo, total, blueprint, warnings, errors }
+ * prepare(source, { lang: 'en' | 'af' }) → { learner, memo, total, blueprint, warnings, errors }
  *  learner: what a learner receives (no answers, no memo points, no explanations)
  *  memo:    { [itemId]: { type, max, topic, skill, … answers … } }
  */
-export function prepare(source) {
+export function prepare(source, opts = {}) {
   const errors = [], warnings = [];
-  const src = english(source || {});
+  const lang = opts.lang === 'af' ? 'af' : 'en';
+  const src = localise(source || {}, lang);
   if (!Array.isArray(src.sections) || !src.sections.length) errors.push('The paper has no sections.');
   const seed = String(src.id || src.title || 'paper');
   const learner = {
     format: PAPER_FORMAT, title: src.title || 'Untitled paper', subject: src.subject || '', grade: src.grade || null,
-    minutes: src.minutes || 60, intro: src.intro || '', topics: src.topics || {}, sections: [], scenarios: {}, items: []
+    minutes: src.minutes || 60, intro: src.intro || '', topics: src.topics || {}, lang,
+    addendum: src.addendum || '',            // the paper's information sheet (HTML), shown as a fold-out
+    sections: [], scenarios: {}, items: []
   };
   const memo = {};
 
@@ -86,7 +96,7 @@ export function prepare(source) {
       n++;
       if (q.type === 'scenario') {
         const key = `${si}.${n}`;
-        learner.scenarios[key] = { label: q.label != null ? q.label : 'Scenario', num: `${si + 1}.${n}`, scenario: q.scenario || '', svg: q.svg || '', code: q.code || '' };
+        learner.scenarios[key] = { label: q.label != null ? q.label : 'Scenario', num: q.n != null ? String(q.n) : `${si + 1}.${n}`, scenario: q.scenario || '', svg: q.svg || '', code: q.code || '' };
         (q.questions || []).forEach((sq, k) => add(`${si}.${n}.${k + 1}`, `${si + 1}.${n}.${k + 1}`, sq, si, key, sq.skill || 'application', sq.topic || q.topic));
       } else add(`${si}.${n}`, `${si + 1}.${n}`, q, si, null, q.skill || 'knowledge', q.topic);
     });
@@ -96,6 +106,7 @@ export function prepare(source) {
     if (!KNOWN.has(q.type)) { errors.push(`${num}: question type "${q.type}" is not supported in exams.`); return; }
     const max = maxMarks(q);
     const rand = rng(seed + '|' + id);
+    if (q.n != null) num = String(q.n);       // the number printed on the paper, e.g. "4.3(a)"
     const L = { id, num, sec: si, type: q.type, q: q.q || '', marks: max };
     if (scen) L.scen = scen;
     if (q.svg) L.svg = q.svg;

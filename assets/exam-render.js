@@ -23,7 +23,7 @@ export function seededOrder(n, seed) {
   return a;
 }
 
-const marksText = n => n === 1 ? '(1 mark)' : `(${n} marks)`;
+const marksText = (n, lang) => lang === 'af' ? (n === 1 ? '(1 punt)' : `(${n} punte)`) : (n === 1 ? '(1 mark)' : `(${n} marks)`);
 const textBlock = s => s ? `<p class="xm-text">${esc(s)}</p>` : '';
 const figure = svg => svg ? `<div class="xm-figure${/<table/.test(svg) ? ' wide' : ''}">${svg}</div>` : '';
 const codeBlock = c => c ? `<pre class="xm-code">${esc(c)}</pre>` : '';
@@ -49,14 +49,14 @@ export function renderItem(it, opts = {}) {
   const set = v => { a = v; opts.onChange && opts.onChange(v); };
   const wrap = document.createElement('div');
   wrap.className = 'xm-q'; wrap.id = 'q-' + it.id; wrap.dataset.id = it.id;
-  wrap.innerHTML = `<div class="xm-qhead"><span class="xm-num">${esc(it.num)}</span><div class="xm-qtext">${esc(it.q)}</div><span class="xm-marks">${marksText(it.marks)}</span></div>` +
+  wrap.innerHTML = `<div class="xm-qhead"><span class="xm-num">${esc(it.num)}</span><div class="xm-qtext">${esc(it.q)}</div><span class="xm-marks">${marksText(it.marks, opts.lang)}</span></div>` +
     `<div class="xm-body">${figure(it.svg)}${codeBlock(it.code)}</div>`;
   const body = wrap.querySelector('.xm-body');
   const name = 'q' + it.id.replace(/\./g, '_');
 
   if (it.type === 'mcq' || it.type === 'tf') {
     const g = document.createElement('div'); g.className = 'xm-opts' + (it.type === 'tf' ? ' xm-tf' : ''); g.setAttribute('role', 'radiogroup');
-    const choices = it.type === 'tf' ? [['True', true], ['False', false]]
+    const choices = it.type === 'tf' ? (opts.lang === 'af' ? [['Waar', true], ['Onwaar', false]] : [['True', true], ['False', false]])
       : (mix || it.options.map((_, i) => i)).map(oi => [it.options[oi], oi]);
     choices.forEach(([label, val], k) => {
       const lab = document.createElement('label'); lab.className = 'xm-opt';
@@ -69,10 +69,11 @@ export function renderItem(it, opts = {}) {
   } else if (it.type === 'match') {
     const box = document.createElement('div'); box.className = 'xm-match';
     const cur = a || {};
-    box.innerHTML = `<div class="xm-col"><h4>Column A</h4>${it.left.map((l, i) =>
+    const AF = opts.lang === 'af';
+    box.innerHTML = `<div class="xm-col"><h4>${AF ? 'Kolom A' : 'Column A'}</h4>${it.left.map((l, i) =>
       `<div class="xm-arow"><span>${i + 1}. ${esc(l)}</span><select data-i="${i}" aria-label="Match for ${esc(l)}"${readOnly ? ' disabled' : ''}><option value="">–</option>${
         it.right.map((_, k) => `<option value="${k}"${cur[i] === k ? ' selected' : ''}>${LETTER(k)}</option>`).join('')}</select></div>`).join('')}</div>` +
-      `<div class="xm-col"><h4>Column B</h4>${it.right.map((r, k) => `<div class="xm-brow"><b>${LETTER(k)}</b><span>${esc(r)}</span></div>`).join('')}</div>`;
+      `<div class="xm-col"><h4>${AF ? 'Kolom B' : 'Column B'}</h4>${it.right.map((r, k) => `<div class="xm-brow"><b>${LETTER(k)}</b><span>${esc(r)}</span></div>`).join('')}</div>`;
     if (!readOnly) box.querySelectorAll('select').forEach(s => s.addEventListener('change', () => {
       const next = Object.assign({}, a || {}), i = s.dataset.i;
       if (s.value === '') delete next[i]; else next[i] = +s.value;
@@ -95,7 +96,7 @@ export function renderItem(it, opts = {}) {
     };
     draw();
     body.appendChild(ol);
-    if (!readOnly) body.insertAdjacentHTML('beforeend', '<p class="xm-hint">Use the arrows to put the steps in the right order.</p>');
+    if (!readOnly) body.insertAdjacentHTML('beforeend', opts.lang === 'af' ? '<p class="xm-hint">Gebruik die pyltjies om die stappe in die regte volgorde te sit.</p>' : '<p class="xm-hint">Use the arrows to put the steps in the right order.</p>');
   } else if (it.type === 'fill' || it.type === 'blank') {
     const parts = (it.type === 'fill' ? it.fill : it.text).split('[[]]');
     const box = document.createElement(it.type === 'fill' ? 'pre' : 'p');

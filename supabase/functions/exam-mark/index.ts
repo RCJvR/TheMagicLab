@@ -48,6 +48,7 @@ function plain(html?: string): string {
   if (!html) return "";
   return html
     .replace(/<div class="mf-fig"[^>]*>.*?<\/div>/gs, "[graph]")
+    .replace(/<img[^>]*alt="([^"]*)"[^>]*>/g, "[picture: $1]")
     .replace(/<\/(td|th)>/g, " | ").replace(/<\/(tr|p|div|li)>|<br\s*\/?>/g, "\n")
     .replace(/<[^>]+>/g, "").replace(/&nbsp;/g, " ").replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">")
     .replace(/[ \t]+/g, " ").replace(/\n\s*\n+/g, "\n").trim();
@@ -77,8 +78,9 @@ const SCHEMA = {
   additionalProperties: false,
 };
 
-function systemPrompt(grade: number | null, subject: string): string {
+function systemPrompt(grade: number | null, subject: string, lang: string): string {
   const who = grade ? `Grade ${grade}` : "high-school";
+  const language = lang === "af" ? "Afrikaans (South African, as a teacher writes it in class)" : "plain South African English";
   return `You are an experienced, fair South African ${who} ${subject ? subject + " " : ""}teacher marking a learner's exam script against the teacher's memo. Your marks are a draft: the teacher reviews them before any learner sees them, so be consistent and honest about uncertainty.
 
 For each answer you receive the question, the scenario it belongs to (if any), the memo points with their marks, and the learner's answer.
@@ -91,7 +93,9 @@ Marking:
 - "confidence": "high" when the decision is clear; "medium" when a reasonable teacher might award one point differently; "low" when you are unsure (an ambiguous or half-right answer, unclear wording, or an answer that might be correct in a way the memo does not cover).
 - An empty answer earns nothing.
 
-Feedback, to the learner as "you", in plain South African English a ${who} learner understands:
+The paper and the answers may be in Afrikaans while the memo is in English (or the other way round): mark the meaning, not the language.
+
+Feedback, to the learner as "you" ("jy" in Afrikaans), in ${language} that a ${who} learner understands:
 - One or two short sentences per answer: what earned marks, and the specific thing that would have earned the marks missed. Concrete, kind and direct. Do not quote the memo word for word.
 - "summary": two or three sentences on patterns across the whole script (for example using the scenario, command words, naming the right term) and the one thing to practise next.
 
@@ -161,7 +165,7 @@ Deno.serve(async (req) => {
   }
   const aiRows: Q[] = blank.map((it) => ({
     attempt_id: att.id, item_id: it.id, max: memo[it.id].max, ai_met: [], ai_score: 0, ai_confidence: "high", ai_alt: false,
-    ai_feedback: "No answer was given.", updated_at: new Date().toISOString(),
+    ai_feedback: learner.lang === "af" ? "Geen antwoord is gegee nie." : "No answer was given.", updated_at: new Date().toISOString(),
   }));
   let summary: string | null = null, usage: Q = {}, model: string | null = null;
 
@@ -188,7 +192,7 @@ Deno.serve(async (req) => {
       msg = await client.beta.messages.create({
         model: MODEL,
         max_tokens: 16000,
-        system: systemPrompt(paper.grade, paper.subject || ""),
+        system: systemPrompt(paper.grade, paper.subject || "", learner.lang === "af" ? "af" : "en"),
         output_config: { effort: "medium", format: { type: "json_schema", schema: SCHEMA } },
         betas: ["server-side-fallback-2026-07-01"],
         fallbacks: "default",
