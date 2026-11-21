@@ -1,0 +1,99 @@
+<!doctype html>
+<!-- © 2026 Ruhan Janse van Rensburg. All rights reserved. -->
+<html lang="en" translate="no">
+<head>
+<script src="/assets/theme.js"></script>
+<script>document.documentElement.style.visibility='hidden';</script>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex">
+<meta name="google" content="notranslate">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#08090b">
+<title>Exam — The Magic Lab</title>
+<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700,800,900&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="assets/magic-lab.css">
+<link rel="stylesheet" href="assets/grimoire.css">
+<link rel="stylesheet" href="assets/exam.css">
+<link rel="stylesheet" href="math-magician/figs.css">
+<script defer src="math-magician/figs.js"></script>
+</head>
+<body class="gg">
+
+<!-- Learner: cover page with the code -->
+<section class="xm-cover" id="vCover" hidden>
+  <h1>Exam</h1>
+  <p class="gg-hint" id="coverWho"></p>
+  <ol class="xm-rules">
+    <li>Type the code your teacher gives you.</li>
+    <li>The paper opens in full screen. <b>Do not leave it</b>: switching to another tab, window or app is recorded, and your paper locks until your teacher unlocks it.</li>
+    <li>Your answers save by themselves every few seconds. If the Wi-Fi drops, keep writing: they are kept on this computer and sent when it is back.</li>
+    <li>The clock is the school's clock. When time is up, your paper is handed in as it is.</li>
+  </ol>
+  <div class="gg-field" style="margin-top:18px"><label for="code">Code</label><input class="gg-in xm-code-in" id="code" maxlength="8" autocomplete="off" spellcheck="false" inputmode="text"></div>
+  <p class="gg-err" id="coverErr" role="alert"></p>
+  <button class="gg-btn gg-btn--primary" type="button" id="btnStart">Start the paper</button>
+</section>
+
+<!-- Learner: the paper -->
+<section id="vPaper" hidden>
+  <div class="xm-bar">
+    <div class="xm-bar-in">
+      <span class="xm-bar-title" id="pTitle"></span>
+      <span class="xm-progress" id="pProg"></span>
+      <span class="xm-save" id="pSave" aria-live="polite"></span>
+      <span class="xm-clock" id="pClock" aria-label="Time left" role="timer">--:--</span>
+    </div>
+    <nav class="xm-nav" id="pNav" aria-label="Questions"></nav>
+  </div>
+  <main class="gg-main xm-paper" id="pBody"></main>
+  <div class="xm-end">
+    <p class="gg-hint" id="pEndHint"></p>
+    <button class="gg-btn gg-btn--primary" type="button" id="btnSubmit">Hand in my paper</button>
+  </div>
+</section>
+
+<!-- Learner: handed in -->
+<section class="xm-cover" id="vDone" hidden>
+  <h1>Handed in</h1>
+  <p id="doneText">Your paper has been handed in. You may close this window when your teacher says so.</p>
+</section>
+
+<!-- Learner: locked -->
+<div class="xm-lock" id="vLock" hidden role="alertdialog" aria-labelledby="lockH" aria-describedby="lockP">
+  <div>
+    <h2 id="lockH">Your paper is locked</h2>
+    <p id="lockP">You left the exam page. Put up your hand: your teacher has to unlock it. Your answers are safe.</p>
+    <p class="gg-hint" id="lockWait">Waiting for your teacher…</p>
+    <button class="gg-btn gg-btn--primary" type="button" id="btnResume" hidden>Back to my paper</button>
+  </div>
+</div>
+<div class="xm-offline" id="vOffline" hidden role="status">No connection. Keep writing: your answers are kept on this computer and sent when the connection is back.</div>
+
+<!-- Teacher: monitor -->
+<main class="gg-main" id="vMonitor" hidden>
+  <div class="gg-top"><a class="gg-back" href="exam-papers.html">← Exam papers</a></div>
+  <div class="xm-mon-head">
+    <div><h1 id="mTitle" style="margin:0"></h1><div class="gg-meta" id="mMeta"></div></div>
+  </div>
+  <div class="xm-mon-head">
+    <div><div class="gg-lbl">Code for learners</div><div class="xm-bigcode" id="mCode"></div></div>
+    <div><button class="gg-btn gg-btn--primary" type="button" id="mOpen"></button></div>
+    <div class="xm-counts" id="mCounts"></div>
+  </div>
+  <p class="gg-hint" id="mLink"></p>
+  <p class="gg-err" id="mErr" role="alert"></p>
+  <div class="xm-grid" id="mGrid"></div>
+  <div class="gg-top" style="margin-top:20px">
+    <button class="gg-btn" type="button" id="mSubmitAll">Hand in all papers still being written</button>
+    <a class="gg-btn" id="mReview" href="#">Mark &amp; review →</a>
+  </div>
+</main>
+
+<p class="gg-msg gg-main" id="msg">Loading…</p>
+
+<script src="auth.js"></script>
+<script defer src="require-auth.js"></script>
+<script type="module" src="assets/exam-sit.js"></script>
+</body>
+</html>

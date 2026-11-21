@@ -1,0 +1,300 @@
+<!doctype html>
+<!-- © 2026 Ruhan Janse van Rensburg. All rights reserved. -->
+<html lang="en">
+<head>
+<script src="/assets/theme.js"></script>
+<script>document.documentElement.style.visibility='hidden';</script>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#08090b">
+<title>Exam papers — Exam Sanctum</title>
+<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700,800,900&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="assets/magic-lab.css">
+<link rel="stylesheet" href="assets/grimoire.css">
+<link rel="stylesheet" href="assets/exam.css">
+<link rel="stylesheet" href="math-magician/figs.css">
+<script defer src="math-magician/figs.js"></script>
+</head>
+<body class="gg">
+<main class="gg-main" id="main">
+  <div class="gg-top"><a class="gg-back" href="dashboard-teacher.html">← Teacher dashboard</a></div>
+  <h1>Exam papers</h1>
+  <p class="gg-hint" style="max-width:68ch;margin:0 0 18px">Papers learners write in class under exam conditions. The server marks the objective questions; AI marks the written answers against your memo; you check and release.</p>
+  <p class="gg-msg" id="msg">Loading…</p>
+
+  <div id="app" hidden>
+    <h2 class="gg-h">Sittings</h2>
+    <p class="gg-hint" style="margin:0 0 10px">One class writing one paper. Open it in class, give learners the code, and watch the monitor.</p>
+    <div class="xm-table-wrap"><table class="xm-table" id="sitTable">
+      <thead><tr><th>Paper</th><th>Class</th><th>Code</th><th>State</th><th>Scripts</th><th></th></tr></thead><tbody></tbody>
+    </table></div>
+    <p class="gg-hint" id="sitEmpty" hidden>No sittings yet. Set a paper for a class below.</p>
+
+    <h2 class="gg-h">Papers</h2>
+    <div class="gg-top"><button class="gg-btn gg-btn--primary" type="button" id="btnImport">Import a paper</button></div>
+    <div class="xm-table-wrap"><table class="xm-table" id="paperTable">
+      <thead><tr><th>Title</th><th>Grade</th><th>Marks</th><th>Time</th><th>Blueprint</th><th>State</th><th></th></tr></thead><tbody></tbody>
+    </table></div>
+    <p class="gg-hint" id="paperEmpty" hidden>No papers yet.</p>
+  </div>
+</main>
+
+<!-- Import -->
+<dialog class="xm-dialog" id="dlgImport" aria-labelledby="impH">
+  <h2 id="impH" style="margin-top:0">Import a paper</h2>
+  <p class="gg-hint">Paste or choose a paper in the Test Tome format (the JSON Claude writes from your notes). The memo stays in the database; learners only ever receive the questions.</p>
+  <div class="gg-field"><label for="impFile">File</label><input type="file" id="impFile" accept=".json,application/json"></div>
+  <div class="gg-field"><label for="impText">…or paste it</label><textarea id="impText" rows="6" spellcheck="false" style="font-family:var(--font-mono,monospace);font-size:12px"></textarea></div>
+  <div id="impReport"></div>
+  <div class="gg-row" id="impMeta" hidden>
+    <div class="gg-field"><label for="impTitle">Title</label><input class="gg-in" id="impTitle" maxlength="160"></div>
+    <div class="gg-field"><label for="impGrade">Grade</label><input class="gg-in" id="impGrade" type="number" min="1" max="12"></div>
+    <div class="gg-field"><label for="impMin">Minutes</label><input class="gg-in" id="impMin" type="number" min="5" max="300"></div>
+  </div>
+  <p class="gg-err" id="impErr" role="alert"></p>
+  <div class="gg-top" style="margin:8px 0 0">
+    <button class="gg-btn gg-btn--primary" type="button" id="impSave" disabled>Save paper</button>
+    <button class="gg-btn" type="button" id="impPreview" disabled>Preview with memo</button>
+    <button class="gg-btn" type="button" data-close>Cancel</button>
+  </div>
+</dialog>
+
+<!-- Set for classes -->
+<dialog class="xm-dialog" id="dlgSet" aria-labelledby="setH">
+  <h2 id="setH" style="margin-top:0">Set a paper</h2>
+  <p class="gg-hint" id="setPaper"></p>
+  <div class="gg-field"><span class="gg-lbl">Classes</span><div class="xm-classes" id="setClasses"></div>
+    <span class="gg-hint">Each class gets its own code and monitor.</span></div>
+  <div class="gg-row">
+    <div class="gg-field"><label for="setMin">Minutes</label><input class="gg-in" id="setMin" type="number" min="5" max="300"></div>
+    <div class="gg-field"><label for="setTerm">Term</label><select id="setTerm"><option value="">–</option><option>1</option><option>2</option><option>3</option><option>4</option></select></div>
+    <div class="gg-field"><label for="setLock">Exam conditions</label>
+      <select id="setLock">
+        <option value="monitored">Monitored browser (fullscreen, exits locked)</option>
+        <option value="seb">Safe Exam Browser required</option>
+        <option value="takeatest">Windows Take a Test (lab PCs)</option>
+      </select></div>
+  </div>
+  <label class="gg-check"><input type="checkbox" id="setExit" checked> Leaving the paper (tab, window or fullscreen) locks it until I unlock it</label>
+  <p class="gg-hint" id="setLockHint"></p>
+  <p class="gg-err" id="setErr" role="alert"></p>
+  <div class="gg-top" style="margin:12px 0 0"><button class="gg-btn gg-btn--primary" type="button" id="setGo">Create sittings</button><button class="gg-btn" type="button" data-close>Cancel</button></div>
+</dialog>
+
+<!-- Preview -->
+<dialog class="xm-dialog" id="dlgPreview" style="max-width:min(960px,calc(100vw - 32px))" aria-labelledby="prevH">
+  <div class="gg-top" style="justify-content:space-between"><h2 id="prevH" style="margin:0">Preview</h2><button class="gg-btn gg-btn--sm" type="button" data-close>Close</button></div>
+  <div id="prevBody" class="xm-paper"></div>
+</dialog>
+
+<script src="auth.js"></script>
+<script defer src="require-auth.js"></script>
+<script type="module">
+import { sb, $, el, esc, whenAuthReady, friendly, fmtNum, fmtWhen, isStaff } from './assets/exam-core.js';
+import { prepare, memoText } from './assets/exam-paper.js';
+import { renderItem, renderScenario } from './assets/exam-render.js';
+
+let papers = [], sittings = [], classes = [], pending = null, setPaperRow = null;
+document.querySelectorAll('[data-close]').forEach(b => b.addEventListener('click', () => b.closest('dialog').close()));
+
+const target = bp => bp && bp.objectivePct >= 20 && bp.objectivePct <= 25
+  ? '<span class="xm-pill ok">' + bp.objectivePct + '% objective</span>'
+  : '<span class="xm-pill warn" title="Target: 20–25% objective (MCQ, Column A–B, true/false)">' + (bp ? bp.objectivePct : '?') + '% objective</span>';
+
+function bpHtml(bp) {
+  const topics = Object.entries(bp.byTopic).map(([k, v]) => esc(k) + ' ' + fmtNum(v)).join(' · ');
+  const skills = Object.entries(bp.bySkill).map(([k, v]) => esc(k) + ' ' + fmtNum(v)).join(' · ');
+  return '<div class="xm-bp">' +
+    '<div><b>' + fmtNum(bp.total) + '</b><span>marks, ' + bp.items + ' questions</span></div>' +
+    '<div><b>' + bp.objectivePct + '%</b><span>objective (target 20–25%) ' + (bp.objectivePct >= 20 && bp.objectivePct <= 25 ? '✓' : '⚠') + '</span></div>' +
+    '<div><b>' + bp.scenarioShortPct + '%</b><span>short answers on a scenario</span></div>' +
+    '<div><b>' + bp.aiMarkedPct + '%</b><span>marked by AI, checked by you</span></div>' +
+    '</div><p class="gg-hint">Topics: ' + topics + '<br>Skills: ' + skills + '</p>';
+}
+
+/* ── Load ─────────────────────────────────────────────── */
+async function load() {
+  const [p, s] = await Promise.all([
+    sb().from('exam_papers').select('id, title, grade, minutes, total, blueprint, status, created_at, owner_id').neq('status', 'archived').order('created_at', { ascending: false }),
+    sb().from('exam_sittings').select('id, paper_id, class_id, class_name, title, join_code, minutes, is_open, lockdown, released_at, created_at').order('created_at', { ascending: false }).limit(200)
+  ]);
+  if (p.error || s.error) { $('msg').textContent = friendly(p.error || s.error); $('msg').hidden = false; return; }
+  papers = p.data || []; sittings = s.data || [];
+  let counts = {};
+  if (sittings.length) {
+    const { data } = await sb().from('exam_attempts').select('sitting_id, status, mark_status').in('sitting_id', sittings.map(x => x.id));
+    (data || []).forEach(a => {
+      const c = counts[a.sitting_id] = counts[a.sitting_id] || { n: 0, sub: 0, marked: 0 };
+      c.n++; if (a.status === 'submitted') c.sub++; if (a.mark_status === 'done') c.marked++;
+    });
+  }
+  drawPapers(); drawSittings(counts);
+}
+
+function drawPapers() {
+  const tb = $('paperTable').querySelector('tbody'); tb.innerHTML = '';
+  $('paperEmpty').hidden = papers.length > 0;
+  papers.forEach(p => {
+    tb.appendChild(el('tr', {}, [
+      el('td', { text: p.title }),
+      el('td', { text: p.grade || '–' }),
+      el('td', { text: fmtNum(p.total) }),
+      el('td', { text: p.minutes + ' min' }),
+      el('td', { html: target(p.blueprint) }),
+      el('td', {}, [el('select', { class: 'gg-in', 'aria-label': 'State of ' + p.title, onchange: e => setStatus(p, e.target.value) },
+        [['draft', 'Draft'], ['ready', 'Ready'], ['archived', 'Archive']].map(([v, t]) => { const o = el('option', { value: v, text: t }); if (v === p.status) o.selected = true; return o; }))]),
+      el('td', {}, [
+        el('button', { class: 'gg-btn gg-btn--sm', type: 'button', text: 'Preview', onclick: () => previewPaper(p.id) }), ' ',
+        el('button', { class: 'gg-btn gg-btn--sm gg-btn--primary', type: 'button', text: 'Set for classes', disabled: p.status !== 'ready', title: p.status !== 'ready' ? 'Mark it Ready first' : null, onclick: () => openSet(p) })
+      ])
+    ]));
+  });
+}
+
+function drawSittings(counts) {
+  const tb = $('sitTable').querySelector('tbody'); tb.innerHTML = '';
+  $('sitEmpty').hidden = sittings.length > 0;
+  sittings.forEach(s => {
+    const c = counts[s.id] || { n: 0, sub: 0, marked: 0 };
+    const state = s.released_at ? '<span class="xm-pill ok">Released</span>' : s.is_open ? '<span class="xm-pill warn">Open</span>' : '<span class="xm-pill">Closed</span>';
+    tb.appendChild(el('tr', {}, [
+      el('td', { text: s.title }),
+      el('td', { text: s.class_name || '–' }),
+      el('td', { class: 'gg-mono', text: s.join_code }),
+      el('td', { html: state }),
+      el('td', { text: c.n ? `${c.sub}/${c.n} handed in · ${c.marked} marked` : '–' }),
+      el('td', {}, [
+        s.released_at ? null : el('button', { class: 'gg-btn gg-btn--sm', type: 'button', text: s.is_open ? 'Close' : 'Open', onclick: () => toggleOpen(s) }), ' ',
+        el('a', { class: 'gg-btn gg-btn--sm', href: 'exam-sit.html?monitor=' + s.id, text: 'Monitor' }), ' ',
+        el('a', { class: 'gg-btn gg-btn--sm', href: 'exam-review.html?s=' + s.id, text: 'Mark & review' }), ' ',
+        c.n ? null : el('button', { class: 'gg-btn gg-btn--sm', type: 'button', text: 'Delete', onclick: () => delSitting(s) })
+      ])
+    ]));
+  });
+}
+
+async function setStatus(p, v) {
+  if (v === 'archived' && !confirm('Archive "' + p.title + '"? It disappears from this list; its sittings and marks stay.')) return drawPapers();
+  const { error } = await sb().from('exam_papers').update({ status: v, updated_at: new Date().toISOString() }).eq('id', p.id);
+  if (error) alert(friendly(error));
+  load();
+}
+async function toggleOpen(s) {
+  const { error } = await sb().from('exam_sittings').update({ is_open: !s.is_open }).eq('id', s.id);
+  if (error) alert(friendly(error)); load();
+}
+async function delSitting(s) {
+  if (!confirm('Delete the sitting for ' + (s.class_name || 'this class') + '?')) return;
+  const { error } = await sb().from('exam_sittings').delete().eq('id', s.id);
+  if (error) alert(friendly(error)); load();
+}
+
+/* ── Import ───────────────────────────────────────────── */
+function check(text) {
+  pending = null; $('impSave').disabled = $('impPreview').disabled = true; $('impMeta').hidden = true; $('impErr').textContent = '';
+  if (!text.trim()) { $('impReport').innerHTML = ''; return; }
+  let src;
+  try { src = JSON.parse(text); } catch (e) { $('impReport').innerHTML = '<p class="gg-err">That is not valid JSON: ' + esc(e.message) + '</p>'; return; }
+  const r = prepare(src);
+  let h = '';
+  if (r.errors.length) h += '<p class="gg-err"><b>Fix before saving:</b><br>' + r.errors.map(esc).join('<br>') + '</p>';
+  if (!r.errors.length) h += bpHtml(r.blueprint);
+  if (r.warnings.length) h += '<p style="color:var(--warn);font-size:14px"><b>Check:</b><br>' + r.warnings.map(esc).join('<br>') + '</p>';
+  $('impReport').innerHTML = h;
+  if (r.errors.length) return;
+  pending = { src, ...r };
+  $('impTitle').value = src.title || ''; $('impGrade').value = src.grade || ''; $('impMin').value = src.minutes || 60;
+  $('impMeta').hidden = false; $('impSave').disabled = $('impPreview').disabled = false;
+}
+$('btnImport').addEventListener('click', () => { $('impText').value = ''; $('impFile').value = ''; check(''); $('dlgImport').showModal(); });
+$('impText').addEventListener('input', () => check($('impText').value));
+$('impFile').addEventListener('change', async () => { const f = $('impFile').files[0]; if (!f) return; const t = await f.text(); $('impText').value = t; check(t); });
+$('impPreview').addEventListener('click', () => pending && showPreview(pending.learner, pending.memo));
+$('impSave').addEventListener('click', async () => {
+  if (!pending) return;
+  const title = $('impTitle').value.trim(), minutes = Number($('impMin').value), grade = $('impGrade').value ? Number($('impGrade').value) : null;
+  if (!title) return $('impErr').textContent = 'Give the paper a title.';
+  if (!(minutes >= 5 && minutes <= 300)) return $('impErr').textContent = 'Minutes must be 5 to 300.';
+  pending.learner.title = title; pending.learner.minutes = minutes;
+  $('impSave').disabled = true;
+  const { error } = await sb().from('exam_papers').insert({
+    title, grade, minutes, subject: pending.src.subject || null, total: pending.total,
+    source: pending.src, learner: pending.learner, memo: pending.memo, blueprint: pending.blueprint, status: 'draft'
+  });
+  $('impSave').disabled = false;
+  if (error) return $('impErr').textContent = friendly(error);
+  $('dlgImport').close(); load();
+});
+
+/* ── Preview (questions as learners see them, memo under each) ── */
+async function previewPaper(id) {
+  const { data, error } = await sb().from('exam_papers').select('learner, memo').eq('id', id).single();
+  if (error) return alert(friendly(error));
+  showPreview(data.learner, data.memo);
+}
+function showPreview(learner, memo) {
+  const box = $('prevBody'); box.innerHTML = '';
+  box.appendChild(el('h2', { text: learner.title, style: 'margin:0' }));
+  box.appendChild(el('p', { class: 'gg-hint', text: `${fmtNum(learner.total)} marks · ${learner.minutes} minutes` }));
+  let sec = -1, scen = null;
+  learner.items.forEach(it => {
+    if (it.sec !== sec) { sec = it.sec; const s = learner.sections[sec]; box.appendChild(el('h3', { class: 'xm-section-h', text: `${s.title} (${fmtNum(s.total)})` })); if (s.intro) box.appendChild(el('p', { class: 'xm-section-intro', text: s.intro })); }
+    if (it.scen && it.scen !== scen) box.appendChild(renderScenario(learner.scenarios[it.scen]));
+    scen = it.scen || null;
+    const q = renderItem(it, { readOnly: true });
+    const m = memo[it.id];
+    const mt = m.type === 'mcq' ? 'Answer: ' + it.options[m.answer] : memoText(m);
+    q.appendChild(el('div', { class: 'xm-memo', text: (m.type === 'written' ? 'Memo points (marks):\n' : 'Memo: ') + mt + (m.topic ? `\nTopic: ${m.topic} · ${m.skill}` : '') }));
+    box.appendChild(q);
+  });
+  if (window.MMFigs) MMFigs.scan(box);
+  $('dlgPreview').showModal();
+}
+
+/* ── Set for classes ──────────────────────────────────── */
+const LOCK_HINT = {
+  monitored: 'Any browser. The page asks for fullscreen and records every exit; with locking on, the learner waits for you to unlock. It deters but cannot block other apps.',
+  seb: 'Only Safe Exam Browser, set up with The Magic Lab config file, may open the paper. Use for lab PCs and for learners’ own Windows laptops, Macs and iPads. (The browser check is switched on in phase 3; until then this works like Monitored.)',
+  takeatest: 'Windows’ built-in Take a Test kiosk on lab PCs: the monitor shows the link to give it. Exits are still recorded.'
+};
+function openSet(p) {
+  setPaperRow = p;
+  $('setPaper').textContent = p.title + ' · ' + fmtNum(p.total) + ' marks';
+  $('setMin').value = p.minutes; $('setErr').textContent = '';
+  const box = $('setClasses'); box.innerHTML = '';
+  classes.forEach(c => box.appendChild(el('label', { class: 'gg-check' }, [el('input', { type: 'checkbox', value: c.id }), ' ' + c.name])));
+  if (!classes.length) box.textContent = 'You have no classes yet.';
+  $('setLockHint').textContent = LOCK_HINT[$('setLock').value];
+  $('dlgSet').showModal();
+}
+$('setLock').addEventListener('change', () => { $('setLockHint').textContent = LOCK_HINT[$('setLock').value]; });
+$('setGo').addEventListener('click', async () => {
+  const ids = [...$('setClasses').querySelectorAll('input:checked')].map(i => i.value);
+  const minutes = Number($('setMin').value);
+  if (!ids.length) return $('setErr').textContent = 'Choose at least one class.';
+  if (!(minutes >= 5 && minutes <= 300)) return $('setErr').textContent = 'Minutes must be 5 to 300.';
+  $('setGo').disabled = true;
+  for (const id of ids) {
+    const { error } = await sb().rpc('exam_create_sitting', {
+      p_paper: setPaperRow.id, p_class: id, p_title: setPaperRow.title, p_minutes: minutes,
+      p_lockdown: $('setLock').value, p_lock_on_exit: $('setExit').checked, p_term: $('setTerm').value ? Number($('setTerm').value) : null
+    });
+    if (error) { $('setGo').disabled = false; return $('setErr').textContent = friendly(error); }
+  }
+  $('setGo').disabled = false; $('dlgSet').close(); load();
+});
+
+(async function init() {
+  await whenAuthReady();
+  const A = window.MagicLabAuth;
+  if (!A.isLoggedIn()) return;
+  if (!A.isTeacher() || !(await isStaff())) { $('msg').textContent = 'Exam papers are switched on for selected teachers only.'; return; }
+  classes = await A.getMyClasses();
+  $('msg').hidden = true; $('app').hidden = false;
+  load();
+})();
+</script>
+</body>
+</html>
