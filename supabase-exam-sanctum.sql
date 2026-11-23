@@ -295,11 +295,14 @@ create or replace function public.exam_save(p_attempt uuid, p_answers jsonb, p_e
 returns jsonb language plpgsql volatile security definer set search_path = public as $$
 declare
   uid uuid := auth.uid();
-  a exam_attempts; s exam_sittings; e jsonb; v_kind text; v_lock boolean := false;
+  a exam_attempts; s exam_sittings; e jsonb; v_kind text; v_lock boolean := false; v_tools jsonb;
 begin
   select * into a from exam_attempts where id = p_attempt and student_id = uid for update;
   if not found then raise exception 'Not your paper.'; end if;
   select * into s from exam_sittings where id = a.sitting_id;
+  -- the paper's on-screen tools, so an open exam picks up changes the teacher makes
+  select jsonb_build_object('sheets', coalesce(learner->'sheets', '[]'::jsonb), 'calculator', coalesce(learner->'calculator', 'false'::jsonb))
+    into v_tools from exam_papers where id = s.paper_id;
 
   -- events first, so even a late save leaves a trace
   if jsonb_typeof(p_events) = 'array' then
@@ -315,11 +318,11 @@ begin
   end if;
 
   if a.status = 'submitted' then
-    return jsonb_build_object('status', 'submitted', 'deadline', a.deadline, 'server_now', now(), 'saved', false);
+    return jsonb_build_object('status', 'submitted', 'deadline', a.deadline, 'server_now', now(), 'saved', false, 'tools', v_tools);
   end if;
   if exam_timed_out(a) then
     update exam_attempts set status = 'submitted', submitted_at = deadline, submit_kind = 'time' where id = a.id;
-    return jsonb_build_object('status', 'submitted', 'deadline', a.deadline, 'server_now', now(), 'saved', false);
+    return jsonb_build_object('status', 'submitted', 'deadline', a.deadline, 'server_now', now(), 'saved', false, 'tools', v_tools);
   end if;
   if jsonb_typeof(p_answers) <> 'object' or pg_column_size(p_answers) >= 400000 then raise exception 'Answers too large.'; end if;
 
@@ -331,18 +334,20 @@ begin
   where id = a.id returning * into a;
   if v_lock and not p_submit then insert into exam_events (attempt_id, kind) values (a.id, 'lock'); end if;
   if p_submit then insert into exam_events (attempt_id, kind) values (a.id, 'submit'); end if;
-  return jsonb_build_object('status', a.status, 'deadline', a.deadline, 'server_now', now(), 'saved', true);
+  return jsonb_build_object('status', a.status, 'deadline', a.deadline, 'server_now', now(), 'saved', true, 'tools', v_tools);
 end $$;
 
--- Is my locked paper unlocked yet? (polled by the lock screen; cheap, no answers)
+-- Is my locked paper unlocked yet? Have the paper's tools changed? (polled; cheap, no answers)
 create or replace function public.exam_status(p_attempt uuid)
 returns jsonb language plpgsql stable security definer set search_path = public as $$
-declare a exam_attempts;
+declare a exam_attempts; v_tools jsonb;
 begin
   select * into a from exam_attempts where id = p_attempt and student_id = auth.uid();
   if not found then raise exception 'Not your paper.'; end if;
+  select jsonb_build_object('sheets', coalesce(p.learner->'sheets', '[]'::jsonb), 'calculator', coalesce(p.learner->'calculator', 'false'::jsonb))
+    into v_tools from exam_sittings st join exam_papers p on p.id = st.paper_id where st.id = a.sitting_id;
   return jsonb_build_object('status', case when exam_timed_out(a) then 'submitted' else a.status end,
-                            'deadline', a.deadline, 'server_now', now());
+                            'deadline', a.deadline, 'server_now', now(), 'tools', v_tools);
 end $$;
 
 -- My released results: each item's mark and feedback, and the paper total.

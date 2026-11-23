@@ -22,7 +22,7 @@ let att = null;            // { id, deadline, offset, status, lockOnExit, lockdo
 let paper = null, answers = {}, version = 0, savedVersion = 0;
 const AF = () => !!(paper && paper.lang === 'af');
 let events = [], saving = false, armed = false, finished = false, lastFocusItem = null, lastQuickSave = 0;
-let pollLock = null, tick = null, saver = null;
+let pollLock = null, tick = null, saver = null, toolPoll = null;
 const LS = id => 'xm-sit:' + id;
 const nowServer = () => Date.now() + (att ? att.offset : 0);
 const fsOK = () => !!(document.fullscreenEnabled || document.webkitFullscreenEnabled);
@@ -147,6 +147,7 @@ async function saveNow(submit = false) {
   $('vOffline').hidden = true;
   att.deadline = Date.parse(data.deadline);
   att.offset = Date.parse(data.server_now) - Date.now();
+  applyTools(data.tools);
   if (data.saved) { savedVersion = v; if (version === v) keepLocal(true); saveState('Saved ' + fmtClock(new Date())); }
   if (data.status === 'submitted') { finish(submit && !timingOut ? 'Your paper has been handed in.' : 'Time is up. Your paper has been handed in.'); }
   else if (data.status === 'locked') lockNow(false);
@@ -157,6 +158,12 @@ async function saveNow(submit = false) {
 
 function startLoops() {
   saver = setInterval(() => { if (version !== savedVersion || events.length) saveNow(); }, 10000);
+  // a learner who is only reading still picks up tools the teacher adds or removes
+  toolPoll = setInterval(async () => {
+    if (finished || saving || !$('vLock').hidden) return;
+    const { data } = await sb().rpc('exam_status', { p_attempt: att.id });
+    if (data) applyTools(data.tools);
+  }, 30000);
   tick = setInterval(clock, 250); clock();
   window.addEventListener('beforeunload', e => { if (armed && !finished) { keepLocal(version === savedVersion); e.preventDefault(); e.returnValue = ''; } });
 }
@@ -191,7 +198,7 @@ async function submitClick() {
 
 function finish(text) {
   finished = true; armed = false;
-  clearInterval(saver); clearInterval(tick); clearInterval(pollLock);
+  clearInterval(saver); clearInterval(tick); clearInterval(pollLock); clearInterval(toolPoll);
   try { localStorage.removeItem(LS(att.id)); } catch (e) {}
   $('vLock').hidden = true; $('vOffline').hidden = true;
   leaveFs();
@@ -233,6 +240,20 @@ function openTool(id) {
   $('vDrawer').hidden = false;
   document.body.classList.add('xm-drawer-open');
 }
+/** The teacher changed the paper's tools while it is open: rebuild the buttons (and the panel, if open). */
+function applyTools(tools) {
+  if (!tools || !paper) return;
+  const sheets = Array.isArray(tools.sheets) ? tools.sheets : [], calculator = tools.calculator === true;
+  if (JSON.stringify(sheets) === JSON.stringify(paper.sheets || []) && calculator === !!paper.calculator) return;
+  paper.sheets = sheets; paper.calculator = calculator;
+  const open = !$('vDrawer').hidden, current = (document.querySelector('#drTabs [aria-selected="true"]') || {}).textContent;
+  buildTools();
+  if (!calculator && calcFrame) { calcFrame.remove(); calcFrame = null; }
+  if (open) {
+    const still = toolTabs.find(t => t.title === current) || toolTabs[0];
+    if (still) openTool(still.id); else closeTools();
+  }
+}
 function closeTools() { $('vDrawer').hidden = true; document.body.classList.remove('xm-drawer-open'); }
 $('drClose').addEventListener('click', closeTools);
 document.addEventListener('keydown', e => { if (e.key === 'Escape' && !$('vDrawer').hidden) closeTools(); });
@@ -259,6 +280,7 @@ function lockNow(save) {
     const { data, error } = await sb().rpc('exam_status', { p_attempt: att.id });
     if (error || !data) return;
     att.deadline = Date.parse(data.deadline); att.offset = Date.parse(data.server_now) - Date.now();
+    applyTools(data.tools);
     if (data.status === 'writing') { clearInterval(pollLock); att.status = 'writing'; $('lockWait').textContent = 'Your teacher has unlocked your paper.'; $('btnResume').hidden = false; $('btnResume').focus(); }
     if (data.status === 'submitted') finish('Your paper has been handed in.');
   }, 4000);
