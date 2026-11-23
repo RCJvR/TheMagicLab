@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script src="/assets/theme.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>WRO Judges' Desk</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://api.fontshare.com">
+<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700,800,900&display=swap">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/magic-lab.css">
+<style>
+  /* Judges' Desk -- check-in screen for scoring a WRO run on a tablet.
+     Tablet first: every control is at least 48px tall, the list rows are
+     one big tap target each, and nothing depends on hover.
+     Uses The Magic Lab tokens as-is; the only addition is --cat, set per
+     category so one hue can mark "which category am I in" and nothing else. */
+
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body {
+    background: var(--ink-900);
+    color: var(--text);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+  button, input, textarea { font: inherit; color: inherit; }
+  button { cursor: pointer; }
+  :focus-visible { outline: 2px solid var(--paper); outline-offset: 2px; }
+  .mono { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+  .wrap {
+    max-width: 960px; margin: 0 auto;
+    padding-inline: max(var(--space-4), env(safe-area-inset-left, 0px)) max(var(--space-4), env(safe-area-inset-right, 0px));
+  }
+
+  /* ── top bar ── */
+  .bar { border-bottom: 1px solid var(--line); background: var(--ink-850); position: sticky; top: 0; z-index: 20; }
+  .bar .wrap { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); min-height: 60px; }
+  .brand { display: flex; align-items: baseline; gap: var(--space-3); min-width: 0; }
+  .brand h1 { margin: 0; font-family: var(--font-display); font-weight: 900; font-size: 19px; letter-spacing: -0.01em; color: var(--paper); white-space: nowrap; }
+  .brand span { font-family: var(--font-mono); font-size: 12px; color: var(--text-3); letter-spacing: 0.06em; text-transform: uppercase; }
+  .pill {
+    display: inline-flex; align-items: center; gap: 6px; min-height: 40px; padding: 0 14px;
+    border: 1px solid var(--line-hard); border-radius: var(--radius-full); background: transparent;
+    color: var(--text-2); font-size: 14px; font-weight: 500; text-decoration: none; white-space: nowrap; flex: none;
+  }
+  .pill:hover { background: var(--ink-800); color: var(--text); }
+
+  main { padding-block: var(--space-6) var(--space-8); }
+  .view[hidden] { display: none; }
+
+  h2 { margin: 0; font-family: var(--font-display); font-weight: 900; color: var(--paper); letter-spacing: -0.02em; text-wrap: balance; }
+  .lede { margin: var(--space-2) 0 0; color: var(--text-2); max-width: 60ch; }
+
+  /* ── step 1: category ── */
+  .judge {
+    display: grid; gap: 6px; max-width: 420px; margin-top: var(--space-5);
+  }
+  .judge label { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-3); }
+  .judge input {
+    min-height: 52px; padding: 0 var(--space-4); border-radius: var(--radius-sm);
+    border: 1px solid var(--line-hard); background: var(--ink-750); font-size: 17px;
+  }
+  .judge input::placeholder { color: var(--text-4); }
+
+  .cats { display: grid; gap: var(--space-3); margin-top: var(--space-6); }
+  .cat {
+    --cat: var(--t-robot);
+    display: grid; grid-template-columns: 1fr auto; align-items: center; gap: var(--space-4);
+    width: 100%; text-align: left; padding: var(--space-5);
+    background: var(--ink-850); border: 1px solid var(--line); border-radius: var(--radius-lg);
+    transition: background var(--dur-fast) var(--ease-standard), border-color var(--dur-fast) var(--ease-standard);
+  }
+  .cat:hover { background: var(--ink-800); border-color: var(--line-hard); }
+  .cat-name { display: flex; align-items: center; gap: 10px; font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-2); }
+  .cat-name i { width: 10px; height: 10px; border-radius: 50%; background: var(--cat); display: inline-block; }
+  .cat-theme { display: block; margin-top: 6px; font-family: var(--font-display); font-weight: 900; font-size: clamp(26px, 4.5vw, 36px); letter-spacing: -0.02em; color: var(--paper); line-height: 1.1; }
+  .cat-meta { margin-top: var(--space-3); display: flex; align-items: center; gap: var(--space-3); color: var(--text-2); font-size: 14px; }
+  .meter { width: 120px; height: 6px; border-radius: 3px; background: var(--ink-750); overflow: hidden; flex: none; }
+  .meter b { display: block; height: 100%; background: var(--cat); width: 0; transition: width var(--dur-med) var(--ease-standard); }
+  .chev { color: var(--text-3); flex: none; }
+  .cat:hover .chev { color: var(--paper); }
+
+  /* ── step 2: teams ── */
+  .crumbs { display: flex; align-items: center; gap: var(--space-2); margin-bottom: var(--space-4); font-size: 14px; color: var(--text-3); }
+  .crumbs button { background: none; border: 0; padding: 8px 0; color: var(--text-2); text-decoration: underline; text-underline-offset: 3px; min-height: 40px; }
+  .crumbs button:hover { color: var(--paper); }
+  .teams-head { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: var(--space-4); }
+  .teams-head .tag { --cat: var(--t-robot); display: inline-flex; align-items: center; gap: 8px; font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-2); margin-bottom: 6px; }
+  .teams-head .tag i { width: 10px; height: 10px; border-radius: 50%; background: var(--cat); }
+  .teams-head h2 { font-size: clamp(28px, 5vw, 42px); line-height: 1.05; }
+  .tally { text-align: right; }
+  .tally strong { display: block; font-family: var(--font-mono); font-size: 28px; color: var(--paper); font-weight: 600; line-height: 1.1; }
+  .tally span { font-size: 13px; color: var(--text-3); }
+
+  .tools { display: flex; flex-wrap: wrap; gap: var(--space-3); align-items: center; margin-top: var(--space-5); }
+  .search { flex: 1 1 220px; min-width: 0; min-height: 48px; padding: 0 var(--space-4); border-radius: var(--radius-sm); border: 1px solid var(--line-hard); background: var(--ink-750); font-size: 16px; }
+  .search::placeholder { color: var(--text-4); }
+  .chips { display: flex; gap: 6px; flex-wrap: wrap; }
+  .chip {
+    min-height: 48px; padding: 0 16px; border-radius: var(--radius-full);
+    border: 1px solid var(--line-hard); background: transparent; color: var(--text-2); font-size: 14px; font-weight: 500;
+  }
+  .chip[aria-pressed="true"] { background: var(--paper); color: var(--ink-900); border-color: var(--paper); }
+  .ghost {
+    min-height: 48px; padding: 0 16px; border-radius: var(--radius-sm);
+    border: 1px solid var(--line-hard); background: transparent; color: var(--text-2); font-size: 14px; font-weight: 500;
+  }
+  .ghost:hover { background: var(--ink-800); color: var(--text); }
+
+  .notice {
+    margin-top: var(--space-4); padding: var(--space-3) var(--space-4); border-radius: var(--radius-sm);
+    border: 1px solid var(--line-hard); background: var(--ink-850);
+    display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-3);
+    font-size: 14px; color: var(--text-2);
+  }
+  .notice button { min-height: 40px; }
+
+  .list { list-style: none; margin: var(--space-5) 0 0; padding: 0; display: grid; gap: 6px; }
+  .team {
+    display: grid; grid-template-columns: 56px minmax(0, 1fr) auto auto; align-items: center; gap: var(--space-4);
+    width: 100%; min-height: 72px; text-align: left; padding: 10px var(--space-4);
+    background: var(--ink-850); border: 1px solid var(--line); border-radius: var(--radius-md);
+    transition: background var(--dur-fast) var(--ease-standard);
+  }
+  .team:hover { background: var(--ink-800); border-color: var(--line-hard); }
+  .team-no { font-family: var(--font-mono); font-size: 22px; font-weight: 600; color: var(--text-2); }
+  .team-name { font-family: var(--font-display); font-weight: 700; font-size: 20px; color: var(--paper); overflow-wrap: anywhere; }
+  .runs { display: flex; gap: 6px; }
+  .run {
+    min-width: 92px; padding: 6px 10px; border-radius: var(--radius-xs); border: 1px solid var(--line);
+    background: var(--ink-900); line-height: 1.25;
+  }
+  .run small { display: block; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-3); }
+  .run b { display: block; font-size: 14px; font-weight: 600; color: var(--text-3); }
+  .run.done { border-color: color-mix(in srgb, var(--good) 45%, transparent); }
+  .run.done b { color: var(--good); font-family: var(--font-mono); }
+  .run.live { border-color: color-mix(in srgb, var(--warn) 55%, transparent); }
+  .run.live b { color: var(--warn); }
+  .empty { margin: var(--space-6) 0; color: var(--text-3); text-align: center; }
+
+  /* ── dialogs ── */
+  dialog {
+    width: min(520px, calc(100vw - 24px)); padding: 0; border: 1px solid var(--line-hard); border-radius: var(--radius-xl);
+    background: var(--ink-800); color: var(--text); box-shadow: var(--elevation-xl);
+  }
+  dialog::backdrop { background: rgba(0,0,0,0.7); }
+  .sheet { padding: var(--space-5); display: grid; gap: var(--space-4); }
+  .sheet h3 { margin: 0; font-family: var(--font-display); font-weight: 900; font-size: 28px; color: var(--paper); letter-spacing: -0.02em; }
+  .sheet .sub { margin: 0; color: var(--text-2); font-size: 14px; }
+  .pick { display: grid; gap: var(--space-2); }
+  .pick button {
+    display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); min-height: 64px; padding: 0 var(--space-4);
+    border-radius: var(--radius-md); border: 1px solid var(--line-hard); background: var(--ink-850); text-align: left; font-size: 17px; font-weight: 700;
+  }
+  .pick button span { font-size: 14px; font-weight: 500; color: var(--text-2); }
+  .pick button[aria-checked="true"] { border-color: var(--paper); background: var(--ink-750); box-shadow: inset 0 0 0 1px var(--paper); }
+  .actions { display: flex; gap: var(--space-3); justify-content: flex-end; flex-wrap: wrap; }
+  .go {
+    min-height: 52px; padding: 0 var(--space-5); border-radius: var(--radius-full); border: 0;
+    background: var(--paper); color: var(--ink-900); font-weight: 800; font-size: 16px;
+  }
+  .go:disabled { background: var(--ink-750); color: var(--text-4); cursor: not-allowed; }
+  .sheet textarea {
+    width: 100%; min-height: 260px; padding: var(--space-3) var(--space-4); border-radius: var(--radius-sm);
+    border: 1px solid var(--line-hard); background: var(--ink-750); font-family: var(--font-mono); font-size: 15px; line-height: 1.7; resize: vertical;
+  }
+
+  .toast {
+    position: fixed; left: 50%; bottom: max(20px, env(safe-area-inset-bottom, 0px)); transform: translate(-50%, 24px);
+    max-width: calc(100vw - 32px); padding: 12px 18px; border-radius: var(--radius-full);
+    background: var(--paper); color: var(--ink-900); font-weight: 700; font-size: 14px; opacity: 0; pointer-events: none;
+    transition: opacity var(--dur-med) var(--ease-standard), transform var(--dur-med) var(--ease-standard); z-index: 60;
+  }
+  .toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+  @media (max-width: 480px) {
+    .brand span { display: none; }
+  }
+  @media (max-width: 640px) {
+    .team { grid-template-columns: 40px minmax(0, 1fr) auto; }
+    .team .runs { grid-column: 2 / 4; }
+    .team .chev { display: none; }
+    .meter { width: 80px; }
+    .tally { text-align: left; }
+  }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+</head>
+<body>
+
+<header class="bar">
+  <div class="wrap">
+    <div class="brand"><h1>Judges' Desk</h1><span>WRO 2026</span></div>
+    <a class="pill" href="../index.html">The Magic Lab</a>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- Step 1 -->
+  <section class="view" id="viewCats" aria-labelledby="catsTitle">
+    <h2 id="catsTitle">Which category are you judging?</h2>
+    <p class="lede">Pick your category to see its teams. Scores are saved on this device as you go.</p>
+
+    <div class="judge">
+      <label for="judgeName">Judge name</label>
+      <input id="judgeName" type="text" autocomplete="name" placeholder="e.g. Ms Naidoo" maxlength="60">
+    </div>
+
+    <div class="cats" id="catList"></div>
+  </section>
+
+  <!-- Step 2 -->
+  <section class="view" id="viewTeams" aria-labelledby="teamsTitle" hidden>
+    <div class="crumbs"><button type="button" id="backBtn">Categories</button><span aria-hidden="true">/</span><span id="crumbNow"></span></div>
+
+    <div class="teams-head">
+      <div>
+        <div class="tag" id="teamsTag"><i></i><span></span></div>
+        <h2 id="teamsTitle"></h2>
+      </div>
+      <div class="tally"><strong id="tallyNum" class="mono"></strong><span>runs scored</span></div>
+    </div>
+
+    <div class="tools">
+      <input class="search" id="search" type="search" placeholder="Search team number or name" aria-label="Search teams">
+      <div class="chips" role="group" aria-label="Filter teams">
+        <button class="chip" type="button" data-f="all" aria-pressed="true">All</button>
+        <button class="chip" type="button" data-f="todo" aria-pressed="false">Still to score</button>
+        <button class="chip" type="button" data-f="done" aria-pressed="false">Scored</button>
+      </div>
+      <button class="ghost" type="button" id="editBtn">Edit teams</button>
+    </div>
+
+    <div class="notice" id="sampleNote" hidden>
+      <span>Sample statuses are showing so you can see how the list behaves.</span>
+      <button class="ghost" type="button" id="clearSample">Clear sample data</button>
+    </div>
+
+    <ul class="list" id="teamList"></ul>
+    <p class="empty" id="emptyMsg" hidden>No teams match that search.</p>
+  </section>
+</main>
+
+<!-- Pick a run -->
+<dialog id="runDialog" aria-labelledby="runTitle">
+  <div class="sheet">
+    <div>
+      <p class="sub" id="runSub"></p>
+      <h3 id="runTitle"></h3>
+    </div>
+    <div class="pick" role="radiogroup" aria-label="Which run" id="runPick"></div>
+    <div class="actions">
+      <button class="ghost" type="button" id="runCancel">Cancel</button>
+      <button class="go" type="button" id="runGo" disabled>Start scoring</button>
+    </div>
+  </div>
+</dialog>
+
+<!-- Edit team names -->
+<dialog id="editDialog" aria-labelledby="editTitle">
+  <div class="sheet">
+    <div>
+      <h3 id="editTitle">Edit teams</h3>
+      <p class="sub">One team name per line. Order here is the order judges see.</p>
+    </div>
+    <textarea id="editText" spellcheck="false" aria-label="Team names, one per line"></textarea>
+    <div class="actions">
+      <button class="ghost" type="button" id="editCancel">Cancel</button>
+      <button class="go" type="button" id="editSave">Save teams</button>
+    </div>
+  </div>
+</dialog>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function () {
+  // Two runs per team. Change this one number if a category runs differently.
+  var RUNS = 2;
+  var STORE = 'wro-judging-v1';
+
+  var CATEGORIES = [
+    { id: 'elementary', name: 'Elementary', theme: 'Robot Rockstars', hue: 'var(--t-math)' },
+    { id: 'junior',     name: 'Junior',     theme: 'Heritage Heroes', hue: 'var(--t-web)' },
+    { id: 'senior',     name: 'Senior',     theme: 'Mosaic Masters',  hue: 'var(--t-robot)' }
+  ];
+
+  // ---- state ----
+  function defaultTeams() {
+    var out = [];
+    for (var i = 1; i <= 12; i++) out.push('Team ' + i);
+    return out;
+  }
+  function sampleRuns() {
+    // Example statuses only, so the list shows every state. Cleared with one button.
+    return {
+      0: { 1: { s: 'done', score: 168, time: '1:52' }, 2: { s: 'done', score: 184, time: '1:41' } },
+      1: { 1: { s: 'done', score: 142, time: '1:58' } },
+      2: { 1: { s: 'live' } }
+    };
+  }
+  function freshState() {
+    var st = { judge: '', teams: {}, runs: {}, sample: true };
+    CATEGORIES.forEach(function (c) { st.teams[c.id] = defaultTeams(); st.runs[c.id] = sampleRuns(); });
+    return st;
+  }
+  var state;
+  try { state = JSON.parse(localStorage.getItem(STORE)); } catch (e) { state = null; }
+  if (!state || !state.teams) state = freshState();
+  function save() { try { localStorage.setItem(STORE, JSON.stringify(state)); } catch (e) {} }
+
+  // ---- helpers ----
+  var $ = function (id) { return document.getElementById(id); };
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  function cat(id) { return CATEGORIES.filter(function (c) { return c.id === id; })[0]; }
+  function runOf(catId, ti, r) { return ((state.runs[catId] || {})[ti] || {})[r] || { s: 'none' }; }
+  function counts(catId) {
+    var teams = state.teams[catId].length, done = 0;
+    for (var t = 0; t < teams; t++) for (var r = 1; r <= RUNS; r++) if (runOf(catId, t, r).s === 'done') done++;
+    return { teams: teams, done: done, total: teams * RUNS };
+  }
+  var chevSvg = '<svg class="chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>';
+  var toastTimer;
+  function toast(msg) {
+    var t = $('toast'); t.textContent = msg; t.classList.add('show');
+    clearTimeout(toastTimer); toastTimer = setTimeout(function () { t.classList.remove('show'); }, 3200);
+  }
+
+  // ---- step 1 ----
+  function renderCats() {
+    $('judgeName').value = state.judge || '';
+    $('catList').innerHTML = CATEGORIES.map(function (c) {
+      var n = counts(c.id), pct = n.total ? Math.round(100 * n.done / n.total) : 0;
+      return '<button type="button" class="cat" data-cat="' + c.id + '" style="--cat:' + c.hue + '">' +
+        '<div><div class="cat-name"><i></i>RoboMission ' + esc(c.name) + '</div>' +
+        '<span class="cat-theme">' + esc(c.theme) + '</span>' +
+        '<div class="cat-meta"><span class="mono">' + n.teams + ' teams</span><span class="meter" aria-hidden="true"><b style="width:' + pct + '%"></b></span><span class="mono">' + n.done + ' of ' + n.total + ' runs scored</span></div></div>' +
+        chevSvg + '</button>';
+    }).join('');
+  }
+  $('catList').addEventListener('click', function (e) {
+    var b = e.target.closest('.cat'); if (!b) return;
+    location.hash = b.getAttribute('data-cat');
+  });
+  $('judgeName').addEventListener('input', function (e) { state.judge = e.target.value; save(); });
+
+  // ---- step 2 ----
+  var current = null, filter = 'all', query = '';
+  function teamState(catId, ti) {
+    var done = 0, live = 0;
+    for (var r = 1; r <= RUNS; r++) { var s = runOf(catId, ti, r).s; if (s === 'done') done++; if (s === 'live') live++; }
+    return { done: done, live: live, all: done === RUNS };
+  }
+  function renderTeams() {
+    var c = cat(current), names = state.teams[current];
+    $('teamsTitle').textContent = c.theme;
+    $('crumbNow').textContent = 'RoboMission ' + c.name;
+    var tag = $('teamsTag'); tag.style.setProperty('--cat', c.hue); tag.querySelector('span').textContent = 'RoboMission ' + c.name;
+    var n = counts(current); $('tallyNum').textContent = n.done + ' / ' + n.total;
+    $('sampleNote').hidden = !state.sample;
+
+    var q = query.trim().toLowerCase(), html = '', shown = 0;
+    names.forEach(function (name, ti) {
+      var ts = teamState(current, ti);
+      if (filter === 'todo' && ts.all) return;
+      if (filter === 'done' && !ts.all) return;
+      if (q && ('team ' + (ti + 1) + ' ' + name).toLowerCase().indexOf(q) === -1) return;
+      shown++;
+      var runs = '';
+      for (var r = 1; r <= RUNS; r++) {
+        var ru = runOf(current, ti, r), label = 'Not started', cls = '';
+        if (ru.s === 'done') { label = ru.score + ' pts'; cls = ' done'; }
+        else if (ru.s === 'live') { label = 'In progress'; cls = ' live'; }
+        runs += '<div class="run' + cls + '"><small>Run ' + r + '</small><b>' + esc(label) + '</b></div>';
+      }
+      html += '<li><button type="button" class="team" data-t="' + ti + '">' +
+        '<span class="team-no">' + (ti + 1) + '</span><span class="team-name">' + esc(name) + '</span>' +
+        '<span class="runs">' + runs + '</span>' + chevSvg + '</button></li>';
+    });
+    $('teamList').innerHTML = html;
+    $('emptyMsg').hidden = shown > 0;
+  }
+  $('teamList').addEventListener('click', function (e) {
+    var b = e.target.closest('.team'); if (!b) return;
+    openRun(parseInt(b.getAttribute('data-t'), 10));
+  });
+  $('search').addEventListener('input', function (e) { query = e.target.value; renderTeams(); });
+  document.querySelector('.chips').addEventListener('click', function (e) {
+    var b = e.target.closest('.chip'); if (!b) return;
+    filter = b.getAttribute('data-f');
+    [].forEach.call(document.querySelectorAll('.chip'), function (x) { x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
+    renderTeams();
+  });
+  $('backBtn').addEventListener('click', function () { location.hash = ''; });
+  $('clearSample').addEventListener('click', function () {
+    CATEGORIES.forEach(function (c) { state.runs[c.id] = {}; });
+    state.sample = false; save(); renderTeams();
+  });
+
+  // ---- pick a run ----
+  var pickTeam = null, pickRun = null;
+  function openRun(ti) {
+    pickTeam = ti; pickRun = null;
+    var name = state.teams[current][ti];
+    $('runSub').textContent = 'RoboMission ' + cat(current).name + ' · Team ' + (ti + 1);
+    $('runTitle').textContent = name;
+    var html = '';
+    for (var r = 1; r <= RUNS; r++) {
+      var ru = runOf(current, ti, r), status = 'Not started';
+      if (ru.s === 'done') status = 'Scored · ' + ru.score + ' pts' + (ru.time ? ' · ' + ru.time : '');
+      else if (ru.s === 'live') status = 'In progress';
+      html += '<button type="button" role="radio" aria-checked="false" data-r="' + r + '">Run ' + r + '<span>' + esc(status) + '</span></button>';
+    }
+    $('runPick').innerHTML = html;
+    $('runGo').disabled = true; $('runGo').textContent = 'Start scoring';
+    $('runDialog').showModal();
+  }
+  $('runPick').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    pickRun = parseInt(b.getAttribute('data-r'), 10);
+    [].forEach.call($('runPick').children, function (x) { x.setAttribute('aria-checked', x === b ? 'true' : 'false'); });
+    var done = runOf(current, pickTeam, pickRun).s === 'done';
+    $('runGo').disabled = false; $('runGo').textContent = done ? 'Review score sheet' : 'Start scoring';
+  });
+  $('runCancel').addEventListener('click', function () { $('runDialog').close(); });
+  $('runGo').addEventListener('click', function () {
+    $('runDialog').close();
+    toast('The score sheet opens here next: ' + state.teams[current][pickTeam] + ', Run ' + pickRun + '.');
+  });
+
+  // ---- edit teams ----
+  $('editBtn').addEventListener('click', function () {
+    $('editText').value = state.teams[current].join('\n');
+    $('editDialog').showModal();
+  });
+  $('editCancel').addEventListener('click', function () { $('editDialog').close(); });
+  $('editSave').addEventListener('click', function () {
+    var names = $('editText').value.split('\n').map(function (s) { return s.trim(); }).filter(Boolean);
+    if (!names.length) { toast('Add at least one team.'); return; }
+    state.teams[current] = names; save();
+    $('editDialog').close(); renderTeams(); toast(names.length + ' teams saved.');
+  });
+  [$('runDialog'), $('editDialog')].forEach(function (d) {
+    d.addEventListener('click', function (e) { if (e.target === d) d.close(); });
+  });
+
+  // ---- routing ----
+  function route() {
+    var id = location.hash.replace('#', '');
+    if (id && cat(id)) {
+      current = id; filter = 'all'; query = ''; $('search').value = '';
+      [].forEach.call(document.querySelectorAll('.chip'), function (x) { x.setAttribute('aria-pressed', x.getAttribute('data-f') === 'all' ? 'true' : 'false'); });
+      $('viewCats').hidden = true; $('viewTeams').hidden = false; renderTeams();
+    } else {
+      current = null; $('viewTeams').hidden = true; $('viewCats').hidden = false; renderCats();
+    }
+    window.scrollTo(0, 0);
+  }
+  window.addEventListener('hashchange', route);
+  route();
+})();
+</script>
+</body>
+</html>
