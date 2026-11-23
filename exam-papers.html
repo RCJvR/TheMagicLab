@@ -144,7 +144,7 @@ function bpHtml(bp) {
 /* ── Load ─────────────────────────────────────────────── */
 async function load() {
   const [p, s] = await Promise.all([
-    sb().from('exam_papers').select('id, title, grade, minutes, total, blueprint, status, created_at, owner_id, tools:learner->sheets, calc:learner->calculator').neq('status', 'archived').order('created_at', { ascending: false }),
+    sb().from('exam_papers').select('id, title, grade, minutes, total, blueprint, status, created_at, owner_id, tools:learner->sheets, calc:learner->calculator, lang:learner->>lang').neq('status', 'archived').order('created_at', { ascending: false }),
     sb().from('exam_sittings').select('id, paper_id, class_id, class_name, title, join_code, minutes, is_open, lockdown, released_at, created_at').order('created_at', { ascending: false }).limit(200)
   ]);
   if (p.error || s.error) { $('msg').textContent = friendly(p.error || s.error); $('msg').hidden = false; return; }
@@ -160,12 +160,26 @@ async function load() {
   drawPapers(); drawSittings(counts);
 }
 
+/* A paper's title, its language, and the sittings (class · code · state) that use it,
+   so it is clear which paper a class is writing before its tools are changed. */
+function paperCell(p) {
+  const mine = sittings.filter(s => s.paper_id === p.id);
+  const lang = p.lang === 'af' ? 'Afrikaans' : 'English';
+  const used = mine.length
+    ? 'Used by: ' + mine.map(s => `${s.class_name || 'class'} · ${s.join_code}${s.released_at ? ' (released)' : s.is_open ? ' (open)' : ''}`).join(', ')
+    : 'Not set for a class yet';
+  return el('td', {}, [
+    el('div', { text: p.title }),
+    el('div', { class: 'gg-hint xm-paper-uses', text: lang + ' · ' + used })
+  ]);
+}
+
 function drawPapers() {
   const tb = $('paperTable').querySelector('tbody'); tb.innerHTML = '';
   $('paperEmpty').hidden = papers.length > 0;
   papers.forEach(p => {
     tb.appendChild(el('tr', {}, [
-      el('td', { text: p.title }),
+      paperCell(p),
       el('td', { text: p.grade || '–' }),
       el('td', { text: fmtNum(p.total) }),
       el('td', { text: p.minutes + ' min' }),
@@ -295,7 +309,8 @@ function showPreview(learner, memo) {
 /* ── On-screen tools of a saved paper ─────────────────── */
 async function openTools(p) {
   toolsRow = p;
-  $('toolsPaper').textContent = p.title;
+  $('toolsPaper').textContent = p.title + ' — ' + (p.lang === 'af' ? 'Afrikaans' : 'English') + '. ' +
+    (sittings.filter(s => s.paper_id === p.id).map(s => (s.class_name || 'class') + ' · ' + s.join_code).join(', ') || 'Not set for a class yet') + '.';
   $('toolsErr').textContent = '';
   const { data, error } = await sb().from('exam_papers').select('learner').eq('id', p.id).single();
   if (error) return alert(friendly(error));
