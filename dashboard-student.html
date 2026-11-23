@@ -587,6 +587,19 @@
 
       <!-- ── To do: assignments and homework, joining a class, asking for help ── -->
       <section class="dash-tab" id="tab-todo" role="tabpanel" aria-labelledby="tabbtn-todo" tabindex="-1" hidden>
+        <!-- Exams written in class (Exam Sanctum): start with the teacher's code, see released results -->
+        <div class="class-panel" id="exam-panel">
+          <div class="class-panel-text">
+            <div class="class-panel-title" style="display:flex;align-items:center;gap:8px;"><i data-lucide="file-pen-line" style="width:16px;height:16px;"></i>Write an exam</div>
+            <div class="class-panel-sub">Type the code your teacher gives you in class. <a href="exam-sit.html?results" id="exam-results-link" style="color:inherit;text-decoration:underline;">My exam results</a></div>
+          </div>
+          <form class="class-input-row" id="exam-start-form" novalidate>
+            <input aria-label="Exam code" class="class-input" id="exam-code-input" placeholder="ABC234" maxlength="6" autocomplete="off" spellcheck="false">
+            <button class="class-join-btn" id="exam-start-btn" type="submit">Start</button>
+          </form>
+          <div id="exam-start-msg" role="alert" style="font-size:12px;color:#fca5a5;display:none;width:100%;margin-top:4px;"></div>
+        </div>
+
         <!-- Assignments (students only) -->
         <div id="assignments-panel" style="display:none;">
           <div class="section-hdr">My Assignments</div>
@@ -1690,6 +1703,33 @@
       if (btn) btn.disabled = false;
       await _refreshHelpMessages();
     }
+  </script>
+  <script>
+  // Exam Sanctum card (To do tab): start an exam with the teacher's code; count released results.
+  (function () {
+    var form = document.getElementById('exam-start-form');
+    if (!form) return;
+    var input = document.getElementById('exam-code-input'), msg = document.getElementById('exam-start-msg');
+    input.addEventListener('input', function () { input.value = input.value.toUpperCase().replace(/[^A-Z0-9]/g, ''); msg.style.display = 'none'; });
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var code = input.value.trim().toUpperCase();
+      if (!/^[A-Z2-9]{6}$/.test(code)) { msg.textContent = 'The exam code has 6 letters and numbers.'; msg.style.display = 'block'; input.focus(); return; }
+      location.href = 'exam-sit.html?code=' + encodeURIComponent(code);
+    });
+    var done = false;
+    function results() {
+      var A = window.MagicLabAuth;
+      if (done || !A || !A.isLoggedIn || !A.isLoggedIn() || !A._supabase) return;
+      done = true;
+      A._supabase().rpc('exam_my_results').then(function (r) {
+        var n = r && Array.isArray(r.data) ? r.data.length : 0;
+        if (n) document.getElementById('exam-results-link').textContent = 'My exam results (' + n + ')';
+      });
+    }
+    document.addEventListener('magiclab:auth:ready', results);
+    results();
+  })();
   </script>
   <script src="/contact-button.js" defer></script>
 </body>
