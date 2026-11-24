@@ -159,6 +159,25 @@
     .days-none { background: transparent;           border: 1px solid var(--line);           color: var(--text-3); }
     .days-none .days-num { font-weight: 400; }
 
+    /* Funnel tab */
+    .fn-h { font-family: var(--font-display); font-weight: 800; font-size: 18px; color: var(--paper); margin: var(--space-7) 0 var(--space-2); }
+    .fn-note { font-size: 13.5px; color: var(--text-3); margin: 0 0 var(--space-4); max-width: 70ch; line-height: 1.55; }
+    .fn-steps { display: grid; gap: 10px; margin-bottom: var(--space-3); }
+    .fn-step { display: grid; grid-template-columns: minmax(150px, 280px) 1fr 190px; gap: 14px; align-items: center; }
+    .fn-label { font-size: 14px; color: var(--text); }
+    .fn-track { height: 30px; background: var(--ink-850); border: 1px solid var(--line); border-radius: 6px; overflow: hidden; }
+    .fn-fill { height: 100%; background: var(--paper); border-radius: 5px 0 0 5px; min-width: 2px; }
+    .fn-num { font-family: var(--font-mono); font-size: 13px; color: var(--paper); }
+    .fn-num span { color: var(--text-3); }
+    .fn-table-wrap { overflow-x: auto; }
+    .fn-table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+    .fn-table th, .fn-table td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+    .fn-table th { color: var(--text-2); font-weight: 700; font-size: 12.5px; }
+    .fn-table td { color: var(--text); font-variant-numeric: tabular-nums; }
+    .fn-actions { display: flex; gap: var(--space-2); align-items: center; margin-bottom: var(--space-3); flex-wrap: wrap; }
+    .fn-btn { font: 600 13px var(--font-body, inherit); padding: 6px 12px; border-radius: 999px; border: 1px solid var(--line-hard); background: transparent; color: var(--text); cursor: pointer; }
+    .fn-btn:hover { border-color: var(--paper); color: var(--paper); }
+    @media (max-width: 640px) { .fn-step { grid-template-columns: 1fr 90px; } .fn-track { grid-column: 1 / -1; grid-row: 2; } }
     .empty-state { padding: var(--space-8) 0; text-align: center; font-size: 14.5px; color: var(--text-3); }
 
     /* ── Access denied ──────────────────────────────────────────────────── */
@@ -197,6 +216,7 @@
     <button class="section-btn active" data-section="cdv">CDV Verification</button>
     <button class="section-btn" data-section="teachers">Teacher Requests</button>
     <button class="section-btn" data-section="trials">Trials</button>
+    <button class="section-btn" data-section="funnel">Funnel</button>
   </div>
 
   <section id="cdvSection">
@@ -238,6 +258,12 @@
     </div>
 
     <div id="trialList"></div>
+  </section>
+
+  <section id="funnelSection" hidden>
+    <div class="page-title">Trial to paid</div>
+    <div class="page-sub">How trial learners move from sign-up to paying, who is still engaged, and who to follow up. Learners only; CDV-verified and school-package learners are left out of the funnel because they never needed to pay. Read-only.</div>
+    <div id="funnelBody"><div class="empty-state">Loading&hellip;</div></div>
   </section>
 </main>
 
@@ -536,6 +562,90 @@ document.querySelectorAll('#trialSection .tab-btn').forEach(btn => {
   });
 });
 
+// ── Funnel tab ───────────────────────────────────────────────
+// Read-only. Everything here comes from admin_trial_funnel(), which applies
+// the same hardcoded-admin check as the other admin functions.
+let funnelLoaded = false;
+
+function fnDate(d) {
+  return d ? new Date(d).toLocaleDateString('en-ZA', { year: 'numeric', month: 'short', day: 'numeric' }) : '';
+}
+function fnPeopleTable(rows, cols) {
+  if (!rows.length) return '<div class="empty-state">Nobody right now.</div>';
+  return '<div class="fn-table-wrap"><table class="fn-table"><thead><tr>' + cols.map(c => `<th>${c[0]}</th>`).join('') + '</tr></thead><tbody>' +
+    rows.map(r => '<tr>' + cols.map(c => `<td>${escapeHtml(c[1](r))}</td>`).join('') + '</tr>').join('') + '</tbody></table></div>';
+}
+function fnCopyButton(id, rows) {
+  const emails = rows.map(r => r.email).filter(Boolean);
+  return emails.length
+    ? `<div class="fn-actions"><button class="fn-btn" type="button" data-copy="${id}">Copy ${emails.length} email address${emails.length === 1 ? '' : 'es'}</button><span class="fn-note" id="${id}Msg" style="margin:0"></span></div>`
+    : '';
+}
+
+async function loadFunnel() {
+  const el = document.getElementById('funnelBody');
+  el.innerHTML = '<div class="empty-state">Loading&hellip;</div>';
+  const { data, error } = await window.MagicLabAuth._supabase().rpc('admin_trial_funnel');
+  if (error) { el.innerHTML = `<div class="empty-state">Error: ${escapeHtml(error.message)}</div>`; return; }
+  funnelLoaded = true;
+  const d = data || {}, steps = d.funnel || [], facts = d.facts || {};
+  const top = steps.length ? Math.max(1, steps[0].n) : 1;
+
+  const stats = [['In trial', facts.in_trial], ['Trial ended', facts.trial_ended], ['Never opened a tool', facts.never_opened_tool], ['Started checkout', facts.checkout_started]]
+    .map(([k, v]) => `<div class="stat"><div class="stat-num">${v ?? 0}</div><div class="stat-label">${k}</div></div>`).join('');
+
+  const funnel = steps.map((s, i) => {
+    const pctTop = Math.round(100 * s.n / top);
+    const prev = i ? steps[i - 1].n : null;
+    const pctPrev = prev ? Math.round(100 * s.n / prev) : null;
+    return `<div class="fn-step"><div class="fn-label">${escapeHtml(s.step)}</div>
+      <div class="fn-track" role="img" aria-label="${escapeHtml(s.step)}: ${s.n}"><div class="fn-fill" style="width:${pctTop}%"></div></div>
+      <div class="fn-num">${s.n}${pctPrev !== null ? ` <span>(${pctPrev}% of previous)</span>` : ''}</div></div>`;
+  }).join('');
+
+  const segRows = (d.segments || []);
+  const segTable = '<div class="fn-table-wrap"><table class="fn-table"><thead><tr><th>Access</th><th>Learners</th><th>Returning</th><th>New / one visit</th><th>Inactive</th><th>Active last 7 days</th></tr></thead><tbody>' +
+    segRows.map(r => `<tr><td>${escapeHtml(r.access)}</td><td>${r.total}</td><td>${r.returning}</td><td>${r.new}</td><td>${r.inactive}</td><td>${r.active7}</td></tr>`).join('') +
+    `<tr><td><b>All learners</b></td><td><b>${segRows.reduce((n, r) => n + r.total, 0)}</b></td><td>${segRows.reduce((n, r) => n + r.returning, 0)}</td><td>${segRows.reduce((n, r) => n + r.new, 0)}</td><td>${segRows.reduce((n, r) => n + r.inactive, 0)}</td><td>${segRows.reduce((n, r) => n + r.active7, 0)}</td></tr>` +
+    '</tbody></table></div>';
+
+  const cohortTable = '<div class="fn-table-wrap"><table class="fn-table"><thead><tr><th>Signed up in</th><th>Sign-ups</th><th>Opened a tool</th><th>Came back</th><th>Paid</th></tr></thead><tbody>' +
+    (d.cohorts || []).map(c => `<tr><td>${escapeHtml(c.month)}</td><td>${c.signups}</td><td>${c.opened_tool}</td><td>${c.returned}</td><td>${c.paid}</td></tr>`).join('') +
+    '</tbody></table></div>';
+
+  const warm = d.warm || [], expiring = d.expiring || [];
+  window.__fnLists = { warm, expiring };
+
+  el.innerHTML = `
+    <div class="stat-row">${stats}</div>
+    <div class="fn-h">Funnel</div>
+    <p class="fn-note">Each step is a subset of the one before. “Opened a tool” means something was saved in a tool or lesson.</p>
+    <div class="fn-steps">${funnel}</div>
+    <div class="fn-h">Activity by access type</div>
+    <p class="fn-note">Returning: active in the last 30 days, on 2+ different days. New / one visit: active in the last 30 days on one day. Inactive: nothing in 30 days. Activity counts saved work and sign-ins, so treat it as a floor.</p>
+    ${segTable}
+    <div class="fn-h">Monthly sign-up cohorts</div>
+    <p class="fn-note">Trial learners grouped by the month they signed up.</p>
+    ${cohortTable}
+    <div class="fn-h">Warm leads: trial ended, still coming back (${warm.length})</div>
+    <p class="fn-note">Active on 2+ days and seen in the last 45 days. The best people to offer a discount or a trial extension.</p>
+    ${fnCopyButton('warm', warm)}
+    ${fnPeopleTable(warm, [['Name', r => r.name || ''], ['Email', r => r.email || ''], ['Grade', r => r.grade || ''], ['Last active', r => fnDate(r.last_day)], ['Active days', r => r.active_days], ['Trial ended', r => fnDate(r.trial_ended)], ['Tools', r => r.tools || '']])}
+    <div class="fn-h">Trial ending within 7 days, barely used (${expiring.length})</div>
+    <p class="fn-note">Active on one day at most. A nudge now (what to try first, for their grade) is the last chance before the trial ends.</p>
+    ${fnCopyButton('expiring', expiring)}
+    ${fnPeopleTable(expiring, [['Name', r => r.name || ''], ['Email', r => r.email || ''], ['Grade', r => r.grade || ''], ['Trial ends', r => fnDate(r.trial_ends)], ['Active days', r => r.active_days], ['Tools', r => r.tools || '']])}
+    <p class="fn-note" style="margin-top:var(--space-5)">Updated ${fnDate(d.generated_at)}. <button class="fn-btn" type="button" id="fnRefresh">Refresh</button></p>`;
+
+  document.getElementById('fnRefresh').addEventListener('click', loadFunnel);
+  el.querySelectorAll('[data-copy]').forEach(b => b.addEventListener('click', async () => {
+    const id = b.dataset.copy, emails = window.__fnLists[id].map(r => r.email).filter(Boolean).join(', ');
+    const msg = document.getElementById(id + 'Msg');
+    try { await navigator.clipboard.writeText(emails); msg.textContent = 'Copied. Paste into the BCC field of your email.'; }
+    catch (e) { msg.textContent = emails; }
+  }));
+}
+
 document.querySelectorAll('.section-btn').forEach(btn => {
   btn.addEventListener('click', () => {
     document.querySelectorAll('.section-btn').forEach(b => b.classList.remove('active'));
@@ -544,6 +654,8 @@ document.querySelectorAll('.section-btn').forEach(btn => {
     document.getElementById('cdvSection').hidden   = section !== 'cdv';
     document.getElementById('teacherSection').hidden = section !== 'teachers';
     document.getElementById('trialSection').hidden = section !== 'trials';
+    document.getElementById('funnelSection').hidden = section !== 'funnel';
+    if (section === 'funnel' && !funnelLoaded) loadFunnel();
     if (section === 'teachers' && !teacherLoaded) loadTeacherList();
     if (section === 'trials' && trialRows === null) loadTrials();  // fetch once, then filter client-side
   });
