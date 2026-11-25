@@ -39,6 +39,7 @@
   }
   button.quiet { background: transparent; color: #ffc83d; }
   button:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
+  .rules { color: #b9b4cc; font-size: 1.1rem; }
   [hidden] { display: none !important; }
   @media (max-width: 520px) { #items { grid-template-columns: 1fr; } }
 </style>
@@ -59,6 +60,8 @@
   <button id="cover" type="button" class="quiet" hidden>Hide words</button>
 </div>
 
+<a class="rules" href="rules/" target="_blank" rel="noopener">How to play</a>
+
 <!-- Category icons -->
 <svg hidden xmlns="http://www.w3.org/2000/svg">
   <symbol id="i-person" viewBox="0 0 24 24"><circle cx="12" cy="7" r="4.5"/><path d="M3 22c0-5 4-8.5 9-8.5s9 3.500 9 8.500z"/></symbol>
@@ -69,7 +72,7 @@
 
 <script>
 (function () {
-  // [person, place, event, commandment] for cards 1 to 10
+  // [person, place, event, commandment] for each card, in card number order
   var CARDS = [
     ["Noah", "Garden of Eden", "The Flood", "Do Not Steal"],
     ["David", "Bethlehem", "David and Goliath", "Honor Parents"],
@@ -80,7 +83,12 @@
     ["Daniel", "Egypt", "Daniel in the Lions' Den", "Do Not Covet"],
     ["Solomon", "Babylon", "Tower of Babel", "One God"],
     ["Esther", "River Jordan", "Nativity", "Do Not Steal"],
-    ["Peter", "Sea of Galilee", "Ten Plagues", "Honor Parents"]
+    ["Peter", "Sea of Galilee", "Ten Plagues", "Honor Parents"],
+    ["Eve", "Heaven", "Jesus Calms the Storm", "Do Not Steal"],
+    ["Joseph", "Jericho", "The Burning Bush", "Honor Parents"],
+    ["Mary", "The Temple", "Jonah and the Whale", "Do Not Lie"],
+    ["Joshua", "The Desert", "The Crucifixion", "Do Not Murder"],
+    ["Goliath", "A Stable", "The Baptism of Jesus", "Sabbath Day"]
   ];
   var TYPES = [
     { name: "Person", icon: "i-person", colour: "#2563c9" },
@@ -88,7 +96,7 @@
     { name: "Event", icon: "i-event", colour: "#c2570c" },
     { name: "Commandment", icon: "i-law", colour: "#7b3fbf" }
   ];
-  var KEY = "bible-pictionary";
+  var KEY = "bible-pictionary-v2"; // change when the card list changes
 
   var pick = document.getElementById("pick");
   var cover = document.getElementById("cover");
