@@ -1,0 +1,151 @@
+<!doctype html>
+<!-- © 2026 Ruhan Janse van Rensburg. All rights reserved. -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#14121f">
+<title>Bible Pictionary</title>
+<link rel="icon" type="image/svg+xml" href="/assets/logo-prism.svg">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    min-height: 100vh; min-height: 100dvh;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 3vh; padding: 3vh 16px;
+    background: #14121f; color: #f4f1ea;
+    font-family: "Segoe UI", system-ui, sans-serif;
+  }
+  h1 { font-size: clamp(1.6rem, 5vh, 2.8rem); text-align: center; }
+  #stage { width: min(960px, 100%); min-height: 56vh; display: flex; flex-direction: column; justify-content: center; }
+  #intro { text-align: center; font-size: clamp(1.1rem, 3vh, 1.6rem); color: #b9b4cc; }
+  #label { text-align: center; color: #b9b4cc; margin-bottom: 2vh; font-size: 1.2rem; }
+  #items { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; list-style: none; }
+  .item {
+    background: #fffdf7; color: #1d1a2b; border-radius: 18px; border-top: 10px solid var(--c);
+    padding: 3vh 16px; text-align: center;
+    display: flex; flex-direction: column; align-items: center; gap: 1.2vh;
+  }
+  .item svg { width: clamp(40px, 8vh, 72px); height: auto; color: var(--c); }
+  .item small { text-transform: uppercase; letter-spacing: .12em; font-weight: 700; color: var(--c); }
+  .item strong { font-size: clamp(1.3rem, 4.6vh, 2.5rem); line-height: 1.15; }
+  .covered strong { visibility: hidden; }
+  .buttons { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
+  button {
+    font: inherit; font-size: 1.25rem; font-weight: 700; cursor: pointer;
+    padding: 14px 34px; border-radius: 999px; border: 2px solid #ffc83d;
+    background: #ffc83d; color: #1d1a2b;
+  }
+  button.quiet { background: transparent; color: #ffc83d; }
+  button:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
+  [hidden] { display: none !important; }
+  @media (max-width: 520px) { #items { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<h1>Bible Pictionary</h1>
+
+<main id="stage" aria-live="polite">
+  <p id="intro">Press <b>Pick a card</b>, then choose any one item on it to draw.</p>
+  <div id="card" hidden>
+    <p id="label"></p>
+    <ul id="items"></ul>
+  </div>
+</main>
+
+<div class="buttons">
+  <button id="pick" type="button">Pick a card</button>
+  <button id="cover" type="button" class="quiet" hidden>Hide words</button>
+</div>
+
+<!-- Category icons -->
+<svg hidden xmlns="http://www.w3.org/2000/svg">
+  <symbol id="i-person" viewBox="0 0 24 24"><circle cx="12" cy="7" r="4.5"/><path d="M3 22c0-5 4-8.5 9-8.5s9 3.500 9 8.500z"/></symbol>
+  <symbol id="i-place" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M12 1.500a8 8 0 0 0-8 8c0 5.500 8 13 8 13s8-7.500 8-13a8 8 0 0 0-8-8zm0 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"/></symbol>
+  <symbol id="i-event" viewBox="0 0 24 24"><path d="M12 1.500l3.100 6.600 7.200.900-5.300 5 1.400 7.100L12 17.600l-6.400 3.500L7 14 1.700 9l7.200-.900z"/></symbol>
+  <symbol id="i-law" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M2 22V7a4.750 4.750 0 0 1 9.500 0v15zm2.500-13h4.500V7.500H4.500zm0 4h4.500v-1.500H4.500zm0 4h4.500v-1.500H4.500zM12.500 22V7A4.750 4.750 0 0 1 22 7v15zM15 9h4.500V7.500H15zm0 4h4.500v-1.500H15zm0 4h4.500v-1.500H15z"/></symbol>
+</svg>
+
+<script>
+(function () {
+  // [person, place, event, commandment] for cards 1 to 10
+  var CARDS = [
+    ["Noah", "Garden of Eden", "The Flood", "Do Not Steal"],
+    ["David", "Bethlehem", "David and Goliath", "Honor Parents"],
+    ["Moses", "Mount Sinai", "Parting the Red Sea", "Do Not Murder"],
+    ["Jonah", "Jerusalem", "The Last Supper", "Sabbath Day"],
+    ["Samson", "Mount Ararat", "Walking on Water", "Do Not Lie"],
+    ["Adam", "Nazareth", "Feeding the Five Thousand", "No Idols"],
+    ["Daniel", "Egypt", "Daniel in the Lions' Den", "Do Not Covet"],
+    ["Solomon", "Babylon", "Tower of Babel", "One God"],
+    ["Esther", "River Jordan", "Nativity", "Do Not Steal"],
+    ["Peter", "Sea of Galilee", "Ten Plagues", "Honor Parents"]
+  ];
+  var TYPES = [
+    { name: "Person", icon: "i-person", colour: "#2563c9" },
+    { name: "Place", icon: "i-place", colour: "#1f8a4c" },
+    { name: "Event", icon: "i-event", colour: "#c2570c" },
+    { name: "Commandment", icon: "i-law", colour: "#7b3fbf" }
+  ];
+  var KEY = "bible-pictionary";
+
+  var pick = document.getElementById("pick");
+  var cover = document.getElementById("cover");
+  var card = document.getElementById("card");
+  var items = document.getElementById("items");
+
+  // Cards still in the deck, and the card on screen. Saved so a refresh keeps them.
+  var state = { deck: [], current: null };
+  try {
+    var saved = JSON.parse(localStorage.getItem(KEY));
+    if (saved && Array.isArray(saved.deck)) state = saved;
+  } catch (e) {}
+
+  function save() {
+    try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {}
+  }
+
+  // Every card comes up once before any card repeats.
+  function draw() {
+    if (!state.deck.length) {
+      state.deck = CARDS.map(function (_, i) { return i; });
+    }
+    // A fresh deck must not start with the card already on screen.
+    var choices = state.deck.filter(function (i) { return i !== state.current; });
+    state.current = choices[Math.floor(Math.random() * choices.length)];
+    state.deck.splice(state.deck.indexOf(state.current), 1);
+    save();
+    show();
+  }
+
+  function show() {
+    if (!CARDS[state.current]) return;
+    items.innerHTML = CARDS[state.current].map(function (word, i) {
+      var t = TYPES[i];
+      return '<li class="item" style="--c:' + t.colour + '">' +
+        '<svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor"><use href="#' + t.icon + '"/></svg>' +
+        '<small>' + t.name + '</small><strong>' + word + '</strong></li>';
+    }).join("");
+    document.getElementById("label").textContent = "Card " + (state.current + 1);
+    document.getElementById("intro").hidden = true;
+    card.hidden = false;
+    cover.hidden = false;
+    setCovered(false);
+    pick.textContent = "Next card";
+  }
+
+  function setCovered(on) {
+    card.classList.toggle("covered", on);
+    cover.textContent = on ? "Show words" : "Hide words";
+  }
+
+  pick.addEventListener("click", draw);
+  cover.addEventListener("click", function () {
+    setCovered(!card.classList.contains("covered"));
+  });
+  show();
+})();
+</script>
+</body>
+</html>
