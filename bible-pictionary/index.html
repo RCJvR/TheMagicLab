@@ -58,7 +58,7 @@
     .item small { font-size: .72rem; }
     .item strong { font-size: 1.3rem; }
     .buttons { flex-wrap: nowrap; gap: 10px; }
-    button { font-size: 1.05rem; padding: 11px 24px; white-space: nowrap; }
+    button { font-size: 1rem; padding: 11px 16px; white-space: nowrap; }
     .rules { font-size: .95rem; }
   }
 </style>
@@ -75,11 +75,12 @@
 </main>
 
 <div class="buttons">
+  <button id="home" type="button" class="quiet" hidden>Home</button>
   <button id="pick" type="button">Pick a card</button>
   <button id="cover" type="button" class="quiet" hidden>Hide words</button>
 </div>
 
-<a class="rules" href="rules/" target="_blank" rel="noopener">How to play</a>
+<a class="rules" href="rules/">How to play</a>
 
 <!-- Category icons -->
 <svg hidden xmlns="http://www.w3.org/2000/svg">
@@ -132,6 +133,7 @@
 
   var pick = document.getElementById("pick");
   var cover = document.getElementById("cover");
+  var home = document.getElementById("home");
   var card = document.getElementById("card");
   var items = document.getElementById("items");
 
@@ -148,6 +150,7 @@
 
   // Every card comes up once before any card repeats.
   function draw() {
+    state.home = false;
     if (!state.deck.length) {
       state.deck = CARDS.map(function (_, i) { return i; });
     }
@@ -172,6 +175,7 @@
     document.getElementById("intro").hidden = true;
     card.hidden = false;
     cover.hidden = false;
+    home.hidden = false;
     setCovered(false);
     pick.textContent = "Next card";
   }
@@ -181,13 +185,25 @@
     cover.textContent = on ? "Show words" : "Hide words";
   }
 
+  // Home returns to the opening screen. The cards already used stay used.
+  home.addEventListener("click", function () {
+    if (isExample) { location.href = location.pathname; return; }
+    state.home = true;
+    save();
+    card.hidden = true;
+    cover.hidden = true;
+    home.hidden = true;
+    document.getElementById("intro").hidden = false;
+    pick.textContent = "Pick a card";
+  });
   pick.addEventListener("click", draw);
   cover.addEventListener("click", function () {
     setCovered(!card.classList.contains("covered"));
   });
-  show();
+  if (isExample || !state.home) show();
   if (isExample) {
-    document.querySelector(".buttons").hidden = true;
+    pick.hidden = true;
+    cover.hidden = true;
     document.querySelector(".rules").hidden = true;
   }
 })();
