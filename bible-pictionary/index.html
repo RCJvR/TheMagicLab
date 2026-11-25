@@ -41,7 +41,26 @@
   button:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
   .rules { color: #b9b4cc; font-size: 1.1rem; }
   [hidden] { display: none !important; }
-  @media (max-width: 520px) { #items { grid-template-columns: 1fr; } }
+  /* Phones: one slim row per item, so the whole card fits without scrolling. */
+  @media (max-width: 520px) {
+    body { gap: 12px; padding: 10px 12px; }
+    h1 { font-size: 1.4rem; }
+    #stage { min-height: 0; }
+    #label { font-size: .95rem; margin-bottom: 6px; }
+    #items { grid-template-columns: 1fr; gap: 8px; }
+    .item {
+      display: grid; grid-template-columns: 40px 1fr; column-gap: 12px; row-gap: 2px;
+      align-content: center; align-items: center; text-align: left;
+      min-height: 86px; padding: 8px 12px;
+      border-top: 0; border-left: 8px solid var(--c); border-radius: 14px;
+    }
+    .item svg { grid-row: span 2; width: 40px; height: 40px; }
+    .item small { font-size: .72rem; }
+    .item strong { font-size: 1.3rem; }
+    .buttons { flex-wrap: nowrap; gap: 10px; }
+    button { font-size: 1.05rem; padding: 11px 24px; white-space: nowrap; }
+    .rules { font-size: .95rem; }
+  }
 </style>
 </head>
 <body>
@@ -68,11 +87,14 @@
   <symbol id="i-place" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M12 1.500a8 8 0 0 0-8 8c0 5.500 8 13 8 13s8-7.500 8-13a8 8 0 0 0-8-8zm0 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"/></symbol>
   <symbol id="i-event" viewBox="0 0 24 24"><path d="M12 1.500l3.100 6.600 7.200.900-5.300 5 1.400 7.100L12 17.600l-6.400 3.500L7 14 1.700 9l7.200-.900z"/></symbol>
   <symbol id="i-law" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M2 22V7a4.750 4.750 0 0 1 9.500 0v15zm2.500-13h4.500V7.500H4.500zm0 4h4.500v-1.500H4.500zm0 4h4.500v-1.500H4.500zM12.500 22V7A4.750 4.750 0 0 1 22 7v15zM15 9h4.500V7.500H15zm0 4h4.500v-1.500H15zm0 4h4.500v-1.500H15z"/></symbol>
+  <symbol id="i-fruit" viewBox="0 0 24 24"><path d="M12 7.500c3-2.500 9-1.500 9 5 0 5-3.500 10-6 10-1.300 0-1.800-.700-3-.700s-1.700.700-3 .700c-2.500 0-6-5-6-10 0-6.500 6-7.500 9-5z"/><path d="M12 6.500c0-3 2-5 5.500-5 0 3-2 5-5.500 5z"/></symbol>
 </svg>
 
 <script>
 (function () {
-  // [person, place, event, commandment] for each card, in card number order
+  // [person, place, event, commandment] for each card, in card number order.
+  // Cards marked FRUIT have a Fruit of the Spirit as the fourth item instead.
+  var FRUIT = true;
   var CARDS = [
     ["Noah", "Garden of Eden", "The Flood", "Do Not Steal"],
     ["David", "Bethlehem", "David and Goliath", "Honor Parents"],
@@ -88,7 +110,12 @@
     ["Joseph", "Jericho", "The Burning Bush", "Honor Parents"],
     ["Mary", "The Temple", "Jonah and the Whale", "Do Not Lie"],
     ["Joshua", "The Desert", "The Crucifixion", "Do Not Murder"],
-    ["Goliath", "A Stable", "The Baptism of Jesus", "Sabbath Day"]
+    ["Goliath", "A Stable", "The Baptism of Jesus", "Sabbath Day"],
+    ["Abraham", "Noah's Ark", "Baby Moses in the Basket", "Love", FRUIT],
+    ["Zacchaeus", "A Well", "The Walls of Jericho Fall", "Joy", FRUIT],
+    ["Elijah", "A Prison", "Jesus Heals a Blind Man", "Peace", FRUIT],
+    ["Ruth", "A Palace", "The Wise Men Follow the Star", "Patience", FRUIT],
+    ["Paul", "The Empty Tomb", "Adam and Eve Eat the Fruit", "Kindness", FRUIT]
   ];
   var TYPES = [
     { name: "Person", icon: "i-person", colour: "#2563c9" },
@@ -96,7 +123,8 @@
     { name: "Event", icon: "i-event", colour: "#c2570c" },
     { name: "Commandment", icon: "i-law", colour: "#7b3fbf" }
   ];
-  var KEY = "bible-pictionary-v2"; // change when the card list changes
+  var FRUIT_TYPE = { name: "Fruit of the Spirit", icon: "i-fruit", colour: "#c4264f" };
+  var KEY = "bible-pictionary-v3"; // change when the card list changes
 
   var pick = document.getElementById("pick");
   var cover = document.getElementById("cover");
@@ -129,8 +157,9 @@
 
   function show() {
     if (!CARDS[state.current]) return;
-    items.innerHTML = CARDS[state.current].map(function (word, i) {
-      var t = TYPES[i];
+    var data = CARDS[state.current];
+    items.innerHTML = data.slice(0, 4).map(function (word, i) {
+      var t = i === 3 && data[4] ? FRUIT_TYPE : TYPES[i];
       return '<li class="item" style="--c:' + t.colour + '">' +
         '<svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor"><use href="#' + t.icon + '"/></svg>' +
         '<small>' + t.name + '</small><strong>' + word + '</strong></li>';
