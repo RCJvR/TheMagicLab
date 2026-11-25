@@ -7,6 +7,10 @@
 <meta name="robots" content="noindex, nofollow">
 <meta name="theme-color" content="#14121f">
 <title>Bible Pictionary</title>
+<script>
+// The plain link opens on the rules; their Start button comes back here with ?play.
+if (!/[?&](play|example)(=|&|$)/.test(location.search)) location.replace("rules/");
+</script>
 <link rel="icon" type="image/svg+xml" href="/assets/logo-prism.svg">
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -187,7 +191,7 @@
 
   // Home returns to the opening screen. The cards already used stay used.
   home.addEventListener("click", function () {
-    if (isExample) { location.href = location.pathname; return; }
+    if (isExample) { location.href = "?play"; return; }
     state.home = true;
     save();
     card.hidden = true;
