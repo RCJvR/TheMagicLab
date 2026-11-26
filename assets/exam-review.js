@@ -48,7 +48,7 @@ async function load() {
   await loadAttempts();
 }
 async function loadAttempts(only) {
-  let q = sb().from('exam_attempts').select('id, student_id, status, deadline, answers, submitted_at, submit_kind, mark_status, mark_error, ai_summary, input_tokens, output_tokens').eq('sitting_id', sid);
+  let q = sb().from('exam_attempts').select('id, student_id, status, deadline, answers, submitted_at, submit_kind, mark_status, mark_error, ai_summary, input_tokens, output_tokens, source, transcript_checked_at').eq('sitting_id', sid);
   if (only) q = q.in('id', only);
   const { data, error } = await q;
   if (error) throw error;
@@ -123,8 +123,11 @@ async function markMany(ids, itemsOnly, label) {
 $('btnMark').addEventListener('click', () => {
   const ids = wrote().map(l => l.attempt_id).filter(id => {
     const a = attempts[id];
-    return a.mark_status !== 'done' && (a.status === 'submitted' || Date.now() > Date.parse(a.deadline) + 90e3);
+    return a.mark_status !== 'done' && (a.status === 'submitted' || Date.now() > Date.parse(a.deadline) + 90e3)
+      && !(a.source === 'paper' && !a.transcript_checked_at);   // handwritten scripts wait for their transcription check
   });
+  const waiting = wrote().filter(l => attempts[l.attempt_id].source === 'paper' && !attempts[l.attempt_id].transcript_checked_at).length;
+  if (waiting) $('markProg').textContent = `${waiting} paper script${waiting === 1 ? '' : 's'} still need their transcription checked (Paper scripts page).`;
   if (!ids.length) return;
   markMany(ids, null, 'Marking');
 });
@@ -323,6 +326,7 @@ function drawL() {
   const a = attempts[l.attempt_id];
   const tot = items.reduce((s, it) => s + final(marks[key(l.attempt_id, it.id)]), 0);
   v.appendChild(el('h2', { class: 'gg-h', text: `${l.name}: ${fmtNum(tot)}/${fmtNum(paper.total)} (${Math.round(100 * tot / paper.total)}%)` }));
+  if (a.source === 'paper') v.appendChild(el('p', { class: 'gg-hint', html: `Handwritten script, typed from photos${a.transcript_checked_at ? ' and checked by you' : ' — <b>transcription not checked yet</b>'}. <a href="exam-scan.html?s=${esc(sid)}">Paper scripts</a>` }));
   v.appendChild(el('p', { class: 'gg-hint', text: `Handed in ${fmtWhen(a.submitted_at)}${a.submit_kind === 'time' ? ' (time up)' : ''} · marking: ${a.mark_status}${a.mark_error ? ' (' + a.mark_error + ')' : ''}` +
     (sit.released_at ? ` · feedback opened ${views[a.id] || 0} time${views[a.id] === 1 ? '' : 's'}` : '') }));
   if (a.ai_summary) v.appendChild(el('div', { class: 'xm-memo', text: 'Summary for the learner: ' + a.ai_summary }));
