@@ -1,0 +1,78 @@
+<!doctype html>
+<!-- © 2026 Ruhan Janse van Rensburg. All rights reserved. -->
+<html lang="en">
+<head>
+<script src="/assets/theme.js"></script>
+<script>document.documentElement.style.visibility='hidden';</script>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#08090b">
+<title>Paper scripts — Exam Sanctum</title>
+<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700,800,900&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="assets/magic-lab.css">
+<link rel="stylesheet" href="assets/grimoire.css">
+<link rel="stylesheet" href="assets/exam.css">
+<link rel="stylesheet" href="math-magician/figs.css">
+<script defer src="math-magician/figs.js"></script>
+</head>
+<body class="gg">
+<main class="gg-main gg-wide" id="main">
+  <div class="gg-top"><a class="gg-back" href="exam-papers.html">← Exam papers</a><a class="gg-back" id="lnkReview" href="#">Mark &amp; review</a></div>
+  <h1 id="pTitle">Paper scripts</h1>
+  <p class="gg-hint" style="max-width:72ch;margin:0 0 14px">Handwritten scripts for this paper. Photograph each page with the learner’s name covered, let the AI read the handwriting, check every answer against the photo, then mark it like an online script. The AI that marks never sees the photo, so your pen marks on the paper cannot influence it.</p>
+  <p class="gg-msg" id="msg">Loading…</p>
+
+  <div id="app" hidden>
+    <div class="xm-bp" id="sStats"></div>
+    <div class="gg-top">
+      <div class="gg-field" style="margin:0"><label for="addWho">Add a script for</label><select id="addWho"></select></div>
+      <div class="gg-field" style="margin:0" id="labelWrap"><label for="addLabel">Code instead of a name</label><input class="gg-in" id="addLabel" maxlength="20" placeholder="e.g. 8A1-5" style="width:130px"></div>
+      <button class="gg-btn gg-btn--primary" type="button" id="btnAdd">Add script</button>
+    </div>
+    <p class="gg-err" id="err" role="alert"></p>
+    <div class="xm-table-wrap"><table class="xm-table" id="sTable">
+      <thead><tr><th>Script</th><th>Photos</th><th>Read by AI</th><th>Checked</th><th>Marked</th><th></th></tr></thead><tbody></tbody>
+    </table></div>
+
+    <section id="one" hidden>
+      <h2 class="gg-h" id="oTitle"></h2>
+      <div class="gg-top">
+        <label class="gg-btn" for="files">Add photos</label>
+        <input type="file" id="files" accept="image/*" multiple hidden>
+        <button class="gg-btn gg-btn--primary" type="button" id="btnRead">Read the handwriting</button>
+        <span class="gg-hint" id="oProg" aria-live="polite"></span>
+      </div>
+      <p class="gg-hint">Photos in page order, flat and in good light, one page per photo. Cover names before you take the photo. Up to 16 pages.</p>
+      <div class="xm-thumbs" id="thumbs"></div>
+      <div id="oWarn"></div>
+
+      <div class="xm-check" id="check" hidden>
+        <div class="xm-check-photo">
+          <div class="gg-top" style="margin:0 0 6px"><span class="gg-hint" id="phLabel"></span>
+            <button class="gg-btn gg-btn--sm" type="button" id="phPrev" aria-label="Previous page">◀</button>
+            <button class="gg-btn gg-btn--sm" type="button" id="phNext" aria-label="Next page">▶</button>
+            <a class="gg-btn gg-btn--sm" id="phOpen" target="_blank" rel="noopener">Open full size</a></div>
+          <div class="xm-photo-box"><img id="phImg" alt="Photo of the script page"></div>
+        </div>
+        <div class="xm-check-items">
+          <p class="gg-hint" id="ckSum"></p>
+          <div id="items"></div>
+          <div class="gg-top xm-check-bar">
+            <button class="gg-btn" type="button" id="btnSave">Save</button>
+            <button class="gg-btn gg-btn--primary" type="button" id="btnChecked">I have checked every answer</button>
+            <button class="gg-btn" type="button" id="btnMark" hidden>Mark this script</button>
+            <span class="gg-hint" id="ckState" aria-live="polite"></span>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</main>
+
+<script src="auth.js"></script>
+<script defer src="require-auth.js"></script>
+<script type="module" src="assets/exam-scan.js"></script>
+</body>
+</html>

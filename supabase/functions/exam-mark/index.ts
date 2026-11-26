@@ -150,8 +150,10 @@ Deno.serve(async (req) => {
   const stability = body.mode === "stability";
 
   const admin = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
-  const { data: att } = await admin.from("exam_attempts").select("id, sitting_id, status, deadline, answers, input_tokens, output_tokens").eq("id", attemptId).maybeSingle();
+  const { data: att } = await admin.from("exam_attempts").select("id, sitting_id, status, deadline, answers, input_tokens, output_tokens, source, transcript_checked_at").eq("id", attemptId).maybeSingle();
   if (!att) return json({ error: "notfound" }, 404);
+  // a handwritten script is marked only after a teacher has checked its transcription
+  if (att.source === "paper" && !att.transcript_checked_at) return json({ error: "unchecked" }, 409);
   const timedOut = Date.now() > Date.parse(att.deadline) + 90_000;
   if (att.status !== "submitted" && !timedOut) return json({ error: "writing" }, 409);
   if (stability && att.status !== "submitted") return json({ error: "writing" }, 409);
