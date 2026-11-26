@@ -3,8 +3,9 @@
  * 1. "Mark all" sends each handed-in script to the exam-mark edge function (4 at a time).
  * 2. By question: every learner's answer to one question, flagged ones first; tick memo points
  *    to change a mark (the teacher's mark always wins) or press Agree.
- * 3. Moderation sample: a fixed random 10% of scripts, and how often the teacher agreed with the AI.
- * 4. Results: totals, CSV, release to learners and the markbook (exam_release).
+ * 3. Parity: 10–15 scripts chosen across the mark range, marked blind by the teacher (and a
+ *    second marker) without seeing the AI's marks; agreement statistics; an AI stability re-run.
+ * 4. Results: totals, CSV, feedback condition, AI audit log, release (exam_release).
  */
 import { sb, me, $, el, esc, whenAuthReady, friendly, fmtNum, fmtWhen, capsLevel, isStaff, pool, download, csvCell } from './exam-core.js';
 import { memoText } from './exam-paper.js';
@@ -12,6 +13,13 @@ import { renderScenario, answerText } from './exam-render.js';
 
 const sid = new URLSearchParams(location.search).get('s');
 let sit, paper, items = [], byItem = {}, learners = [], attempts = {}, marks = {}, curQ = null, curL = null, busy = false;
+let parity = {}, corrections = {}, views = {}, stab = {}, role = (() => { try { return localStorage.getItem('xm-parity-role') === 'second' ? 'second' : 'teacher'; } catch (e) { return 'teacher'; } })();
+const pkey = (a, i, r) => a + '|' + i + '|' + r;
+const REASONS = { memo_gap: 'Correct answer not in the memo', too_lenient: 'AI too lenient', too_strict: 'AI too strict', misread: 'AI misread the answer',
+  language: 'Language / terminology', partial: 'Partly correct', other: 'Other' };
+const inSample = id => (sit.parity_sample || []).includes(id);
+/** Blind: a parity-sample script hides the AI's marks until this marker has finished it. */
+const blind = id => inSample(id) && items.filter(isAI).some(it => !parity[pkey(id, it.id, role)]);
 const key = (a, i) => a + '|' + i;
 const final = m => m ? Math.min(Number(m.max), Number(m.teacher_score ?? m.ai_score ?? m.auto_score ?? 0)) : 0;
 const isAI = it => paper.memo[it.id].type === 'written';
@@ -50,7 +58,19 @@ async function loadAttempts(only) {
     const { data: ms, error: e2 } = await sb().from('exam_marks').select('*').in('attempt_id', ids.slice(i, i + 60));
     if (e2) throw e2;
     (ms || []).forEach(m => { marks[key(m.attempt_id, m.item_id)] = m; });
+    const [pa, co, vw] = await Promise.all([
+      sb().from('exam_parity').select('*').in('attempt_id', ids.slice(i, i + 60)),
+      sb().from('exam_corrections').select('*').in('attempt_id', ids.slice(i, i + 60)),
+      sb().from('exam_feedback_views').select('attempt_id, item_id, kind').in('attempt_id', ids.slice(i, i + 60))]);
+    (pa.data || []).forEach(x => { parity[pkey(x.attempt_id, x.item_id, x.role)] = x; });
+    (co.data || []).forEach(x => { corrections[key(x.attempt_id, x.item_id)] = x; });
+    (vw.data || []).forEach(x => { views[x.attempt_id] = (views[x.attempt_id] || 0) + 1; });
   }
+}
+async function loadStability() {
+  const { data } = await sb().from('exam_ai_log').select('attempt_id, result, created_at').eq('sitting_id', sid).eq('kind', 'stability').eq('ok', true).order('created_at');
+  stab = {};
+  (data || []).forEach(r => { stab[r.attempt_id] = r.result || {}; });   // the latest run wins
 }
 
 function stats() {
@@ -124,6 +144,11 @@ function answerCard(l, it, opts = {}) {
   const a = attempts[l.attempt_id], m = marks[key(l.attempt_id, it.id)], memo = paper.memo[it.id];
   const text = answerText(it, a.answers[it.id]);
   const card = el('div', { class: 'xm-ans', 'data-flag': flagged(m) ? '1' : '0' });
+  if (blind(l.attempt_id) && memo.type === 'written') {
+    card.appendChild(el('div', { class: 'xm-ans-head' }, [el('b', { text: opts.showQ ? it.num : l.name, style: 'color:var(--paper)' }), el('span', { class: 'xm-pill warn', text: 'parity sample' })]));
+    card.appendChild(el('p', { class: 'gg-hint', text: 'This script is in the parity sample. Mark it blind in the Parity tab first; the AI’s mark shows here after that.' }));
+    return card;
+  }
   const head = el('div', { class: 'xm-ans-head' }, [
     el('b', { text: opts.showQ ? it.num : l.name, style: 'color:var(--paper)' }),
     el('span', { class: 'xm-score', text: m ? `${fmtNum(final(m))}/${fmtNum(m.max)}` : '–' })
@@ -147,25 +172,76 @@ function answerCard(l, it, opts = {}) {
       cb.addEventListener('change', () => {
         const met = [...box.querySelectorAll('input')].map((c, k) => c.checked ? k : -1).filter(k => k >= 0);
         const score = Math.min(memo.max, met.reduce((s, k) => s + (memo.weights[k] || 0), 0));
-        saveMark(l.attempt_id, it.id, { teacher_met: met, teacher_score: score }).then(() => { head.querySelector('.xm-score').textContent = `${fmtNum(final(m))}/${fmtNum(m.max)}`; });
+        saveMark(l.attempt_id, it.id, { teacher_met: met, teacher_score: score }).then(() => { head.querySelector('.xm-score').textContent = `${fmtNum(final(m))}/${fmtNum(m.max)}`; reasonBox(); });
       });
       box.appendChild(el('label', { class: aiSet.has(i) ? 'ai' : '', title: aiSet.has(i) ? 'The AI awarded this point' : null }, [cb, el('span', { text: `(${memo.weights[i]}) ${p}` })]));
     });
     card.appendChild(box);
-    if (m.ai_feedback) card.appendChild(el('div', { class: 'xm-fb', text: 'Feedback: ' + (m.teacher_note || m.ai_feedback) }));
+    card.appendChild(feedbackBox(l, it, m, memo));
   } else {
     const inp = el('input', { class: 'gg-in', type: 'number', min: '0', max: String(m.max), step: '0.5', style: 'width:90px', 'aria-label': 'Mark for ' + l.name, value: m.teacher_score ?? '' , placeholder: fmtNum(m.auto_score) });
     inp.addEventListener('change', () => {
       const v = inp.value === '' ? null : Math.max(0, Math.min(Number(m.max), Number(inp.value)));
-      saveMark(l.attempt_id, it.id, { teacher_score: v }).then(() => { head.querySelector('.xm-score').textContent = `${fmtNum(final(m))}/${fmtNum(m.max)}`; });
+      saveMark(l.attempt_id, it.id, { teacher_score: v }).then(() => { head.querySelector('.xm-score').textContent = `${fmtNum(final(m))}/${fmtNum(m.max)}`; reasonBox(); });
     });
     card.appendChild(el('div', { class: 'gg-check' }, [el('span', { class: 'gg-hint', text: `Marked by rule: ${fmtNum(m.auto_score)}. Your mark (leave empty to keep it):` }), inp]));
   }
+  // why the teacher changed the AI's or the rule's mark (for the audit trail)
+  const reasonWrap = el('div', { class: 'gg-check', style: 'margin:6px 0 0' });
+  card.appendChild(reasonWrap);
+  function reasonBox() {
+    reasonWrap.innerHTML = '';
+    if (m.teacher_score == null || Number(m.teacher_score) === Number(m.ai_score ?? m.auto_score)) return;
+    const sel = el('select', { class: 'gg-in', 'aria-label': 'Reason for changing the mark' }, [el('option', { value: '', text: 'Why did you change it?' }),
+      ...Object.entries(REASONS).map(([k, v]) => el('option', { value: k, text: v }))]);
+    sel.value = m.override_reason || '';
+    sel.addEventListener('change', () => saveMark(l.attempt_id, it.id, { override_reason: sel.value || null }));
+    reasonWrap.appendChild(el('span', { class: 'gg-hint', text: 'Reason:' })); reasonWrap.appendChild(sel);
+  }
+  reasonBox();
   const row = el('div', { class: 'gg-top', style: 'margin:6px 0 0' });
   if (!m.reviewed) row.appendChild(el('button', { class: 'gg-btn gg-btn--sm', type: 'button', text: 'Agree', onclick: () => saveMark(l.attempt_id, it.id, {}).then(redraw) }));
-  if (m.teacher_score != null) row.appendChild(el('button', { class: 'gg-btn gg-btn--sm', type: 'button', text: 'Use the ' + (memo.type === 'written' ? 'AI' : 'rule') + '’s mark', onclick: () => saveMark(l.attempt_id, it.id, { teacher_met: null, teacher_score: null }).then(redraw) }));
+  if (m.teacher_score != null) row.appendChild(el('button', { class: 'gg-btn gg-btn--sm', type: 'button', text: 'Use the ' + (memo.type === 'written' ? 'AI' : 'rule') + '’s mark', onclick: () => saveMark(l.attempt_id, it.id, { teacher_met: null, teacher_score: null, override_reason: null }).then(redraw) }));
+  const cor = corrections[key(l.attempt_id, it.id)];
+  if (cor) card.appendChild(el('div', { class: 'xm-fb', text: 'Learner’s correction: ' + cor.body }));
   if (row.childNodes.length) card.appendChild(row);
   return card;
+}
+
+/* ── four-part feedback: what went well, what was missing, next step, practice link ── */
+const FB = [['well', 'What went well'], ['missing', 'What was missing'], ['next', 'Next step']];
+function feedbackBox(l, it, m, memo) {
+  const fb = m.teacher_fb || m.ai_fb || (m.ai_feedback ? { well: '', missing: m.ai_feedback, next: '' } : null);
+  const wrap = el('div', { class: 'xm-fb' });
+  if (sit.feedback_mode === 'marks') wrap.appendChild(el('p', { class: 'gg-hint', style: 'margin:0 0 4px', text: 'Marks-only condition: learners will not see this feedback.' }));
+  if (!fb) { wrap.appendChild(el('span', { class: 'gg-hint', text: 'No feedback yet.' })); return wrap; }
+  const show = () => {
+    wrap.querySelectorAll('.xm-fbp').forEach(n => n.remove());
+    const f = m.teacher_fb || fb;
+    FB.forEach(([k, label]) => { if (f[k]) wrap.insertBefore(el('p', { class: 'xm-fbp', style: 'margin:2px 0' }, [el('b', { text: label + ': ' }), f[k]]), edit); });
+    if (memo.practice) wrap.insertBefore(el('p', { class: 'xm-fbp gg-hint', style: 'margin:2px 0', text: 'Practice link: ' + memo.practice }), edit);
+    if (m.teacher_fb) wrap.insertBefore(el('p', { class: 'xm-fbp gg-hint', style: 'margin:2px 0', text: 'You edited this feedback.' }), edit);
+  };
+  const edit = el('details', {}, [el('summary', { class: 'gg-hint', text: 'Edit feedback' })]);
+  const inputs = {};
+  FB.forEach(([k, label]) => {
+    inputs[k] = el('textarea', { class: 'gg-in', rows: '2', style: 'width:100%', 'aria-label': label });
+    inputs[k].value = (m.teacher_fb || fb)[k] || '';
+    edit.appendChild(el('label', { class: 'gg-hint', text: label })); edit.appendChild(inputs[k]);
+  });
+  edit.appendChild(el('div', { class: 'gg-top', style: 'margin:4px 0 0' }, [
+    el('button', { class: 'gg-btn gg-btn--sm', type: 'button', text: 'Save feedback', onclick: async () => {
+      const t = Object.fromEntries(FB.map(([k]) => [k, inputs[k].value.trim().slice(0, 600)]));
+      await saveMark(l.attempt_id, it.id, { teacher_fb: t, teacher_note: [t.well, t.missing, t.next].filter(Boolean).join(' ').slice(0, 600) || null });
+      edit.open = false; show();
+    } }),
+    m.teacher_fb ? el('button', { class: 'gg-btn gg-btn--sm', type: 'button', text: 'Use the AI’s feedback', onclick: async () => {
+      await saveMark(l.attempt_id, it.id, { teacher_fb: null, teacher_note: null }); redraw();
+    } }) : null
+  ]));
+  wrap.appendChild(edit);
+  show();
+  return wrap;
 }
 
 /* ── by question ── */
@@ -247,36 +323,186 @@ function drawL() {
   const a = attempts[l.attempt_id];
   const tot = items.reduce((s, it) => s + final(marks[key(l.attempt_id, it.id)]), 0);
   v.appendChild(el('h2', { class: 'gg-h', text: `${l.name}: ${fmtNum(tot)}/${fmtNum(paper.total)} (${Math.round(100 * tot / paper.total)}%)` }));
-  v.appendChild(el('p', { class: 'gg-hint', text: `Handed in ${fmtWhen(a.submitted_at)}${a.submit_kind === 'time' ? ' (time up)' : ''} · marking: ${a.mark_status}${a.mark_error ? ' (' + a.mark_error + ')' : ''}` }));
+  v.appendChild(el('p', { class: 'gg-hint', text: `Handed in ${fmtWhen(a.submitted_at)}${a.submit_kind === 'time' ? ' (time up)' : ''} · marking: ${a.mark_status}${a.mark_error ? ' (' + a.mark_error + ')' : ''}` +
+    (sit.released_at ? ` · feedback opened ${views[a.id] || 0} time${views[a.id] === 1 ? '' : 's'}` : '') }));
   if (a.ai_summary) v.appendChild(el('div', { class: 'xm-memo', text: 'Summary for the learner: ' + a.ai_summary }));
   if (a.mark_status === 'error' || a.mark_status === 'none') v.appendChild(el('button', { class: 'gg-btn gg-btn--sm', type: 'button', text: 'Mark this script now', onclick: () => markMany([a.id], null, 'Marking') }));
   items.forEach(it => v.appendChild(answerCard(l, it, { showQ: true })));
 }
 
-/* ── moderation sample ── */
-function hash(s) { let h = 2166136261; for (let i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); } return h >>> 0; }
+/* ── parity: blind hand-marking of a sample, compared with the AI ── */
+const aiTotal = id => items.filter(isAI).reduce((t, it) => { const m = marks[key(id, it.id)]; return t + (m ? Number(m.ai_score ?? 0) : 0); }, 0);
+let parCur = null;
+
+function chooseSample(n) {
+  const done = wrote().filter(l => attempts[l.attempt_id].mark_status === 'done').map(l => l.attempt_id);
+  const sorted = done.slice().sort((a, b) => aiTotal(a) - aiTotal(b) || a.localeCompare(b));
+  if (sorted.length <= n) return sorted;
+  // evenly across the mark range (stratified by the AI's written total), so weak, middle and strong scripts are all in
+  return Array.from({ length: n }, (_, k) => sorted[Math.min(sorted.length - 1, Math.floor((k + 0.5) * sorted.length / n))]);
+}
+
+/* agreement statistics */
+function agreeStats(pairs) {           // pairs: [{a, b, max}] (a = reference, b = compared)
+  const n = pairs.length;
+  if (!n) return null;
+  const d = pairs.map(p => p.b - p.a);
+  const exact = pairs.filter(p => Math.abs(p.b - p.a) < 1e-9).length / n;
+  const adj = pairs.filter(p => Math.abs(p.b - p.a) <= 1 + 1e-9).length / n;
+  const mean = d.reduce((s, x) => s + x, 0) / n;
+  // quadratic weighted kappa, pooled with integer categories 0..largest max
+  const K = Math.max(...pairs.map(p => Math.round(p.max))) + 1;
+  const O = Array.from({ length: K }, () => Array(K).fill(0)), ra = Array(K).fill(0), rb = Array(K).fill(0);
+  pairs.forEach(p => { const i = Math.min(K - 1, Math.round(p.a)), j = Math.min(K - 1, Math.round(p.b)); O[i][j]++; ra[i]++; rb[j]++; });
+  let num = 0, den = 0;
+  for (let i = 0; i < K; i++) for (let j = 0; j < K; j++) {
+    const w = K > 1 ? ((i - j) ** 2) / ((K - 1) ** 2) : 0;
+    num += w * O[i][j]; den += w * ra[i] * rb[j] / n;
+  }
+  const qwk = den > 0 ? 1 - num / den : (num === 0 ? 1 : null);
+  return { n, exact, adj, mean, qwk };
+}
+function scriptStats(rows) {            // rows: [{a, b}] script totals → Pearson r and Bland–Altman limits
+  const n = rows.length;
+  if (n < 3) return null;
+  const ma = rows.reduce((s, r) => s + r.a, 0) / n, mb = rows.reduce((s, r) => s + r.b, 0) / n;
+  let sab = 0, saa = 0, sbb = 0;
+  rows.forEach(r => { sab += (r.a - ma) * (r.b - mb); saa += (r.a - ma) ** 2; sbb += (r.b - mb) ** 2; });
+  const d = rows.map(r => r.b - r.a), md = d.reduce((s, x) => s + x, 0) / n;
+  const sd = Math.sqrt(d.reduce((s, x) => s + (x - md) ** 2, 0) / (n - 1));
+  return { n, r: saa && sbb ? sab / Math.sqrt(saa * sbb) : null, md, lo: md - 1.96 * sd, hi: md + 1.96 * sd };
+}
+const pc = x => x == null ? '–' : Math.round(100 * x) + '%';
+const f2 = x => x == null || isNaN(x) ? '–' : (Math.round(x * 100) / 100).toFixed(2);
+
+function parityPairs(other) {          // teacher parity vs AI / second marker / stability
+  const out = [];
+  (sit.parity_sample || []).forEach(id => items.filter(isAI).forEach(it => {
+    const t = parity[pkey(id, it.id, 'teacher')], m = marks[key(id, it.id)];
+    if (!t || !m) return;
+    let b = null;
+    if (other === 'ai') b = m.ai_score;
+    if (other === 'second') b = parity[pkey(id, it.id, 'second')] && parity[pkey(id, it.id, 'second')].score;
+    if (other === 'stab') { if (!stab[id] || !stab[id][it.id]) return; out.push({ a: Number(m.ai_score), b: Number(stab[id][it.id].score), max: Number(m.max), it, id }); return; }
+    if (b == null) return;
+    out.push({ a: Number(t.score), b: Number(b), max: Number(m.max), it, id });
+  }));
+  return out;
+}
+
 function drawS() {
   const v = $('sView'); v.innerHTML = '';
+  const sample = sit.parity_sample || [];
   const done = wrote().filter(l => attempts[l.attempt_id].mark_status === 'done');
-  const n = Math.min(done.length, Math.max(3, Math.ceil(done.length * 0.1)));
-  const sample = done.slice().sort((a, b) => hash(sid + a.attempt_id) - hash(sid + b.attempt_id)).slice(0, n);
-  const reviewedAI = Object.values(marks).filter(m => m.reviewed && m.ai_score != null && attempts[m.attempt_id]);
-  const agree = m => m.teacher_score == null || Number(m.teacher_score) === Number(m.ai_score);
-  const pct = list => list.length ? Math.round(100 * list.filter(agree).length / list.length) + '%' : '–';
-  v.appendChild(el('div', { class: 'xm-bp', html:
-    `<div><b>${pct(reviewedAI)}</b><span>agreement with the AI, over ${reviewedAI.length} written answers you checked</span></div>` +
-    `<div><b>${sample.filter(l => items.every(it => !marks[key(l.attempt_id, it.id)] || marks[key(l.attempt_id, it.id)].reviewed)).length}/${sample.length}</b><span>sample scripts fully checked</span></div>` }));
-  v.appendChild(el('h3', { class: 'gg-h', text: 'Sample scripts' }));
-  const ul = el('div', { class: 'xm-classes' });
-  sample.forEach(l => ul.appendChild(el('button', { class: 'gg-btn gg-btn--sm', type: 'button', text: l.name, onclick: () => { curL = l.attempt_id; tab('l'); } })));
-  v.appendChild(ul);
-  if (!sample.length) v.appendChild(el('p', { class: 'gg-hint', text: 'Mark the scripts first.' }));
-  const rows = items.filter(isAI).map(it => {
-    const list = reviewedAI.filter(m => m.item_id === it.id);
-    return `<tr><td>${esc(it.num)}</td><td>${list.length}</td><td>${pct(list)}</td></tr>`;
-  }).join('');
-  v.appendChild(el('h3', { class: 'gg-h', text: 'Agreement per question' }));
-  v.appendChild(el('div', { class: 'xm-table-wrap', html: `<table class="xm-table"><thead><tr><th>Question</th><th>Checked</th><th>Agreed</th></tr></thead><tbody>${rows}</tbody></table>` }));
+
+  // 1. the sample
+  const nIn = el('input', { class: 'gg-in', type: 'number', min: '3', max: '30', value: String(Math.min(15, Math.max(10, Math.ceil(done.length * 0.1)))), style: 'width:70px', 'aria-label': 'Scripts in the sample' });
+  v.appendChild(el('div', { class: 'gg-top' }, [
+    el('span', { class: 'gg-hint', text: sample.length ? `${sample.length} scripts in the parity sample.` : 'No parity sample yet.' }),
+    nIn,
+    el('button', { class: 'gg-btn gg-btn--sm', type: 'button', text: sample.length ? 'Choose a new sample' : 'Choose the sample', onclick: async () => {
+      if (!done.length) return alert('Mark the scripts first.');
+      if (sample.length && Object.keys(parity).length && !confirm('Hand marks already saved stay in the database, but a new sample replaces the list of scripts. Continue?')) return;
+      const ids = chooseSample(Math.max(3, Math.min(30, Number(nIn.value) || 12)));
+      const { error } = await sb().from('exam_sittings').update({ parity_sample: ids }).eq('id', sid);
+      if (error) return alert(friendly(error));
+      sit.parity_sample = ids; parCur = null; drawS();
+    } })
+  ]));
+  if (!sample.length) {
+    v.appendChild(el('p', { class: 'gg-hint', style: 'max-width:70ch', text: 'The sample is spread across the range of the AI’s marks, so weak, middle and strong scripts are all included. You then mark the written answers of those scripts without seeing the AI’s marks or the learners’ names; a second marker can do the same. Until you have finished a sample script, its AI marks are hidden in the other tabs too.' }));
+    return;
+  }
+
+  // 2. blind marking
+  v.appendChild(el('h3', { class: 'gg-h', text: 'Blind marking' }));
+  const roleSel = $('parRole');
+  const scripts = sample.map((id, k) => ({ id, label: 'Script ' + (k + 1), done: items.filter(isAI).every(it => parity[pkey(id, it.id, role)]) }));
+  const bar = el('div', { class: 'xm-classes' });
+  scripts.forEach(sc => bar.appendChild(el('button', { class: 'gg-btn gg-btn--sm', type: 'button', 'aria-pressed': String(parCur === sc.id),
+    text: sc.label + (sc.done ? ' ✓' : ''), onclick: () => { parCur = sc.id; drawS(); } })));
+  v.appendChild(el('p', { class: 'gg-hint', text: `Marking as the ${role === 'second' ? 'second marker' : 'teacher (first marker)'} · ${scripts.filter(s => s.done).length} of ${scripts.length} scripts done` }));
+  v.appendChild(bar);
+  if (!parCur) parCur = (scripts.find(s => !s.done) || scripts[0]).id;
+  const sc = scripts.find(s => s.id === parCur), a = attempts[parCur];
+  if (a) {
+    const box = el('div', { class: 'xm-parity' });
+    box.appendChild(el('h4', { class: 'gg-h', text: sc.label }));
+    items.filter(isAI).forEach(it => {
+      const memo = paper.memo[it.id], mine = parity[pkey(parCur, it.id, role)];
+      const card = el('div', { class: 'xm-ans' });
+      card.appendChild(el('div', { class: 'xm-ans-head' }, [el('b', { text: it.num, style: 'color:var(--paper)' }),
+        el('span', { class: 'xm-score', text: mine ? `${fmtNum(mine.score)}/${fmtNum(memo.max)}` : `–/${fmtNum(memo.max)}` }),
+        memo.bloom ? el('span', { class: 'xm-pill', text: memo.bloom }) : null]));
+      card.appendChild(el('p', { class: 'gg-hint', style: 'margin:2px 0', text: it.q }));
+      const text = answerText(it, a.answers[it.id]);
+      card.appendChild(el('p', { class: 'xm-ans-text' + (text ? '' : ' empty'), text: text || 'No answer.' }));
+      const ticks = new Set(mine && mine.met ? mine.met : []);
+      const pts = el('div', { class: 'xm-points' });
+      memo.points.forEach((p, i) => {
+        const cb = el('input', { type: 'checkbox' }); cb.checked = ticks.has(i);
+        pts.appendChild(el('label', {}, [cb, el('span', { text: `(${memo.weights[i]}) ${p}` })]));
+      });
+      card.appendChild(pts);
+      card.appendChild(el('button', { class: 'gg-btn gg-btn--sm', type: 'button', text: mine ? 'Save again' : 'Save my mark', onclick: async () => {
+        const met = [...pts.querySelectorAll('input')].map((c, k) => c.checked ? k : -1).filter(k => k >= 0);
+        const score = Math.min(memo.max, met.reduce((t, k) => t + (memo.weights[k] || 0), 0));
+        const row = { attempt_id: parCur, item_id: it.id, role, marker_id: me(), score, met, updated_at: new Date().toISOString() };
+        const { error } = await sb().from('exam_parity').upsert(row, { onConflict: 'attempt_id,item_id,role' });
+        if (error) return alert(friendly(error));
+        parity[pkey(parCur, it.id, role)] = row; drawS();
+      } }));
+      box.appendChild(card);
+    });
+    v.appendChild(box);
+  }
+
+  // 3. agreement
+  v.appendChild(el('h3', { class: 'gg-h', text: 'Agreement' }));
+  const rowsFor = (label, pairs) => {
+    const st = agreeStats(pairs);
+    return `<tr><td>${esc(label)}</td><td>${st ? st.n : 0}</td><td>${pc(st && st.exact)}</td><td>${pc(st && st.adj)}</td><td>${f2(st && st.mean)}</td><td>${f2(st && st.qwk)}</td></tr>`;
+  };
+  const ai = parityPairs('ai'), sec = parityPairs('second'), st = parityPairs('stab');
+  let html = rowsFor('AI vs teacher (all written answers)', ai);
+  [...new Set(ai.map(p => paper.memo[p.it.id].bloom || 'untagged'))].forEach(b => { html += rowsFor('  · ' + b, ai.filter(p => (paper.memo[p.it.id].bloom || 'untagged') === b)); });
+  html += rowsFor('Second marker vs teacher', sec) + rowsFor('AI re-run vs first AI run (stability)', st);
+  v.appendChild(el('div', { class: 'xm-table-wrap', html: `<table class="xm-table"><thead><tr><th>Comparison</th><th>Answers</th><th>Exact</th><th>Within 1 mark</th><th>Mean difference</th><th>Weighted κ</th></tr></thead><tbody>${html}</tbody></table>` }));
+  const tot = sample.filter(id => items.filter(isAI).every(it => parity[pkey(id, it.id, 'teacher')])).map(id => ({
+    a: items.filter(isAI).reduce((t, it) => t + Number(parity[pkey(id, it.id, 'teacher')].score), 0), b: aiTotal(id) }));
+  const ss = scriptStats(tot);
+  v.appendChild(el('p', { class: 'gg-hint', style: 'max-width:75ch', text: ss
+    ? `Script totals (written answers, ${ss.n} scripts): correlation r = ${f2(ss.r)}; the AI is on average ${f2(ss.md)} marks ${ss.md >= 0 ? 'above' : 'below'} you, and 95% of differences fall between ${f2(ss.lo)} and ${f2(ss.hi)} marks (Bland–Altman).`
+    : 'Script-level statistics appear once at least 3 sample scripts are fully hand-marked.' }));
+  v.appendChild(el('p', { class: 'gg-hint', style: 'max-width:75ch', text: 'Mean difference is the compared mark minus the reference (positive: the AI or second marker gave more). With 10–15 scripts per paper these figures are rough; the research export pools them across papers.' }));
+
+  // 4. stability + export
+  v.appendChild(el('div', { class: 'gg-top' }, [
+    el('button', { class: 'gg-btn gg-btn--sm', type: 'button', text: Object.keys(stab).length ? 'Run the AI stability check again' : 'Run the AI stability check on the sample', onclick: async () => {
+      if (!confirm(`Ask the AI to mark the ${sample.length} sample scripts again? Nothing changes in the marks: the new run is only logged and compared. It costs about the same as marking them the first time.`)) return;
+      busy = true; let n = 0, failed = 0;
+      await pool(sample, 3, async id => {
+        const { error } = await sb().functions.invoke('exam-mark', { body: { attempt_id: id, mode: 'stability' } });
+        n++; if (error) failed++;
+        $('markProg').textContent = `Stability check: ${n} of ${sample.length}${failed ? `, ${failed} failed` : ''}…`;
+      });
+      busy = false; await loadStability();
+      $('markProg').textContent = `Stability check done${failed ? ` (${failed} failed)` : ''}.`;
+      drawS();
+    } }),
+    el('button', { class: 'gg-btn gg-btn--sm', type: 'button', text: 'Download parity data (CSV)', onclick: () => {
+      const head = ['Script', 'Question', 'Bloom', 'Skill', 'Max', 'AI', 'AI confidence', 'Teacher (blind)', 'Second marker (blind)', 'AI re-run', 'Final mark'];
+      const lines = [head];
+      sample.forEach((id, k) => items.filter(isAI).forEach(it => {
+        const m = marks[key(id, it.id)] || {}, memo = paper.memo[it.id];
+        const t = parity[pkey(id, it.id, 'teacher')], s2 = parity[pkey(id, it.id, 'second')];
+        lines.push(['S' + (k + 1), it.num, memo.bloom || '', memo.skill || '', memo.max, m.ai_score ?? '', m.ai_confidence || '', t ? t.score : '', s2 ? s2.score : '',
+          stab[id] && stab[id][it.id] ? stab[id][it.id].score : '', m.max != null ? final(m) : '']);
+      }));
+      download((sit.class_name || 'class') + ' - ' + sit.title + ' - parity.csv', '﻿' + lines.map(r => r.map(csvCell).join(',')).join('\r\n'));
+    } })
+  ]));
+  roleSel.onchange = () => { role = roleSel.value; try { localStorage.setItem('xm-parity-role', role); } catch (e) {} parCur = null; drawS(); };
 }
 
 /* ── results & release ── */
@@ -300,7 +526,26 @@ function drawR() {
   $('btnRelease').textContent = sit.released_at ? 'Release again (after changes)' : 'Release marks to learners and the markbook';
   $('btnUnrelease').hidden = !sit.released_at;
   if (sit.term) $('relTerm').value = sit.term;
+  $('fbMode').value = sit.feedback_mode || 'full';
+  const viewed = rows.filter(r => r.a && views[r.a.id]).length, corrected = new Set(Object.values(corrections).map(c => c.attempt_id)).size;
+  $('fbState').textContent = sit.released_at ? `${viewed} of ${marked.length} learners have opened their feedback; ${corrected} wrote at least one correction.` : '';
 }
+$('fbMode').addEventListener('change', async () => {
+  const v = $('fbMode').value;
+  const { error } = await sb().from('exam_sittings').update({ feedback_mode: v }).eq('id', sid);
+  if (error) { alert(friendly(error)); $('fbMode').value = sit.feedback_mode; return; }
+  sit.feedback_mode = v;
+});
+$('btnLog').addEventListener('click', async () => {
+  const { data, error } = await sb().from('exam_ai_log').select('*').eq('sitting_id', sid).order('created_at');
+  if (error) return alert(friendly(error));
+  const names = Object.fromEntries(learners.filter(l => l.attempt_id).map(l => [l.attempt_id, l.name]));
+  const cols = ['created_at', 'kind', 'ok', 'error', 'model', 'prompt_version', 'memo_hash', 'wordbank_hash', 'wordbank_terms', 'items', 'input_tokens', 'cache_write', 'cache_read', 'output_tokens', 'cost_usd', 'ms'];
+  const lines = [['Learner', ...cols], ...(data || []).map(r => [names[r.attempt_id] || '', ...cols.map(c => Array.isArray(r[c]) ? r[c].join(' ') : r[c])])];
+  const cost = (data || []).reduce((t, r) => t + Number(r.cost_usd || 0), 0);
+  download((sit.class_name || 'class') + ' - ' + sit.title + ' - AI log.csv', '\ufeff' + lines.map(r => r.map(csvCell).join(',')).join('\r\n'));
+  $('fbState').textContent = `${(data || []).length} AI calls logged, about $${cost.toFixed(2)} in total.`;
+});
 $('btnRelease').addEventListener('click', async () => {
   const notChecked = Object.values(marks).filter(flagged).length;
   if (!confirm((notChecked ? `${notChecked} answers the AI was unsure about are not checked yet. ` : '') + 'Release the marks? Learners will see each question’s mark, the total and the feedback.')) return;
@@ -330,10 +575,12 @@ function redraw() { const t = document.querySelector('[data-tab][aria-pressed="t
   if (!sid) return $('msg').textContent = 'No sitting chosen.';
   if (!(await isStaff())) return $('msg').textContent = 'Marking is for exam staff only.';
   try { await load(); } catch (e) { $('msg').textContent = friendly(e); return; }
+  $('parRole').value = role;
   document.title = 'Mark & review — ' + sit.title;
   $('rTitle').textContent = sit.title;
   $('rMeta').textContent = [sit.class_name, fmtNum(paper.total) + ' marks', items.filter(isAI).length + ' AI-marked questions'].filter(Boolean).join(' · ');
   $('lnkMonitor').href = 'exam-sit.html?monitor=' + sid;
   $('msg').hidden = true; $('app').hidden = false;
+  await loadStability();
   stats(); tab('q');
 })();

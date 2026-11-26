@@ -1,0 +1,122 @@
+<!doctype html>
+<!-- © 2026 Ruhan Janse van Rensburg. All rights reserved. -->
+<html lang="en">
+<head>
+<script src="/assets/theme.js"></script>
+<script>document.documentElement.style.visibility='hidden';</script>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#08090b">
+<title>Research — Exam Sanctum</title>
+<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700,800,900&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="assets/magic-lab.css">
+<link rel="stylesheet" href="assets/grimoire.css">
+<link rel="stylesheet" href="assets/exam.css">
+</head>
+<body class="gg">
+<main class="gg-main" id="main">
+  <div class="gg-top"><a class="gg-back" href="exam-papers.html">← Exam papers</a></div>
+  <h1>Research</h1>
+  <p class="gg-hint" style="max-width:70ch;margin:0 0 18px">The terminology wordbank, consent and research codes, the feedback groups, and the two exports: named marks for the school, and a coded dataset for the research.</p>
+  <p class="gg-msg" id="msg">Loading…</p>
+
+  <div id="app" hidden>
+    <div class="xm-tabs" role="toolbar" aria-label="Section">
+      <button class="gg-btn gg-btn--sm" type="button" data-tab="wordbank" aria-pressed="true">Wordbank</button>
+      <button class="gg-btn gg-btn--sm" type="button" data-tab="consent" aria-pressed="false">Consent &amp; codes</button>
+      <button class="gg-btn gg-btn--sm" type="button" data-tab="groups" aria-pressed="false">Feedback groups</button>
+      <button class="gg-btn gg-btn--sm" type="button" data-tab="export" aria-pressed="false">Exports</button>
+    </div>
+    <p class="gg-err" id="err" role="alert"></p>
+
+    <!-- Wordbank -->
+    <section id="tab-wordbank">
+      <p class="gg-hint" style="max-width:72ch">Approved English ↔ Afrikaans terms. The AI uses approved terms when it marks (variants also earn the mark), and importing a bilingual paper checks that the Afrikaans version uses the approved term. New and imported terms count only once approved.</p>
+      <div class="gg-top">
+        <button class="gg-btn gg-btn--primary" type="button" id="wbAdd">Add a term</button>
+        <button class="gg-btn" type="button" id="wbPaste">Import from a spreadsheet</button>
+        <button class="gg-btn" type="button" id="wbApproveAll">Approve all unapproved shown</button>
+        <button class="gg-btn" type="button" id="wbCsv">Download CSV</button>
+        <input class="gg-in" type="search" id="wbFind" placeholder="Search terms" aria-label="Search terms" style="max-width:220px">
+      </div>
+      <p class="gg-hint" id="wbCount"></p>
+      <div class="xm-table-wrap"><table class="xm-table" id="wbTable">
+        <thead><tr><th>English</th><th>Afrikaans</th><th>Topic</th><th>Gr</th><th>Also accepted</th><th>Status</th><th></th></tr></thead><tbody></tbody>
+      </table></div>
+    </section>
+
+    <!-- Consent -->
+    <section id="tab-consent" hidden>
+      <p class="gg-hint" style="max-width:72ch">Record the consent forms here (ideally a colleague who does not teach the class does this). Only learners with <b>both</b> parent consent and learner assent marked “given” appear in the research dataset, under their random code. The code key links codes to names: keep its download apart from the dataset.</p>
+      <div class="gg-top">
+        <div class="gg-field" style="margin:0"><label for="cClass">Class</label><select id="cClass"></select></div>
+        <button class="gg-btn" type="button" id="cCodes">Create codes for the whole class</button>
+        <button class="gg-btn" type="button" id="cKey">Download the code key</button>
+      </div>
+      <p class="gg-hint" id="cSum"></p>
+      <div class="xm-table-wrap"><table class="xm-table" id="cTable">
+        <thead><tr><th>Learner</th><th>Adm. no.</th><th>Parent consent</th><th>Learner assent</th><th>Research code</th></tr></thead><tbody></tbody>
+      </table></div>
+    </section>
+
+    <!-- Groups -->
+    <section id="tab-groups" hidden>
+      <p class="gg-hint" style="max-width:72ch">Switching replications: group A gets marks with full feedback in Terms 1–2 and marks only in Terms 3–4; group B the other way round. A new sitting takes its condition from its class’s group and term (you can still change it on the review page). Classes without a group always get full feedback.</p>
+      <div class="xm-table-wrap"><table class="xm-table" id="gTable">
+        <thead><tr><th>Class</th><th>Group</th><th>Terms 1–2</th><th>Terms 3–4</th></tr></thead><tbody></tbody>
+      </table></div>
+    </section>
+
+    <!-- Exports -->
+    <section id="tab-export" hidden>
+      <p class="gg-hint" style="max-width:72ch">Choose the sittings, then download. <b>School marks</b>: every learner by name and admission number, for the school’s own records and database. <b>Research dataset</b>: one row per learner per question, research codes only, consenting learners only. No names leave this page in the research file.</p>
+      <div class="gg-top">
+        <button class="gg-btn gg-btn--sm" type="button" id="xAll">Select all</button>
+        <button class="gg-btn gg-btn--sm" type="button" id="xNone">Select none</button>
+      </div>
+      <div class="xm-table-wrap"><table class="xm-table" id="xTable">
+        <thead><tr><th></th><th>Sitting</th><th>Class</th><th>Term</th><th>Feedback</th><th>Released</th></tr></thead><tbody></tbody>
+      </table></div>
+      <div class="gg-top" style="margin-top:12px">
+        <button class="gg-btn gg-btn--primary" type="button" id="xSchool">Download school marks (CSV)</button>
+        <button class="gg-btn" type="button" id="xResearch">Download research dataset (CSV)</button>
+      </div>
+      <p class="gg-hint" id="xState" aria-live="polite"></p>
+    </section>
+  </div>
+</main>
+
+<dialog class="xm-dialog" id="dlgTerm" aria-labelledby="termH">
+  <h2 id="termH" style="margin-top:0">Term</h2>
+  <div class="gg-field"><label for="tEn">English</label><input class="gg-in" id="tEn" maxlength="120"></div>
+  <div class="gg-field"><label for="tAf">Afrikaans</label><input class="gg-in" id="tAf" maxlength="120"></div>
+  <div class="gg-field"><label for="tDefEn">Definition (English)</label><textarea class="gg-in" id="tDefEn" rows="2" maxlength="600"></textarea></div>
+  <div class="gg-field"><label for="tDefAf">Definition (Afrikaans)</label><textarea class="gg-in" id="tDefAf" rows="2" maxlength="600"></textarea></div>
+  <div class="gg-top">
+    <div class="gg-field" style="margin:0"><label for="tTopic">Topic</label><input class="gg-in" id="tTopic" maxlength="80"></div>
+    <div class="gg-field" style="margin:0"><label for="tGrade">Grade (empty = all)</label><input class="gg-in" id="tGrade" type="number" min="1" max="12" style="width:90px"></div>
+  </div>
+  <div class="gg-field"><label for="tAccEn">Also accepted in English (separate with ;)</label><input class="gg-in" id="tAccEn"></div>
+  <div class="gg-field"><label for="tAccAf">Also accepted in Afrikaans (separate with ;)</label><input class="gg-in" id="tAccAf"></div>
+  <div class="gg-field"><label for="tSrc">Source (e.g. CAPS document, textbook, page)</label><input class="gg-in" id="tSrc" maxlength="200"></div>
+  <label class="gg-check"><input type="checkbox" id="tOk"> Approved</label>
+  <p class="gg-err" id="tErr" role="alert"></p>
+  <div class="gg-top" style="margin-top:10px"><button class="gg-btn gg-btn--primary" type="button" id="tSave">Save</button><button class="gg-btn" type="button" data-close>Cancel</button></div>
+</dialog>
+
+<dialog class="xm-dialog" id="dlgPaste" aria-labelledby="pasteH">
+  <h2 id="pasteH" style="margin-top:0">Import terms</h2>
+  <p class="gg-hint">Paste from a spreadsheet (tab- or comma-separated) with a header row. Columns, any order: <span class="gg-mono">en, af, def_en, def_af, topic, grade, accept_en, accept_af, source</span>. Variants separated with <span class="gg-mono">;</span>. Terms already in the wordbank (same English term and grade) are updated. Imported terms start unapproved.</p>
+  <textarea class="gg-in" id="pText" rows="10" style="width:100%"></textarea>
+  <p class="gg-hint" id="pInfo"></p>
+  <p class="gg-err" id="pErr" role="alert"></p>
+  <div class="gg-top" style="margin-top:10px"><button class="gg-btn gg-btn--primary" type="button" id="pGo">Import</button><button class="gg-btn" type="button" data-close>Cancel</button></div>
+</dialog>
+
+<script src="auth.js"></script>
+<script defer src="require-auth.js"></script>
+<script type="module" src="assets/exam-research.js"></script>
+</body>
+</html>

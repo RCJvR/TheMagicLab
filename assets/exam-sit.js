@@ -385,24 +385,69 @@ async function submitAll() {
 }
 
 /* ═════════════════════════════ LEARNER RESULTS (?results) ═════════════════════════════ */
+// Full-feedback papers: per question what went well, what was missing, a next step and a practice
+// link, plus a short corrections task. Marks-only papers: the marks per question and the total.
+// Opening the results, a question and a practice link are logged (exam_log_view) for the research.
+const RT = {
+  en: { title: 'My exam results', none: 'No marks have been released to you yet.', q: 'Question', mark: 'Mark', well: 'What went well', missing: 'What was missing',
+    next: 'Next step', practice: 'Practise this', fix: 'Correct your answer', fixHint: 'Write a better answer using the feedback. Your teacher can see it.', save: 'Save', saved: 'Saved',
+    marksOnly: 'Marks per question. Your teacher will go through the paper in class.', full: 'Full marks', open: 'Feedback' },
+  af: { title: 'My eksamenuitslae', none: 'Geen punte is nog aan jou vrygestel nie.', q: 'Vraag', mark: 'Punt', well: 'Wat goed was', missing: 'Wat ontbreek het',
+    next: 'Volgende stap', practice: 'Oefen dit', fix: 'Verbeter jou antwoord', fixHint: 'Skryf ’n beter antwoord met behulp van die terugvoer. Jou onderwyser kan dit sien.', save: 'Stoor', saved: 'Gestoor',
+    marksOnly: 'Punte per vraag. Jou onderwyser sal die vraestel in die klas bespreek.', full: 'Volpunte', open: 'Terugvoer' }
+};
+const logView = (sitting, kind, item) => sb().rpc('exam_log_view', { p_sitting: sitting, p_kind: kind, p_item: item || null }).then(({ error }) => { if (error) console.warn('[exam] view log', error.message); });
+
 async function resultsInit() {
   const { data, error } = await sb().rpc('exam_my_results');
   if (error) return msg(friendly(error));
-  const box = el('main', { class: 'gg-main gg-narrow' }, [el('h1', { text: 'My exam results' })]);
-  if (!data.length) box.appendChild(el('p', { class: 'gg-hint', text: 'No marks have been released to you yet.' }));
+  const lang0 = data[0] && data[0].lang === 'af' ? 'af' : 'en';
+  const box = el('main', { class: 'gg-main gg-narrow' }, [el('h1', { text: RT[lang0].title })]);
+  if (!data.length) box.appendChild(el('p', { class: 'gg-hint', text: RT.en.none }));
   data.forEach(r => {
+    const T = RT[r.lang === 'af' ? 'af' : 'en'], full = r.mode !== 'marks';
     const pct = Math.round(1000 * r.score / r.total) / 10;
     box.appendChild(el('h2', { class: 'gg-h', text: `${r.title}: ${fmtNum(r.score)}/${fmtNum(r.total)} (${pct}%)` }));
+    logView(r.sitting_id, 'open');
+    if (!full) {
+      box.appendChild(el('p', { class: 'gg-hint', text: T.marksOnly }));
+      const t = el('table', { class: 'xm-table' }, [el('thead', { html: `<tr><th>${esc(T.q)}</th><th>${esc(T.mark)}</th></tr>` })]);
+      const tb = el('tbody');
+      r.items.forEach(i => tb.appendChild(el('tr', {}, [el('td', { text: i.num }), el('td', { text: `${fmtNum(i.score)}/${fmtNum(i.max)}` })])));
+      t.appendChild(tb); box.appendChild(el('div', { class: 'xm-table-wrap' }, [t]));
+      return;
+    }
     if (r.summary) box.appendChild(el('p', { class: 'xm-memo', text: r.summary }));
-    const t = el('table', { class: 'xm-table' }, [el('thead', { html: '<tr><th>Question</th><th>Mark</th><th>Feedback</th></tr>' })]);
-    const tb = el('tbody');
-    r.items.forEach(i => tb.appendChild(el('tr', {}, [
-      el('td', { text: i.id.split('.').map((x, k) => k === 0 ? Number(x) + 1 : x).join('.') }),
-      el('td', { text: `${fmtNum(i.score)}/${fmtNum(i.max)}` }),
-      el('td', { text: i.feedback || '' })
-    ])));
-    t.appendChild(tb);
-    box.appendChild(el('div', { class: 'xm-table-wrap' }, [t]));
+    r.items.forEach(i => {
+      const lost = Number(i.score) < Number(i.max);
+      const fb = i.fb || (i.feedback ? { missing: i.feedback } : null);
+      const d = el('details', { class: 'xm-res' + (lost ? ' lost' : '') }, [
+        el('summary', {}, [el('b', { text: `${T.q} ${i.num}` }), ' ', el('span', { class: 'xm-score', text: `${fmtNum(i.score)}/${fmtNum(i.max)}` }),
+          !lost ? el('span', { class: 'xm-pill ok', text: T.full }) : null])
+      ]);
+      let logged = false;
+      d.addEventListener('toggle', () => { if (d.open && !logged) { logged = true; logView(r.sitting_id, 'item', i.id); } });
+      if (fb) [['well', T.well], ['missing', T.missing], ['next', T.next]].forEach(([k, label]) => {
+        if (fb[k]) d.appendChild(el('p', { style: 'margin:4px 0' }, [el('b', { text: label + ': ' }), fb[k]]));
+      });
+      if (i.practice && /^(?!\/\/)(?![a-z]+:)[A-Za-z0-9\/_.#?=&-]{1,200}$/.test(i.practice)) {
+        d.appendChild(el('p', { style: 'margin:4px 0' }, [el('a', { href: '/' + i.practice.replace(/^\//, ''), target: '_blank', rel: 'noopener', text: T.practice + ' →',
+          onclick: () => logView(r.sitting_id, 'practice', i.id) })]));
+      }
+      if (lost && fb) {
+        const ta = el('textarea', { class: 'gg-in', rows: '3', style: 'width:100%', maxlength: '3000', 'aria-label': `${T.fix} ${i.num}` });
+        ta.value = i.correction || '';
+        const state = el('span', { class: 'gg-hint', 'aria-live': 'polite' });
+        d.appendChild(el('div', { class: 'xm-fix' }, [
+          el('label', { class: 'gg-hint', text: T.fix + ' · ' + T.fixHint }), ta,
+          el('div', { class: 'gg-top', style: 'margin:4px 0 0' }, [el('button', { class: 'gg-btn gg-btn--sm', type: 'button', text: T.save, onclick: async () => {
+            const { error: e } = await sb().rpc('exam_save_correction', { p_sitting: r.sitting_id, p_item: i.id, p_body: ta.value });
+            state.textContent = e ? friendly(e) : T.saved;
+          } }), state])
+        ]));
+      }
+      box.appendChild(d);
+    });
   });
   document.body.appendChild(box);
   $('msg').hidden = true;
