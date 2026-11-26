@@ -19,7 +19,7 @@
 </head>
 <body class="gg">
 <main class="gg-main" id="main">
-  <div class="gg-top"><a class="gg-back" href="dashboard-teacher.html">← Teacher dashboard</a></div>
+  <div class="gg-top"><a class="gg-back" href="dashboard-teacher.html">← Teacher dashboard</a><a class="gg-back" href="exam-research.html">Research: wordbank, consent, exports</a></div>
   <h1>Exam papers</h1>
   <p class="gg-hint" style="max-width:68ch;margin:0 0 18px">Papers learners write in class under exam conditions. The server marks the objective questions; AI marks the written answers against your memo; you check and release.</p>
   <p class="gg-msg" id="msg">Loading…</p>
@@ -107,7 +107,7 @@
 <script defer src="require-auth.js"></script>
 <script type="module">
 import { sb, $, el, esc, whenAuthReady, friendly, fmtNum, fmtWhen, isStaff } from './assets/exam-core.js';
-import { prepare, memoText, hasAfrikaans } from './assets/exam-paper.js';
+import { prepare, memoText, hasAfrikaans, wordbankCheck } from './assets/exam-paper.js';
 import { SHEET_IDS, sheetTitle } from './assets/exam-sheets.js';
 import { renderItem, renderScenario } from './assets/exam-render.js';
 
@@ -133,12 +133,13 @@ const target = bp => bp && bp.objectivePct >= 20 && bp.objectivePct <= 25
 function bpHtml(bp) {
   const topics = Object.entries(bp.byTopic).map(([k, v]) => esc(k) + ' ' + fmtNum(v)).join(' · ');
   const skills = Object.entries(bp.bySkill).map(([k, v]) => esc(k) + ' ' + fmtNum(v)).join(' · ');
+  const bloom = bp.byBloom ? Object.entries(bp.byBloom).map(([k, v]) => esc(k) + ' ' + fmtNum(v)).join(' · ') : '';
   return '<div class="xm-bp">' +
     '<div><b>' + fmtNum(bp.total) + '</b><span>marks, ' + bp.items + ' questions</span></div>' +
     '<div><b>' + bp.objectivePct + '%</b><span>objective (target 20–25%) ' + (bp.objectivePct >= 20 && bp.objectivePct <= 25 ? '✓' : '⚠') + '</span></div>' +
     '<div><b>' + bp.scenarioShortPct + '%</b><span>short answers on a scenario</span></div>' +
     '<div><b>' + bp.aiMarkedPct + '%</b><span>marked by AI, checked by you</span></div>' +
-    '</div><p class="gg-hint">Topics: ' + topics + '<br>Skills: ' + skills + '</p>';
+    '</div><p class="gg-hint">Topics: ' + topics + '<br>Skills: ' + skills + (bloom ? '<br>Cognitive level (Bloom, in marks): ' + bloom : '') + '</p>';
 }
 
 /* ── Load ─────────────────────────────────────────────── */
@@ -235,6 +236,21 @@ async function delSitting(s) {
 }
 
 /* ── Import ───────────────────────────────────────────── */
+// Bilingual papers: every wordbank term used in the English paper must appear as its approved Afrikaans term.
+let wordbank = null;
+async function wordbankReport(src) {
+  if (!wordbank) {
+    const { data, error } = await sb().from('exam_wordbank').select('en, af, accept_en, accept_af').not('approved_at', 'is', null);
+    if (error) return;
+    wordbank = data || [];
+  }
+  const c = wordbankCheck(src, wordbank);
+  const p = el('p', { class: 'gg-hint', style: c.missing.length ? 'color:var(--warn)' : null });
+  p.innerHTML = !wordbank.length ? 'Wordbank: no approved terms yet (<a href="exam-research.html#wordbank">add terms</a>).'
+    : c.missing.length ? '<b>Wordbank:</b> ' + c.count + ' terms used; the Afrikaans version does not use the approved term for: ' + c.missing.map(t => esc(t.en) + ' → <b>' + esc(t.af) + '</b>').join(', ')
+    : 'Wordbank: all ' + c.count + ' approved terms used in this paper appear correctly in the Afrikaans version ✓';
+  $('impReport').appendChild(p);
+}
 function check(text) {
   const keepTools = $('impTools').hidden ? null : readTools($('impTools').querySelector('.xm-toolgrid'));   // a language change keeps the ticks
   pending = null; $('impSave').disabled = $('impPreview').disabled = true; $('impMeta').hidden = true; $('impTools').hidden = true; $('impErr').textContent = '';
@@ -252,6 +268,7 @@ function check(text) {
   if (r.warnings.length) h += '<p style="color:var(--warn);font-size:14px"><b>Check:</b><br>' + r.warnings.map(esc).join('<br>') + '</p>';
   $('impReport').innerHTML = h;
   if (r.errors.length) return;
+  if (af) wordbankReport(src);
   pending = { src, lang, ...r };
   $('impTools').hidden = false;
   toolBoxes($('impTools').querySelector('.xm-toolgrid'), keepTools || { sheets: r.learner.sheets, calculator: r.learner.calculator });

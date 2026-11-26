@@ -25,6 +25,9 @@ export const AUTO = new Set(['mcq', 'tf', 'match', 'pairs', 'order', 'fill', 'wo
 export const AI = new Set(['written']);
 
 const KNOWN = new Set([...AUTO, ...AI]);
+/** Revised Bloom's taxonomy (Anderson & Krathwohl, 2001), lowest to highest. */
+export const BLOOM = ['remember', 'understand', 'apply', 'analyse', 'evaluate', 'create'];
+const SITE_PATH = /^(?!\/\/)(?![a-z]+:)[A-Za-z0-9\/_.#?=&-]{1,200}$/;
 
 /* ── small helpers ─────────────────────────────────────────── */
 function rng(seedText) {               // mulberry32 seeded from a string: same paper → same shuffles
@@ -116,6 +119,16 @@ export function prepare(source, opts = {}) {
     if (q.calc) L.calc = true;
     const M = { type: q.type, max, topic: topic || null, skill, num };
     if (q.explain) M.explain = q.explain;
+    // research tags: cognitive level (revised Bloom), the lesson it assesses, a practice link for feedback
+    if (q.bloom != null) {
+      if (BLOOM.includes(q.bloom)) M.bloom = q.bloom;
+      else warnings.push(`${num}: bloom "${q.bloom}" is not one of ${BLOOM.join(', ')}.`);
+    }
+    if (q.lesson) M.lesson = String(q.lesson).slice(0, 160);
+    if (q.practice) {
+      if (SITE_PATH.test(q.practice)) M.practice = q.practice;
+      else warnings.push(`${num}: the practice link must be a page on this site, e.g. computer-codex/...html.`);
+    }
 
     switch (q.type) {
       case 'mcq':
@@ -193,6 +206,7 @@ export function blueprint(learner, memo) {
     aiMarked: ai, aiMarkedPct: pct(ai),
     byTopic: by(it => memo[it.id].topic || 'other'),
     bySkill: by(it => memo[it.id].skill || 'knowledge'),
+    byBloom: by(it => memo[it.id].bloom || 'untagged'),
     byType: by(it => it.type),
     items: learner.items.length
   };
@@ -256,4 +270,37 @@ export function memoText(m) {
     case 'written': return m.points.map((p, i) => `${i}. (${m.weights[i]}) ${p}`).join('\n');
   }
   return '';
+}
+
+/* ── wordbank coverage (bilingual papers) ─────────────────── */
+const lower = s => String(s || '').toLowerCase();
+/** Every text field of a paper in one language, as one lower-case string. */
+function paperText(source, lang) {
+  const out = [];
+  (function walk(o, k) {
+    if (Array.isArray(o)) return o.forEach(x => walk(x, k));
+    if (o && typeof o === 'object') return Object.keys(o).forEach(key => {
+      const isAf = /Af$/.test(key);
+      if (lang === 'af' ? isAf || !(key + 'Af' in o) && typeof o[key] === 'object' : !isAf) walk(o[key], key);
+    });
+    if (typeof o === 'string' && !/^(type|id|bloom|topic|skill|practice|lesson|points|explain|answer|blanks|labels|memoSvg)$/.test(k)) out.push(o);
+  })(source, '');
+  return lower(out.join('\n').replace(/<[^>]+>/g, ' '));
+}
+const reEsc = s => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+const hasTerm = (text, t) => { const w = lower(t).trim(); return !!w && new RegExp('(^|[^a-zà-ÿ])' + reEsc(w) + '($|[^a-zà-ÿ])').test(text); };
+/**
+ * wordbankCheck(source, terms) → { used: [...], missing: [{en, af}], count }
+ * A term "used" in the English paper must appear as its approved Afrikaans term (or an
+ * accepted variant) somewhere in the Afrikaans version.
+ */
+export function wordbankCheck(source, terms) {
+  const en = paperText(source, 'en'), af = paperText(source, 'af');
+  const used = [], missing = [];
+  (terms || []).forEach(t => {
+    if (![t.en, ...(t.accept_en || [])].some(w => hasTerm(en, w))) return;
+    used.push(t);
+    if (![t.af, ...(t.accept_af || [])].some(w => hasTerm(af, w))) missing.push(t);
+  });
+  return { used, missing, count: used.length };
 }

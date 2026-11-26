@@ -35,7 +35,7 @@
     <div class="xm-tabs" role="toolbar" aria-label="View">
       <button class="gg-btn gg-btn--sm" type="button" data-tab="q" aria-pressed="true">By question</button>
       <button class="gg-btn gg-btn--sm" type="button" data-tab="l" aria-pressed="false">By learner</button>
-      <button class="gg-btn gg-btn--sm" type="button" data-tab="s" aria-pressed="false">Moderation sample</button>
+      <button class="gg-btn gg-btn--sm" type="button" data-tab="s" aria-pressed="false">Parity</button>
       <button class="gg-btn gg-btn--sm" type="button" data-tab="r" aria-pressed="false">Results &amp; release</button>
     </div>
 
@@ -49,7 +49,11 @@
       <div id="lView"></div>
     </section>
     <section id="tabS" hidden>
-      <p class="gg-hint" style="max-width:70ch">Check a random 10% of scripts in full. Below: how often you agreed with the AI on the written answers you have looked at. If agreement on a question is low, fix its memo and re-mark that question for everyone.</p>
+      <div class="gg-top">
+        <p class="gg-hint" style="max-width:70ch;margin:0">Mark a sample of scripts blind (without the AI’s marks or names) and compare with the AI. If agreement on a question is low, fix its memo and re-mark that question for everyone.</p>
+        <div class="gg-field" style="margin:0"><label for="parRole">I am marking as</label>
+          <select id="parRole"><option value="teacher">Teacher (first marker)</option><option value="second">Second marker</option></select></div>
+      </div>
       <div id="sView"></div>
     </section>
     <section id="tabR" hidden>
@@ -61,6 +65,12 @@
         <button class="gg-btn gg-btn--primary" type="button" id="btnRelease">Release marks to learners and the markbook</button>
         <button class="gg-btn" type="button" id="btnUnrelease" hidden>Take the release back</button>
         <button class="gg-btn" type="button" id="btnCsv">Download CSV</button>
+        <button class="gg-btn" type="button" id="btnLog">Download AI audit log</button>
+      </div>
+      <div class="gg-top">
+        <div class="gg-field" style="margin:0"><label for="fbMode">What learners see</label>
+          <select id="fbMode"><option value="full">Marks and full feedback, with a corrections task</option><option value="marks">Marks only (comparison condition)</option></select></div>
+        <span class="gg-hint" id="fbState" aria-live="polite"></span>
       </div>
       <p class="gg-hint" id="relState"></p>
       <div class="xm-table-wrap"><table class="xm-table" id="resTable"><thead></thead><tbody></tbody></table></div>
