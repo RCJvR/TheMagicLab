@@ -136,9 +136,62 @@ function shrink(file) {
       c.toBlob(b => b ? resolve(b) : reject(new Error('Could not read that photo.')), 'image/jpeg', 0.85);
       URL.revokeObjectURL(img.src);
     };
-    img.onerror = () => reject(new Error('That file is not a photo this browser can read (try JPEG).'));
+    img.onerror = () => reject(new Error(`${file.name || 'That file'} is not a photo this browser can read (try JPEG).`));
     img.src = URL.createObjectURL(file);
   });
+}
+
+/* What is this file really? (zip entries and phone files often have the wrong type or extension) */
+async function sniff(file) {
+  const b = new Uint8Array(await file.slice(0, 16).arrayBuffer());
+  const txt = String.fromCharCode(...b);
+  if (txt.startsWith('%PDF')) return 'pdf';
+  if (txt.slice(4, 8) === 'ftyp' && /^(heic|heix|hevc|hevx|heim|heis|mif1|msf1|heif)/.test(txt.slice(8, 12))) return 'heic';
+  if (/\.pdf$/i.test(file.name)) return 'pdf';
+  if (/\.hei[cf]$/i.test(file.name)) return 'heic';
+  return 'image';
+}
+let heicLib = null, pdfLib = null;
+function loadScript(src, ready) {
+  return new Promise((resolve, reject) => {
+    const s = document.createElement('script'); s.src = src;
+    s.onload = () => ready() ? resolve(ready()) : reject(new Error('Could not load a converter.'));
+    s.onerror = () => reject(new Error('Could not load a converter. Check the internet connection.'));
+    document.head.appendChild(s);
+  });
+}
+async function heicToJpeg(file) {
+  heicLib = heicLib || loadScript('https://cdn.jsdelivr.net/npm/heic2any@0.0.4/dist/heic2any.min.js', () => window.heic2any).catch(e => { heicLib = null; throw e; });
+  const conv = await heicLib;
+  const out = await conv({ blob: file, toType: 'image/jpeg', quality: 0.9 });
+  return new File([Array.isArray(out) ? out[0] : out], file.name.replace(/\.\w+$/, '') + '.jpg', { type: 'image/jpeg' });
+}
+async function pdfToJpegs(file) {
+  pdfLib = pdfLib || import('https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/pdf.min.mjs').then(m => {
+    m.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/pdf.worker.min.mjs';
+    return m;
+  }).catch(e => { pdfLib = null; throw new Error('Could not load the PDF reader. Check the internet connection.'); });
+  const pdfjs = await pdfLib;
+  const doc = await pdfjs.getDocument({ data: await file.arrayBuffer() }).promise;
+  if (doc.numPages > 16) throw new Error(`${file.name} has ${doc.numPages} pages; a script can have at most 16.`);
+  const out = [];
+  for (let p = 1; p <= doc.numPages; p++) {
+    const page = await doc.getPage(p);
+    const v1 = page.getViewport({ scale: 1 });
+    const vp = page.getViewport({ scale: Math.min(3, 2200 / Math.max(v1.width, v1.height)) });
+    const c = document.createElement('canvas'); c.width = Math.round(vp.width); c.height = Math.round(vp.height);
+    const ctx = c.getContext('2d'); ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, c.width, c.height);
+    await page.render({ canvasContext: ctx, viewport: vp }).promise;
+    const blob = await new Promise(r => c.toBlob(r, 'image/jpeg', 0.88));
+    out.push(new File([blob], `${file.name.replace(/\.\w+$/, '')}-p${String(p).padStart(2, '0')}.jpg`, { type: 'image/jpeg' }));
+  }
+  return out;
+}
+async function toImages(file) {
+  const kind = await sniff(file);
+  if (kind === 'heic') { $('oProg').textContent = `Converting ${file.name} (iPhone photo)…`; return [await heicToJpeg(file)]; }
+  if (kind === 'pdf') { $('oProg').textContent = `Opening ${file.name} (PDF)…`; return pdfToJpegs(file); }
+  return [file];
 }
 /* a .zip of photos: unpacked in the browser (JSZip, loaded only when needed), pages in file-name order */
 let jszip = null;
@@ -153,7 +206,7 @@ function loadJSZip() {
   });
   return jszip;
 }
-const IMG = /\.(jpe?g|png|webp|gif|bmp|heic|heif)$/i;
+const IMG = /\.(jpe?g|png|webp|gif|bmp|heic|heif|pdf)$/i;
 const isZip = f => /\.zip$/i.test(f.name) || /zip/.test(f.type);
 async function unzip(file) {
   const JSZip = await loadJSZip();
@@ -183,6 +236,12 @@ $('files').addEventListener('change', async e => {
     }
   } catch (err) { $('oProg').textContent = ''; return showErr(err); }
   if (!picked.some(isZip)) list.sort(byName);
+  // iPhone HEIC photos become JPEG and PDFs become one image per page, all in the browser
+  try {
+    const pages = [];
+    for (const f of list) pages.push(...await toImages(f));
+    list = pages;
+  } catch (err) { $('oProg').textContent = ''; return showErr(err); }
   if (!list.length) return;
   if (photos.length + list.length > 16) return showErr('A script can have at most 16 pages.');
   let next = photos.reduce((m, p) => Math.max(m, parseInt(p.name) || 0), 0);
