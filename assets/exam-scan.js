@@ -38,6 +38,13 @@ async function loadList() {
     (data || []).forEach(a => { marked[a.id] = a; });
   }
   learners.forEach(l => { if (marked[l.attempt_id]) Object.assign(l, { mark_status: marked[l.attempt_id].mark_status, read: !!marked[l.attempt_id].transcript }); });
+  // each script's mark: the teacher's, else the AI's, else the rule's (as in the markbook)
+  const tot = {};
+  for (let i = 0; i < ids.length; i += 60) {
+    const { data } = await sb().from('exam_marks').select('attempt_id, max, auto_score, ai_score, teacher_score').in('attempt_id', ids.slice(i, i + 60));
+    (data || []).forEach(m => { tot[m.attempt_id] = (tot[m.attempt_id] || 0) + Math.min(Number(m.max), Number(m.teacher_score ?? m.ai_score ?? m.auto_score ?? 0)); });
+  }
+  learners.forEach(l => { l.total = l.mark_status === 'done' && tot[l.attempt_id] != null ? Math.round(tot[l.attempt_id] * 10) / 10 : null; });
   drawList();
 }
 
@@ -53,12 +60,28 @@ function drawList() {
   sel.onchange = () => { $('labelWrap').hidden = !!sel.value; };
   learners.filter(l => !l.attempt_id).forEach(l => sel.appendChild(el('option', { value: l.roster_id, text: l.name })));
   const tb = $('sTable').querySelector('tbody'); tb.innerHTML = '';
-  paperOnes.forEach(l => tb.appendChild(el('tr', {}, [
-    el('td', { text: l.name }), el('td', { text: l.pages || 0 }), el('td', { text: l.read ? 'yes' : '–' }),
-    el('td', { text: l.checked ? 'yes' : '–' }), el('td', { text: l.mark_status === 'done' ? 'yes' : l.mark_status === 'error' ? 'failed' : '–' }),
-    el('td', {}, [el('button', { class: 'gg-btn gg-btn--sm' + (cur && cur.attempt_id === l.attempt_id ? ' gg-btn--primary' : ''), type: 'button', text: 'Open', onclick: () => open(l) })])
-  ])));
-  if (!paperOnes.length) tb.appendChild(el('tr', {}, [el('td', { colspan: '6', class: 'gg-hint', text: 'No paper scripts yet. Add one above.' })]));
+  // grouped by class: the code before the dash (8A1-5 → 8A1), in class-list order; other names last
+  const cls = l => { const m = /^([0-9]{1,2}[A-Z0-9]{1,4})-([0-9]{1,3})$/i.exec(l.name); return m ? m[1].toUpperCase() : 'Other'; };
+  const pos = l => { const m = /-([0-9]{1,3})$/.exec(l.name); return m ? Number(m[1]) : 9999; };
+  const groups = {};
+  paperOnes.forEach(l => { (groups[cls(l)] = groups[cls(l)] || []).push(l); });
+  const total = Number(paper.total), pct = x => Math.round(1000 * x / total) / 10;
+  Object.keys(groups).sort((a, b) => a === 'Other' ? 1 : b === 'Other' ? -1 : a.localeCompare(b, undefined, { numeric: true })).forEach(g => {
+    const list = groups[g].sort((a, b) => pos(a) - pos(b) || a.name.localeCompare(b.name, undefined, { numeric: true }));
+    const done = list.filter(l => l.total != null);
+    const avg = done.length ? done.reduce((t, l) => t + l.total, 0) / done.length : null;
+    tb.appendChild(el('tr', { class: 'xm-group' }, [el('th', { colspan: '7', scope: 'colgroup' }, [
+      el('span', { text: g === 'Other' ? 'Other scripts' : g }),
+      el('span', { class: 'gg-hint', text: ` · ${list.length} script${list.length === 1 ? '' : 's'}` + (avg != null ? ` · average ${fmtNum(avg)}/${fmtNum(total)} (${pct(avg)}%)` : '') })
+    ])]));
+    list.forEach(l => tb.appendChild(el('tr', {}, [
+      el('td', { text: l.name }), el('td', { text: l.pages || 0 }), el('td', { text: l.read ? 'yes' : '–' }),
+      el('td', { text: l.checked ? 'yes' : '–' }), el('td', { text: l.mark_status === 'done' ? 'yes' : l.mark_status === 'error' ? 'failed' : '–' }),
+      el('td', { class: 'xm-mark' }, [l.total != null ? el('span', {}, [el('b', { text: `${fmtNum(l.total)}/${fmtNum(total)}` }), el('span', { class: 'gg-hint', text: ` ${pct(l.total)}%` })]) : el('span', { class: 'gg-hint', text: '–' })]),
+      el('td', {}, [el('button', { class: 'gg-btn gg-btn--sm' + (cur && cur.attempt_id === l.attempt_id ? ' gg-btn--primary' : ''), type: 'button', text: 'Open', onclick: () => open(l) })])
+    ])));
+  });
+  if (!paperOnes.length) tb.appendChild(el('tr', {}, [el('td', { colspan: '7', class: 'gg-hint', text: 'No paper scripts yet. Add one above.' })]));
 }
 
 $('btnAdd').addEventListener('click', async () => {
