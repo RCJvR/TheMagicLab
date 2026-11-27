@@ -140,9 +140,49 @@ function shrink(file) {
     img.src = URL.createObjectURL(file);
   });
 }
+/* a .zip of photos: unpacked in the browser (JSZip, loaded only when needed), pages in file-name order */
+let jszip = null;
+function loadJSZip() {
+  if (jszip) return jszip;
+  jszip = new Promise((resolve, reject) => {
+    const s = document.createElement('script');
+    s.src = 'https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js';
+    s.onload = () => window.JSZip ? resolve(window.JSZip) : reject(new Error('Could not load the zip reader.'));
+    s.onerror = () => { jszip = null; reject(new Error('Could not load the zip reader. Check the internet connection.')); };
+    document.head.appendChild(s);
+  });
+  return jszip;
+}
+const IMG = /\.(jpe?g|png|webp|gif|bmp|heic|heif)$/i;
+const isZip = f => /\.zip$/i.test(f.name) || /zip/.test(f.type);
+async function unzip(file) {
+  const JSZip = await loadJSZip();
+  const z = await JSZip.loadAsync(file);
+  const entries = Object.values(z.files)
+    .filter(f => !f.dir && IMG.test(f.name) && !/(^|\/)(__MACOSX|\.)/.test(f.name))   // skip Mac metadata and hidden files
+    .sort((a, b) => a.name.localeCompare(b.name, undefined, { numeric: true }));
+  const out = [];
+  for (const f of entries) {
+    const blob = await f.async('blob');
+    out.push(new File([blob], f.name.split('/').pop(), { type: /\.png$/i.test(f.name) ? 'image/png' : 'image/jpeg' }));
+  }
+  if (!out.length) throw new Error(`${file.name} has no photos in it.`);
+  return out;
+}
+const byName = (a, b) => a.name.localeCompare(b.name, undefined, { numeric: true });
+
 $('files').addEventListener('change', async e => {
-  const list = [...e.target.files].sort((a, b) => a.name.localeCompare(b.name, undefined, { numeric: true }));
+  const picked = [...e.target.files];
   e.target.value = '';
+  showErr(null);
+  let list = [];
+  try {
+    for (const f of picked.sort(byName)) {
+      if (isZip(f)) { $('oProg').textContent = `Opening ${f.name}…`; list.push(...await unzip(f)); }
+      else list.push(f);
+    }
+  } catch (err) { $('oProg').textContent = ''; return showErr(err); }
+  if (!picked.some(isZip)) list.sort(byName);
   if (!list.length) return;
   if (photos.length + list.length > 16) return showErr('A script can have at most 16 pages.');
   let next = photos.reduce((m, p) => Math.max(m, parseInt(p.name) || 0), 0);
