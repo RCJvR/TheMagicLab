@@ -30,8 +30,8 @@ document.querySelectorAll('[data-close]').forEach(b => b.addEventListener('click
 document.querySelectorAll('[data-tab]').forEach(b => b.addEventListener('click', () => tab(b.dataset.tab)));
 function tab(t) {
   document.querySelectorAll('[data-tab]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.tab === t)));
-  ['q', 'l', 's', 'r'].forEach(x => { $('tab' + x.toUpperCase()).hidden = x !== t; });
-  ({ q: drawQ, l: drawL, s: drawS, r: drawR })[t]();
+  ['q', 'l', 'm', 's', 'r'].forEach(x => { $('tab' + x.toUpperCase()).hidden = x !== t; });
+  ({ q: drawQ, l: drawL, m: drawM, s: drawS, r: drawR })[t]();
 }
 
 /* ── load ── */
@@ -48,7 +48,7 @@ async function load() {
   await loadAttempts();
 }
 async function loadAttempts(only) {
-  let q = sb().from('exam_attempts').select('id, student_id, status, deadline, answers, submitted_at, submit_kind, mark_status, mark_error, ai_summary, input_tokens, output_tokens, source, transcript_checked_at').eq('sitting_id', sid);
+  let q = sb().from('exam_attempts').select('id, student_id, status, deadline, answers, submitted_at, submit_kind, mark_status, mark_error, ai_summary, input_tokens, output_tokens, source, transcript_checked_at, transcript, started_at').eq('sitting_id', sid);
   if (only) q = q.in('id', only);
   const { data, error } = await q;
   if (error) throw error;
@@ -146,7 +146,7 @@ async function saveMark(attemptId, itemId, patch) {
 function answerCard(l, it, opts = {}) {
   const a = attempts[l.attempt_id], m = marks[key(l.attempt_id, it.id)], memo = paper.memo[it.id];
   const text = answerText(it, a.answers[it.id]);
-  const card = el('div', { class: 'xm-ans', 'data-flag': flagged(m) ? '1' : '0' });
+  const card = el('div', { class: 'xm-ans', 'data-flag': flagged(m) ? '1' : '0', 'data-item': it.id });
   if (blind(l.attempt_id) && memo.type === 'written') {
     card.appendChild(el('div', { class: 'xm-ans-head' }, [el('b', { text: opts.showQ ? it.num : l.name, style: 'color:var(--paper)' }), el('span', { class: 'xm-pill warn', text: 'parity sample' })]));
     card.appendChild(el('p', { class: 'gg-hint', text: 'This script is in the parity sample. Mark it blind in the Parity tab first; the AI’s mark shows here after that.' }));
@@ -342,6 +342,167 @@ function drawL() {
   if (a.mark_status === 'error' || a.mark_status === 'none') v.appendChild(el('button', { class: 'gg-btn gg-btn--sm', type: 'button', text: 'Mark this script now', onclick: () => markMany([a.id], null, 'Marking') }));
   items.forEach(it => v.appendChild(answerCard(l, it, { showQ: true })));
 }
+
+/* ── summary: one script at a time, or the whole sitting as a grid ── */
+let sView = 'one', sCur = null;
+// scripts in upload order (when each script was started or added)
+const ordered = () => wrote().slice().sort((a, b) => String(attempts[a.attempt_id].started_at || '').localeCompare(String(attempts[b.attempt_id].started_at || '')) || a.name.localeCompare(b.name, undefined, { numeric: true }));
+const confClass = c => c === 'high' ? 'ok' : c === 'medium' ? 'warn' : c === 'low' ? 'bad' : '';
+const paperMark = (id, item) => { const x = parity[pkey(id, item, 'teacher')]; return x ? Number(x.score) : null; };
+const unsureHand = (id, item) => { const t = attempts[id].transcript; const ti = t && t.items && t.items[item]; return !!(ti && (ti.unsure || ti.unreadable)); };
+const aiOrRule = m => m ? Number(m.ai_score ?? m.auto_score ?? 0) : null;
+
+function summaryRows(id) {
+  return items.map(it => {
+    const memo = paper.memo[it.id], m = marks[key(id, it.id)];
+    const ai = isAI(it);
+    const pm = ai ? paperMark(id, it.id) : null;
+    const hidden = ai && blind(id);
+    const base = hidden ? null : aiOrRule(m);
+    return {
+      hidden,
+      it, memo, m, ai, base, pm,
+      final: m ? final(m) : null,
+      conf: ai && m ? m.ai_confidence : null,
+      yours: m && m.teacher_score != null ? Number(m.teacher_score) : null,
+      reason: m && m.override_reason ? REASONS[m.override_reason] : '',
+      diff: pm != null && base != null ? Math.round((base - pm) * 10) / 10 : null,
+      checked: !!(m && m.reviewed),
+      alt: !!(m && m.ai_alt),
+      hand: attempts[id].source === 'paper' && unsureHand(id, it.id),
+      several: memo.type === 'num' && numCandidates(attempts[id].answers[it.id]).length > 1,
+      level: memo.bloom || memo.skill || ''
+    };
+  });
+}
+function footer(rows) {
+  const aiRows = rows.filter(r => r.ai && r.m);
+  const tot = rows.reduce((t, r) => t + (r.final || 0), 0);
+  const aiGot = aiRows.reduce((t, r) => t + (r.base || 0), 0), aiMax = aiRows.reduce((t, r) => t + Number(r.memo.max), 0);
+  const n = c => aiRows.filter(r => r.conf === c).length;
+  const withPaper = aiRows.filter(r => r.pm != null);
+  const agree = withPaper.length ? Math.round(100 * withPaper.filter(r => r.diff === 0).length / withPaper.length) + '%' : '–';
+  if (rows.some(r => r.hidden)) return el('div', { class: 'xm-bp xm-sum-foot' }, [
+    el('div', {}, [el('b', { text: 'hidden' }), el('span', { text: 'This script is in the parity sample: mark it blind on the Parity tab first.' })])]);
+  return el('div', { class: 'xm-bp xm-sum-foot' }, [
+    el('div', {}, [el('b', { text: `${fmtNum(tot)}/${fmtNum(paper.total)}` }), el('span', { text: `final mark · ${Math.round(100 * tot / paper.total)}%` })]),
+    el('div', {}, [el('b', { text: `${fmtNum(aiGot)}/${fmtNum(aiMax)}` }), el('span', { text: 'AI-marked part only (AI’s marks)' })]),
+    el('div', {}, [el('b', { text: `${n('high')} · ${n('medium')} · ${n('low')}` }), el('span', { text: 'AI confidence: high · medium · low' })]),
+    el('div', {}, [el('b', { text: agree }), el('span', { text: withPaper.length ? `agree with your paper marks (${withPaper.length} answers)` : 'agree with your paper marks (none entered)' })])
+  ]);
+}
+function scriptTable(l, forPrint) {
+  const rows = summaryRows(l.attempt_id);
+  const wrap = el('div', { class: 'xm-sum-one' });
+  wrap.appendChild(el('h3', { class: 'gg-h', text: `${l.name} · ${sit.title}` }));
+  const t = el('table', { class: 'xm-table xm-sum' });
+  t.appendChild(el('thead', { html: '<tr><th>Q</th><th>Marked by</th><th>AI / rule</th><th>Confidence</th><th>Your mark</th><th>Paper mark</th><th title="Checked by you">✓</th><th>Flags</th><th>Level</th></tr>' }));
+  const tb = el('tbody');
+  rows.forEach(r => {
+    const max = fmtNum(r.memo.max);
+    const flags = [r.alt ? 'not in memo' : '', r.hand ? 'handwriting unsure' : '', r.several ? 'several numbers' : ''].filter(Boolean);
+    tb.appendChild(el('tr', {}, [
+      el('td', {}, [forPrint ? r.it.num : el('a', { href: '#', text: r.it.num, onclick: e => { e.preventDefault(); jumpTo(l.attempt_id, r.it.id); } })]),
+      el('td', {}, [el('span', { class: 'xm-pill', text: r.ai ? 'AI' : 'rule' })]),
+      el('td', { text: r.hidden ? 'hidden (parity)' : r.base == null ? '–' : `${fmtNum(r.base)}/${max}` }),
+      el('td', {}, [r.conf && !r.hidden ? el('span', { class: 'xm-pill ' + confClass(r.conf), text: r.conf }) : '–']),
+      el('td', { text: r.yours == null ? '' : `${fmtNum(r.yours)}/${max}` + (r.reason ? ` · ${r.reason}` : '') }),
+      el('td', {}, r.pm == null ? [] : [`${fmtNum(r.pm)} `, r.diff ? el('span', { class: r.diff > 0 ? 'xm-up' : 'xm-down', text: (r.diff > 0 ? '+' : '−') + fmtNum(Math.abs(r.diff)), title: 'AI minus your paper mark' }) : el('span', { class: 'xm-eq', text: '=' })]),
+      el('td', { text: r.checked ? '✓' : '' }),
+      el('td', { text: flags.join(', ') }),
+      el('td', { text: r.level })
+    ]));
+  });
+  t.appendChild(tb);
+  wrap.appendChild(el('div', { class: 'xm-table-wrap' }, [t]));
+  wrap.appendChild(footer(rows));
+  return wrap;
+}
+function gridTable() {
+  const scripts = ordered();
+  const wrap = el('div', { class: 'xm-sum-grid' });
+  wrap.appendChild(el('h3', { class: 'gg-h', text: `${sit.title} · ${scripts.length} script${scripts.length === 1 ? '' : 's'}` }));
+  const t = el('table', { class: 'xm-table xm-sgrid' });
+  t.appendChild(el('thead', {}, [el('tr', {}, [el('th', { text: 'Q' }), ...scripts.map(l => el('th', { text: l.name })), el('th', { text: 'Agree (paper)', title: 'How often the AI’s mark equals your paper mark on this question' })])]));
+  const tb = el('tbody');
+  let agreeAll = 0, pairsAll = 0;
+  items.forEach(it => {
+    const memo = paper.memo[it.id], ai = isAI(it);
+    let agree = 0, pairs = 0;
+    const cells = scripts.map(l => {
+      const m = marks[key(l.attempt_id, it.id)];
+      if (!m) return el('td', { text: '–' });
+      if (ai && blind(l.attempt_id)) return el('td', { class: 'gg-hint', text: 'hidden', title: 'Parity sample: mark it blind first' });
+      const pm = ai ? paperMark(l.attempt_id, it.id) : null;
+      if (pm != null) { pairs++; if (aiOrRule(m) === pm) agree++; }
+      const changed = m.teacher_score != null;
+      return el('td', {}, [el('a', { href: '#', class: 'xm-cell ' + (ai ? confClass(m.ai_confidence) : 'rule'), title: (ai ? `AI ${m.ai_confidence}` : 'marked by rule') + (changed ? ' · you changed it' : ''),
+        text: `${fmtNum(final(m))}/${fmtNum(memo.max)}${changed ? '*' : ''}`, onclick: e => { e.preventDefault(); jumpTo(l.attempt_id, it.id); } })]);
+    });
+    agreeAll += agree; pairsAll += pairs;
+    tb.appendChild(el('tr', {}, [el('td', { text: it.num }), ...cells, el('td', { text: ai ? (pairs ? `${agree}/${pairs}` : '–') : 'rule' })]));
+  });
+  const totals = scripts.map(l => blind(l.attempt_id) ? 'hidden' : fmtNum(items.reduce((s, it) => s + final(marks[key(l.attempt_id, it.id)]), 0)));
+  tb.appendChild(el('tr', { class: 'xm-sgrid-total' }, [el('td', { text: 'Total' }), ...totals.map(x => el('td', { text: x })), el('td', { text: pairsAll ? Math.round(100 * agreeAll / pairsAll) + '%' : '–' })]));
+  t.appendChild(tb);
+  wrap.appendChild(el('div', { class: 'xm-table-wrap' }, [t]));
+  wrap.appendChild(el('p', { class: 'gg-hint', text: `Colour = AI confidence (green high, amber medium, red low; grey = marked by rule). * = you changed the mark. Out of ${fmtNum(paper.total)}.` }));
+  return wrap;
+}
+function jumpTo(attemptId, itemId) {
+  curL = attemptId; tab('l');
+  const card = $('lView').querySelector(`[data-item="${CSS.escape(itemId)}"]`);
+  if (card) { card.scrollIntoView({ behavior: 'smooth', block: 'center' }); card.classList.add('xm-flash'); setTimeout(() => card.classList.remove('xm-flash'), 1600); }
+}
+function drawM() {
+  const scripts = ordered().filter(l => attempts[l.attempt_id].mark_status === 'done');
+  const sel = $('mSel');
+  sel.innerHTML = '';
+  scripts.forEach(l => sel.appendChild(el('option', { value: l.attempt_id, text: l.name })));
+  if (!scripts.find(l => l.attempt_id === sCur)) sCur = scripts[0] ? scripts[0].attempt_id : null;
+  if (sCur) sel.value = sCur;
+  document.querySelectorAll('[data-sview]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.sview === sView)));
+  $('mOneCtl').hidden = sView !== 'one';
+  const v = $('mView'); v.innerHTML = '';
+  if (!scripts.length) { v.appendChild(el('p', { class: 'gg-hint', text: 'No marked scripts yet.' })); return; }
+  if (sView === 'one') {
+    const i = scripts.findIndex(l => l.attempt_id === sCur);
+    $('mPrev').disabled = i <= 0; $('mNext').disabled = i >= scripts.length - 1;
+    v.appendChild(scriptTable(scripts[i]));
+  } else v.appendChild(gridTable());
+}
+document.querySelectorAll('[data-sview]').forEach(b => b.addEventListener('click', () => { sView = b.dataset.sview; drawM(); }));
+$('mSel').addEventListener('change', () => { sCur = $('mSel').value; drawM(); });
+$('mPrev').addEventListener('click', () => { const s = ordered().filter(l => attempts[l.attempt_id].mark_status === 'done'); const i = s.findIndex(l => l.attempt_id === sCur); if (i > 0) { sCur = s[i - 1].attempt_id; drawM(); } });
+$('mNext').addEventListener('click', () => { const s = ordered().filter(l => attempts[l.attempt_id].mark_status === 'done'); const i = s.findIndex(l => l.attempt_id === sCur); if (i < s.length - 1) { sCur = s[i + 1].attempt_id; drawM(); } });
+
+/* print: this script, every script (one per page), or the grid (landscape) */
+$('mPrint').addEventListener('click', () => {
+  const scripts = ordered().filter(l => attempts[l.attempt_id].mark_status === 'done');
+  if (!scripts.length) return;
+  let what = 'grid';
+  if (sView === 'one') what = scripts.length > 1 && confirm(`Print all ${scripts.length} scripts, one per page?\n\nOK = all scripts · Cancel = only ${scripts.find(l => l.attempt_id === sCur).name}`) ? 'all' : 'one';
+  const box = el('div', { id: 'xmPrint', class: 'xm-print' });
+  if (what === 'grid') box.appendChild(gridTable());
+  else (what === 'all' ? scripts : scripts.filter(l => l.attempt_id === sCur)).forEach(l => box.appendChild(scriptTable(l, true)));
+  const page = el('style', { text: what === 'grid' ? '@page { size: landscape; margin: 10mm; }' : '@page { size: portrait; margin: 12mm; }' });
+  document.head.appendChild(page); document.body.appendChild(box); document.body.classList.add('xm-printing');
+  const done = () => { box.remove(); page.remove(); document.body.classList.remove('xm-printing'); window.removeEventListener('afterprint', done); };
+  window.addEventListener('afterprint', done);
+  setTimeout(() => window.print(), 50);
+});
+
+/* export: one row per script per question */
+$('mCsv').addEventListener('click', () => {
+  const scripts = ordered().filter(l => attempts[l.attempt_id].mark_status === 'done');
+  const head = ['Script', 'Upload order', 'Question', 'Marked by', 'Max', 'AI or rule mark', 'AI confidence', 'Your mark', 'Reason', 'Paper mark', 'AI minus paper', 'Final mark', 'Checked', 'Not in memo', 'Handwriting unsure', 'Several numbers', 'Bloom', 'Skill', 'Topic'];
+  const lines = [head];
+  scripts.forEach((l, k) => summaryRows(l.attempt_id).forEach(r => lines.push([
+    l.name, k + 1, r.it.num, r.ai ? 'AI' : 'rule', r.memo.max, r.base ?? '', r.conf || '', r.yours ?? '', r.reason, r.pm ?? '', r.diff ?? '', r.final ?? '',
+    r.checked ? 'yes' : '', r.alt ? 'yes' : '', r.hand ? 'yes' : '', r.several ? 'yes' : '', r.memo.bloom || '', r.memo.skill || '', r.memo.topic || ''
+  ])));
+  download((sit.class_name || 'class') + ' - ' + sit.title + ' - summary.csv', '﻿' + lines.map(r => r.map(csvCell).join(',')).join('\r\n'));
+});
 
 /* ── parity: blind hand-marking of a sample, compared with the AI ── */
 const aiTotal = id => items.filter(isAI).reduce((t, it) => { const m = marks[key(id, it.id)]; return t + (m ? Number(m.ai_score ?? 0) : 0); }, 0);
