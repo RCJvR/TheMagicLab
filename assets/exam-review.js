@@ -205,6 +205,8 @@ function answerCard(l, it, opts = {}) {
   const row = el('div', { class: 'gg-top', style: 'margin:6px 0 0' });
   if (!m.reviewed) row.appendChild(el('button', { class: 'gg-btn gg-btn--sm', type: 'button', text: 'Agree', onclick: () => saveMark(l.attempt_id, it.id, {}).then(redraw) }));
   if (m.teacher_score != null) row.appendChild(el('button', { class: 'gg-btn gg-btn--sm', type: 'button', text: 'Use the ' + (memo.type === 'written' ? 'AI' : 'rule') + '’s mark', onclick: () => saveMark(l.attempt_id, it.id, { teacher_met: null, teacher_score: null, override_reason: null }).then(redraw) }));
+  // marking script by script: change the memo from the answer itself (re-marks this question for everyone)
+  if (opts.showQ && memo.type === 'written') row.appendChild(el('button', { class: 'gg-btn gg-btn--sm', type: 'button', text: 'Edit memo for ' + it.num, onclick: () => editMemo(it) }));
   const cor = corrections[key(l.attempt_id, it.id)];
   if (cor) card.appendChild(el('div', { class: 'xm-fb', text: 'Learner’s correction: ' + cor.body }));
   if (row.childNodes.length) card.appendChild(row);
@@ -288,6 +290,7 @@ function drawQ() {
 
 function editMemo(it) {
   const memo = paper.memo[it.id];
+  $('memoH').textContent = 'Edit the memo for ' + it.num;
   $('memoText').value = memo.points.map((p, i) => `(${memo.weights[i]}) ${p}`).join('\n');
   $('memoErr').textContent = '';
   $('dlgMemo').dataset.item = it.id;
@@ -309,7 +312,7 @@ $('memoSave').addEventListener('click', async () => {
   if (sum < memo.max) alert(`Note: the memo points add up to ${sum}, the question is worth ${memo.max}. Learners can earn at most ${sum}.`);
   const ids = wrote().map(l => l.attempt_id).filter(a => attempts[a].mark_status === 'done');
   if (ids.length) await markMany(ids, [id], 'Re-marking ' + byItem[id].num);
-  else drawQ();
+  else redraw();
 });
 
 /* ── by learner ── */
