@@ -126,25 +126,35 @@ $('phPrev').addEventListener('click', () => { if (page > 0) { page--; showPhoto(
 $('phNext').addEventListener('click', () => { if (page < photos.length - 1) { page++; showPhoto(); drawThumbs(); } });
 
 /* resize in the browser: long side ≤ 2200 px, JPEG — enough for handwriting, small to upload */
-function shrink(file) {
+async function decode(file) {
+  // createImageBitmap copes with large phone photos and applies the camera's rotation; <img> is the fallback
+  if (window.createImageBitmap) {
+    try { return await createImageBitmap(file, { imageOrientation: 'from-image' }); } catch (e) { /* fall through */ }
+  }
   return new Promise((resolve, reject) => {
     const img = new Image();
-    img.onload = () => {
-      const k = Math.min(1, 2200 / Math.max(img.width, img.height));
-      const c = document.createElement('canvas'); c.width = Math.round(img.width * k); c.height = Math.round(img.height * k);
-      c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
-      c.toBlob(b => b ? resolve(b) : reject(new Error('Could not read that photo.')), 'image/jpeg', 0.85);
-      URL.revokeObjectURL(img.src);
-    };
-    img.onerror = () => reject(new Error(`${file.name || 'That file'} is not a photo this browser can read (try JPEG).`));
+    img.onload = () => { URL.revokeObjectURL(img.src); resolve(img); };
+    img.onerror = () => { URL.revokeObjectURL(img.src); reject(new Error(`${file.name || 'That file'} is not a photo this browser can read (try JPEG).`)); };
     img.src = URL.createObjectURL(file);
   });
 }
+async function shrink(file) {
+  const img = await decode(file);
+  const k = Math.min(1, 2200 / Math.max(img.width, img.height));
+  const c = document.createElement('canvas'); c.width = Math.round(img.width * k); c.height = Math.round(img.height * k);
+  c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+  if (img.close) img.close();
+  return new Promise((resolve, reject) => c.toBlob(b => b ? resolve(b) : reject(new Error(`Could not read ${file.name || 'that photo'}.`)), 'image/jpeg', 0.85));
+}
 
-/* What is this file really? (zip entries and phone files often have the wrong type or extension) */
+/* What is this file really? Decided by its first bytes: phones and zips often keep a wrong name
+   (an iPhone photo exported as JPEG can still be called IMG_1234.HEIC). */
 async function sniff(file) {
   const b = new Uint8Array(await file.slice(0, 16).arrayBuffer());
   const txt = String.fromCharCode(...b);
+  if (b[0] === 0xFF && b[1] === 0xD8) return 'image';                       // JPEG
+  if (b[0] === 0x89 && txt.slice(1, 4) === 'PNG') return 'image';           // PNG
+  if (txt.startsWith('GIF8') || txt.startsWith('BM') || (txt.startsWith('RIFF') && txt.slice(8, 12) === 'WEBP')) return 'image';
   if (txt.startsWith('%PDF')) return 'pdf';
   if (txt.slice(4, 8) === 'ftyp' && /^(heic|heix|hevc|hevx|heim|heis|mif1|msf1|heif)/.test(txt.slice(8, 12))) return 'heic';
   if (/\.pdf$/i.test(file.name)) return 'pdf';
@@ -163,7 +173,13 @@ function loadScript(src, ready) {
 async function heicToJpeg(file) {
   heicLib = heicLib || loadScript('https://cdn.jsdelivr.net/npm/heic2any@0.0.4/dist/heic2any.min.js', () => window.heic2any).catch(e => { heicLib = null; throw e; });
   const conv = await heicLib;
-  const out = await conv({ blob: file, toType: 'image/jpeg', quality: 0.9 });
+  let out;
+  try { out = await conv({ blob: file, toType: 'image/jpeg', quality: 0.9 }); }
+  catch (e) {
+    // the converter refuses files the browser can already show: use them as they are
+    if (/already browser readable/i.test(String((e && e.message) || e))) return file;
+    throw new Error(`${file.name} could not be converted (${String((e && e.message) || e).slice(0, 80)}). Try saving it as JPEG.`);
+  }
   return new File([Array.isArray(out) ? out[0] : out], file.name.replace(/\.\w+$/, '') + '.jpg', { type: 'image/jpeg' });
 }
 async function pdfToJpegs(file) {
