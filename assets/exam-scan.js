@@ -115,7 +115,9 @@ async function open(l) {
 async function loadPhotos() {
   const { data, error } = await sb().storage.from(BUCKET).list(att.id, { limit: 100, sortBy: { column: 'name', order: 'asc' } });
   if (error) return showErr(error);
-  const files = (data || []).filter(f => /\.(jpe?g|png|webp)$/i.test(f.name)).sort((a, b) => parseInt(a.name) - parseInt(b.name));
+  // numbered pages first, in number order; names left by an interrupted move (t…) after them, so no page is lost
+  const rank = n => /^\d+\./.test(n) ? parseInt(n) : 1e6;
+  const files = (data || []).filter(f => /\.(jpe?g|png|webp)$/i.test(f.name)).sort((a, b) => rank(a.name) - rank(b.name) || a.name.localeCompare(b.name));
   photos = [];
   for (const f of files) {
     const { data: u } = await sb().storage.from(BUCKET).createSignedUrl(`${att.id}/${f.name}`, 3600);
@@ -123,17 +125,65 @@ async function loadPhotos() {
   }
   drawThumbs();
 }
+let dragFrom = null, reordering = false;
 function drawThumbs() {
   const box = $('thumbs'); box.innerHTML = '';
-  photos.forEach((p, k) => box.appendChild(el('div', { class: 'xm-thumb' + (k === page ? ' on' : '') }, [
-    el('button', { type: 'button', class: 'xm-thumb-img', 'aria-label': 'Show page ' + (k + 1), onclick: () => { page = k; showPhoto(); drawThumbs(); } }, [el('img', { src: p.url, alt: '' })]),
-    el('span', { text: 'Page ' + (k + 1) }),
-    el('button', { type: 'button', class: 'gg-btn gg-btn--sm xm-thumb-del', text: '✕ Remove', 'aria-label': 'Remove page ' + (k + 1), onclick: () => removePhotos([p], `page ${k + 1}`) })
-  ])));
+  photos.forEach((p, k) => {
+    const t = el('div', { class: 'xm-thumb' + (k === page ? ' on' : ''), draggable: 'true', title: 'Drag to move this page' }, [
+      el('button', { type: 'button', class: 'xm-thumb-img', 'aria-label': 'Show page ' + (k + 1), onclick: () => { page = k; showPhoto(); drawThumbs(); } }, [el('img', { src: p.url, alt: '', draggable: 'false' })]),
+      el('span', { text: 'Page ' + (k + 1) }),
+      // arrows: for phones and tablets, where dragging does not work, and for keyboard users
+      el('span', { class: 'xm-thumb-move' }, [
+        el('button', { type: 'button', class: 'gg-btn gg-btn--sm', text: '◀', 'aria-label': `Move page ${k + 1} earlier`, disabled: k === 0, onclick: () => movePage(k, k - 1) }),
+        el('button', { type: 'button', class: 'gg-btn gg-btn--sm', text: '▶', 'aria-label': `Move page ${k + 1} later`, disabled: k === photos.length - 1, onclick: () => movePage(k, k + 1) })
+      ]),
+      el('button', { type: 'button', class: 'gg-btn gg-btn--sm xm-thumb-del', text: '✕ Remove', 'aria-label': 'Remove page ' + (k + 1), onclick: () => removePhotos([p], `page ${k + 1}`) })
+    ]);
+    t.addEventListener('dragstart', e => { dragFrom = k; t.classList.add('dragging'); e.dataTransfer.effectAllowed = 'move'; e.dataTransfer.setData('text/plain', String(k)); });
+    t.addEventListener('dragend', () => { t.classList.remove('dragging'); box.querySelectorAll('.drop').forEach(n => n.classList.remove('drop')); });
+    t.addEventListener('dragover', e => { if (dragFrom == null) return; e.preventDefault(); e.dataTransfer.dropEffect = 'move'; t.classList.add('drop'); });
+    t.addEventListener('dragleave', () => t.classList.remove('drop'));
+    t.addEventListener('drop', e => { e.preventDefault(); t.classList.remove('drop'); const from = dragFrom; dragFrom = null; if (from != null && from !== k) movePage(from, k); });
+    box.appendChild(t);
+  });
   $('btnRead').disabled = !photos.length;
   $('btnClear').hidden = !photos.length;
   $('btnRead').textContent = att.transcript ? 'Read the handwriting again' : 'Read the handwriting';
   showPhoto();
+}
+/* Move a page: the order of the photos is the order of their file names (01.jpg, 02.jpg …),
+   so the files are renamed — first to temporary names, then to their new numbers. */
+async function movePage(from, to) {
+  if (reordering || from === to || to < 0 || to >= photos.length) return;
+  const order = photos.slice();
+  const [p] = order.splice(from, 1); order.splice(to, 0, p);
+  reordering = true; showErr(null);
+  $('oProg').textContent = 'Moving the page…';
+  const stamp = Date.now().toString(36);
+  try {
+    const temp = [];
+    for (let i = 0; i < order.length; i++) {
+      const ext = (order[i].name.match(/\.\w+$/) || ['.jpg'])[0];
+      const tmp = `t${stamp}-${String(i).padStart(2, '0')}${ext}`;
+      const { error } = await sb().storage.from(BUCKET).move(`${att.id}/${order[i].name}`, `${att.id}/${tmp}`);
+      if (error) throw error;
+      temp.push({ tmp, ext });
+    }
+    for (let i = 0; i < temp.length; i++) {
+      const { error } = await sb().storage.from(BUCKET).move(`${att.id}/${temp[i].tmp}`, `${att.id}/${String(i + 1).padStart(2, '0')}${temp[i].ext}`);
+      if (error) throw error;
+    }
+    page = to;
+    $('oProg').textContent = att.transcript
+      ? `Page moved. The AI read the old order: its "Show page" links may point to the old page numbers.`
+      : 'Page moved.';
+  } catch (err) {
+    showErr(err);
+    $('oProg').textContent = '';
+  } finally {
+    reordering = false;
+    await loadPhotos();
+  }
 }
 /* remove one, several or all photos of this script (from the private store) */
 async function removePhotos(list, what) {
