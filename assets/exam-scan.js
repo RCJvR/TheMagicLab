@@ -322,15 +322,17 @@ function drawCheck() {
     head.appendChild(edited);
     if (ti.page) head.appendChild(el('button', { class: 'gg-btn gg-btn--sm', type: 'button', text: 'Show page ' + ti.page, onclick: () => { page = Math.min(photos.length - 1, ti.page - 1); showPhoto(); drawThumbs(); } }));
     card.appendChild(head);
-    card.appendChild(renderItem(it, { answer: answers[it.id], lang: paper.learner.lang, onChange: v => {
+    const onChange = v => {
       if (v == null) delete answers[it.id]; else answers[it.id] = v;
       dirty = true; edited.hidden = same(answers[it.id], ti.answer); summary();
-    } }));
+    };
+    // Column A–B: choose by Column B text. The letters on the printed paper are in a different
+    // order from the digital paper's, so on-screen letters would mean something else.
+    card.appendChild(it.type === 'match' ? matchEditor(it, ti, onChange) : renderItem(it, { answer: answers[it.id], lang: paper.learner.lang, onChange }));
     if (ti.raw && (it.type === 'written' || ti.unsure)) {
       const p = el('p', { class: 'gg-hint xm-raw' }); p.innerHTML = 'AI read: ' + esc(ti.raw).replace(/\[([^\]]+)\]/g, '<mark>$1</mark>');
       card.appendChild(p);
     }
-    if (it.type === 'match' && ti.rows && ti.rows.length) card.appendChild(el('p', { class: 'gg-hint', text: 'Letters written: ' + ti.rows.map(r => `${r.row}→${r.letter}`).join(', ') + '. The letters on the paper may be in a different order: check each choice by its Column B text.' }));
     if (isAI(it)) {
       const max = paper.memo[it.id].max;
       const hm = el('input', { class: 'gg-in', type: 'number', min: '0', max: String(max), step: '0.5', style: 'width:80px', value: hand[it.id] ?? '', 'aria-label': `Your mark on paper for ${it.num}` });
@@ -344,6 +346,33 @@ function drawCheck() {
   $('btnChecked').textContent = att.transcript_checked_at ? 'Checked ✓ (save changes)' : 'I have checked every answer';
   $('btnMark').hidden = !att.transcript_checked_at;
   $('btnMark').textContent = att.mark_status === 'done' ? 'Mark this script again' : 'Mark this script';
+}
+/* Column A–B on the checking screen: one dropdown of Column B descriptions per Column A term,
+   with the letter the learner wrote (and the description the AI saw next to it) shown beside it. */
+function matchEditor(it, ti, onChange) {
+  const wrap = el('div', { class: 'xm-q' });
+  wrap.appendChild(el('div', { class: 'xm-qhead' }, [el('span', { class: 'xm-num', text: it.num }), el('div', { class: 'xm-qtext', text: it.q })]));
+  wrap.appendChild(el('p', { class: 'gg-hint', text: 'Choose the description the learner meant. The letters on the printed paper differ from this paper’s order, so match by the words, using the letter they wrote and your printed Column B.' }));
+  const rows = Object.fromEntries((ti.rows || []).map(r => [r.row - 1, r]));
+  const cur = Object.assign({}, answers[it.id] || {});
+  const tbl = el('div', { class: 'xm-mrows' });
+  it.left.forEach((term, i) => {
+    const sel = el('select', { class: 'gg-in', 'aria-label': 'Description chosen for ' + term },
+      [el('option', { value: '', text: '– no answer –' }), ...it.right.map((r, k) => el('option', { value: String(k), text: r }))]);
+    sel.value = cur[i] != null ? String(cur[i]) : '';
+    sel.addEventListener('change', () => {
+      if (sel.value === '') delete cur[i]; else cur[i] = Number(sel.value);
+      onChange(Object.keys(cur).length ? Object.assign({}, cur) : null);
+    });
+    const r = rows[i];
+    tbl.appendChild(el('div', { class: 'xm-mrow' }, [
+      el('b', { text: `${i + 1}. ${term}` }),
+      el('span', { class: 'gg-hint', text: r ? `wrote ${r.letter || '?'}${r.text ? ' (next to “' + r.text.slice(0, 60) + (r.text.length > 60 ? '…' : '') + '”)' : ''}` : 'nothing read' }),
+      sel
+    ]));
+  });
+  wrap.appendChild(tbl);
+  return wrap;
 }
 function summary() {
   const t = att.transcript || { items: {} };
