@@ -223,10 +223,31 @@ export function numVal(v) {
   const m = String(v == null ? '' : v).replace(/\s/g, '').replace(/^[a-z]=/i, '').replace(/−/g, '-').replace(',', '.').match(/^[-+]?\d*\.?\d+(e[-+]?\d+)?/i);
   return m ? parseFloat(m[0]) : NaN;
 }
+/**
+ * The different numbers in an answer, for answers written as a sentence ("Only the 4 cells
+ * with numbers"). Cell references and ranges (G2, G2:G8, $B$3) are not numbers here; a comma
+ * between digits is a decimal comma (South African style).
+ */
+export function numCandidates(v) {
+  const s = String(v == null ? '' : v)
+    .replace(/\$?\b[A-Z]{1,3}\$?\d+(?::\$?[A-Z]{1,3}\$?\d+)?\b/gi, ' ')   // spreadsheet cells and ranges
+    .replace(/−/g, '-');
+  const found = s.match(/(?:^|[^\w.])-?\d+(?:[.,]\d+)?(?:e[-+]?\d+)?/gi) || [];
+  const vals = found.map(t => parseFloat(t.replace(/^[^\d-]+/, '').replace(',', '.'))).filter(x => !isNaN(x));
+  return [...new Set(vals)];
+}
+/**
+ * Number answers: a bare number ("4", "x = 4", "4 cells") or a sentence with exactly one number
+ * earns the mark when it matches. A sentence with several different numbers earns nothing here
+ * (numCandidates shows the teacher why), so a learner cannot list guesses.
+ */
 export function numOk(m, v) {
-  const x = numVal(v); if (isNaN(x)) return false;
   const tol = m.tol != null ? m.tol : Math.max(Math.abs(m.answer) * 0.01, 1e-12);
-  return Math.abs(x - m.answer) <= tol + 1e-12;
+  const near = x => Math.abs(x - m.answer) <= tol + 1e-12;
+  const c = numCandidates(v);
+  if (c.length === 1) return near(c[0]);
+  if (c.length === 0) { const x = numVal(v); return !isNaN(x) && near(x); }
+  return false;
 }
 export function codeTokens(s) {
   return String(s || '').trim().match(/<!--|-->|\/\/|\/\*|\*\/|\+\+|--|\+=|-=|==|!=|<=|>=|[A-Za-z_][A-Za-z0-9_]*|\d+(?:\.\d+)?|\S/g) || [];

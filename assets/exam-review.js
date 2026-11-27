@@ -8,7 +8,7 @@
  * 4. Results: totals, CSV, feedback condition, AI audit log, release (exam_release).
  */
 import { sb, me, $, el, esc, whenAuthReady, friendly, fmtNum, fmtWhen, capsLevel, isStaff, pool, download, csvCell } from './exam-core.js';
-import { memoText } from './exam-paper.js';
+import { memoText, numCandidates } from './exam-paper.js';
 import { renderScenario, answerText } from './exam-render.js';
 
 const sid = new URLSearchParams(location.search).get('s');
@@ -188,6 +188,12 @@ function answerCard(l, it, opts = {}) {
       saveMark(l.attempt_id, it.id, { teacher_score: v }).then(() => { head.querySelector('.xm-score').textContent = `${fmtNum(final(m))}/${fmtNum(m.max)}`; reasonBox(); });
     });
     card.appendChild(el('div', { class: 'gg-check' }, [el('span', { class: 'gg-hint', text: `Marked by rule: ${fmtNum(m.auto_score)}. Your mark (leave empty to keep it):` }), inp]));
+    // a number answer written as a sentence with several numbers gets no mark by rule: the teacher decides
+    const nums = memo.type === 'num' ? numCandidates(a.answers[it.id]) : [];
+    if (nums.length > 1 && m.teacher_score == null) {
+      head.appendChild(el('span', { class: 'xm-pill warn', text: 'several numbers: you decide' }));
+      card.appendChild(el('p', { class: 'gg-hint', text: `The answer has ${nums.length} different numbers (${nums.join(', ')}); the memo answer is ${fmtNum(memo.answer)}. Give the mark yourself if the learner clearly meant it.` }));
+    }
   }
   // why the teacher changed the AI's or the rule's mark (for the audit trail)
   const reasonWrap = el('div', { class: 'gg-check', style: 'margin:6px 0 0' });
