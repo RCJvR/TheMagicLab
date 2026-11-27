@@ -104,18 +104,27 @@ function drawThumbs() {
   const box = $('thumbs'); box.innerHTML = '';
   photos.forEach((p, k) => box.appendChild(el('div', { class: 'xm-thumb' + (k === page ? ' on' : '') }, [
     el('button', { type: 'button', class: 'xm-thumb-img', 'aria-label': 'Show page ' + (k + 1), onclick: () => { page = k; showPhoto(); drawThumbs(); } }, [el('img', { src: p.url, alt: '' })]),
-    el('span', { text: 'p. ' + (k + 1) }),
-    el('button', { type: 'button', class: 'gg-btn gg-btn--sm', text: 'Remove', 'aria-label': 'Remove page ' + (k + 1), onclick: async () => {
-      if (!confirm(`Remove page ${k + 1}?`)) return;
-      const { error } = await sb().storage.from(BUCKET).remove([`${att.id}/${p.name}`]);
-      if (error) return showErr(error);
-      await loadPhotos(); await setPages();
-    } })
+    el('span', { text: 'Page ' + (k + 1) }),
+    el('button', { type: 'button', class: 'gg-btn gg-btn--sm xm-thumb-del', text: '✕ Remove', 'aria-label': 'Remove page ' + (k + 1), onclick: () => removePhotos([p], `page ${k + 1}`) })
   ])));
   $('btnRead').disabled = !photos.length;
+  $('btnClear').hidden = !photos.length;
   $('btnRead').textContent = att.transcript ? 'Read the handwriting again' : 'Read the handwriting';
   showPhoto();
 }
+/* remove one, several or all photos of this script (from the private store) */
+async function removePhotos(list, what) {
+  const after = att.transcript ? '\n\nThe AI has already read this script: press "Read the handwriting again" afterwards so the answers match the photos.' : '';
+  if (!confirm(`Remove ${what}? This cannot be undone.${after}`)) return;
+  showErr(null);
+  const { error } = await sb().storage.from(BUCKET).remove(list.map(p => `${att.id}/${p.name}`));
+  if (error) return showErr(error);
+  page = 0;
+  await loadPhotos(); await setPages();
+  $('oProg').textContent = `Removed ${list.length} photo${list.length === 1 ? '' : 's'}.`;
+}
+$('btnClear').addEventListener('click', () => removePhotos(photos.slice(), `all ${photos.length} photo${photos.length === 1 ? '' : 's'} of ${cur.name}`));
+$('phDel').addEventListener('click', () => { if (photos[page]) removePhotos([photos[page]], `page ${page + 1}`); });
 async function setPages() { await sb().from('exam_attempts').update({ pages: photos.length }).eq('id', att.id); cur.pages = photos.length; drawList(); }
 function showPhoto() {
   const p = photos[page];
